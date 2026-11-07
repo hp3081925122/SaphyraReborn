@@ -66,3 +66,4 @@ extends GeoEntityRenderer<SaphyraSpawnEntity> {
 
 
 
+

@@ -46,3 +46,4 @@ extends GeoBlockRenderer<LyiorStatueAktivatedTileEntity> {
 
 
 
+

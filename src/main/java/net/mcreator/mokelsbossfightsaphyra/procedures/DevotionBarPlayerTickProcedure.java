@@ -7,9 +7,9 @@
  *  net.minecraft.world.effect.MobEffectInstance
  *  net.minecraft.world.entity.Entity
  *  net.minecraft.world.entity.LivingEntity
- *  net.minecraftforge.event.TickEvent$Phase
- *  net.minecraftforge.event.TickEvent$PlayerTickEvent
- *  net.minecraftforge.eventbus.api.Event
+ *  net.neoforged.neoforge.event.TickEvent$Phase
+ *  net.neoforged.neoforge.event.TickEvent$PlayerTickEvent
+ *  net.neoforged.bus.api.Event
  *  net.neoforged.bus.api.SubscribeEvent
  *  net.neoforged.fml.common.Mod$EventBusSubscriber
  */
@@ -24,8 +24,8 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 
@@ -76,6 +76,7 @@ public class DevotionBarPlayerTickProcedure {
         }
     }
 }
+
 
 
 

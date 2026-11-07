@@ -17,7 +17,7 @@
  *  net.minecraft.world.level.ItemLike
  *  net.minecraft.world.level.LevelAccessor
  *  net.minecraft.world.level.block.Blocks
- *  net.minecraftforge.items.ItemHandlerHelper
+ *  net.neoforged.neoforge.items.ItemHandlerHelper
  */
 package com.hp.saphyrareborn.procedures;
 
@@ -40,7 +40,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 public class ActivateHallowedOddmentProcedure {
     public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
@@ -102,6 +102,7 @@ public class ActivateHallowedOddmentProcedure {
         }
     }
 }
+
 
 
 

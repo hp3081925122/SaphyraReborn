@@ -17,13 +17,13 @@
  *  net.minecraft.world.entity.player.Player
  *  net.minecraft.world.level.Level
  *  net.neoforged.api.distmarker.Dist
- *  net.minecraftforge.eventbus.api.Event
+ *  net.neoforged.bus.api.Event
  *  net.neoforged.bus.api.SubscribeEvent
  *  net.neoforged.fml.common.Mod$EventBusSubscriber
  *  net.neoforged.fml.common.Mod$EventBusSubscriber$Bus
- *  net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
+ *  net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
  *  net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
- *  net.minecraftforge.network.NetworkEvent$Context
+ *  net.neoforged.neoforge.network.NetworkEvent$Context
  */
 package com.hp.saphyrareborn.procedures;
 
@@ -44,12 +44,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 @Mod.EventBusSubscriber(modid="mokels_bossfight_saphyra", bus=Mod.EventBusSubscriber.Bus.MOD, value={Dist.CLIENT})
 public class AnimationsSetUpProcedure {
@@ -113,6 +113,7 @@ public class AnimationsSetUpProcedure {
         }
     }
 }
+
 
 
 

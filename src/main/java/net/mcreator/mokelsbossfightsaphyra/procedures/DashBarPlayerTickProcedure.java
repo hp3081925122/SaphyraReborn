@@ -4,9 +4,9 @@
  * Could not load the following classes:
  *  javax.annotation.Nullable
  *  net.minecraft.world.entity.Entity
- *  net.minecraftforge.event.TickEvent$Phase
- *  net.minecraftforge.event.TickEvent$PlayerTickEvent
- *  net.minecraftforge.eventbus.api.Event
+ *  net.neoforged.neoforge.event.TickEvent$Phase
+ *  net.neoforged.neoforge.event.TickEvent$PlayerTickEvent
+ *  net.neoforged.bus.api.Event
  *  net.neoforged.bus.api.SubscribeEvent
  *  net.neoforged.fml.common.Mod$EventBusSubscriber
  */
@@ -15,8 +15,8 @@ package com.hp.saphyrareborn.procedures;
 import javax.annotation.Nullable;
 import com.hp.saphyrareborn.network.MokelsBossfightSaphyraModVariables;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 
@@ -63,6 +63,7 @@ public class DashBarPlayerTickProcedure {
         }
     }
 }
+
 
 
 

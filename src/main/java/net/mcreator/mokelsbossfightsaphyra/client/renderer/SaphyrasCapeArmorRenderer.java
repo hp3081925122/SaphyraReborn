@@ -56,3 +56,4 @@ extends GeoArmorRenderer<SaphyrasCapeItem> {
 
 
 
+

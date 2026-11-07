@@ -37,20 +37,20 @@ public class DashProcedure {
         if (entity == null) {
             return;
         }
-        if (!(!((Boolean)StaminaBarConfiguration.STAMINABAR.get()).booleanValue() || !entity.isAlive() || entity instanceof LivingEntity && (_livEnt2 = (LivingEntity)entity).hasEffect(MokelsBossfightSaphyraModMobEffects.COOLDOWN) || world.isEmptyBlock(BlockPos.containing((double)entity.getX(), (double)(entity.getY() + -0.1), (double)entity.getZ())) || MokelsBossfightSaphyraModVariables.getPlayerVariables(entity).Dash < 10.0)) {
+        if (!(!((Boolean)StaminaBarConfiguration.STAMINABAR.get()).booleanValue() || !entity.isAlive() || entity instanceof LivingEntity && (_livEnt2 = (LivingEntity)entity).hasEffect((MobEffect)MokelsBossfightSaphyraModMobEffects.COOLDOWN.get()) || world.isEmptyBlock(BlockPos.containing((double)entity.getX(), (double)(entity.getY() + -0.1), (double)entity.getZ())) || ((MokelsBossfightSaphyraModVariables.PlayerVariables)entity.getCapability(MokelsBossfightSaphyraModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElse((Object)new MokelsBossfightSaphyraModVariables.PlayerVariables())).Dash < 10.0)) {
             LivingEntity _entity;
             LivingEntity _entity2;
-            double _setval = MokelsBossfightSaphyraModVariables.getPlayerVariables(entity).Dash - 10.0;
-            MokelsBossfightSaphyraModVariables.withPlayerVariables(entity, capability -> {
+            double _setval = ((MokelsBossfightSaphyraModVariables.PlayerVariables)entity.getCapability(MokelsBossfightSaphyraModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElse((Object)new MokelsBossfightSaphyraModVariables.PlayerVariables())).Dash - 10.0;
+            entity.getCapability(MokelsBossfightSaphyraModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
                 capability.Dash = _setval;
                 capability.syncPlayerVariables(entity);
             });
             entity.setDeltaMovement(new Vec3(entity.getDeltaMovement().x() * 7.0, 0.15, entity.getDeltaMovement().z() * 7.0));
             if (entity instanceof LivingEntity && !(_entity2 = (LivingEntity)entity).level().isClientSide()) {
-                _entity2.addEffect(new MobEffectInstance(MokelsBossfightSaphyraModMobEffects.IMMUNE, 6, 1, false, false));
+                _entity2.addEffect(new MobEffectInstance((MobEffect)MokelsBossfightSaphyraModMobEffects.IMMUNE.get(), 6, 1, false, false));
             }
             if (entity instanceof LivingEntity && !(_entity = (LivingEntity)entity).level().isClientSide()) {
-                _entity.addEffect(new MobEffectInstance(MokelsBossfightSaphyraModMobEffects.COOLDOWN, 10, 1, false, false));
+                _entity.addEffect(new MobEffectInstance((MobEffect)MokelsBossfightSaphyraModMobEffects.COOLDOWN.get(), 10, 1, false, false));
             }
             if (world instanceof ServerLevel) {
                 ServerLevel _level = (ServerLevel)world;
@@ -63,23 +63,6 @@ public class DashProcedure {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

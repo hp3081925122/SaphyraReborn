@@ -23,7 +23,7 @@
  *  net.minecraft.world.level.LevelAccessor
  *  net.minecraft.world.phys.AABB
  *  net.minecraft.world.phys.Vec3
- *  net.neoforged.neoforge.registries.NeoForgeRegistries
+ *  net.minecraftforge.registries.ForgeRegistries
  */
 package com.hp.saphyrareborn.procedures;
 
@@ -55,7 +55,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class AttackGroundProcedure {
     public static void execute(LevelAccessor world, Entity entity) {
@@ -72,28 +72,28 @@ public class AttackGroundProcedure {
             }
             MokelsBossfightSaphyraMod.queueServerWork(31, () -> {
                 LivingEntity _livEnt3;
-                if (!(entity instanceof LivingEntity && (_livEnt3 = (LivingEntity)entity).hasEffect(MokelsBossfightSaphyraModMobEffects.STUN) || !entity.isAlive())) {
-                    _level1_level1;
+                if (!(entity instanceof LivingEntity && (_livEnt3 = (LivingEntity)entity).hasEffect((MobEffect)MokelsBossfightSaphyraModMobEffects.STUN.get()) || !entity.isAlive())) {
+                    Level _level;
                     if (world instanceof Level) {
-                        _level1 = (Level)world;
-                        if (!_level1.isClientSide()) {
-                            _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("entity.generic.explode")), SoundSource.NEUTRAL, 2.0f, 1.0f);
+                        _level = (Level)world;
+                        if (!_level.isClientSide()) {
+                            _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, 2.0f, 1.0f);
                         } else {
-                            _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("entity.generic.explode")), SoundSource.NEUTRAL, 2.0f, 1.0f, false);
+                            _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, 2.0f, 1.0f, false);
                         }
                     }
                     if (world instanceof ServerLevel) {
-                        _level1 = (ServerLevel)world;
-                        _level1.sendParticles((ParticleOptions)ParticleTypes.EXPLOSION, entity.getX(), entity.getY(), entity.getZ(), 100, 2.5, 0.5, 2.5, 0.01);
+                        _level = (ServerLevel)world;
+                        _level.sendParticles((ParticleOptions)ParticleTypes.EXPLOSION, entity.getX(), entity.getY(), entity.getZ(), 100, 2.5, 0.5, 2.5, 0.01);
                     }
                     Vec3 _center = new Vec3(entity.getX(), entity.getY(), entity.getZ());
-                    List<Entity> _entfound = world.getEntitiesOfClass(Entity.class, new AABB(_center, _center).inflate(5.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
+                    List _entfound = world.getEntitiesOfClass(Entity.class, new AABB(_center, _center).inflate(5.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
                     for (Entity entityiterator : _entfound) {
                         LivingEntity _livEnt18;
-                        if (entityiterator instanceof NamelessEntity || !(entityiterator instanceof LivingEntity) || entityiterator instanceof LivingEntity && (_livEnt18 = (LivingEntity)entityiterator).hasEffect(MokelsBossfightSaphyraModMobEffects.IMMUNE)) continue;
+                        if (entityiterator instanceof NamelessEntity || !(entityiterator instanceof LivingEntity) || entityiterator instanceof LivingEntity && (_livEnt18 = (LivingEntity)entityiterator).hasEffect((MobEffect)MokelsBossfightSaphyraModMobEffects.IMMUNE.get())) continue;
                         entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK), entity), 14.0f);
-                        double _setval = MokelsBossfightSaphyraModVariables.getPlayerVariables(entityiterator).Rotting + 10.0;
-                        MokelsBossfightSaphyraModVariables.withPlayerVariables(entityiterator, capability -> {
+                        double _setval = ((MokelsBossfightSaphyraModVariables.PlayerVariables)entityiterator.getCapability(MokelsBossfightSaphyraModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElse((Object)new MokelsBossfightSaphyraModVariables.PlayerVariables())).Rotting + 10.0;
+                        entityiterator.getCapability(MokelsBossfightSaphyraModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
                             capability.Rotting = _setval;
                             capability.syncPlayerVariables(entityiterator);
                         });
@@ -102,29 +102,41 @@ public class AttackGroundProcedure {
             });
             MokelsBossfightSaphyraMod.queueServerWork(71, () -> {
                 LivingEntity _livEnt23;
-                if (!(entity instanceof LivingEntity && (_livEnt23 = (LivingEntity)entity).hasEffect(MokelsBossfightSaphyraModMobEffects.STUN) || !entity.isAlive())) {
-                    _level2_level2;}
+                if (!(entity instanceof LivingEntity && (_livEnt23 = (LivingEntity)entity).hasEffect((MobEffect)MokelsBossfightSaphyraModMobEffects.STUN.get()) || !entity.isAlive())) {
+                    Level _level;
+                    if (world instanceof Level) {
+                        _level = (Level)world;
+                        if (!_level.isClientSide()) {
+                            _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, 2.0f, 1.0f);
+                        } else {
+                            _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, 2.0f, 1.0f, false);
+                        }
+                    }
+                    if (world instanceof ServerLevel) {
+                        _level = (ServerLevel)world;
+                        _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.REDFIRE_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 300, 8.0, 0.5, 8.0, 0.01);
+                    }
+                    if (world instanceof ServerLevel) {
+                        _level = (ServerLevel)world;
+                        _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.REDFLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 600, 8.0, 0.5, 8.0, 0.01);
+                    }
+                    Vec3 _center = new Vec3(entity.getX(), entity.getY(), entity.getZ());
+                    List _entfound = world.getEntitiesOfClass(Entity.class, new AABB(_center, _center).inflate(15.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
+                    for (Entity entityiterator : _entfound) {
+                        LivingEntity _livEnt42;
+                        if (entityiterator instanceof NamelessEntity || !(entityiterator instanceof LivingEntity) || entityiterator instanceof LivingEntity && (_livEnt42 = (LivingEntity)entityiterator).hasEffect((MobEffect)MokelsBossfightSaphyraModMobEffects.IMMUNE.get())) continue;
+                        entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK), entity), 14.0f);
+                        double _setval = ((MokelsBossfightSaphyraModVariables.PlayerVariables)entityiterator.getCapability(MokelsBossfightSaphyraModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElse((Object)new MokelsBossfightSaphyraModVariables.PlayerVariables())).Rotting + 40.0;
+                        entityiterator.getCapability(MokelsBossfightSaphyraModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+                            capability.Rotting = _setval;
+                            capability.syncPlayerVariables(entityiterator);
+                        });
+                    }
+                }
             });
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

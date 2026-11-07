@@ -16,14 +16,14 @@
  *  net.minecraft.resources.ResourceLocation
  *  net.minecraft.world.entity.player.Player
  *  net.minecraft.world.level.Level
- *  net.neoforged.api.distmarker.Dist
- *  net.neoforged.bus.api.Event
- *  net.neoforged.bus.api.SubscribeEvent
- *  net.neoforged.fml.common.Mod$EventBusSubscriber
- *  net.neoforged.fml.common.Mod$EventBusSubscriber$Bus
- *  net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
- *  net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
- *  net.neoforged.network.NetworkEvent$Context
+ *  net.minecraftforge.api.distmarker.Dist
+ *  net.minecraftforge.eventbus.api.Event
+ *  net.minecraftforge.eventbus.api.SubscribeEvent
+ *  net.minecraftforge.fml.common.Mod$EventBusSubscriber
+ *  net.minecraftforge.fml.common.Mod$EventBusSubscriber$Bus
+ *  net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
+ *  net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent
+ *  net.minecraftforge.network.NetworkEvent$Context
  */
 package com.hp.saphyrareborn.procedures;
 
@@ -43,20 +43,19 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.Event;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.network.NetworkEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.network.NetworkEvent;
 
-@EventBusSubscriber(modid="saphyra_reborn", bus=EventBusSubscriber.Bus.MOD, value={Dist.CLIENT})
+@Mod.EventBusSubscriber(modid="mokels_bossfight_saphyra", bus=Mod.EventBusSubscriber.Bus.MOD, value={Dist.CLIENT})
 public class AnimationsSetUpProcedure {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
-        PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "player_animation"), 1000, AnimationsSetUpProcedure::registerPlayerAnimations);
+        PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(new ResourceLocation("mokels_bossfight_saphyra", "player_animation"), 1000, AnimationsSetUpProcedure::registerPlayerAnimations);
     }
 
     private static IAnimation registerPlayerAnimations(AbstractClientPlayer player) {
@@ -70,7 +69,7 @@ public class AnimationsSetUpProcedure {
     private static void execute(@Nullable Event event) {
     }
 
-    @EventBusSubscriber(bus=EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class MokelsBossfightSaphyraModAnimationMessage {
         Component animation;
         int target;
@@ -83,13 +82,13 @@ public class AnimationsSetUpProcedure {
         }
 
         public MokelsBossfightSaphyraModAnimationMessage(FriendlyByteBuf buffer) {
-            this.animation = Component.literal(buffer.readUtf());
+            this.animation = buffer.readComponent();
             this.target = buffer.readInt();
             this.override = buffer.readBoolean();
         }
 
         public static void buffer(MokelsBossfightSaphyraModAnimationMessage message, FriendlyByteBuf buffer) {
-            buffer.writeUtf(message.animation.getString());
+            buffer.writeComponent(message.animation);
             buffer.writeInt(message.target);
             buffer.writeBoolean(message.override);
         }
@@ -101,8 +100,8 @@ public class AnimationsSetUpProcedure {
                 ModifierLayer animation;
                 Player player;
                 Level level = Minecraft.getInstance().player.level();
-                if (level.getEntity(message.target) != null && (player = (Player)level.getEntity(message.target)) instanceof AbstractClientPlayer && (animation = (ModifierLayer)PlayerAnimationAccess.getPlayerAssociatedData((AbstractClientPlayer)(player_ = (AbstractClientPlayer)player)).get(ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "player_animation"))) != null && (message.override || !animation.isActive())) {
-                    animation.setAnimation((IAnimation)new KeyframeAnimationPlayer(PlayerAnimationRegistry.getAnimation(ResourceLocation.fromNamespaceAndPath("saphyra_reborn", message.animation.getString()))));
+                if (level.getEntity(message.target) != null && (player = (Player)level.getEntity(message.target)) instanceof AbstractClientPlayer && (animation = (ModifierLayer)PlayerAnimationAccess.getPlayerAssociatedData((AbstractClientPlayer)(player_ = (AbstractClientPlayer)player)).get(new ResourceLocation("mokels_bossfight_saphyra", "player_animation"))) != null && (message.override || !animation.isActive())) {
+                    animation.setAnimation((IAnimation)new KeyframeAnimationPlayer(PlayerAnimationRegistry.getAnimation((ResourceLocation)new ResourceLocation("mokels_bossfight_saphyra", message.animation.getString()))));
                 }
             });
             context.setPacketHandled(true);
@@ -114,25 +113,6 @@ public class AnimationsSetUpProcedure {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

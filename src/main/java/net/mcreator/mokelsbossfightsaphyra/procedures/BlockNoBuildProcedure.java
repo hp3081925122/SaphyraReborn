@@ -22,27 +22,10 @@ public class BlockNoBuildProcedure {
             return;
         }
         if (entity instanceof LivingEntity && !(_entity = (LivingEntity)entity).level().isClientSide()) {
-            _entity.addEffect(new MobEffectInstance(MokelsBossfightSaphyraModMobEffects.NO_BUILD, 60, 1, false, false));
+            _entity.addEffect(new MobEffectInstance((MobEffect)MokelsBossfightSaphyraModMobEffects.NO_BUILD.get(), 60, 1, false, false));
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

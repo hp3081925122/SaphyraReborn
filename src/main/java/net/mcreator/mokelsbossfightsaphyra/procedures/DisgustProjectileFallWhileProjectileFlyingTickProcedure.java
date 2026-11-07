@@ -37,20 +37,3 @@ public class DisgustProjectileFallWhileProjectileFlyingTickProcedure {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

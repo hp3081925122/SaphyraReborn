@@ -17,7 +17,7 @@
  *  net.minecraft.world.level.ItemLike
  *  net.minecraft.world.level.LevelAccessor
  *  net.minecraft.world.level.block.Blocks
- *  net.neoforged.neoforge.items.ItemHandlerHelper
+ *  net.minecraftforge.items.ItemHandlerHelper
  */
 package com.hp.saphyrareborn.procedures;
 
@@ -40,7 +40,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 public class ActivateHallowedOddmentProcedure {
     public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
@@ -54,16 +54,16 @@ public class ActivateHallowedOddmentProcedure {
                 }
                 Object object = MokelsBossfightSaphyraModItems.SIGIL_OF_THE_RED_SUN_STAGE_2.get();
                 if (entity instanceof LivingEntity) {
-                    _livEnt1ntity _livEnt1 = (LivingEntity)entity;
-                    itemStack2 = _livEnt1.getOffhandItem();
+                    LivingEntity _livEnt = (LivingEntity)entity;
+                    itemStack2 = _livEnt.getOffhandItem();
                 } else {
                     itemStack2 = ItemStack.EMPTY;
                 }
                 if (object == itemStack2.getItem()) break block11;
                 Object object2 = MokelsBossfightSaphyraModItems.SIGIL_OF_THE_RED_SUN_STAGE_2.get();
                 if (entity instanceof LivingEntity) {
-                    _livEnt2ntity _livEnt2 = (LivingEntity)entity;
-                    itemStack = _livEnt2.getMainHandItem();
+                    LivingEntity _livEnt = (LivingEntity)entity;
+                    itemStack = _livEnt.getMainHandItem();
                 } else {
                     itemStack = ItemStack.EMPTY;
                 }
@@ -78,7 +78,7 @@ public class ActivateHallowedOddmentProcedure {
             if (entity instanceof Player) {
                 _player = (Player)entity;
                 ItemStack _stktoremove = new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.SIGIL_OF_THE_RED_SUN_STAGE_2.get());
-                _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), 1, (Container)_player.getInventory());
+                _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), 1, (Container)_player.inventoryMenu.getCraftSlots());
             }
             if (world instanceof ServerLevel) {
                 ServerLevel _level = (ServerLevel)world;
@@ -102,23 +102,6 @@ public class ActivateHallowedOddmentProcedure {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

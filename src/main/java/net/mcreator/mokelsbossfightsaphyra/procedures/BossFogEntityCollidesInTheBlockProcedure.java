@@ -26,27 +26,10 @@ public class BossFogEntityCollidesInTheBlockProcedure {
             return;
         }
         if ((entity instanceof Player || entity instanceof ServerPlayer) && entity instanceof LivingEntity && !(_entity = (LivingEntity)entity).level().isClientSide()) {
-            _entity.addEffect(new MobEffectInstance(MokelsBossfightSaphyraModMobEffects.STAY_STILL, 2, 1, false, false));
+            _entity.addEffect(new MobEffectInstance((MobEffect)MokelsBossfightSaphyraModMobEffects.STAY_STILL.get(), 2, 1, false, false));
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

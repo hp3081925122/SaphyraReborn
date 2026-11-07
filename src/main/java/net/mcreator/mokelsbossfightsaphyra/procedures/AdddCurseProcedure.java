@@ -10,7 +10,7 @@
  *  net.minecraft.world.item.ItemStack
  *  net.minecraft.world.level.Level
  *  net.minecraft.world.level.LevelAccessor
- *  net.neoforged.neoforge.registries.NeoForgeRegistries
+ *  net.minecraftforge.registries.ForgeRegistries
  */
 package com.hp.saphyrareborn.procedures;
 
@@ -24,7 +24,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class AdddCurseProcedure {
     public static void execute(LevelAccessor world, Entity entity, ItemStack itemstack) {
@@ -33,54 +33,37 @@ public class AdddCurseProcedure {
         }
         if (MokelsBossfightSaphyraModItems.ADD_CURSE.get() == itemstack.getItem()) {
             if (entity.isShiftKeyDown()) {
-                double _setval = MokelsBossfightSaphyraModVariables.getPlayerVariables(entity).Rotting + 10.0;
-                MokelsBossfightSaphyraModVariables.withPlayerVariables(entity, capability -> {
+                double _setval = ((MokelsBossfightSaphyraModVariables.PlayerVariables)entity.getCapability(MokelsBossfightSaphyraModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElse((Object)new MokelsBossfightSaphyraModVariables.PlayerVariables())).Rotting + 10.0;
+                entity.getCapability(MokelsBossfightSaphyraModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
                     capability.Rotting = _setval;
                     capability.syncPlayerVariables(entity);
                 });
                 if (world instanceof Level) {
-                    _level1_level1 = (Level)world;
-                    if (!_level1.isClientSide()) {
-                        _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:rule_spell")), SoundSource.NEUTRAL, 1.0f, 1.0f);
+                    Level _level = (Level)world;
+                    if (!_level.isClientSide()) {
+                        _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("mokels_bossfight_saphyra:rule_spell")), SoundSource.NEUTRAL, 1.0f, 1.0f);
                     } else {
-                        _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:rule_spell")), SoundSource.NEUTRAL, 1.0f, 1.0f, false);
+                        _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("mokels_bossfight_saphyra:rule_spell")), SoundSource.NEUTRAL, 1.0f, 1.0f, false);
                     }
                 }
             } else if (!entity.isShiftKeyDown()) {
-                double _setval = MokelsBossfightSaphyraModVariables.getPlayerVariables(entity).Grief + 10.0;
-                MokelsBossfightSaphyraModVariables.withPlayerVariables(entity, capability -> {
+                double _setval = ((MokelsBossfightSaphyraModVariables.PlayerVariables)entity.getCapability(MokelsBossfightSaphyraModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElse((Object)new MokelsBossfightSaphyraModVariables.PlayerVariables())).Grief + 10.0;
+                entity.getCapability(MokelsBossfightSaphyraModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
                     capability.Grief = _setval;
                     capability.syncPlayerVariables(entity);
                 });
                 if (world instanceof Level) {
-                    _level2_level2 = (Level)world;
-                    if (!_level2.isClientSide()) {
-                        _level2.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:rule_spell")), SoundSource.NEUTRAL, 1.0f, 1.0f);
+                    Level _level = (Level)world;
+                    if (!_level.isClientSide()) {
+                        _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("mokels_bossfight_saphyra:rule_spell")), SoundSource.NEUTRAL, 1.0f, 1.0f);
                     } else {
-                        _level2.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:rule_spell")), SoundSource.NEUTRAL, 1.0f, 1.0f, false);
+                        _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("mokels_bossfight_saphyra:rule_spell")), SoundSource.NEUTRAL, 1.0f, 1.0f, false);
                     }
                 }
             }
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

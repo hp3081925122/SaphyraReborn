@@ -24,28 +24,11 @@ public class DisgustProjectileFallProjectileHitsLivingEntityProcedure {
         if (entity == null) {
             return;
         }
-        if (!(entity instanceof LivingEntity && (_livEnt0 = (LivingEntity)entity).hasEffect(MokelsBossfightSaphyraModMobEffects.IMMUNE) || !(entity instanceof LivingEntity) || (_entity = (LivingEntity)entity).level().isClientSide())) {
+        if (!(entity instanceof LivingEntity && (_livEnt0 = (LivingEntity)entity).hasEffect((MobEffect)MokelsBossfightSaphyraModMobEffects.IMMUNE.get()) || !(entity instanceof LivingEntity) || (_entity = (LivingEntity)entity).level().isClientSide())) {
             _entity.addEffect(new MobEffectInstance(MobEffects.POISON, 200, 2, false, false));
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

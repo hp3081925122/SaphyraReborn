@@ -10,20 +10,3 @@ public class BlessingOfTheWhiteFlameOnEffectActiveTickProcedure {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

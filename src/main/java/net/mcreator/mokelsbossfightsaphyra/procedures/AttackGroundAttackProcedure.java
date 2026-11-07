@@ -22,7 +22,7 @@
  *  net.minecraft.world.level.LevelAccessor
  *  net.minecraft.world.phys.AABB
  *  net.minecraft.world.phys.Vec3
- *  net.neoforged.neoforge.registries.NeoForgeRegistries
+ *  net.minecraftforge.registries.ForgeRegistries
  */
 package com.hp.saphyrareborn.procedures;
 
@@ -53,7 +53,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class AttackGroundAttackProcedure {
     public static void execute(LevelAccessor world, Entity entity) {
@@ -70,28 +70,28 @@ public class AttackGroundAttackProcedure {
             }
             MokelsBossfightSaphyraMod.queueServerWork(41, () -> {
                 LivingEntity _livEnt3;
-                if (!(entity instanceof LivingEntity && (_livEnt3 = (LivingEntity)entity).hasEffect(MokelsBossfightSaphyraModMobEffects.STUN) || !entity.isAlive())) {
-                    _level1_level1;
+                if (!(entity instanceof LivingEntity && (_livEnt3 = (LivingEntity)entity).hasEffect((MobEffect)MokelsBossfightSaphyraModMobEffects.STUN.get()) || !entity.isAlive())) {
+                    Level _level;
                     if (world instanceof Level) {
-                        _level1 = (Level)world;
-                        if (!_level1.isClientSide()) {
-                            _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("entity.generic.explode")), SoundSource.NEUTRAL, 2.0f, 1.0f);
+                        _level = (Level)world;
+                        if (!_level.isClientSide()) {
+                            _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, 2.0f, 1.0f);
                         } else {
-                            _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("entity.generic.explode")), SoundSource.NEUTRAL, 2.0f, 1.0f, false);
+                            _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, 2.0f, 1.0f, false);
                         }
                     }
                     if (world instanceof ServerLevel) {
-                        _level1 = (ServerLevel)world;
-                        _level1.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 900, 8.0, 0.5, 8.0, 0.01);
+                        _level = (ServerLevel)world;
+                        _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 900, 8.0, 0.5, 8.0, 0.01);
                     }
-                    _center1enter = new Vec3(entity.getX(), entity.getY(), entity.getZ());
-                   _entfound1ity> _entfound1 = world.getEntitiesOfClass(Entity.class, new AABB(_center1, _center1).inflate(18.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center1))).toList();
-                    for (Entity entityiterator : _entfound1) {
+                    Vec3 _center = new Vec3(entity.getX(), entity.getY(), entity.getZ());
+                    List _entfound = world.getEntitiesOfClass(Entity.class, new AABB(_center, _center).inflate(18.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
+                    for (Entity entityiterator : _entfound) {
                         LivingEntity _livEnt18;
-                        if (entityiterator instanceof WitchbossEntity || !(entityiterator instanceof LivingEntity) || entityiterator instanceof LivingEntity && (_livEnt18 = (LivingEntity)entityiterator).hasEffect(MokelsBossfightSaphyraModMobEffects.IMMUNE)) continue;
+                        if (entityiterator instanceof WitchbossEntity || !(entityiterator instanceof LivingEntity) || entityiterator instanceof LivingEntity && (_livEnt18 = (LivingEntity)entityiterator).hasEffect((MobEffect)MokelsBossfightSaphyraModMobEffects.IMMUNE.get())) continue;
                         entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK)), 14.0f);
-                        double _setval = MokelsBossfightSaphyraModVariables.getPlayerVariables(entityiterator).Grief + 40.0;
-                        MokelsBossfightSaphyraModVariables.withPlayerVariables(entityiterator, capability -> {
+                        double _setval = ((MokelsBossfightSaphyraModVariables.PlayerVariables)entityiterator.getCapability(MokelsBossfightSaphyraModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElse((Object)new MokelsBossfightSaphyraModVariables.PlayerVariables())).Grief + 40.0;
+                        entityiterator.getCapability(MokelsBossfightSaphyraModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
                             capability.Grief = _setval;
                             capability.syncPlayerVariables(entityiterator);
                         });
@@ -100,33 +100,58 @@ public class AttackGroundAttackProcedure {
             });
             MokelsBossfightSaphyraMod.queueServerWork(64, () -> {
                 LivingEntity _livEnt23;
-                if (!(entity instanceof LivingEntity && (_livEnt23 = (LivingEntity)entity).hasEffect(MokelsBossfightSaphyraModMobEffects.STUN) || !entity.isAlive())) {
-             _level2 Level _level2;}
-            });
-            MokelsBossfightSaphyraMod.queueServerWork(102, () -> {
-                LivingEntity _livEnt43;
-                if (!(entity instanceof LivingEntity && (_livEnt43 = (LivingEntity)entity).hasEffect(MokelsBossfightSaphyraModMobEffects.STUN) || !entity.isAlive())) {
-             _level3 Level _level3;
+                if (!(entity instanceof LivingEntity && (_livEnt23 = (LivingEntity)entity).hasEffect((MobEffect)MokelsBossfightSaphyraModMobEffects.STUN.get()) || !entity.isAlive())) {
+                    Level _level;
                     if (world instanceof Level) {
-                        _level3 = (Level)world;
-                        if (!_level3.isClientSide()) {
-                            _level3.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("entity.generic.explode")), SoundSource.NEUTRAL, 2.0f, 1.0f);
+                        _level = (Level)world;
+                        if (!_level.isClientSide()) {
+                            _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, 2.0f, 1.0f);
                         } else {
-                            _level3.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("entity.generic.explode")), SoundSource.NEUTRAL, 2.0f, 1.0f, false);
+                            _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, 2.0f, 1.0f, false);
                         }
                     }
                     if (world instanceof ServerLevel) {
-                        _level3 = (ServerLevel)world;
-                        _level3.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 900, 8.0, 0.5, 8.0, 0.01);
+                        _level = (ServerLevel)world;
+                        _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 900, 8.0, 0.5, 8.0, 0.01);
                     }
-                    _center2enter = new Vec3(entity.getX(), entity.getY(), entity.getZ());
-               _entfound2<Entity> _entfound2 = world.getEntitiesOfClass(Entity.class, new AABB(_center2, _center2).inflate(18.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center2))).toList();
-                    for (Entity entityiterator : _entfound2) {
+                    Vec3 _center = new Vec3(entity.getX(), entity.getY(), entity.getZ());
+                    List _entfound = world.getEntitiesOfClass(Entity.class, new AABB(_center, _center).inflate(18.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
+                    for (Entity entityiterator : _entfound) {
+                        LivingEntity _livEnt38;
+                        if (entityiterator instanceof WitchbossEntity || !(entityiterator instanceof LivingEntity) || entityiterator instanceof LivingEntity && (_livEnt38 = (LivingEntity)entityiterator).hasEffect((MobEffect)MokelsBossfightSaphyraModMobEffects.IMMUNE.get())) continue;
+                        entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK)), 14.0f);
+                        double _setval = ((MokelsBossfightSaphyraModVariables.PlayerVariables)entityiterator.getCapability(MokelsBossfightSaphyraModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElse((Object)new MokelsBossfightSaphyraModVariables.PlayerVariables())).Grief + 40.0;
+                        entityiterator.getCapability(MokelsBossfightSaphyraModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+                            capability.Grief = _setval;
+                            capability.syncPlayerVariables(entityiterator);
+                        });
+                    }
+                }
+            });
+            MokelsBossfightSaphyraMod.queueServerWork(102, () -> {
+                LivingEntity _livEnt43;
+                if (!(entity instanceof LivingEntity && (_livEnt43 = (LivingEntity)entity).hasEffect((MobEffect)MokelsBossfightSaphyraModMobEffects.STUN.get()) || !entity.isAlive())) {
+                    Level _level;
+                    if (world instanceof Level) {
+                        _level = (Level)world;
+                        if (!_level.isClientSide()) {
+                            _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, 2.0f, 1.0f);
+                        } else {
+                            _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, 2.0f, 1.0f, false);
+                        }
+                    }
+                    if (world instanceof ServerLevel) {
+                        _level = (ServerLevel)world;
+                        _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 900, 8.0, 0.5, 8.0, 0.01);
+                    }
+                    Vec3 _center = new Vec3(entity.getX(), entity.getY(), entity.getZ());
+                    List _entfound = world.getEntitiesOfClass(Entity.class, new AABB(_center, _center).inflate(18.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
+                    for (Entity entityiterator : _entfound) {
                         LivingEntity _livEnt58;
-                        if (entityiterator instanceof WitchbossEntity || !(entityiterator instanceof LivingEntity) || entityiterator instanceof LivingEntity && (_livEnt58 = (LivingEntity)entityiterator).hasEffect(MokelsBossfightSaphyraModMobEffects.IMMUNE)) continue;
+                        if (entityiterator instanceof WitchbossEntity || !(entityiterator instanceof LivingEntity) || entityiterator instanceof LivingEntity && (_livEnt58 = (LivingEntity)entityiterator).hasEffect((MobEffect)MokelsBossfightSaphyraModMobEffects.IMMUNE.get())) continue;
                         entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK)), 30.0f);
-                        double _setval = MokelsBossfightSaphyraModVariables.getPlayerVariables(entityiterator).Grief + 40.0;
-                        MokelsBossfightSaphyraModVariables.withPlayerVariables(entityiterator, capability -> {
+                        double _setval = ((MokelsBossfightSaphyraModVariables.PlayerVariables)entityiterator.getCapability(MokelsBossfightSaphyraModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElse((Object)new MokelsBossfightSaphyraModVariables.PlayerVariables())).Grief + 40.0;
+                        entityiterator.getCapability(MokelsBossfightSaphyraModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
                             capability.Grief = _setval;
                             capability.syncPlayerVariables(entityiterator);
                         });
@@ -136,23 +161,6 @@ public class AttackGroundAttackProcedure {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -14,26 +14,9 @@ public class DevotionBarProc3Procedure {
         if (entity == null) {
             return false;
         }
-        return MokelsBossfightSaphyraModVariables.getPlayerVariables(entity).Devotion >= 40.0;
+        return ((MokelsBossfightSaphyraModVariables.PlayerVariables)entity.getCapability(MokelsBossfightSaphyraModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElse((Object)new MokelsBossfightSaphyraModVariables.PlayerVariables())).Devotion >= 40.0;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

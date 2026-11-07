@@ -23,7 +23,7 @@ public class EnduranceOverlayProcedure3Procedure {
         if (entity == null) {
             return false;
         }
-        return MokelsBossfightSaphyraModVariables.getPlayerVariables(entity).Dash >= 30.0 && new Object(){
+        return ((MokelsBossfightSaphyraModVariables.PlayerVariables)entity.getCapability(MokelsBossfightSaphyraModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElse((Object)new MokelsBossfightSaphyraModVariables.PlayerVariables())).Dash >= 30.0 && new Object(){
 
             public boolean checkGamemode(Entity _ent) {
                 if (_ent instanceof ServerPlayer) {
@@ -39,23 +39,6 @@ public class EnduranceOverlayProcedure3Procedure {
         }.checkGamemode(entity) && (Boolean)StaminaBarConfiguration.STAMINABAR.get() == true;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

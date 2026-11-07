@@ -25,8 +25,8 @@ public class WitchBossProjectileWhileProjectileFlyingTickProcedure {
         }
         immediatesourceentity.setNoGravity(true);
         if (world instanceof ServerLevel) {
-            ServerLevel _level = (ServerLevel)world;
-            _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.GHOSTLY_FLAME_PARTICLE.get()), x, y, z, 6, 0.1, 0.1, 0.1, 0.01);
+            ServerLevel _level1 = (ServerLevel)world;
+            ((ServerLevel)_level1).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.GHOSTLY_FLAME_PARTICLE.get()), x, y, z, 6, 0.1, 0.1, 0.1, 0.01);
         }
         MokelsBossfightSaphyraMod.queueServerWork(120, () -> {
             if (!immediatesourceentity.level().isClientSide()) {

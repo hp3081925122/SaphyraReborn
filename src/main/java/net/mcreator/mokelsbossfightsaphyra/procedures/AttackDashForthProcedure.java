@@ -29,8 +29,8 @@ public class AttackDashForthProcedure {
             return;
         }
         if (world instanceof ServerLevel) {
-            ServerLevel _level = (ServerLevel)world;
-            _level.sendParticles((ParticleOptions)ParticleTypes.POOF, entity.getX(), entity.getY(), entity.getZ(), 20, 0.2, 0.2, 0.2, 0.05);
+            ServerLevel _level1 = (ServerLevel)world;
+            ((ServerLevel)_level1).sendParticles((ParticleOptions)ParticleTypes.POOF, entity.getX(), entity.getY(), entity.getZ(), 20, 0.2, 0.2, 0.2, 0.05);
         }
         entity.setDeltaMovement(new Vec3(0.0, 1.0, 0.0));
         MokelsBossfightSaphyraMod.queueServerWork(2, () -> {

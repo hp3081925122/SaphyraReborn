@@ -42,7 +42,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class LyiorStatueOnBlockRightClickedProcedure {
     public static void execute(LevelAccessor world, double x, double y, double z) {
-        ServerLevel _level;
+        ServerLevel _level1;
         BlockPos _bp = BlockPos.containing((double)x, (double)y, (double)z);
         BlockState _bs = ((Block)MokelsBossfightSaphyraModBlocks.LYIOR_STATUE_AKTIVATED.get()).defaultBlockState();
         BlockState _bso = world.getBlockState(_bp);
@@ -56,19 +56,18 @@ public class LyiorStatueOnBlockRightClickedProcedure {
         }
         world.setBlock(_bp, _bs, 3);
         if (world instanceof ServerLevel) {
-            _level = (ServerLevel)world;
-            _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/title @a times 20 40 20");
+            _level1 = (ServerLevel)world;
+            _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @a times 20 40 20");
         }
         if (world instanceof ServerLevel) {
-            _level = (ServerLevel)world;
-            _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/title @a title {\"text\":\"lost spirit marked\",\"color\":\"aqua\"}");
+            _level1 = (ServerLevel)world;
+            _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @a title {\"text\":\"lost spirit marked\",\"color\":\"aqua\"}");
         }
-        if (world instanceof Level) {
-            _level = (Level)world;
-            if (!_level.isClientSide()) {
-                _level.playSound(null, BlockPos.containing((double)x, (double)y, (double)z), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:lyiorsoundstatue")), SoundSource.BLOCKS, 1.0f, 1.0f);
+        if (world instanceof Level _soundLevel) {
+            if (!_soundLevel.isClientSide()) {
+                _soundLevel.playSound(null, BlockPos.containing((double)x, (double)y, (double)z), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:lyiorsoundstatue")), SoundSource.BLOCKS, 1.0f, 1.0f);
             } else {
-                _level.playLocalSound(x, y, z, (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:lyiorsoundstatue")), SoundSource.BLOCKS, 1.0f, 1.0f, false);
+                _soundLevel.playLocalSound(x, y, z, (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:lyiorsoundstatue")), SoundSource.BLOCKS, 1.0f, 1.0f, false);
             }
         }
     }

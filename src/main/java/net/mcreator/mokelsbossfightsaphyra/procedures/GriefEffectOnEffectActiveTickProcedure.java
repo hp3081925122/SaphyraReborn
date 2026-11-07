@@ -43,8 +43,8 @@ public class GriefEffectOnEffectActiveTickProcedure {
                 return false;
             }
         }.checkGamemode(entity) && Math.random() <= 1.0 && world instanceof ServerLevel) {
-            ServerLevel _level = (ServerLevel)world;
-            _level.sendParticles((ParticleOptions)ParticleTypes.RAIN, entity.getX(), 1.3 + entity.getY(), entity.getZ(), 1, 0.05, 0.05, 0.05, 0.0);
+            ServerLevel _level1 = (ServerLevel)world;
+            ((ServerLevel)_level1).sendParticles((ParticleOptions)ParticleTypes.RAIN, entity.getX(), 1.3 + entity.getY(), entity.getZ(), 1, 0.05, 0.05, 0.05, 0.0);
         }
     }
 }

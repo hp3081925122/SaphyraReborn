@@ -38,6 +38,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -48,29 +49,29 @@ public class AttackskyProcedure {
             return;
         }
         if (entity.isAlive()) {
-            LivingEntity _entity;
+            LivingEntity _entity1;
             if (entity instanceof MothbossEntity) {
                 ((MothbossEntity)entity).setAnimation("attacksky");
             }
-            if (entity instanceof LivingEntity && !(_entity = (LivingEntity)entity).level().isClientSide()) {
-                _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 90, 100, false, false));
+            if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
+                _entity1.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 90, 100, false, false));
             }
             MokelsBossfightSaphyraMod.queueServerWork(25, () -> {
                 LivingEntity _livEnt3;
-                if (!(entity instanceof LivingEntity && (_livEnt3 = (LivingEntity)entity).hasEffect((MobEffect)MokelsBossfightSaphyraModMobEffects.STUN.get()) || !entity.isAlive())) {
-                    Vec3 _center = new Vec3(entity.getX(), entity.getY(), entity.getZ());
-                    List _entfound = world.getEntitiesOfClass(Entity.class, new AABB(_center, _center).inflate(32.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
-                    for (Entity entityiterator : _entfound) {
-                        LivingEntity _entity;
+                if (!(entity instanceof LivingEntity && (_livEnt3 = (LivingEntity)entity).hasEffect(MokelsBossfightSaphyraModMobEffects.STUN) || !entity.isAlive())) {
+                    Vec3 _center1 = new Vec3(entity.getX(), entity.getY(), entity.getZ());
+                    List<Entity> _entfound1 = world.getEntitiesOfClass(Entity.class, new AABB(_center1, _center1).inflate(32.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center1))).toList();
+                    for (Entity entityiterator : _entfound1) {
+                        LivingEntity _entity2;
                         LivingEntity _livEnt14;
                         if (entityiterator instanceof MothbossEntity || !(entityiterator instanceof LivingEntity)) continue;
                         if (world instanceof ServerLevel) {
-                            ServerLevel _level = (ServerLevel)world;
-                            _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), 1.0 + entity.getY(), entity.getZ(), 70, 0.1, 0.2, 0.1, 0.04);
+                            ServerLevel _level1 = (ServerLevel)world;
+                            ((ServerLevel)_level1).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), 1.0 + entity.getY(), entity.getZ(), 70, 0.1, 0.2, 0.1, 0.04);
                         }
-                        if (entityiterator instanceof LivingEntity && (_livEnt14 = (LivingEntity)entityiterator).hasEffect((MobEffect)MokelsBossfightSaphyraModMobEffects.IMMUNE.get())) continue;
-                        if (entityiterator instanceof LivingEntity && !(_entity = (LivingEntity)entityiterator).level().isClientSide()) {
-                            _entity.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 25, 10, false, false));
+                        if (entityiterator instanceof LivingEntity && (_livEnt14 = (LivingEntity)entityiterator).hasEffect(MokelsBossfightSaphyraModMobEffects.IMMUNE)) continue;
+                        if (entityiterator instanceof LivingEntity && !(_entity2 = (LivingEntity)entityiterator).level().isClientSide()) {
+                            _entity2.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 25, 10, false, false));
                         }
                         MokelsBossfightSaphyraMod.queueServerWork(25, () -> {
                             if (entity.isAlive()) {

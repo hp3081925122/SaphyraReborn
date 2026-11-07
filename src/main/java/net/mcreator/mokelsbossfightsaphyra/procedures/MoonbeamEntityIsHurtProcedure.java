@@ -28,8 +28,8 @@ public class MoonbeamEntityIsHurtProcedure {
                 entity.discard();
             }
             if (world instanceof ServerLevel) {
-                ServerLevel _level = (ServerLevel)world;
-                _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), x, y, z, 100, 0.1, 0.1, 0.1, 0.15);
+                ServerLevel _level1 = (ServerLevel)world;
+                ((ServerLevel)_level1).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), x, y, z, 100, 0.1, 0.1, 0.1, 0.15);
             }
         }
     }

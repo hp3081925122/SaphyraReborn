@@ -47,10 +47,20 @@ import net.neoforged.api.distmarker.OnlyIn;
 public class WitchBossProjectilefallEntity
 extends AbstractArrow
 implements ItemSupplier {
+    private int legacyKnockback;
+    private byte legacyPierceLevel;
     public static final ItemStack PROJECTILE_ITEM = new ItemStack((ItemLike)Blocks.AIR);
 
     public WitchBossProjectilefallEntity(EntityType<? extends WitchBossProjectilefallEntity> type, Level world) {
         super(type, world);
+    }
+
+    public void setKnockback(int value) {
+        this.legacyKnockback = value;
+    }
+
+    public void setPierceLevel(byte value) {
+        this.legacyPierceLevel = value;
     }
 
     public WitchBossProjectilefallEntity(EntityType<? extends WitchBossProjectilefallEntity> type, double x, double y, double z, Level world) {

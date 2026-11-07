@@ -49,8 +49,8 @@ public class MarleneGiveBookProcedure {
                 _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), 1, (Container)_player.getInventory());
             }
             if (world instanceof ServerLevel) {
-                ServerLevel _level = (ServerLevel)world;
-                Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.MARLENE_HUMAN_FORM_DIALOG_2.get()).spawn(_level, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), MobSpawnType.MOB_SUMMONED);
+                ServerLevel _level1 = (ServerLevel)world;
+                Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.MARLENE_HUMAN_FORM_DIALOG_2.get()).spawn(_level1, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), MobSpawnType.MOB_SUMMONED);
                 if (entityToSpawn != null) {
                     entityToSpawn.setYRot(entity.getYRot());
                     entityToSpawn.setYBodyRot(entity.getYRot());

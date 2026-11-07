@@ -54,7 +54,7 @@ public class OddmentStage2OnBlockRightClickedProcedure {
                 }
                 Object object = MokelsBossfightSaphyraModItems.SIGIL_OF_THE_RED_SUN.get();
                 if (entity instanceof LivingEntity) {
-                    _livEnt1ntity _livEnt1 = (LivingEntity)entity;
+                    LivingEntity _livEnt1 = (LivingEntity)entity;
                     itemStack2 = _livEnt1.getOffhandItem();
                 } else {
                     itemStack2 = ItemStack.EMPTY;
@@ -62,7 +62,7 @@ public class OddmentStage2OnBlockRightClickedProcedure {
                 if (object == itemStack2.getItem()) break block11;
                 Object object2 = MokelsBossfightSaphyraModItems.SIGIL_OF_THE_RED_SUN.get();
                 if (entity instanceof LivingEntity) {
-                    _livEnt2ntity _livEnt2 = (LivingEntity)entity;
+                    LivingEntity _livEnt2 = (LivingEntity)entity;
                     itemStack = _livEnt2.getMainHandItem();
                 } else {
                     itemStack = ItemStack.EMPTY;
@@ -81,19 +81,19 @@ public class OddmentStage2OnBlockRightClickedProcedure {
                 ItemHandlerHelper.giveItemToPlayer((Player)_player, (ItemStack)_setstack);
             }
             if (world instanceof ServerLevel) {
-                ServerLevel _level = (ServerLevel)world;
-                _level.sendParticles((ParticleOptions)ParticleTypes.POOF, x, y, z, 200, 0.5, 0.75, 0.5, 0.05);
+                ServerLevel _level1 = (ServerLevel)world;
+                ((ServerLevel)_level1).sendParticles((ParticleOptions)ParticleTypes.POOF, x, y, z, 200, 0.5, 0.75, 0.5, 0.05);
             }
             world.setBlock(BlockPos.containing((double)x, (double)y, (double)z), Blocks.AIR.defaultBlockState(), 3);
             MokelsBossfightSaphyraMod.queueServerWork(10, () -> {
-                ServerLevel _level;
+                ServerLevel _level2;
                 if (world instanceof ServerLevel) {
-                    _level = (ServerLevel)world;
-                    _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.PURPLE_FLAME_PARTICLE.get()), x, y, z, 250, 0.2, 1.2, 0.2, 0.1);
+                    _level2 = (ServerLevel)world;
+                    ((ServerLevel)_level2).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.PURPLE_FLAME_PARTICLE.get()), x, y, z, 250, 0.2, 1.2, 0.2, 0.1);
                 }
                 if (world instanceof ServerLevel) {
-                    _level = (ServerLevel)world;
-                    Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.LINARA.get()).spawn(_level, BlockPos.containing((double)x, (double)y, (double)z), MobSpawnType.MOB_SUMMONED);
+                    _level2 = (ServerLevel)world;
+                    Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.LINARA.get()).spawn(_level2, BlockPos.containing((double)x, (double)y, (double)z), MobSpawnType.MOB_SUMMONED);
                     if (entityToSpawn != null) {
                         entityToSpawn.setDeltaMovement(0.0, 0.0, 0.0);
                     }

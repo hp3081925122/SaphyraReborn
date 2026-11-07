@@ -26,19 +26,19 @@ import net.minecraft.world.phys.Vec3;
 
 public class DisgustEffectEffectStartedappliedProcedure {
     public static void execute(LevelAccessor world, Entity entity) {
-        ServerLevel _level;
+        ServerLevel _level1;
         if (entity == null) {
             return;
         }
         double baseRate = 0.0;
         double rateWithAmplifier = 0.0;
         if (world instanceof ServerLevel) {
-            _level = (ServerLevel)world;
-            _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/title @p times 20 20 20");
+            _level1 = (ServerLevel)world;
+            _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @p times 20 20 20");
         }
         if (world instanceof ServerLevel) {
-            _level = (ServerLevel)world;
-            _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/title @p title {\"text\":\"Disgust\",\"color\":\"#AAD02A\"}");
+            _level1 = (ServerLevel)world;
+            _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @p title {\"text\":\"Disgust\",\"color\":\"#AAD02A\"}");
         }
         if (entity instanceof Player) {
             Player _player = (Player)entity;

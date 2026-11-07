@@ -122,8 +122,8 @@ implements GeoEntity {
         super.defineSynchedData(builder);
         builder.define(SHOOT, false);
         builder.define(ANIMATION, "undefined");
-        this.entityData.set(TEXTURE,"puppettexture");
-        this.entityData.set(DATA_animations,true);
+        builder.define(TEXTURE, "puppettexture");
+        builder.define(DATA_animations, true);
     }
 
     public void setTexture(String texture) {

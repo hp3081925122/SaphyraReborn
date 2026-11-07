@@ -70,22 +70,22 @@ public class RotEffectOnEffectActiveTickProcedure {
                 return false;
             }
         }.checkGamemode(entity)) {
-            ServerLevel _level;
+            ServerLevel _level1;
             entity.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ResourceKey.create((ResourceKey)Registries.DAMAGE_TYPE, (ResourceLocation)ResourceLocation.parse("mokels_bossfight_saphyra:rot")))), 4.0f);
             if (world instanceof ServerLevel) {
-                _level = (ServerLevel)world;
-                _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.REDFIRE_PARTICLE.get()), entity.getX(), 1.0 + entity.getY(), entity.getZ(), 15, 0.2, 0.2, 0.2, 0.1);
+                _level1 = (ServerLevel)world;
+                ((ServerLevel)_level1).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.REDFIRE_PARTICLE.get()), entity.getX(), 1.0 + entity.getY(), entity.getZ(), 15, 0.2, 0.2, 0.2, 0.1);
             }
             if (world instanceof ServerLevel) {
-                _level = (ServerLevel)world;
-                _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.REDFLAME_PARTICLE.get()), entity.getX(), 1.0 + entity.getY(), entity.getZ(), 30, 0.2, 0.2, 0.2, 0.1);
+                _level1 = (ServerLevel)world;
+                ((ServerLevel)_level1).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.REDFLAME_PARTICLE.get()), entity.getX(), 1.0 + entity.getY(), entity.getZ(), 30, 0.2, 0.2, 0.2, 0.1);
             }
-            Vec3 _center = new Vec3(entity.getX(), entity.getY(), entity.getZ());
-            List<Entity> _entfound = world.getEntitiesOfClass(Entity.class, new AABB(_center, _center).inflate(16.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
-            for (Entity entityiterator : _entfound) {
-                LivingEntity _entity;
-                if (!(entityiterator instanceof NamelessEntity) || !(entityiterator instanceof LivingEntity) || (_entity = (LivingEntity)entityiterator).level().isClientSide()) continue;
-                _entity.addEffect(new MobEffectInstance(MobEffects.HARM, 1, 2, false, false));
+            Vec3 _center1 = new Vec3(entity.getX(), entity.getY(), entity.getZ());
+            List<Entity> _entfound1 = world.getEntitiesOfClass(Entity.class, new AABB(_center1, _center1).inflate(16.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center1))).toList();
+            for (Entity entityiterator : _entfound1) {
+                LivingEntity _entity1;
+                if (!(entityiterator instanceof NamelessEntity) || !(entityiterator instanceof LivingEntity) || (_entity1 = (LivingEntity)entityiterator).level().isClientSide()) continue;
+                _entity1.addEffect(new MobEffectInstance(MobEffects.HARM, 1, 2, false, false));
             }
         }
         if (entity.getPersistentData().getDouble("ROT") == 80.0) {

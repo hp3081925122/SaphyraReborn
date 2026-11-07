@@ -43,14 +43,14 @@ public class MirrorBladeProjectileWhileProjectileFlyingTickProcedure {
         }
         immediatesourceentity.setNoGravity(true);
         if (world instanceof ServerLevel) {
-            ServerLevel _level = (ServerLevel)world;
-            _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.GOLDEN_PARTICLE.get()), x, y, z, 3, 0.1, 0.1, 0.1, 0.05);
+            ServerLevel _level1 = (ServerLevel)world;
+            ((ServerLevel)_level1).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.GOLDEN_PARTICLE.get()), x, y, z, 3, 0.1, 0.1, 0.1, 0.05);
         }
         MokelsBossfightSaphyraMod.queueServerWork(20, () -> {
             if (immediatesourceentity.isAlive()) {
-                Vec3 _center = new Vec3(x, y, z);
-                List<Entity> _entfound = world.getEntitiesOfClass(Entity.class, new AABB(_center, _center).inflate(3.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
-                for (Entity entityiterator : _entfound) {
+                Vec3 _center1 = new Vec3(x, y, z);
+                List<Entity> _entfound1 = world.getEntitiesOfClass(Entity.class, new AABB(_center1, _center1).inflate(3.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center1))).toList();
+                for (Entity entityiterator : _entfound1) {
                     if (!immediatesourceentity.level().isClientSide()) {
                         immediatesourceentity.discard();
                     }
@@ -59,8 +59,8 @@ public class MirrorBladeProjectileWhileProjectileFlyingTickProcedure {
                     }
                     for (int index0 = 0; index0 < 2; ++index0) {
                         if (!(world instanceof ServerLevel)) continue;
-                        ServerLevel _level = (ServerLevel)world;
-                        _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.GOLDEN_PARTICLE.get()), immediatesourceentity.getX(), immediatesourceentity.getY(), immediatesourceentity.getZ(), 100, 1.5, 1.5, 1.5, 0.05);
+                        ServerLevel _level2 = (ServerLevel)world;
+                        ((ServerLevel)_level2).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.GOLDEN_PARTICLE.get()), immediatesourceentity.getX(), immediatesourceentity.getY(), immediatesourceentity.getZ(), 100, 1.5, 1.5, 1.5, 0.05);
                     }
                 }
             }

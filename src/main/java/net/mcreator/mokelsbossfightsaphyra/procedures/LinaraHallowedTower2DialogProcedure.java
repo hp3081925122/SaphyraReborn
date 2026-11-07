@@ -73,8 +73,8 @@ public class LinaraHallowedTower2DialogProcedure {
                                                         }
                                                         for (int index0 = 0; index0 < 3; ++index0) {
                                                             if (!(world instanceof ServerLevel)) continue;
-                                                            ServerLevel _level = (ServerLevel)world;
-                                                            _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.PURPLE_FLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 400, 0.2, 1.2, 0.2, 0.1);
+                                                            ServerLevel _level1 = (ServerLevel)world;
+                                                            ((ServerLevel)_level1).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.PURPLE_FLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 400, 0.2, 1.2, 0.2, 0.1);
                                                         }
                                                     }
                                                 });

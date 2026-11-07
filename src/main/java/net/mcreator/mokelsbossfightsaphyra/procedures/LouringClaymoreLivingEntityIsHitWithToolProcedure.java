@@ -52,8 +52,8 @@ public class LouringClaymoreLivingEntityIsHitWithToolProcedure {
             } else if (sourceentity instanceof LivingEntity && (_livEnt3 = (LivingEntity)sourceentity).hasEffect(MokelsBossfightSaphyraModMobEffects.GRIEF_EFFECT)) {
                 entity.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.GENERIC), sourceentity), 10.0f);
                 if (world instanceof ServerLevel) {
-                    ServerLevel _level = (ServerLevel)world;
-                    _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), 1.0 + entity.getY(), entity.getZ(), 30, 0.2, 0.2, 0.2, 0.03);
+                    ServerLevel _level1 = (ServerLevel)world;
+                    ((ServerLevel)_level1).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), 1.0 + entity.getY(), entity.getZ(), 30, 0.2, 0.2, 0.2, 0.03);
                 }
             }
         }

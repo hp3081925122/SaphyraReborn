@@ -18,8 +18,8 @@ import net.minecraft.world.level.LevelAccessor;
 public class WitchbosswhileflyingfallingtaickProcedure {
     public static void execute(LevelAccessor world, double x, double y, double z) {
         if (world instanceof ServerLevel) {
-            ServerLevel _level = (ServerLevel)world;
-            _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.GHOSTLY_FLAME_PARTICLE.get()), x, y, z, 20, 0.1, 0.1, 0.1, 0.01);
+            ServerLevel _level1 = (ServerLevel)world;
+            ((ServerLevel)_level1).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.GHOSTLY_FLAME_PARTICLE.get()), x, y, z, 20, 0.1, 0.1, 0.1, 0.01);
         }
     }
 }

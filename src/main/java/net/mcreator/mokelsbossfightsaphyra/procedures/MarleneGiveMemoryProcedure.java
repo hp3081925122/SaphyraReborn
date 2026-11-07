@@ -46,6 +46,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -57,22 +58,22 @@ public class MarleneGiveMemoryProcedure {
             return;
         }
         if (sourceentity instanceof LivingEntity) {
-            _livEnt1ntity _livEnt1 = (LivingEntity)sourceentity;
+            LivingEntity _livEnt1 = (LivingEntity)sourceentity;
             itemStack = _livEnt1.getMainHandItem();
         } else {
             itemStack = ItemStack.EMPTY;
         }
         if (itemStack.getItem() == MokelsBossfightSaphyraModItems.NAMELESS_GATEKEEPER_REMEMBRANCE.get()) {
-            Vec3 _center = new Vec3(entity.getX(), entity.getY(), entity.getZ());
-            List<Entity> _entfound = world.getEntitiesOfClass(Entity.class, new AABB(_center, _center).inflate(128.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
-            for (Entity entityiterator : _entfound) {
+            Vec3 _center1 = new Vec3(entity.getX(), entity.getY(), entity.getZ());
+            List<Entity> _entfound1 = world.getEntitiesOfClass(Entity.class, new AABB(_center1, _center1).inflate(128.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center1))).toList();
+            for (Entity entityiterator : _entfound1) {
                 if (!(entityiterator instanceof SaphyraDialog3Entity)) continue;
                 if (!entityiterator.level().isClientSide()) {
                     entityiterator.discard();
                 }
                 if (!(world instanceof ServerLevel)) continue;
-                ServerLevel _level = (ServerLevel)world;
-                Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.SAPHYRA_DIALOG_4.get()).spawn(_level, BlockPos.containing((double)entityiterator.getX(), (double)entityiterator.getY(), (double)entityiterator.getZ()), MobSpawnType.MOB_SUMMONED);
+                ServerLevel _level1 = (ServerLevel)world;
+                Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.SAPHYRA_DIALOG_4.get()).spawn(_level1, BlockPos.containing((double)entityiterator.getX(), (double)entityiterator.getY(), (double)entityiterator.getZ()), MobSpawnType.MOB_SUMMONED);
                 if (entityToSpawn == null) continue;
                 entityToSpawn.setYRot(entityiterator.getYRot());
                 entityToSpawn.setYBodyRot(entityiterator.getYRot());
@@ -82,7 +83,7 @@ public class MarleneGiveMemoryProcedure {
             }
             if (sourceentity instanceof Player) {
                 Player _player = (Player)sourceentity;
-             _stktoremove1 _stktoremove1 = new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.NAMELESS_GATEKEEPER_REMEMBRANCE.get());
+             ItemStack _stktoremove1 = new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.NAMELESS_GATEKEEPER_REMEMBRANCE.get());
                 _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove1.getItem() == p.getItem(), 1, (Container)_player.getInventory());
             }
             if (entity instanceof MarleneHumanFormDialog2Entity) {
@@ -90,17 +91,17 @@ public class MarleneGiveMemoryProcedure {
             }
             MokelsBossfightSaphyraMod.queueServerWork(66, () -> {
                 if (entity.isAlive()) {
-                    ServerLevel _level;
+                    ServerLevel _level2;
                     if (world instanceof ServerLevel) {
-                        _level = (ServerLevel)world;
-                        ItemEntity entityToSpawn = new ItemEntity((Level)_level, entity.getX(), entity.getY(), entity.getZ(), new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.SINISTER_BAG.get()));
+                        _level2 = (ServerLevel)world;
+                        ItemEntity entityToSpawn = new ItemEntity((Level)_level2, entity.getX(), entity.getY(), entity.getZ(), new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.SINISTER_BAG.get()));
                         entityToSpawn.setPickUpDelay(2);
                         entityToSpawn.setUnlimitedLifetime();
-                        _level.addFreshEntity((Entity)entityToSpawn);
+                        _level2.addFreshEntity((Entity)entityToSpawn);
                     }
                     if (world instanceof ServerLevel) {
-                        _level = (ServerLevel)world;
-                        _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.REDFLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 300, 0.2, 1.0, 0.2, 0.05);
+                        _level2 = (ServerLevel)world;
+                        ((ServerLevel)_level2).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.REDFLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 300, 0.2, 1.0, 0.2, 0.05);
                     }
                     if (!world.isClientSide() && world.getServer() != null) {
                         world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Marlene: ..."), false);
@@ -121,11 +122,11 @@ public class MarleneGiveMemoryProcedure {
                                         world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Marlene: Take this key"), false);
                                     }
                                     if (entity.isAlive() && world instanceof ServerLevel) {
-                                        ServerLevel _level = (ServerLevel)world;
-                                        ItemEntity entityToSpawn = new ItemEntity((Level)_level, entity.getX(), entity.getY(), entity.getZ(), new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.SAPHYRA_KEY.get()));
+                                        ServerLevel _level3 = (ServerLevel)world;
+                                        ItemEntity entityToSpawn = new ItemEntity((Level)_level3, entity.getX(), entity.getY(), entity.getZ(), new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.SAPHYRA_KEY.get()));
                                         entityToSpawn.setPickUpDelay(2);
                                         entityToSpawn.setUnlimitedLifetime();
-                                        _level.addFreshEntity((Entity)entityToSpawn);
+                                        _level3.addFreshEntity((Entity)entityToSpawn);
                                     }
                                 }
                                 MokelsBossfightSaphyraMod.queueServerWork(80, () -> {
@@ -141,7 +142,7 @@ public class MarleneGiveMemoryProcedure {
         } else {
             ItemStack itemStack2;
             if (sourceentity instanceof LivingEntity) {
-                _livEnt2ntity _livEnt2 = (LivingEntity)sourceentity;
+                LivingEntity _livEnt2 = (LivingEntity)sourceentity;
                 itemStack2 = _livEnt2.getMainHandItem();
             } else {
                 itemStack2 = ItemStack.EMPTY;
@@ -149,7 +150,7 @@ public class MarleneGiveMemoryProcedure {
             if (itemStack2.getItem() == MokelsBossfightSaphyraModItems.SAPHYRA_REMEMBRANCE.get()) {
                 if (sourceentity instanceof Player) {
                     Player _player = (Player)sourceentity;
-               _stktoremove2ck _stktoremove2 = new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.SAPHYRA_REMEMBRANCE.get());
+                ItemStack _stktoremove2 = new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.SAPHYRA_REMEMBRANCE.get());
                     _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove2.getItem() == p.getItem(), 1, (Container)_player.getInventory());
                 }
                 if (entity instanceof MarleneHumanFormDialog2Entity) {
@@ -157,17 +158,17 @@ public class MarleneGiveMemoryProcedure {
                 }
                 MokelsBossfightSaphyraMod.queueServerWork(66, () -> {
                     if (entity.isAlive()) {
-                        ServerLevel _level;
+                        ServerLevel _level4;
                         if (world instanceof ServerLevel) {
-                            _level = (ServerLevel)world;
-                            ItemEntity entityToSpawn = new ItemEntity((Level)_level, entity.getX(), entity.getY(), entity.getZ(), new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.BOTTOMLESS_BAG.get()));
+                            _level4 = (ServerLevel)world;
+                            ItemEntity entityToSpawn = new ItemEntity((Level)_level4, entity.getX(), entity.getY(), entity.getZ(), new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.BOTTOMLESS_BAG.get()));
                             entityToSpawn.setPickUpDelay(2);
                             entityToSpawn.setUnlimitedLifetime();
-                            _level.addFreshEntity((Entity)entityToSpawn);
+                            _level4.addFreshEntity((Entity)entityToSpawn);
                         }
                         if (world instanceof ServerLevel) {
-                            _level = (ServerLevel)world;
-                            _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 300, 0.2, 1.0, 0.2, 0.05);
+                            _level4 = (ServerLevel)world;
+                            ((ServerLevel)_level4).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 300, 0.2, 1.0, 0.2, 0.05);
                         }
                     }
                 });

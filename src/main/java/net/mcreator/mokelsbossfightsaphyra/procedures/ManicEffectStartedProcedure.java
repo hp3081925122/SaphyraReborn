@@ -85,15 +85,15 @@ public class ManicEffectStartedProcedure {
                 return false;
             }
         }.checkGamemode(entity)) {
-            ServerLevel _level;
-            LivingEntity _entity;
+            ServerLevel _level1;
+            LivingEntity _entity1;
             AbstractClientPlayer player;
             ModifierLayer animation;
             if (world.isClientSide() && entity instanceof AbstractClientPlayer && (animation = (ModifierLayer)PlayerAnimationAccess.getPlayerAssociatedData((AbstractClientPlayer)(player = (AbstractClientPlayer)entity)).get(ResourceLocation.fromNamespaceAndPath("mokels_bossfight_saphyra", "player_animation"))) != null) {
-                animation.setAnimation((IAnimation)new KeyframeAnimationPlayer(PlayerAnimationRegistry.getAnimation((ResourceLocation)ResourceLocation.fromNamespaceAndPath("mokels_bossfight_saphyra", "manic"))));
+                animation.setAnimation((IAnimation)new KeyframeAnimationPlayer((dev.kosmx.playerAnim.core.data.KeyframeAnimation)PlayerAnimationRegistry.getAnimation(ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "manic"))));
             }
             if (!world.isClientSide() && entity instanceof Player && world instanceof ServerLevel) {
-                List connections;
+                List<Connection> connections;
                 ServerLevel srvLvl_ = (ServerLevel)world;
                 List list = connections = srvLvl_.getServer().getConnection().getConnections();
                 synchronized (list) {
@@ -103,25 +103,25 @@ public class ManicEffectStartedProcedure {
                     }
                 }
             }
-            if (entity instanceof LivingEntity && !(_entity = (LivingEntity)entity).level().isClientSide()) {
-                _entity.addEffect(new MobEffectInstance(MokelsBossfightSaphyraModMobEffects.STAY_STILL, 80, 1, false, false));
+            if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
+                _entity1.addEffect(new MobEffectInstance(MokelsBossfightSaphyraModMobEffects.STAY_STILL, 80, 1, false, false));
             }
-            if (entity instanceof LivingEntity && !(_entity = (LivingEntity)entity).level().isClientSide()) {
-                _entity.addEffect(new MobEffectInstance(MokelsBossfightSaphyraModMobEffects.COOLDOWN, 80, 1, false, false));
+            if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
+                _entity1.addEffect(new MobEffectInstance(MokelsBossfightSaphyraModMobEffects.COOLDOWN, 80, 1, false, false));
             }
             MokelsBossfightSaphyraMod.queueServerWork(30, () -> {
                 if (world instanceof ServerLevel) {
-                    ServerLevel _level = (ServerLevel)world;
-                    _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.GOLDEN_PARTICLE.get()), entity.getX(), 1.0 + entity.getY(), entity.getZ(), 100, 0.2, 0.2, 0.2, 0.25);
+                    ServerLevel _level2 = (ServerLevel)world;
+                    ((ServerLevel)_level2).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.GOLDEN_PARTICLE.get()), entity.getX(), 1.0 + entity.getY(), entity.getZ(), 100, 0.2, 0.2, 0.2, 0.25);
                 }
             });
             if (world instanceof ServerLevel) {
-                _level = (ServerLevel)world;
-                _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/title @p times 20 20 20");
+                _level1 = (ServerLevel)world;
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @p times 20 20 20");
             }
             if (world instanceof ServerLevel) {
-                _level = (ServerLevel)world;
-                _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/title @p title {\"text\":\"Manic\",\"color\":\"yellow\"}");
+                _level1 = (ServerLevel)world;
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @p title {\"text\":\"Manic\",\"color\":\"yellow\"}");
             }
         }
     }

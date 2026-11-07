@@ -33,17 +33,17 @@ public class AttackRainAttackProcedure {
             return;
         }
         if (entity.isAlive()) {
-            LivingEntity _entity;
+            LivingEntity _entity1;
             if (entity instanceof WitchbossEntity) {
                 ((WitchbossEntity)entity).setAnimation("rainattack");
             }
-            if (entity instanceof LivingEntity && !(_entity = (LivingEntity)entity).level().isClientSide()) {
-                _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 50, 100, false, false));
+            if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
+                _entity1.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 50, 100, false, false));
             }
             if (entity.isAlive()) {
                 if (world instanceof ServerLevel) {
-                    ServerLevel _level = (ServerLevel)world;
-                    Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.MOONBEAM.get()).spawn(_level, BlockPos.containing((double)entity.getX(), (double)(entity.getY() + 4.0), (double)entity.getZ()), MobSpawnType.MOB_SUMMONED);
+                    ServerLevel _level1 = (ServerLevel)world;
+                    Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.MOONBEAM.get()).spawn(_level1, BlockPos.containing((double)entity.getX(), (double)(entity.getY() + 4.0), (double)entity.getZ()), MobSpawnType.MOB_SUMMONED);
                     if (entityToSpawn != null) {
                         entityToSpawn.setDeltaMovement(0.0, 0.0, 0.0);
                     }
@@ -51,16 +51,16 @@ public class AttackRainAttackProcedure {
                 MokelsBossfightSaphyraMod.queueServerWork(20, () -> {
                     if (entity.isAlive()) {
                         if (world instanceof ServerLevel) {
-                            ServerLevel _level = (ServerLevel)world;
-                            Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.MOONBEAM.get()).spawn(_level, BlockPos.containing((double)entity.getX(), (double)(entity.getY() + 4.0), (double)entity.getZ()), MobSpawnType.MOB_SUMMONED);
+                            ServerLevel _level2 = (ServerLevel)world;
+                            Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.MOONBEAM.get()).spawn(_level2, BlockPos.containing((double)entity.getX(), (double)(entity.getY() + 4.0), (double)entity.getZ()), MobSpawnType.MOB_SUMMONED);
                             if (entityToSpawn != null) {
                                 entityToSpawn.setDeltaMovement(0.0, 0.0, 0.0);
                             }
                         }
                         MokelsBossfightSaphyraMod.queueServerWork(20, () -> {
                             if (entity.isAlive() && world instanceof ServerLevel) {
-                                ServerLevel _level = (ServerLevel)world;
-                                Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.MOONBEAM.get()).spawn(_level, BlockPos.containing((double)entity.getX(), (double)(entity.getY() + 4.0), (double)entity.getZ()), MobSpawnType.MOB_SUMMONED);
+                                ServerLevel _level3 = (ServerLevel)world;
+                                Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.MOONBEAM.get()).spawn(_level3, BlockPos.containing((double)entity.getX(), (double)(entity.getY() + 4.0), (double)entity.getZ()), MobSpawnType.MOB_SUMMONED);
                                 if (entityToSpawn != null) {
                                     entityToSpawn.setDeltaMovement(0.0, 0.0, 0.0);
                                 }

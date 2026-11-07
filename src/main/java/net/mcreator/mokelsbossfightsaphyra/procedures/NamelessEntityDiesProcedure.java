@@ -20,12 +20,12 @@ import net.minecraft.world.entity.player.Player;
 
 public class NamelessEntityDiesProcedure {
     public static void execute(Entity sourceentity) {
-        LivingEntity _entity;
+        LivingEntity _entity1;
         if (sourceentity == null) {
             return;
         }
-        if ((sourceentity instanceof Player || sourceentity instanceof ServerPlayer) && sourceentity instanceof LivingEntity && !(_entity = (LivingEntity)sourceentity).level().isClientSide()) {
-            _entity.addEffect(new MobEffectInstance(MobEffects.HARM, 10, 1000, false, false));
+        if ((sourceentity instanceof Player || sourceentity instanceof ServerPlayer) && sourceentity instanceof LivingEntity && !(_entity1 = (LivingEntity)sourceentity).level().isClientSide()) {
+            _entity1.addEffect(new MobEffectInstance(MobEffects.HARM, 10, 1000, false, false));
         }
     }
 }

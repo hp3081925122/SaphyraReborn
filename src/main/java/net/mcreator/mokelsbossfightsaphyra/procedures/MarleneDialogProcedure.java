@@ -100,8 +100,8 @@ public class MarleneDialogProcedure {
             });
         }
         if (world instanceof ServerLevel) {
-            ServerLevel _level = (ServerLevel)world;
-            _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/tp @s ~ ~ ~ facing entity @p[distance=0..48]");
+            ServerLevel _level1 = (ServerLevel)world;
+            _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/tp @s ~ ~ ~ facing entity @p[distance=0..48]");
         }
     }
 }

@@ -77,14 +77,14 @@ public class RightClickSaphyraDoorKeyProcedure {
                                                                                     return;
                                                                                 }
                                                                                 if (entity instanceof LivingEntity) {
-                                                                                    _livEnt1ntity _livEnt1 = (LivingEntity)entity;
+                                                                                    LivingEntity _livEnt1 = (LivingEntity)entity;
                                                                                     itemStack18 = _livEnt1.getOffhandItem();
                                                                                 } else {
                                                                                     itemStack18 = ItemStack.EMPTY;
                                                                                 }
                                                                                 if (itemStack18.getItem() == MokelsBossfightSaphyraModItems.SAPHYRA_KEY.get()) break block80;
                                                                                 if (entity instanceof LivingEntity) {
-                                                                                    _livEnt2ntity _livEnt2 = (LivingEntity)entity;
+                                                                                    LivingEntity _livEnt2 = (LivingEntity)entity;
                                                                                     itemStack17 = _livEnt2.getMainHandItem();
                                                                                 } else {
                                                                                     itemStack17 = ItemStack.EMPTY;
@@ -192,14 +192,14 @@ public class RightClickSaphyraDoorKeyProcedure {
                                                                             break block82;
                                                                         }
                                                                         if (entity instanceof LivingEntity) {
-                                                                            _livEnt3ntity _livEnt3 = (LivingEntity)entity;
+                                                                            LivingEntity _livEnt3 = (LivingEntity)entity;
                                                                             itemStack16 = _livEnt3.getOffhandItem();
                                                                         } else {
                                                                             itemStack16 = ItemStack.EMPTY;
                                                                         }
                                                                         if (itemStack16.getItem() == ItemStack.EMPTY.getItem()) break block83;
                                                                         if (entity instanceof LivingEntity) {
-                                                                            _livEnt4ntity _livEnt4 = (LivingEntity)entity;
+                                                                            LivingEntity _livEnt4 = (LivingEntity)entity;
                                                                             itemStack15 = _livEnt4.getMainHandItem();
                                                                         } else {
                                                                             itemStack15 = ItemStack.EMPTY;
@@ -212,14 +212,14 @@ public class RightClickSaphyraDoorKeyProcedure {
                                                                     break block82;
                                                                 }
                                                                 if (entity instanceof LivingEntity) {
-                                                                    _livEnt5ntity _livEnt5 = (LivingEntity)entity;
+                                                                    LivingEntity _livEnt5 = (LivingEntity)entity;
                                                                     itemStack14 = _livEnt5.getOffhandItem();
                                                                 } else {
                                                                     itemStack14 = ItemStack.EMPTY;
                                                                 }
                                                                 if (itemStack14.getItem() == MokelsBossfightSaphyraModItems.KEY_3.get()) break block85;
                                                                 if (entity instanceof LivingEntity) {
-                                                                    _livEnt6ntity _livEnt6 = (LivingEntity)entity;
+                                                                    LivingEntity _livEnt6 = (LivingEntity)entity;
                                                                     itemStack13 = _livEnt6.getMainHandItem();
                                                                 } else {
                                                                     itemStack13 = ItemStack.EMPTY;
@@ -232,14 +232,14 @@ public class RightClickSaphyraDoorKeyProcedure {
                                                             break block82;
                                                         }
                                                         if (entity instanceof LivingEntity) {
-                                                            _livEnt7ntity _livEnt7 = (LivingEntity)entity;
+                                                            LivingEntity _livEnt7 = (LivingEntity)entity;
                                                             itemStack12 = _livEnt7.getOffhandItem();
                                                         } else {
                                                             itemStack12 = ItemStack.EMPTY;
                                                         }
                                                         if (itemStack12.getItem() == MokelsBossfightSaphyraModItems.KEY_1.get()) break block87;
                                                         if (entity instanceof LivingEntity) {
-                                                            _livEnt8ntity _livEnt8 = (LivingEntity)entity;
+                                                            LivingEntity _livEnt8 = (LivingEntity)entity;
                                                             itemStack11 = _livEnt8.getMainHandItem();
                                                         } else {
                                                             itemStack11 = ItemStack.EMPTY;

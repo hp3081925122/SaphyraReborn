@@ -27,8 +27,8 @@ public class DisgustProjectileFallWhileProjectileFlyingTickProcedure {
         }
         MokelsBossfightSaphyraMod.queueServerWork(1, () -> {
             if (world instanceof ServerLevel) {
-                ServerLevel _level = (ServerLevel)world;
-                _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.PUKE_PARTICLE.get()), immediatesourceentity.getX(), immediatesourceentity.getY(), immediatesourceentity.getZ(), 3, 0.1, 0.1, 0.1, 0.01);
+                ServerLevel _level1 = (ServerLevel)world;
+                ((ServerLevel)_level1).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.PUKE_PARTICLE.get()), immediatesourceentity.getX(), immediatesourceentity.getY(), immediatesourceentity.getZ(), 3, 0.1, 0.1, 0.1, 0.01);
             }
         });
         MokelsBossfightSaphyraMod.queueServerWork(10, () -> immediatesourceentity.setDeltaMovement(new Vec3(0.0, -1.0, 0.0)));

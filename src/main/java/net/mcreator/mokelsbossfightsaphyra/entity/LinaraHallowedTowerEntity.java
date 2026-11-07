@@ -132,7 +132,7 @@ implements GeoEntity {
         super.defineSynchedData(builder);
         builder.define(SHOOT, false);
         builder.define(ANIMATION, "undefined");
-        this.entityData.set(TEXTURE,"marnetexturereveal");
+        builder.define(TEXTURE, "marnetexturereveal");
     }
 
     public void setTexture(String texture) {

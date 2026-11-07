@@ -54,7 +54,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class PuppetAttackPatternProcedure {
     public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
-        Level _level;
+        Level _level1;
         LivingEntity livingEntity;
         LivingEntity _livEnt23;
         Mob _mobEnt;
@@ -176,108 +176,108 @@ public class PuppetAttackPatternProcedure {
         }
         if (entity.getPersistentData().getDouble("music") == 20.0 && entity.isAlive()) {
             if (world instanceof Level) {
-                _level = (Level)world;
-                if (!_level.isClientSide()) {
-                    _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme1")), SoundSource.MUSIC, 2.0f, 1.0f);
+                _level1 = (Level)world;
+                if (!_level1.isClientSide()) {
+                    _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme1")), SoundSource.MUSIC, 2.0f, 1.0f);
                 } else {
-                    _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme1")), SoundSource.MUSIC, 2.0f, 1.0f, false);
+                    _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme1")), SoundSource.MUSIC, 2.0f, 1.0f, false);
                 }
             }
             if (world instanceof ServerLevel) {
-                _level = (ServerLevel)world;
-                _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                _level1 = (ServerLevel)world;
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
             }
         }
         if (entity.getPersistentData().getDouble("music") == 320.0 && entity.isAlive()) {
             if (world instanceof Level) {
-                _level = (Level)world;
-                if (!_level.isClientSide()) {
-                    _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme2")), SoundSource.MUSIC, 2.0f, 1.0f);
+                _level1 = (Level)world;
+                if (!_level1.isClientSide()) {
+                    _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme2")), SoundSource.MUSIC, 2.0f, 1.0f);
                 } else {
-                    _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme2")), SoundSource.MUSIC, 2.0f, 1.0f, false);
+                    _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme2")), SoundSource.MUSIC, 2.0f, 1.0f, false);
                 }
             }
             if (world instanceof ServerLevel) {
-                _level = (ServerLevel)world;
-                _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                _level1 = (ServerLevel)world;
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
             }
         }
         if (entity.getPersistentData().getDouble("music") == 620.0 && entity.isAlive()) {
             if (world instanceof Level) {
-                _level = (Level)world;
-                if (!_level.isClientSide()) {
-                    _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme3")), SoundSource.MUSIC, 2.0f, 1.0f);
+                _level1 = (Level)world;
+                if (!_level1.isClientSide()) {
+                    _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme3")), SoundSource.MUSIC, 2.0f, 1.0f);
                 } else {
-                    _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme3")), SoundSource.MUSIC, 2.0f, 1.0f, false);
+                    _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme3")), SoundSource.MUSIC, 2.0f, 1.0f, false);
                 }
             }
             if (world instanceof ServerLevel) {
-                _level = (ServerLevel)world;
-                _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                _level1 = (ServerLevel)world;
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
             }
         }
         if (entity.getPersistentData().getDouble("music") == 920.0 && entity.isAlive()) {
             if (world instanceof ServerLevel) {
-                _level = (ServerLevel)world;
-                _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                _level1 = (ServerLevel)world;
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
             }
             if (world instanceof Level) {
-                _level = (Level)world;
-                if (!_level.isClientSide()) {
-                    _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme4")), SoundSource.MUSIC, 2.0f, 1.0f);
+                _level1 = (Level)world;
+                if (!_level1.isClientSide()) {
+                    _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme4")), SoundSource.MUSIC, 2.0f, 1.0f);
                 } else {
-                    _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme4")), SoundSource.MUSIC, 2.0f, 1.0f, false);
+                    _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme4")), SoundSource.MUSIC, 2.0f, 1.0f, false);
                 }
             }
         }
         if (entity.getPersistentData().getDouble("music") == 1220.0 && entity.isAlive()) {
             if (world instanceof Level) {
-                _level = (Level)world;
-                if (!_level.isClientSide()) {
-                    _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme5")), SoundSource.MUSIC, 2.0f, 1.0f);
+                _level1 = (Level)world;
+                if (!_level1.isClientSide()) {
+                    _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme5")), SoundSource.MUSIC, 2.0f, 1.0f);
                 } else {
-                    _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme5")), SoundSource.MUSIC, 2.0f, 1.0f, false);
+                    _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme5")), SoundSource.MUSIC, 2.0f, 1.0f, false);
                 }
             }
             if (world instanceof ServerLevel) {
-                _level = (ServerLevel)world;
-                _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                _level1 = (ServerLevel)world;
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
             }
         }
         if (entity.getPersistentData().getDouble("music") == 1520.0 && entity.isAlive()) {
             if (world instanceof Level) {
-                _level = (Level)world;
-                if (!_level.isClientSide()) {
-                    _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme6")), SoundSource.MUSIC, 2.0f, 1.0f);
+                _level1 = (Level)world;
+                if (!_level1.isClientSide()) {
+                    _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme6")), SoundSource.MUSIC, 2.0f, 1.0f);
                 } else {
-                    _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme6")), SoundSource.MUSIC, 2.0f, 1.0f, false);
+                    _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme6")), SoundSource.MUSIC, 2.0f, 1.0f, false);
                 }
             }
             if (world instanceof ServerLevel) {
-                _level = (ServerLevel)world;
-                _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                _level1 = (ServerLevel)world;
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
             }
         }
         if (entity.getPersistentData().getDouble("music") == 1820.0 && entity.isAlive()) {
             if (world instanceof Level) {
-                _level = (Level)world;
-                if (!_level.isClientSide()) {
-                    _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme7")), SoundSource.MUSIC, 2.0f, 1.0f);
+                _level1 = (Level)world;
+                if (!_level1.isClientSide()) {
+                    _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme7")), SoundSource.MUSIC, 2.0f, 1.0f);
                 } else {
-                    _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme7")), SoundSource.MUSIC, 2.0f, 1.0f, false);
+                    _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelesstheme7")), SoundSource.MUSIC, 2.0f, 1.0f, false);
                 }
             }
             if (world instanceof ServerLevel) {
-                _level = (ServerLevel)world;
-                _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                _level1 = (ServerLevel)world;
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
             }
         }
         if (entity.getPersistentData().getDouble("music") == 1900.0) {
             entity.getPersistentData().putDouble("music", 0.0);
         }
         if (world instanceof ServerLevel) {
-            _level = (ServerLevel)world;
-            _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/tp @s ~ ~ ~ facing entity @p[distance=0..48]");
+            _level1 = (ServerLevel)world;
+            _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/tp @s ~ ~ ~ facing entity @p[distance=0..48]");
         }
     }
 }

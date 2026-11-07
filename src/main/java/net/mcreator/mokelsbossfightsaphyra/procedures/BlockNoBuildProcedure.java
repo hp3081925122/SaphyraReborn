@@ -17,12 +17,12 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class BlockNoBuildProcedure {
     public static void execute(Entity entity) {
-        LivingEntity _entity;
+        LivingEntity _entity1;
         if (entity == null) {
             return;
         }
-        if (entity instanceof LivingEntity && !(_entity = (LivingEntity)entity).level().isClientSide()) {
-            _entity.addEffect(new MobEffectInstance((MobEffect)MokelsBossfightSaphyraModMobEffects.NO_BUILD.get(), 60, 1, false, false));
+        if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
+            _entity1.addEffect(new MobEffectInstance(MokelsBossfightSaphyraModMobEffects.NO_BUILD, 60, 1, false, false));
         }
     }
 }

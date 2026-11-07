@@ -24,20 +24,20 @@ import net.minecraft.world.level.LevelAccessor;
 public class NamelessDeathTimeIsReachedProcedure {
     public static void execute(LevelAccessor world, double x, double y, double z) {
         ItemEntity entityToSpawn;
-        ServerLevel _level;
+        ServerLevel _level1;
         if (world instanceof ServerLevel) {
-            _level = (ServerLevel)world;
-            entityToSpawn = new ItemEntity((Level)_level, x, y, z, new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.NAMELESS_GATEKEEPER_REMEMBRANCE.get()));
+            _level1 = (ServerLevel)world;
+            entityToSpawn = new ItemEntity((Level)_level1, x, y, z, new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.NAMELESS_GATEKEEPER_REMEMBRANCE.get()));
             entityToSpawn.setPickUpDelay(2);
             entityToSpawn.setUnlimitedLifetime();
-            _level.addFreshEntity((Entity)entityToSpawn);
+            _level1.addFreshEntity((Entity)entityToSpawn);
         }
         if (world instanceof ServerLevel) {
-            _level = (ServerLevel)world;
-            entityToSpawn = new ItemEntity((Level)_level, x, y, z, new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.KEY_4.get()));
+            _level1 = (ServerLevel)world;
+            entityToSpawn = new ItemEntity((Level)_level1, x, y, z, new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.KEY_4.get()));
             entityToSpawn.setPickUpDelay(2);
             entityToSpawn.setUnlimitedLifetime();
-            _level.addFreshEntity((Entity)entityToSpawn);
+            _level1.addFreshEntity((Entity)entityToSpawn);
         }
     }
 }

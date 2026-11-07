@@ -22,6 +22,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.LevelAccessor;
 import software.bernie.geckolib.animatable.GeoItem;
 
@@ -33,12 +35,12 @@ public class SaphyrasCapeChestplateTickEventProcedure {
         if (world.isEmptyBlock(BlockPos.containing((double)x, (double)(y - 2.0), (double)z)) && world.isEmptyBlock(BlockPos.containing((double)x, (double)(y - 1.0), (double)z))) {
             SaphyrasCapeItem armor;
             Item item;
-            LivingEntity _entity;
-            if (entity instanceof LivingEntity && !(_entity = (LivingEntity)entity).level().isClientSide()) {
-                _entity.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 2, 2, false, false));
+            LivingEntity _entity1;
+            if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
+                _entity1.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 2, 2, false, false));
             }
             if ((item = itemstack.getItem()) instanceof SaphyrasCapeItem && (armor = (SaphyrasCapeItem)item) instanceof GeoItem) {
-                itemstack.getOrCreateTag().putString("geckoAnim", "idle");
+                CustomData.update(DataComponents.CUSTOM_DATA, itemstack, tag -> tag.putString("geckoAnim", "idle"));
             }
         }
     }

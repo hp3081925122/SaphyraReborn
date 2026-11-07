@@ -17,14 +17,14 @@ import net.minecraft.world.level.LevelAccessor;
 
 public class NamelessProjectileFallWhileProjectileFlyingTickProcedure {
     public static void execute(LevelAccessor world, double x, double y, double z) {
-        ServerLevel _level;
+        ServerLevel _level1;
         if (world instanceof ServerLevel) {
-            _level = (ServerLevel)world;
-            _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.REDFIRE_PARTICLE.get()), x, y, z, 1, 0.1, 0.1, 0.1, 0.01);
+            _level1 = (ServerLevel)world;
+            ((ServerLevel)_level1).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.REDFIRE_PARTICLE.get()), x, y, z, 1, 0.1, 0.1, 0.1, 0.01);
         }
         if (world instanceof ServerLevel) {
-            _level = (ServerLevel)world;
-            _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.REDFLAME_PARTICLE.get()), x, y, z, 1, 0.1, 0.1, 0.1, 0.01);
+            _level1 = (ServerLevel)world;
+            ((ServerLevel)_level1).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.REDFLAME_PARTICLE.get()), x, y, z, 1, 0.1, 0.1, 0.1, 0.01);
         }
     }
 }

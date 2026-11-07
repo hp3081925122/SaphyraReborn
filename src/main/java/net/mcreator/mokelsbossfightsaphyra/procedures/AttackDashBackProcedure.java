@@ -26,8 +26,8 @@ public class AttackDashBackProcedure {
         if (entity.isAlive()) {
             entity.setDeltaMovement(new Vec3(-3.0 * entity.getLookAngle().x, 0.15, -3.0 * entity.getLookAngle().z));
             if (world instanceof ServerLevel) {
-                ServerLevel _level = (ServerLevel)world;
-                _level.sendParticles((ParticleOptions)ParticleTypes.POOF, entity.getX(), entity.getY(), entity.getZ(), 20, 0.2, 0.2, 0.2, 0.05);
+                ServerLevel _level1 = (ServerLevel)world;
+                ((ServerLevel)_level1).sendParticles((ParticleOptions)ParticleTypes.POOF, entity.getX(), entity.getY(), entity.getZ(), 20, 0.2, 0.2, 0.2, 0.05);
             }
         }
     }

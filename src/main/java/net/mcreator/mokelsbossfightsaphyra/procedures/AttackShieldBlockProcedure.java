@@ -21,15 +21,15 @@ public class AttackShieldBlockProcedure {
             return;
         }
         if (entity.isAlive()) {
-            LivingEntity _entity;
+            LivingEntity _entity1;
             if (entity instanceof NamelessEntity) {
                 ((NamelessEntity)entity).setAnimation("attackshield");
             }
-            if (entity instanceof LivingEntity && !(_entity = (LivingEntity)entity).level().isClientSide()) {
-                _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 90, 100, false, false));
+            if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
+                _entity1.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 90, 100, false, false));
             }
-            if (entity instanceof LivingEntity && !(_entity = (LivingEntity)entity).level().isClientSide()) {
-                _entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 80, 100, false, false));
+            if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
+                _entity1.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 80, 100, false, false));
             }
         }
     }

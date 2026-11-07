@@ -43,19 +43,19 @@ public class AttackSmiteProcedure {
             return;
         }
         if (entity.isAlive()) {
-            LivingEntity _entity;
+            LivingEntity _entity1;
             if (entity instanceof MothbossEntity) {
                 ((MothbossEntity)entity).setAnimation("attacksmite");
             }
-            if (entity instanceof LivingEntity && !(_entity = (LivingEntity)entity).level().isClientSide()) {
-                _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 50, 100, false, false));
+            if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
+                _entity1.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 50, 100, false, false));
             }
             MokelsBossfightSaphyraMod.queueServerWork(27, () -> {
                 LivingEntity _livEnt3;
-                if (!(entity instanceof LivingEntity && (_livEnt3 = (LivingEntity)entity).hasEffect((MobEffect)MokelsBossfightSaphyraModMobEffects.STUN.get()) || !entity.isAlive())) {
-                    Vec3 _center = new Vec3(entity.getX(), entity.getY(), entity.getZ());
-                    List _entfound = world.getEntitiesOfClass(Entity.class, new AABB(_center, _center).inflate(15.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
-                    for (Entity entityiterator : _entfound) {
+                if (!(entity instanceof LivingEntity && (_livEnt3 = (LivingEntity)entity).hasEffect(MokelsBossfightSaphyraModMobEffects.STUN) || !entity.isAlive())) {
+                    Vec3 _center1 = new Vec3(entity.getX(), entity.getY(), entity.getZ());
+                    List<Entity> _entfound1 = world.getEntitiesOfClass(Entity.class, new AABB(_center1, _center1).inflate(15.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center1))).toList();
+                    for (Entity entityiterator : _entfound1) {
                         if (entityiterator instanceof MothbossEntity || !(entityiterator instanceof LivingEntity)) continue;
                         for (int index0 = 0; index0 < 8; ++index0) {
                             if (!(world instanceof ServerLevel)) continue;

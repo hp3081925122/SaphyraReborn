@@ -63,20 +63,20 @@ public class SaphyraDialog03Procedure {
                                         }
                                         MokelsBossfightSaphyraMod.queueServerWork(20, () -> {
                                             ItemEntity entityToSpawn;
-                                            ServerLevel _level;
+                                            ServerLevel _level1;
                                             if (world instanceof ServerLevel) {
-                                                _level = (ServerLevel)world;
-                                                entityToSpawn = new ItemEntity((Level)_level, entity.getX() + entity.getLookAngle().x * 2.0, entity.getY(), entity.getZ() + entity.getLookAngle().z * 2.0, new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.HALLOWED_KEY_2.get()));
+                                                _level1 = (ServerLevel)world;
+                                                entityToSpawn = new ItemEntity((Level)_level1, entity.getX() + entity.getLookAngle().x * 2.0, entity.getY(), entity.getZ() + entity.getLookAngle().z * 2.0, new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.HALLOWED_KEY_2.get()));
                                                 entityToSpawn.setPickUpDelay(0);
                                                 entityToSpawn.setUnlimitedLifetime();
-                                                _level.addFreshEntity((Entity)entityToSpawn);
+                                                _level1.addFreshEntity((Entity)entityToSpawn);
                                             }
                                             if (world instanceof ServerLevel) {
-                                                _level = (ServerLevel)world;
-                                                entityToSpawn = new ItemEntity((Level)_level, entity.getX() + entity.getLookAngle().x * 2.0, entity.getY(), entity.getZ() + entity.getLookAngle().z * 2.0, new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.HALLOWED_KEY_2.get()));
+                                                _level1 = (ServerLevel)world;
+                                                entityToSpawn = new ItemEntity((Level)_level1, entity.getX() + entity.getLookAngle().x * 2.0, entity.getY(), entity.getZ() + entity.getLookAngle().z * 2.0, new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.HALLOWED_KEY_2.get()));
                                                 entityToSpawn.setPickUpDelay(0);
                                                 entityToSpawn.setUnlimitedLifetime();
-                                                _level.addFreshEntity((Entity)entityToSpawn);
+                                                _level1.addFreshEntity((Entity)entityToSpawn);
                                             }
                                         });
                                     }

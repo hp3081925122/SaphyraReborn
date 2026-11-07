@@ -23,7 +23,7 @@ public class EnduranceOverlayProcedure2Procedure {
         if (entity == null) {
             return false;
         }
-        return ((MokelsBossfightSaphyraModVariables.PlayerVariables)entity.getCapability(MokelsBossfightSaphyraModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElse((Object)new MokelsBossfightSaphyraModVariables.PlayerVariables())).Dash >= 20.0 && new Object(){
+        return MokelsBossfightSaphyraModVariables.getPlayerVariables(entity).Dash >= 20.0 && new Object(){
 
             public boolean checkGamemode(Entity _ent) {
                 if (_ent instanceof ServerPlayer) {

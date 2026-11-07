@@ -30,8 +30,8 @@ public class MoonbeamOnEntityTickUpdateProcedure {
             return;
         }
         if (world instanceof ServerLevel) {
-            ServerLevel _level = (ServerLevel)world;
-            _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 2, 0.1, 0.1, 0.1, 0.01);
+            ServerLevel _level1 = (ServerLevel)world;
+            ((ServerLevel)_level1).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 2, 0.1, 0.1, 0.1, 0.01);
         }
         MokelsBossfightSaphyraMod.queueServerWork(60, () -> {
             LivingEntity livingEntity;

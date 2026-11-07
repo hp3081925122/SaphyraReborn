@@ -49,25 +49,24 @@ public class NamelessEntityDiesForRealProcedure {
             ((NamelessEntity)entity).setAnimation("empty");
         }
         MokelsBossfightSaphyraMod.queueServerWork(20, () -> {
-            ServerLevel _level;
+            ServerLevel _level1;
             if (world instanceof ServerLevel) {
-                _level = (ServerLevel)world;
-                _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                _level1 = (ServerLevel)world;
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
             }
             if (world instanceof ServerLevel) {
-                _level = (ServerLevel)world;
-                _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/title @a title {\"text\":\"Burden Lifted\",\"bold\":true,\"color\":\"#FFCF25\"}");
+                _level1 = (ServerLevel)world;
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @a title {\"text\":\"Burden Lifted\",\"bold\":true,\"color\":\"#FFCF25\"}");
             }
             if (world instanceof ServerLevel) {
-                _level = (ServerLevel)world;
-                _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/title @a times 20 40 20");
+                _level1 = (ServerLevel)world;
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @a times 20 40 20");
             }
-            if (world instanceof Level) {
-                _level = (Level)world;
-                if (!_level.isClientSide()) {
-                    _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:bosskilled")), SoundSource.MASTER, 2.0f, 1.0f);
+            if (world instanceof Level _soundLevel) {
+                if (!_soundLevel.isClientSide()) {
+                    _soundLevel.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:bosskilled")), SoundSource.MASTER, 2.0f, 1.0f);
                 } else {
-                    _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:bosskilled")), SoundSource.MASTER, 2.0f, 1.0f, false);
+                    _soundLevel.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:bosskilled")), SoundSource.MASTER, 2.0f, 1.0f, false);
                 }
             }
         });

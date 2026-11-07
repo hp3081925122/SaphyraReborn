@@ -46,10 +46,15 @@ import net.neoforged.api.distmarker.OnlyIn;
 public class NamelessInvisibleProjectileEntity
 extends AbstractArrow
 implements ItemSupplier {
+    private int legacyKnockback;
     public static final ItemStack PROJECTILE_ITEM = new ItemStack((ItemLike)Blocks.AIR);
 
     public NamelessInvisibleProjectileEntity(EntityType<? extends NamelessInvisibleProjectileEntity> type, Level world) {
         super(type, world);
+    }
+
+    public void setKnockback(int value) {
+        this.legacyKnockback = value;
     }
 
     public NamelessInvisibleProjectileEntity(EntityType<? extends NamelessInvisibleProjectileEntity> type, double x, double y, double z, Level world) {

@@ -68,8 +68,8 @@ public class NamelessSpawnOnEntityTickUpdateProcedure {
                     entity.discard();
                 }
                 if (world instanceof ServerLevel) {
-                    ServerLevel _level = (ServerLevel)world;
-                    Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.NAMELESS.get()).spawn(_level, BlockPos.containing((double)x, (double)y, (double)z), MobSpawnType.MOB_SUMMONED);
+                    ServerLevel _level1 = (ServerLevel)world;
+                    Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.NAMELESS.get()).spawn(_level1, BlockPos.containing((double)x, (double)y, (double)z), MobSpawnType.MOB_SUMMONED);
                     if (entityToSpawn != null) {
                         entityToSpawn.setDeltaMovement(0.0, 0.0, 0.0);
                     }
@@ -90,12 +90,12 @@ public class NamelessSpawnOnEntityTickUpdateProcedure {
                 return false;
             }
         }.checkGamemode(entity)) {
-            Vec3 _center = new Vec3(x, y, z);
-            List<Entity> _entfound = world.getEntitiesOfClass(Entity.class, new AABB(_center, _center).inflate(10.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
-            for (Entity entityiterator : _entfound) {
-                LivingEntity _entity;
-                if (!(entityiterator instanceof ServerPlayer) && !(entityiterator instanceof Player) || !(entityiterator instanceof LivingEntity) || (_entity = (LivingEntity)entityiterator).level().isClientSide()) continue;
-                _entity.addEffect(new MobEffectInstance(MokelsBossfightSaphyraModMobEffects.STAY_STILL, 5, 1, false, false));
+            Vec3 _center1 = new Vec3(x, y, z);
+            List<Entity> _entfound1 = world.getEntitiesOfClass(Entity.class, new AABB(_center1, _center1).inflate(10.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center1))).toList();
+            for (Entity entityiterator : _entfound1) {
+                LivingEntity _entity1;
+                if (!(entityiterator instanceof ServerPlayer) && !(entityiterator instanceof Player) || !(entityiterator instanceof LivingEntity) || (_entity1 = (LivingEntity)entityiterator).level().isClientSide()) continue;
+                _entity1.addEffect(new MobEffectInstance(MokelsBossfightSaphyraModMobEffects.STAY_STILL, 5, 1, false, false));
             }
         }
     }

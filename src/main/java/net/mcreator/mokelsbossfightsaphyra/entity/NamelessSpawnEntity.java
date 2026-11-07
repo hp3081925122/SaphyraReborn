@@ -117,7 +117,7 @@ implements GeoEntity {
         super.defineSynchedData(builder);
         builder.define(SHOOT, false);
         builder.define(ANIMATION, "undefined");
-        this.entityData.set(TEXTURE,"knightbosstexture");
+        builder.define(TEXTURE, "knightbosstexture");
     }
 
     public void setTexture(String texture) {

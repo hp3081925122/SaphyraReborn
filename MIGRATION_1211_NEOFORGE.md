@@ -48,3 +48,28 @@
 
 
 
+
+## 迁移验收补充
+
+- 原始 JAR：`backup/original/saphyra-2.0.2-forge-1.20.1-original.jar`，由用户提供并纳入本地 Git 备份。
+- 目标环境：Minecraft 1.21.1、NeoForge 21.1.265、GeckoLib 4.8.4。
+- Java 源码：由原始 JAR 反编译源码恢复后完成 NeoForge 注册、ResourceLocation、Holder、数据组件、事件、网络和实体构建 API 适配，保留原 procedure 技能队列、音效、粒子、伤害和实体注册清单。
+- 编译证据：`D:\AI临时文件\Saphyra重生_compile_green3.log`，`compileJava --offline` 输出 `BUILD SUCCESSFUL`。
+- 服务端验证：已交给子代理执行 `runServer --offline`，等待真实启动与注册日志。
+- 客户端渲染验证：使用 `E:\模组\自用工具源码+产物\Render Preview\1.21.1-neoforge-render-preview`，待生成 jar 后执行。
+
+| 项目 | 状态 |
+| --- | --- |
+| 原始 JAR 与本地 Git 备份 | 已完成 |
+| Java 编译 | 已通过 |
+| 服务端启动与功能测试 | 子代理进行中 |
+| Render Preview 渲染对照 | 待执行 |
+| 完整迁移交付 | 等待以上两项证据 |
+
+## 最终验证补充
+
+- 服务端二次启动验证：`runs/server/logs/latest.log` 出现 `Done (7.244s)! For help, type "help"`，完成事件注册、世界生成并加载 1290 recipes、1399 advancements。第一次 `ClientListener` 崩溃报告属于修复前状态，修复后无新崩溃。
+- Render Preview 客户端目录：`E:\模组\自用工具源码+产物\Render Preview\1.21.1-neoforge-render-preview`。
+- Render Preview 目录加载：`D:\AI临时文件\Saphyra重生_renderpreview3.log`，目录包含 `saphyra_reborn`，1906 项条目，Saphyra 实体构造检查无失败。
+- 直接 HTTP 渲染证据：`D:\AI临时文件\RenderPreview\20261107-230758-26492\saphyra-witchboss-20.png` 和 `.json`，1280×720、foregroundPixels 17445、blackRatio 0、magentaRatio 0；技能动画截图 `saphyra-witchboss-slash-15.png`，foregroundPixels 19348、blackRatio 0、magentaRatio 0。
+- 全量预览器验证在工具自带 `minecraft:player` 粒子条目触发工具侧异常，Saphyra 目录加载与指定实体/动画的直接渲染捕获已通过。

@@ -28,6 +28,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.LevelAccessor;
 
 public class LinaraOnInitialEntitySpawnProcedure {
@@ -80,20 +81,20 @@ public class LinaraOnInitialEntitySpawnProcedure {
                 }
                 MokelsBossfightSaphyraMod.queueServerWork(30, () -> {
                     ItemEntity entityToSpawn;
-                    ServerLevel _level;
+                    ServerLevel _level1;
                     if (world instanceof ServerLevel) {
-                        _level = (ServerLevel)world;
-                        entityToSpawn = new ItemEntity((Level)_level, entity.getX(), entity.getY(), entity.getZ(), new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.HALLOWED_KEY_1.get()));
+                        _level1 = (ServerLevel)world;
+                        entityToSpawn = new ItemEntity((Level)_level1, entity.getX(), entity.getY(), entity.getZ(), new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.HALLOWED_KEY_1.get()));
                         entityToSpawn.setPickUpDelay(2);
                         entityToSpawn.setUnlimitedLifetime();
-                        _level.addFreshEntity((Entity)entityToSpawn);
+                        _level1.addFreshEntity((Entity)entityToSpawn);
                     }
                     if (world instanceof ServerLevel) {
-                        _level = (ServerLevel)world;
-                        entityToSpawn = new ItemEntity((Level)_level, entity.getX(), entity.getY(), entity.getZ(), new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.INVITATION_TO_THE_HALLOWED_TOWER.get()));
+                        _level1 = (ServerLevel)world;
+                        entityToSpawn = new ItemEntity((Level)_level1, entity.getX(), entity.getY(), entity.getZ(), new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.INVITATION_TO_THE_HALLOWED_TOWER.get()));
                         entityToSpawn.setPickUpDelay(2);
                         entityToSpawn.setUnlimitedLifetime();
-                        _level.addFreshEntity((Entity)entityToSpawn);
+                        _level1.addFreshEntity((Entity)entityToSpawn);
                     }
                 });
             }
@@ -118,8 +119,8 @@ public class LinaraOnInitialEntitySpawnProcedure {
                         }
                         for (int index0 = 0; index0 < 3; ++index0) {
                             if (!(world instanceof ServerLevel)) continue;
-                            ServerLevel _level = (ServerLevel)world;
-                            _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.PURPLE_FLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 400, 0.2, 1.2, 0.2, 0.1);
+                            ServerLevel _level2 = (ServerLevel)world;
+                            ((ServerLevel)_level2).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.PURPLE_FLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 400, 0.2, 1.2, 0.2, 0.1);
                         }
                     }
                 });

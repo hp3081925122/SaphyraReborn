@@ -31,7 +31,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.common.EventBusSubscriber;
 
-@EventBusSubscriber(modid="saphyra_reborn", bus=EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid="saphyra_reborn", bus=EventBusSubscriber.Bus.MOD, value={Dist.CLIENT})
 public class ClientListener {
     @OnlyIn(value=Dist.CLIENT)
     @SubscribeEvent

@@ -21,12 +21,12 @@ import net.minecraft.world.entity.player.Player;
 
 public class BossFogEntityCollidesInTheBlockProcedure {
     public static void execute(Entity entity) {
-        LivingEntity _entity;
+        LivingEntity _entity1;
         if (entity == null) {
             return;
         }
-        if ((entity instanceof Player || entity instanceof ServerPlayer) && entity instanceof LivingEntity && !(_entity = (LivingEntity)entity).level().isClientSide()) {
-            _entity.addEffect(new MobEffectInstance((MobEffect)MokelsBossfightSaphyraModMobEffects.STAY_STILL.get(), 2, 1, false, false));
+        if ((entity instanceof Player || entity instanceof ServerPlayer) && entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
+            _entity1.addEffect(new MobEffectInstance(MokelsBossfightSaphyraModMobEffects.STAY_STILL, 2, 1, false, false));
         }
     }
 }

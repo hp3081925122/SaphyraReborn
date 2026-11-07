@@ -70,11 +70,11 @@ public class WellItSeemeth2Procedure {
                                                                 }
                                                                 MokelsBossfightSaphyraMod.queueServerWork(20, () -> {
                                                                     if (world instanceof ServerLevel) {
-                                                                        ServerLevel _level = (ServerLevel)world;
-                                                                        ItemEntity entityToSpawn = new ItemEntity((Level)_level, entity.getX(), entity.getY(), entity.getZ(), new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.KEY_4.get()));
+                                                                        ServerLevel _level1 = (ServerLevel)world;
+                                                                        ItemEntity entityToSpawn = new ItemEntity((Level)_level1, entity.getX(), entity.getY(), entity.getZ(), new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.KEY_4.get()));
                                                                         entityToSpawn.setPickUpDelay(0);
                                                                         entityToSpawn.setUnlimitedLifetime();
-                                                                        _level.addFreshEntity((Entity)entityToSpawn);
+                                                                        _level1.addFreshEntity((Entity)entityToSpawn);
                                                                     }
                                                                 });
                                                                 MokelsBossfightSaphyraMod.queueServerWork(80, () -> {

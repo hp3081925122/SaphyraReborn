@@ -43,27 +43,27 @@ public class BossDoorSaphyraOnBlockRightClickedProcedure {
         }
         MokelsBossfightSaphyraMod.queueServerWork(32, () -> {
             if (world instanceof Level) {
-                Level _level = (Level)world;
-                if (!_level.isClientSide()) {
-                    _level.playSound(null, BlockPos.containing((double)x, (double)y, (double)z), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.getValue(new ResourceLocation("mokels_bossfight_saphyra:heavydooropening")), SoundSource.BLOCKS, 1.0f, 1.0f);
+                Level _level1 = (Level)world;
+                if (!_level1.isClientSide()) {
+                    _level1.playSound(null, BlockPos.containing((double)x, (double)y, (double)z), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:heavydooropening")), SoundSource.BLOCKS, 1.0f, 1.0f);
                 } else {
-                    _level.playLocalSound(x, y, z, (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.getValue(new ResourceLocation("mokels_bossfight_saphyra:heavydooropening")), SoundSource.BLOCKS, 1.0f, 1.0f, false);
+                    _level1.playLocalSound(x, y, z, (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:heavydooropening")), SoundSource.BLOCKS, 1.0f, 1.0f, false);
                 }
             }
         });
         MokelsBossfightSaphyraMod.queueServerWork(260, () -> {
             BlockPos _bp = BlockPos.containing((double)x, (double)y, (double)z);
-            BlockState _bs = ((Block)MokelsBossfightSaphyraModBlocks.SAPHYRA_DOOR_3.get()).defaultBlockState();
-            BlockState _bso = world.getBlockState(_bp);
-            for (Map.Entry entry : _bso.getValues().entrySet()) {
-                Property _property = _bs.getBlock().getStateDefinition().getProperty(((Property)entry.getKey()).getName());
-                if (_property == null || _bs.getValue(_property) == null) continue;
+            BlockState _bs2 = ((Block)MokelsBossfightSaphyraModBlocks.SAPHYRA_DOOR_3.get()).defaultBlockState();
+            BlockState _bs2o = world.getBlockState(_bp);
+            for (Map.Entry entry : _bs2o.getValues().entrySet()) {
+                Property _property = _bs2.getBlock().getStateDefinition().getProperty(((Property)entry.getKey()).getName());
+                if (_property == null || _bs2.getValue(_property) == null) continue;
                 try {
-                    _bs = (BlockState)_bs.setValue(_property, (Comparable)entry.getValue());
+                    _bs2 = (BlockState)_bs2.setValue(_property, (Comparable)entry.getValue());
                 }
                 catch (Exception exception) {}
             }
-            world.setBlock(_bp, _bs, 3);
+            world.setBlock(_bp, _bs2, 3);
         });
     }
 }

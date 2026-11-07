@@ -72,8 +72,8 @@ public class SaphyraSpawnOnEntityTickUpdateProcedure {
                         world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Saphyra: Welcome, to the very heart of our universe."), false);
                     }
                     if (world instanceof ServerLevel) {
-                        ServerLevel _level = (ServerLevel)world;
-                        _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY() + 1.0, entity.getZ(), 25, 0.2, 0.2, 0.2, 0.1);
+                        ServerLevel _level1 = (ServerLevel)world;
+                        ((ServerLevel)_level1).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY() + 1.0, entity.getZ(), 25, 0.2, 0.2, 0.2, 0.1);
                     }
                 }
                 MokelsBossfightSaphyraMod.queueServerWork(160, () -> {
@@ -82,8 +82,8 @@ public class SaphyraSpawnOnEntityTickUpdateProcedure {
                             world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Saphyra: And the birthplace of Meryd and the white flame."), false);
                         }
                         if (world instanceof ServerLevel) {
-                            ServerLevel _level = (ServerLevel)world;
-                            _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY() + 1.0, entity.getZ(), 50, 0.2, 0.2, 0.2, 0.1);
+                            ServerLevel _level2 = (ServerLevel)world;
+                            ((ServerLevel)_level2).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY() + 1.0, entity.getZ(), 50, 0.2, 0.2, 0.2, 0.1);
                         }
                     }
                     MokelsBossfightSaphyraMod.queueServerWork(160, () -> {
@@ -92,8 +92,8 @@ public class SaphyraSpawnOnEntityTickUpdateProcedure {
                                 world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Saphyra: I urge thou not to hold back."), false);
                             }
                             if (world instanceof ServerLevel) {
-                                ServerLevel _level = (ServerLevel)world;
-                                _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY() + 1.0, entity.getZ(), 100, 0.2, 0.2, 0.2, 0.1);
+                                ServerLevel _level3 = (ServerLevel)world;
+                                ((ServerLevel)_level3).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY() + 1.0, entity.getZ(), 100, 0.2, 0.2, 0.2, 0.1);
                             }
                         }
                         MokelsBossfightSaphyraMod.queueServerWork(100, () -> {
@@ -102,19 +102,19 @@ public class SaphyraSpawnOnEntityTickUpdateProcedure {
                                     world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Saphyra: Well then, let us begin."), false);
                                 }
                                 if (world instanceof ServerLevel) {
-                                    ServerLevel _level = (ServerLevel)world;
-                                    _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY() + 1.0, entity.getZ(), 150, 0.2, 0.2, 0.2, 0.1);
+                                    ServerLevel _level4 = (ServerLevel)world;
+                                    ((ServerLevel)_level4).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY() + 1.0, entity.getZ(), 150, 0.2, 0.2, 0.2, 0.1);
                                 }
                             }
                             MokelsBossfightSaphyraMod.queueServerWork(80, () -> {
                                 if (entity.isAlive()) {
-                                    ServerLevel _level;
+                                    ServerLevel _level5;
                                     if (!entity.level().isClientSide()) {
                                         entity.discard();
                                     }
                                     if (world instanceof ServerLevel) {
-                                        _level = (ServerLevel)world;
-                                        Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.WITCHBOSS.get()).spawn(_level, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), MobSpawnType.MOB_SUMMONED);
+                                        _level5 = (ServerLevel)world;
+                                        Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.WITCHBOSS.get()).spawn(_level5, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), MobSpawnType.MOB_SUMMONED);
                                         if (entityToSpawn != null) {
                                             entityToSpawn.setYRot(entity.getYRot());
                                             entityToSpawn.setYBodyRot(entity.getYRot());
@@ -124,8 +124,8 @@ public class SaphyraSpawnOnEntityTickUpdateProcedure {
                                         }
                                     }
                                     if (world instanceof ServerLevel) {
-                                        _level = (ServerLevel)world;
-                                        _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY() + 1.0, entity.getZ(), 200, 0.2, 0.2, 0.2, 0.2);
+                                        _level5 = (ServerLevel)world;
+                                        ((ServerLevel)_level5).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY() + 1.0, entity.getZ(), 200, 0.2, 0.2, 0.2, 0.2);
                                     }
                                 }
                             });
@@ -134,10 +134,10 @@ public class SaphyraSpawnOnEntityTickUpdateProcedure {
                 });
             });
         }
-        Vec3 _center = new Vec3(entity.getX(), entity.getY(), entity.getZ());
-        List<Entity> _entfound = world.getEntitiesOfClass(Entity.class, new AABB(_center, _center).inflate(10.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
-        for (Entity entityiterator : _entfound) {
-            LivingEntity _entity;
+        Vec3 _center1 = new Vec3(entity.getX(), entity.getY(), entity.getZ());
+        List<Entity> _entfound1 = world.getEntitiesOfClass(Entity.class, new AABB(_center1, _center1).inflate(10.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center1))).toList();
+        for (Entity entityiterator : _entfound1) {
+            LivingEntity _entity1;
             if (!new Object(){
 
                 public boolean checkGamemode(Entity _ent) {
@@ -151,12 +151,12 @@ public class SaphyraSpawnOnEntityTickUpdateProcedure {
                     }
                     return false;
                 }
-            }.checkGamemode(entityiterator) || !(entityiterator instanceof Player) && !(entityiterator instanceof ServerPlayer) || !(entityiterator instanceof LivingEntity) || (_entity = (LivingEntity)entityiterator).level().isClientSide()) continue;
-            _entity.addEffect(new MobEffectInstance(MokelsBossfightSaphyraModMobEffects.STAY_STILL, 5, 1, false, false));
+            }.checkGamemode(entityiterator) || !(entityiterator instanceof Player) && !(entityiterator instanceof ServerPlayer) || !(entityiterator instanceof LivingEntity) || (_entity1 = (LivingEntity)entityiterator).level().isClientSide()) continue;
+            _entity1.addEffect(new MobEffectInstance(MokelsBossfightSaphyraModMobEffects.STAY_STILL, 5, 1, false, false));
         }
         if (world instanceof ServerLevel) {
-            ServerLevel _level = (ServerLevel)world;
-            _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY() + 1.0, entity.getZ(), 8, 0.1, 0.1, 0.1, 0.03);
+            ServerLevel _level6 = (ServerLevel)world;
+            ((ServerLevel)_level6).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY() + 1.0, entity.getZ(), 8, 0.1, 0.1, 0.1, 0.03);
         }
     }
 }

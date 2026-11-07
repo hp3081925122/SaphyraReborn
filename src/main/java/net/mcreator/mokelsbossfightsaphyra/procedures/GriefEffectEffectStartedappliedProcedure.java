@@ -49,14 +49,14 @@ public class GriefEffectEffectStartedappliedProcedure {
                 return false;
             }
         }.checkGamemode(entity)) {
-            ServerLevel _level;
+            ServerLevel _level1;
             if (world instanceof ServerLevel) {
-                _level = (ServerLevel)world;
-                _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/title @p times 20 20 20");
+                _level1 = (ServerLevel)world;
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @p times 20 20 20");
             }
             if (world instanceof ServerLevel) {
-                _level = (ServerLevel)world;
-                _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/title @p title {\"text\":\"Grief\",\"color\":\"blue\"}");
+                _level1 = (ServerLevel)world;
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @p title {\"text\":\"Grief\",\"color\":\"blue\"}");
             }
         }
     }

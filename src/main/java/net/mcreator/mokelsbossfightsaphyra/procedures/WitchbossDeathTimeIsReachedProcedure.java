@@ -26,13 +26,13 @@ import net.minecraft.world.level.LevelAccessor;
 
 public class WitchbossDeathTimeIsReachedProcedure {
     public static void execute(LevelAccessor world, Entity entity) {
-        ServerLevel _level;
+        ServerLevel _level1;
         if (entity == null) {
             return;
         }
         if (world instanceof ServerLevel) {
-            _level = (ServerLevel)world;
-            Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.MOTHBOSS.get()).spawn(_level, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), MobSpawnType.MOB_SUMMONED);
+            _level1 = (ServerLevel)world;
+            Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.MOTHBOSS.get()).spawn(_level1, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), MobSpawnType.MOB_SUMMONED);
             if (entityToSpawn != null) {
                 entityToSpawn.setYRot(entity.getYRot());
                 entityToSpawn.setYBodyRot(entity.getYRot());
@@ -42,8 +42,8 @@ public class WitchbossDeathTimeIsReachedProcedure {
             }
         }
         if (world instanceof ServerLevel) {
-            _level = (ServerLevel)world;
-            _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 800, 1.0, 2.0, 1.0, 0.05);
+            _level1 = (ServerLevel)world;
+            ((ServerLevel)_level1).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 800, 1.0, 2.0, 1.0, 0.05);
         }
     }
 }

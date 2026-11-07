@@ -34,12 +34,12 @@ public class InfestedWitchOnEntityTickUpdateProcedure {
             return;
         }
         if (world instanceof ServerLevel) {
-            ServerLevel _level = (ServerLevel)world;
-            _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.REDFLAME_PARTICLE.get()), entity.getX(), 1.35 + entity.getY(), entity.getZ(), 2, 0.1, 0.1, 0.1, 0.05);
+            ServerLevel _level1 = (ServerLevel)world;
+            ((ServerLevel)_level1).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.REDFLAME_PARTICLE.get()), entity.getX(), 1.35 + entity.getY(), entity.getZ(), 2, 0.1, 0.1, 0.1, 0.05);
         }
-        Vec3 _center = new Vec3(entity.getX(), entity.getY(), entity.getZ());
-        List<Entity> _entfound = world.getEntitiesOfClass(Entity.class, new AABB(_center, _center).inflate(3.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
-        for (Entity entityiterator : _entfound) {
+        Vec3 _center1 = new Vec3(entity.getX(), entity.getY(), entity.getZ());
+        List<Entity> _entfound1 = world.getEntitiesOfClass(Entity.class, new AABB(_center1, _center1).inflate(3.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center1))).toList();
+        for (Entity entityiterator : _entfound1) {
             if (!(entityiterator instanceof Player) || !(entityiterator instanceof ServerPlayer)) continue;
             double _setval = MokelsBossfightSaphyraModVariables.getPlayerVariables(entityiterator).Rotting + 0.9;
             MokelsBossfightSaphyraModVariables.withPlayerVariables(entityiterator, capability -> {

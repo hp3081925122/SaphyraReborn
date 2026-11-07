@@ -1,0 +1,10 @@
+{
+  "parent": "block/inner_stairs",
+  "textures": {
+    "particle": "saphyra_reborn:block/darkpolishedazurebricks",
+    "bottom": "saphyra_reborn:block/darkpolishedazurebricks",
+    "top": "saphyra_reborn:block/darkpolishedazurebricks",
+    "side": "saphyra_reborn:block/darkpolishedazurebricks"
+  },
+  "render_type": "solid"
+}

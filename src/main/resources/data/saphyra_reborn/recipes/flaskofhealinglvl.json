@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " a ",
+    "bcd",
+    " e "
+  ],
+  "key": {
+    "a": {
+      "item": "minecraft:nether_star"
+    },
+    "b": {
+      "item": "minecraft:skeleton_skull"
+    },
+    "c": {
+      "item": "saphyra_reborn:flask_of_healing"
+    },
+    "d": {
+      "item": "minecraft:experience_bottle"
+    },
+    "e": {
+      "item": "minecraft:dragon_breath"
+    }
+  },
+  "result": {
+    "item": "saphyra_reborn:flask_of_healinglvltwo",
+    "count": 1
+  }
+}

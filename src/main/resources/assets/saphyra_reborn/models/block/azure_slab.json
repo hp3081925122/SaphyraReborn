@@ -1,0 +1,10 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "particle": "saphyra_reborn:block/bluebricks",
+    "bottom": "saphyra_reborn:block/bluebricks",
+    "top": "saphyra_reborn:block/bluebricks",
+    "side": "saphyra_reborn:block/bluebricks"
+  },
+  "render_type": "solid"
+}

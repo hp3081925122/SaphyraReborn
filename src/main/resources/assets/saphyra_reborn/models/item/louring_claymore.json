@@ -1,0 +1,7 @@
+{
+  "parent": "saphyra_reborn:custom/louringclaymore",
+  "textures": {
+    "0": "saphyra_reborn:block/louringclaymoretexture",
+    "particle": "saphyra_reborn:item/blank"
+  }
+}

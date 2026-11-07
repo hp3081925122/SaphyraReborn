@@ -1,0 +1,111 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.marne",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 4,
+				"visible_bounds_height": 3.5,
+				"visible_bounds_offset": [0, 1.25, 0]
+			},
+			"bones": [
+				{
+					"name": "masterbody",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "body",
+					"parent": "masterbody",
+					"pivot": [0, 12, 0],
+					"cubes": [
+						{"origin": [-4, 12, -2], "size": [8, 12, 4], "uv": [0, 32]},
+						{"origin": [-4, 20, -4], "size": [8, 3, 3], "pivot": [0, 22, -2], "rotation": [60, 0, 0], "uv": [63, 1]},
+						{"origin": [-4, 12, -2], "size": [8, 12, 4], "inflate": 0.4, "uv": [28, 28]}
+					]
+				},
+				{
+					"name": "cape",
+					"parent": "body",
+					"pivot": [0, 24, 3],
+					"cubes": [
+						{"origin": [-6, 2, 3], "size": [12, 22, 0], "uv": [0, 82]}
+					]
+				},
+				{
+					"name": "cape2",
+					"parent": "body",
+					"pivot": [-4, 24, 3],
+					"cubes": [
+						{"origin": [-10, 2, 3], "size": [12, 22, 0], "uv": [48, 82]}
+					]
+				},
+				{
+					"name": "cape3",
+					"parent": "body",
+					"pivot": [4, 24, 3],
+					"cubes": [
+						{"origin": [-2, 2, 3], "size": [12, 22, 0], "uv": [24, 82]}
+					]
+				},
+				{
+					"name": "arm",
+					"parent": "body",
+					"pivot": [5.5, 22, 0],
+					"cubes": [
+						{"origin": [4, 12, -2], "size": [3, 12, 4], "uv": [52, 36]},
+						{"origin": [4, 12, -2], "size": [3, 12, 4], "inflate": 0.5, "uv": [0, 48]}
+					]
+				},
+				{
+					"name": "arm2",
+					"parent": "body",
+					"pivot": [-5.5, 22, 0],
+					"cubes": [
+						{"origin": [-7, 12, -2], "size": [3, 12, 4], "uv": [52, 20]},
+						{"origin": [-7, 12, -2], "size": [3, 12, 4], "inflate": 0.5, "uv": [48, 0]}
+					]
+				},
+				{
+					"name": "invisible",
+					"parent": "body",
+					"pivot": [0, 24, 0]
+				},
+				{
+					"name": "head",
+					"parent": "invisible",
+					"pivot": [0, 24, 0],
+					"cubes": [
+						{"origin": [-4, 24, -4], "size": [8, 8, 8], "uv": [24, 8]},
+						{"origin": [-4, 24, -4], "size": [8, 8, 8], "inflate": 0.3, "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "kaputze",
+					"parent": "head",
+					"pivot": [0, 24, 2],
+					"cubes": [
+						{"origin": [-4, 24, -4], "size": [8, 8, 8], "inflate": 0.5, "uv": [0, 16]}
+					]
+				},
+				{
+					"name": "leg",
+					"parent": "masterbody",
+					"pivot": [2, 12, 0],
+					"cubes": [
+						{"origin": [0, 0, -2], "size": [4, 12, 4], "uv": [20, 44]}
+					]
+				},
+				{
+					"name": "leg2",
+					"parent": "masterbody",
+					"pivot": [-2, 12, 0],
+					"cubes": [
+						{"origin": [-4, 0, -2], "size": [4, 12, 4], "uv": [36, 44]}
+					]
+				}
+			]
+		}
+	]
+}

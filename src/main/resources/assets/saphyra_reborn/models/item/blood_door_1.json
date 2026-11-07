@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "saphyra_reborn:block/blooddoorbottom"
+  },
+  "render_type": "solid"
+}

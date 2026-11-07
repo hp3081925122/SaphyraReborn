@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "saphyra_reborn:block/polished_andesite",
+    "particle": "saphyra_reborn:block/polished_andesite"
+  },
+  "render_type": "solid"
+}

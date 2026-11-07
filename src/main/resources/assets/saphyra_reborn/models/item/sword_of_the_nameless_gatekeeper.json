@@ -1,0 +1,7 @@
+{
+  "parent": "saphyra_reborn:custom/namelesssword",
+  "textures": {
+    "0": "saphyra_reborn:block/knightbosstexture",
+    "particle": "saphyra_reborn:item/blank"
+  }
+}

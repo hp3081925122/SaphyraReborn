@@ -1,0 +1,6 @@
+{
+  "parent": "saphyra_reborn:displaysettings/bossgate.item",
+  "textures": {
+    "particle": "saphyra_reborn:block/bossgatetexturesaphyra"
+  }
+}

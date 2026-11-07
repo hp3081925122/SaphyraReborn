@@ -1,0 +1,8 @@
+{
+  "parent": "block/wall_inventory",
+  "textures": {
+    "wall": "saphyra_reborn:block/bossdoorfog",
+    "particle": "saphyra_reborn:block/bossdoorfog"
+  },
+  "render_type": "solid"
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "saphyra_reborn:custom/mothsword",
+  "textures": {
+    "0": "saphyra_reborn:block/mothswordtexture",
+    "particle": "saphyra_reborn:item/blank"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "parent": "block/outer_stairs",
+  "textures": {
+    "particle": "saphyra_reborn:block/polished_blackstone",
+    "bottom": "saphyra_reborn:block/polished_blackstone",
+    "top": "saphyra_reborn:block/polished_blackstone",
+    "side": "saphyra_reborn:block/polished_blackstone"
+  },
+  "render_type": "solid"
+}

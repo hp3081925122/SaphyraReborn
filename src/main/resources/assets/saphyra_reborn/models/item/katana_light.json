@@ -1,0 +1,7 @@
+{
+  "parent": "saphyra_reborn:custom/normalkatana",
+  "textures": {
+    "0": "saphyra_reborn:block/normalkatanatexture",
+    "particle": "saphyra_reborn:item/blank"
+  }
+}

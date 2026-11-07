@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:block",
+  "random_sequence": "saphyra_reborn:blocks/blood_door_1",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "saphyra_reborn:blood_door_1",
+          "conditions": [
+            {
+              "block": "saphyra_reborn:blood_door_1",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "half": "lower"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,223 @@
+/*
+ * Decompiled with CFR 0.152.
+ * 
+ * Could not load the following classes:
+ *  javax.annotation.Nullable
+ *  net.minecraft.core.BlockPos
+ *  net.minecraft.core.Direction
+ *  net.minecraft.core.NonNullList
+ *  net.minecraft.nbt.CompoundTag
+ *  net.minecraft.network.chat.Component
+ *  net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket
+ *  net.minecraft.world.ContainerHelper
+ *  net.minecraft.world.WorldlyContainer
+ *  net.minecraft.world.entity.player.Inventory
+ *  net.minecraft.world.inventory.AbstractContainerMenu
+ *  net.minecraft.world.inventory.ChestMenu
+ *  net.minecraft.world.item.ItemStack
+ *  net.minecraft.world.level.block.entity.BlockEntity
+ *  net.minecraft.world.level.block.entity.BlockEntityType
+ *  net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity
+ *  net.minecraft.world.level.block.state.BlockState
+ *  net.minecraft.world.level.block.state.properties.IntegerProperty
+ *  net.minecraft.world.level.block.state.properties.Property
+ *  net.neoforged.common.capabilities.Capability
+ *  net.neoforged.common.capabilities.ForgeCapabilities
+ *  net.neoforged.common.util.LazyOptional
+ *  net.neoforged.neoforge.items.IItemHandler
+ *  net.neoforged.neoforge.items.wrapper.SidedInvWrapper
+ *  software.bernie.geckolib.animatable.GeoBlockEntity
+ *  software.bernie.geckolib.animatable.GeoAnimatable
+ *  software.bernie.geckolib.animatable.instance.AnimatableInstanceCache
+ *  software.bernie.geckolib.animation.AnimatableManager$ControllerRegistrar
+ *  software.bernie.geckolib.animation.AnimationController
+ *  software.bernie.geckolib.animation.AnimationController$State
+ *  software.bernie.geckolib.animation.AnimationState
+ *  software.bernie.geckolib.animation.RawAnimation
+ *  software.bernie.geckolib.animation.PlayState
+ *  software.bernie.geckolib.util.GeckoLibUtil
+ */
+package com.hp.saphyrareborn.block.entity;
+
+import java.util.stream.IntStream;
+import javax.annotation.Nullable;
+import com.hp.saphyrareborn.block.BossDoorBlock;
+import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModBlockEntities;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ChestMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
+
+public class BossDoorTileEntity
+extends RandomizableContainerBlockEntity
+implements GeoBlockEntity,
+WorldlyContainer {
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache((GeoAnimatable)this);
+    private NonNullList<ItemStack> stacks = NonNullList.withSize(9, ItemStack.EMPTY);
+    private final IItemHandler[] handlers = new IItemHandler[]{new SidedInvWrapper((WorldlyContainer)this, Direction.DOWN), new SidedInvWrapper((WorldlyContainer)this, Direction.UP), new SidedInvWrapper((WorldlyContainer)this, Direction.NORTH), new SidedInvWrapper((WorldlyContainer)this, Direction.SOUTH), new SidedInvWrapper((WorldlyContainer)this, Direction.WEST), new SidedInvWrapper((WorldlyContainer)this, Direction.EAST)};
+    String prevAnim = "0";
+
+    public BossDoorTileEntity(BlockPos pos, BlockState state) {
+        super((BlockEntityType)MokelsBossfightSaphyraModBlockEntities.BOSS_DOOR2.get(), pos, state);
+    }
+
+    private PlayState predicate(AnimationState event) {
+        String animationprocedure = "" + this.getBlockState().getValue((Property)BossDoorBlock.ANIMATION);
+        if (animationprocedure.equals("0")) {
+            return event.setAndContinue(RawAnimation.begin().thenLoop(animationprocedure));
+        }
+        return PlayState.STOP;
+    }
+
+    private PlayState procedurePredicate(AnimationState event) {
+        String animationprocedure = "" + this.getBlockState().getValue((Property)BossDoorBlock.ANIMATION);
+        if (!animationprocedure.equals("0") && event.getController().getAnimationState() == AnimationController.State.STOPPED || !animationprocedure.equals(this.prevAnim) && !animationprocedure.equals("0")) {
+            if (!animationprocedure.equals(this.prevAnim)) {
+                event.getController().forceAnimationReset();
+            }
+            event.getController().setAnimation(RawAnimation.begin().thenPlay(animationprocedure));
+            if (event.getController().getAnimationState() == AnimationController.State.STOPPED) {
+                Property property = this.getBlockState().getBlock().getStateDefinition().getProperty("animation");
+                if (property instanceof IntegerProperty) {
+                    IntegerProperty _integerProp = (IntegerProperty)property;
+                    this.level.setBlock(this.getBlockPos(), (BlockState)this.getBlockState().setValue((Property)_integerProp, (Comparable)Integer.valueOf(0)), 3);
+                }
+                event.getController().forceAnimationReset();
+            }
+        } else if (animationprocedure.equals("0")) {
+            this.prevAnim = "0";
+            return PlayState.STOP;
+        }
+        this.prevAnim = animationprocedure;
+        return PlayState.CONTINUE;
+    }
+
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController[]{new AnimationController((GeoAnimatable)this, "controller", 0, this::predicate)});
+        data.add(new AnimationController[]{new AnimationController((GeoAnimatable)this, "procedurecontroller", 0, this::procedurePredicate)});
+    }
+
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.cache;
+    }
+
+    protected void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+        super.loadAdditional(compound, provider);
+        if (!this.tryLoadLootTable(compound)) {
+            this.stacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+            ContainerHelper.loadAllItems(compound, this.stacks, provider);
+        }
+    }
+
+    protected void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+        super.saveAdditional(compound, provider);
+        if (!this.trySaveLootTable(compound)) {
+            ContainerHelper.saveAllItems(compound, this.stacks, provider);
+        }
+    }
+
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create((BlockEntity)this);
+    }
+
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+        return super.getUpdateTag(provider);
+    }
+
+    public int getContainerSize() {
+        return this.stacks.size();
+    }
+
+    public boolean isEmpty() {
+        for (ItemStack itemstack : this.stacks) {
+            if (itemstack.isEmpty()) continue;
+            return false;
+        }
+        return true;
+    }
+
+    protected Component getDefaultName() {
+        return Component.literal((String)"boss_door2");
+    }
+
+    public int getMaxStackSize() {
+        return 64;
+    }
+
+    public AbstractContainerMenu createMenu(int id, Inventory inventory) {
+        return ChestMenu.threeRows((int)id, (Inventory)inventory);
+    }
+
+    public Component getDisplayName() {
+        return Component.literal((String)"Boss Door");
+    }
+
+    protected NonNullList<ItemStack> getItems() {
+        return this.stacks;
+    }
+
+    protected void setItems(NonNullList<ItemStack> stacks) {
+        this.stacks = stacks;
+    }
+
+    public boolean canPlaceItem(int index, ItemStack stack) {
+        return true;
+    }
+
+    public int[] getSlotsForFace(Direction side) {
+        return IntStream.range(0, this.getContainerSize()).toArray();
+    }
+
+    public boolean canPlaceItemThroughFace(int index, ItemStack stack, @Nullable Direction direction) {
+        return this.canPlaceItem(index, stack);
+    }
+
+    public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
+        return true;
+    }
+    public IItemHandler itemHandler(@Nullable Direction facing) {
+        return facing == null ? null : this.handlers[facing.ordinal()];
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

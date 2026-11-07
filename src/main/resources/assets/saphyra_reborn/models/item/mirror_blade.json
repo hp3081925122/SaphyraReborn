@@ -1,0 +1,7 @@
+{
+  "parent": "saphyra_reborn:custom/twindagger",
+  "textures": {
+    "0": "saphyra_reborn:block/twindaggertexture",
+    "particle": "saphyra_reborn:item/blank"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "saphyra_reborn:displaysettings/losthope.item",
+  "textures": {
+    "particle": "saphyra_reborn:block/losthopetexture"
+  }
+}

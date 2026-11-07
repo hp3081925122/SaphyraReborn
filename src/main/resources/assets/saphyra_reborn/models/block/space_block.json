@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "saphyra_reborn:block/blackblock",
+    "particle": "saphyra_reborn:block/blackblock"
+  },
+  "render_type": "solid"
+}

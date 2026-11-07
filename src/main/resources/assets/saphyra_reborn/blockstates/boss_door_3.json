@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "saphyra_reborn:custom/boss_door_3_particle"
+    },
+    "facing=east": {
+      "model": "saphyra_reborn:custom/boss_door_3_particle",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "saphyra_reborn:custom/boss_door_3_particle",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "saphyra_reborn:custom/boss_door_3_particle",
+      "y": 270
+    }
+  }
+}

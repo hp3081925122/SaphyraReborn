@@ -1,0 +1,7 @@
+{
+  "parent": "saphyra_reborn:custom/witchstaff",
+  "textures": {
+    "0": "saphyra_reborn:block/witchstafftexture",
+    "particle": "saphyra_reborn:item/blank"
+  }
+}

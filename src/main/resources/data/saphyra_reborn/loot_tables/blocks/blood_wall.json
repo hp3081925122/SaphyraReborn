@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:block",
+  "random_sequence": "saphyra_reborn:blocks/blood_wall",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "saphyra_reborn:blood_wall"
+        }
+      ]
+    }
+  ]
+}

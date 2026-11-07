@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "saphyra_reborn:block/azure_slab"
+    },
+    "type=top": {
+      "model": "saphyra_reborn:block/azure_slab_top"
+    },
+    "type=double": {
+      "model": "saphyra_reborn:block/azure_slab_full"
+    }
+  }
+}

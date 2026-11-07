@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "saphyra_reborn:the_three_hallowed_towers",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 300,
+    "separation": 1,
+    "salt": 17672848
+  }
+}

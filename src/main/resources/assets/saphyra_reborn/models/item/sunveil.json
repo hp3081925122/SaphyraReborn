@@ -1,0 +1,7 @@
+{
+  "parent": "saphyra_reborn:custom/sunveil",
+  "textures": {
+    "0": "saphyra_reborn:block/animatedsunveil",
+    "particle": "saphyra_reborn:item/blank"
+  }
+}

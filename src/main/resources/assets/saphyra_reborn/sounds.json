@@ -1,0 +1,330 @@
+{
+  "witchbossmusic": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:epic_vampire_music_-_flight_of_the_bats",
+        "stream": true
+      }
+    ]
+  },
+  "witchbosstheme": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:epic_vampire_music_-_flight_of_the_bats",
+        "stream": true
+      }
+    ]
+  },
+  "usingflaskofhealing": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:flask_of_crimson_tears_sound_effect",
+        "stream": false
+      }
+    ]
+  },
+  "witchbossfighttheme": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:witchbossfighttheme",
+        "stream": true
+      }
+    ]
+  },
+  "crimsonflasksound": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:elden_ring__flask_of_crimson_tears_sound_effect",
+        "stream": false
+      }
+    ]
+  },
+  "spellcast": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:spellcastsaphyra",
+        "stream": false
+      }
+    ]
+  },
+  "saphyras_theme": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:saphyras_theme_1",
+        "stream": true
+      }
+    ]
+  },
+  "phase2_o_mother": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:saphyraphase2_o_mother",
+        "stream": false
+      }
+    ]
+  },
+  "enemy_felled": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:enemy_felled",
+        "stream": false
+      }
+    ]
+  },
+  "heavydooropening": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:heavy_metal_door_opening_and_closing",
+        "stream": false
+      }
+    ]
+  },
+  "statuesound": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:statuelyiorbells",
+        "stream": false
+      }
+    ]
+  },
+  "lyiorsoundstatue": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:lyiorsoundstatue",
+        "stream": false
+      }
+    ]
+  },
+  "rule_spell": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:spellmokel",
+        "stream": false
+      }
+    ]
+  },
+  "namelessscream": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:knightbossscream",
+        "stream": false
+      }
+    ]
+  },
+  "namelesstheme1": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:namelesstheme1",
+        "stream": true
+      }
+    ]
+  },
+  "namelesstheme2": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:namelesstheme2",
+        "stream": true
+      }
+    ]
+  },
+  "namelesstheme3": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:namelesstheme3",
+        "stream": true
+      }
+    ]
+  },
+  "namelesstheme4": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:namelesstheme4",
+        "stream": true
+      }
+    ]
+  },
+  "namelesstheme5": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:namelesstheme5",
+        "stream": true
+      }
+    ]
+  },
+  "namelesstheme6": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:namelesstheme6",
+        "stream": true
+      }
+    ]
+  },
+  "namelesstheme7": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:namelesstheme7",
+        "stream": true
+      }
+    ]
+  },
+  "saphyrastheme1": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:saphyrastheme1",
+        "stream": true
+      }
+    ]
+  },
+  "saphyrastheme2": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:saphyrastheme2",
+        "stream": true
+      }
+    ]
+  },
+  "saphyrastheme3": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:saphyrastheme3",
+        "stream": true
+      }
+    ]
+  },
+  "saphyrastheme4": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:saphyrastheme4",
+        "stream": true
+      }
+    ]
+  },
+  "saphyrastheme5": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:saphyrastheme5",
+        "stream": true
+      }
+    ]
+  },
+  "saphyrastheme6": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:saphyrastheme6",
+        "stream": true
+      }
+    ]
+  },
+  "ivorydevil_theme1": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:ivorydevil_theme1",
+        "stream": true
+      }
+    ]
+  },
+  "ivorydevil_theme2": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:ivorydevil_theme2",
+        "stream": true
+      }
+    ]
+  },
+  "ivorydevil_theme3": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:ivorydevil_theme3",
+        "stream": true
+      }
+    ]
+  },
+  "ivorydevil_theme4": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:ivorydevil_theme4",
+        "stream": true
+      }
+    ]
+  },
+  "ivorydevil_theme5": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:ivorydevil_theme5",
+        "stream": true
+      }
+    ]
+  },
+  "ivorydevil_theme6": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:ivorydevil_theme6",
+        "stream": true
+      }
+    ]
+  },
+  "bosskilled": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:bosskilled",
+        "stream": false
+      }
+    ]
+  },
+  "infested1": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:infested1",
+        "stream": false
+      }
+    ]
+  },
+  "infested2": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:infested2",
+        "stream": false
+      }
+    ]
+  },
+  "infested3": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:infested3",
+        "stream": false
+      }
+    ]
+  },
+  "infested4": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:infested4",
+        "stream": false
+      }
+    ]
+  },
+  "infested5": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:infested5",
+        "stream": false
+      }
+    ]
+  },
+  "infested6": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:infested6",
+        "stream": false
+      }
+    ]
+  },
+  "idleinfested": {
+    "sounds": [
+      {
+        "name": "saphyra_reborn:infested4",
+        "stream": false
+      }
+    ]
+  }
+}

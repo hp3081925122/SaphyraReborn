@@ -1,0 +1,8 @@
+{
+  "parent": "block/template_wall_side",
+  "textures": {
+    "wall": "saphyra_reborn:block/darkpolishedazurebricks",
+    "particle": "saphyra_reborn:block/darkpolishedazurebricks"
+  },
+  "render_type": "solid"
+}

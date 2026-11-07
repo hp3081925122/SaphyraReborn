@@ -1,0 +1,7 @@
+{
+  "parent": "saphyra_reborn:custom/tearanddroplet",
+  "textures": {
+    "0": "saphyra_reborn:block/animatedtearanddroplet",
+    "particle": "saphyra_reborn:item/blank"
+  }
+}

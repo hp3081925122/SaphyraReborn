@@ -1,0 +1,7 @@
+{
+  "parent": "saphyra_reborn:custom/katanapoolofrot",
+  "textures": {
+    "0": "saphyra_reborn:block/katanapoolofrottexture",
+    "particle": "saphyra_reborn:item/blank"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "saphyra_reborn:displaysettings/lyiorstatue.item",
+  "textures": {
+    "particle": "saphyra_reborn:block/lyiorstatuetexture"
+  }
+}

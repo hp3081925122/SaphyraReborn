@@ -10,8 +10,8 @@
  *  net.minecraftforge.event.TickEvent$Phase
  *  net.minecraftforge.event.TickEvent$PlayerTickEvent
  *  net.minecraftforge.eventbus.api.Event
- *  net.minecraftforge.eventbus.api.SubscribeEvent
- *  net.minecraftforge.fml.common.Mod$EventBusSubscriber
+ *  net.neoforged.bus.api.SubscribeEvent
+ *  net.neoforged.fml.common.Mod$EventBusSubscriber
  */
 package com.hp.saphyrareborn.procedures;
 
@@ -26,8 +26,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
 
 @Mod.EventBusSubscriber
 public class DevotionBarPlayerTickProcedure {
@@ -76,6 +76,7 @@ public class DevotionBarPlayerTickProcedure {
         }
     }
 }
+
 
 
 

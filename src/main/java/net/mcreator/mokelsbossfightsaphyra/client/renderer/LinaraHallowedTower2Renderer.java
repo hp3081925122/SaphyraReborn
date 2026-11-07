@@ -61,3 +61,4 @@ extends GeoEntityRenderer<LinaraHallowedTower2Entity> {
 
 
 
+

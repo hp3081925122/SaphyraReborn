@@ -10,7 +10,7 @@
  *  net.minecraft.world.level.block.Block
  *  net.neoforged.neoforge.common.DeferredSpawnEggItem
  *  net.minecraftforge.registries.DeferredRegister
- *  net.minecraftforge.registries.ForgeRegistries
+ *  net.neoforged.neoforge.registries.NeoForgeRegistries
  *  net.minecraftforge.registries.IForgeRegistry
  *  net.minecraftforge.registries.RegistryObject
  */
@@ -220,6 +220,7 @@ public class MokelsBossfightSaphyraModItems {
         return REGISTRY.register(block.getId().getPath(), () -> new DoubleHighBlockItem((Block)block.get(), new Item.Properties()));
     }
 }
+
 
 
 

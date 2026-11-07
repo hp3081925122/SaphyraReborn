@@ -67,3 +67,4 @@ extends GeoEntityRenderer<GhostSpiritEntity> {
 
 
 
+

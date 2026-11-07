@@ -22,7 +22,7 @@
  *  net.minecraft.world.level.LevelAccessor
  *  net.minecraft.world.phys.AABB
  *  net.minecraft.world.phys.Vec3
- *  net.minecraftforge.registries.ForgeRegistries
+ *  net.neoforged.neoforge.registries.NeoForgeRegistries
  */
 package com.hp.saphyrareborn.procedures;
 
@@ -52,7 +52,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class AttackGroundMothProcedure {
     public static void execute(LevelAccessor world, Entity entity) {
@@ -74,9 +74,9 @@ public class AttackGroundMothProcedure {
                     if (world instanceof Level) {
                         _level = (Level)world;
                         if (!_level.isClientSide()) {
-                            _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, 2.0f, 0.75f);
+                            _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, 2.0f, 0.75f);
                         } else {
-                            _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, 2.0f, 0.75f, false);
+                            _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.getValue(new ResourceLocation("entity.generic.explode")), SoundSource.NEUTRAL, 2.0f, 0.75f, false);
                         }
                     }
                     if (world instanceof ServerLevel) {
@@ -103,9 +103,9 @@ public class AttackGroundMothProcedure {
                     if (world instanceof Level) {
                         Level _level = (Level)world;
                         if (!_level.isClientSide()) {
-                            _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.player.attack.sweep")), SoundSource.NEUTRAL, 2.0f, 1.2f);
+                            _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.getValue(new ResourceLocation("entity.player.attack.sweep")), SoundSource.NEUTRAL, 2.0f, 1.2f);
                         } else {
-                            _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.player.attack.sweep")), SoundSource.NEUTRAL, 2.0f, 1.2f, false);
+                            _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.getValue(new ResourceLocation("entity.player.attack.sweep")), SoundSource.NEUTRAL, 2.0f, 1.2f, false);
                         }
                     }
                     Vec3 _center = new Vec3(entity.getX(), entity.getY(), entity.getZ());
@@ -125,6 +125,7 @@ public class AttackGroundMothProcedure {
         }
     }
 }
+
 
 
 

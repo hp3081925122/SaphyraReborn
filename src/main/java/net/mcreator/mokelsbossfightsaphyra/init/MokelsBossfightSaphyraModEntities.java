@@ -6,13 +6,13 @@
  *  net.minecraft.world.entity.EntityType
  *  net.minecraft.world.entity.EntityType$Builder
  *  net.minecraft.world.entity.MobCategory
- *  net.minecraftforge.event.entity.EntityAttributeCreationEvent
- *  net.minecraftforge.eventbus.api.SubscribeEvent
- *  net.minecraftforge.fml.common.Mod$EventBusSubscriber
- *  net.minecraftforge.fml.common.Mod$EventBusSubscriber$Bus
- *  net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent
+ *  net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent
+ *  net.neoforged.bus.api.SubscribeEvent
+ *  net.neoforged.fml.common.Mod$EventBusSubscriber
+ *  net.neoforged.fml.common.Mod$EventBusSubscriber$Bus
+ *  net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
  *  net.minecraftforge.registries.DeferredRegister
- *  net.minecraftforge.registries.ForgeRegistries
+ *  net.neoforged.neoforge.registries.NeoForgeRegistries
  *  net.minecraftforge.registries.IForgeRegistry
  *  net.minecraftforge.registries.RegistryObject
  */
@@ -49,10 +49,10 @@ import com.hp.saphyrareborn.entity.WitchbossEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.minecraft.core.registries.Registries;
@@ -154,6 +154,7 @@ public class MokelsBossfightSaphyraModEntities {
         event.put((EntityType)SAPHYRA_DIALOG_4.get(), SaphyraDialog4Entity.createAttributes().build());
     }
 }
+
 
 
 

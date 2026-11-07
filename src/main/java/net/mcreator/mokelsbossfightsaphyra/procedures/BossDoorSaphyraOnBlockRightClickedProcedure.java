@@ -12,7 +12,7 @@
  *  net.minecraft.world.level.block.state.BlockState
  *  net.minecraft.world.level.block.state.properties.IntegerProperty
  *  net.minecraft.world.level.block.state.properties.Property
- *  net.minecraftforge.registries.ForgeRegistries
+ *  net.neoforged.neoforge.registries.NeoForgeRegistries
  */
 package com.hp.saphyrareborn.procedures;
 
@@ -29,7 +29,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class BossDoorSaphyraOnBlockRightClickedProcedure {
     public static void execute(LevelAccessor world, double x, double y, double z) {
@@ -45,9 +45,9 @@ public class BossDoorSaphyraOnBlockRightClickedProcedure {
             if (world instanceof Level) {
                 Level _level = (Level)world;
                 if (!_level.isClientSide()) {
-                    _level.playSound(null, BlockPos.containing((double)x, (double)y, (double)z), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("mokels_bossfight_saphyra:heavydooropening")), SoundSource.BLOCKS, 1.0f, 1.0f);
+                    _level.playSound(null, BlockPos.containing((double)x, (double)y, (double)z), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.getValue(new ResourceLocation("mokels_bossfight_saphyra:heavydooropening")), SoundSource.BLOCKS, 1.0f, 1.0f);
                 } else {
-                    _level.playLocalSound(x, y, z, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("mokels_bossfight_saphyra:heavydooropening")), SoundSource.BLOCKS, 1.0f, 1.0f, false);
+                    _level.playLocalSound(x, y, z, (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.getValue(new ResourceLocation("mokels_bossfight_saphyra:heavydooropening")), SoundSource.BLOCKS, 1.0f, 1.0f, false);
                 }
             }
         });
@@ -67,6 +67,7 @@ public class BossDoorSaphyraOnBlockRightClickedProcedure {
         });
     }
 }
+
 
 
 

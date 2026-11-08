@@ -23,7 +23,7 @@ import net.minecraft.world.level.material.PushReaction;
 public class AzureStairsBlock
 extends StairBlock {
     public AzureStairsBlock() {
-        super(Blocks.AIR.defaultBlockState(), BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE).strength(-1.0f, 3600000.0f).pushReaction(PushReaction.IGNORE));
+        super(Blocks.AIR.defaultBlockState(), BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.DEEPSLATE_BRICKS).strength(-1.0f, 3600000.0f).pushReaction(PushReaction.IGNORE));
     }
 
     public float getExplosionResistance() {

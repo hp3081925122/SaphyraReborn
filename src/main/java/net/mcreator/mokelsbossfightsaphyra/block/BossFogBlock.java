@@ -34,7 +34,7 @@ import net.minecraft.world.level.pathfinder.PathType;
 public class BossFogBlock
 extends Block {
     public BossFogBlock() {
-        super(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.GLASS).strength(-1.0f, 3600000.0f).lightLevel(s -> 5).noCollission().friction(0.0f).pushReaction(PushReaction.IGNORE).isSuffocating((bs, br, bp) -> true).isViewBlocking((bs, br, bp) -> true));
+        super(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.GLASS).strength(-1.0f, 3600000.0f).lightLevel(s -> 5).noCollission().jumpFactor(0.0f).pushReaction(PushReaction.IGNORE).hasPostProcess((bs, br, bp) -> true).emissiveRendering((bs, br, bp) -> true));
     }
 
     public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {

@@ -27,7 +27,7 @@ extends GeoBlockRenderer<OddmentStage2TileEntity> {
     }
 
     public RenderType getRenderType(OddmentStage2TileEntity animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
-        return RenderType.entityTranslucentCull((ResourceLocation)this.getTextureLocation(animatable));
+        return RenderType.entityTranslucent((ResourceLocation)this.getTextureLocation(animatable));
     }
 }
 

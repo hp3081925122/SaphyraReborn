@@ -36,7 +36,7 @@ extends GeoRenderLayer<PutridRoseEntity> {
     }
 
     public void render(PoseStack poseStack, PutridRoseEntity animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
-        RenderType glowRenderType = RenderType.entityTranslucentEmissive((ResourceLocation)LAYER);
+        RenderType glowRenderType = RenderType.eyes((ResourceLocation)LAYER);
         this.getRenderer().reRender(this.getDefaultBakedModel(animatable), poseStack, bufferSource, animatable, glowRenderType, bufferSource.getBuffer(glowRenderType), partialTick, packedLight, OverlayTexture.NO_OVERLAY, -1);
     }
 }

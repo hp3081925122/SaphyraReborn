@@ -340,8 +340,8 @@ implements GeoEntity {
     protected void tickDeath() {
         ++this.deathTime;
         if (this.deathTime == 100) {
+            this.dropExperience(this.getLastAttacker());
             this.remove(Entity.RemovalReason.KILLED);
-            this.discard();
             NamelessDeathTimeIsReachedProcedure.execute((LevelAccessor)this.level(), this.getX(), this.getY(), this.getZ());
         }
     }

@@ -315,8 +315,8 @@ implements GeoEntity {
     protected void tickDeath() {
         ++this.deathTime;
         if (this.deathTime == 20) {
+            this.dropExperience(this.getLastAttacker());
             this.remove(Entity.RemovalReason.KILLED);
-            this.discard();
         }
     }
 

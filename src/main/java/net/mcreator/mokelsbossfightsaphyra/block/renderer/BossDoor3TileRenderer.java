@@ -27,7 +27,7 @@ extends GeoBlockRenderer<BossDoor3TileEntity> {
     }
 
     public RenderType getRenderType(BossDoor3TileEntity animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
-        return RenderType.entityTranslucentCull((ResourceLocation)this.getTextureLocation(animatable));
+        return RenderType.entityTranslucent((ResourceLocation)this.getTextureLocation(animatable));
     }
 }
 

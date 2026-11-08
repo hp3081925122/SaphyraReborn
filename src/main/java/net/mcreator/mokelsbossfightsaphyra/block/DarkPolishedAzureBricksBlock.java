@@ -25,7 +25,7 @@ import net.minecraft.world.level.material.PushReaction;
 public class DarkPolishedAzureBricksBlock
 extends Block {
     public DarkPolishedAzureBricksBlock() {
-        super(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE).strength(-1.0f, 3600000.0f).pushReaction(PushReaction.IGNORE));
+        super(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.DEEPSLATE_BRICKS).strength(-1.0f, 3600000.0f).pushReaction(PushReaction.IGNORE));
     }
 
     public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {

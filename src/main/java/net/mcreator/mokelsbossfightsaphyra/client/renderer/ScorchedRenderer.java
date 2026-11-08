@@ -36,7 +36,7 @@ extends GeoEntityRenderer<ScorchedEntity> {
     }
 
     public RenderType getRenderType(ScorchedEntity animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
-        return RenderType.entityTranslucentCull((ResourceLocation)this.getTextureLocation(animatable));
+        return RenderType.entityTranslucent((ResourceLocation)this.getTextureLocation(animatable));
     }
 
     public void preRender(PoseStack poseStack, ScorchedEntity entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int color) {

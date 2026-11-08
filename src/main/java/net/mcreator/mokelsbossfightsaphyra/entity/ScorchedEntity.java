@@ -206,10 +206,10 @@ implements GeoEntity {
 
     private PlayState movementPredicate(AnimationState event) {
         if (!this.isProcedureAnimating()) {
-            if (!(!event.isMoving() && event.getLimbSwingAmount() > -0.15f && event.getLimbSwingAmount() < 0.15f || this.isSprinting())) {
+            if (!(!event.isMoving() && event.getLimbSwingAmount() > -0.15f && event.getLimbSwingAmount() < 0.15f || this.isAggressive())) {
                 return event.setAndContinue(RawAnimation.begin().thenLoop("walk"));
             }
-            if (this.isSprinting() && event.isMoving()) {
+            if (this.isAggressive() && event.isMoving()) {
                 return event.setAndContinue(RawAnimation.begin().thenLoop("aggro"));
             }
             return event.setAndContinue(RawAnimation.begin().thenLoop("idle"));
@@ -246,8 +246,8 @@ implements GeoEntity {
     protected void tickDeath() {
         ++this.deathTime;
         if (this.deathTime == 20) {
+            this.dropExperience(this.getLastAttacker());
             this.remove(Entity.RemovalReason.KILLED);
-            this.discard();
         }
     }
 

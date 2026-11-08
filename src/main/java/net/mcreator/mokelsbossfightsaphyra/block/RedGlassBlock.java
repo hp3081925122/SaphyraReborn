@@ -33,7 +33,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class RedGlassBlock
 extends Block {
     public RedGlassBlock() {
-        super(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE).strength(-1.0f, 3600000.0f).noOcclusion().pushReaction(PushReaction.IGNORE).isValidSpawn((bs, br, bp, entityType) -> false));
+        super(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.DEEPSLATE_BRICKS).strength(-1.0f, 3600000.0f).noOcclusion().pushReaction(PushReaction.IGNORE).isRedstoneConductor((bs, br, bp) -> false));
     }
 
     public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {

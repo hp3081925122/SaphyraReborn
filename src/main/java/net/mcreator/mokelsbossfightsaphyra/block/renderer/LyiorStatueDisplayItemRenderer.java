@@ -27,7 +27,7 @@ extends GeoItemRenderer<LyiorStatueDisplayItem> {
     }
 
     public RenderType getRenderType(LyiorStatueDisplayItem animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
-        return RenderType.entityTranslucentCull((ResourceLocation)this.getTextureLocation(animatable));
+        return RenderType.entityTranslucent((ResourceLocation)this.getTextureLocation(animatable));
     }
 }
 

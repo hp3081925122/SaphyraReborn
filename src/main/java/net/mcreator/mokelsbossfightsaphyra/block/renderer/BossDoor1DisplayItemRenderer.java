@@ -27,7 +27,7 @@ extends GeoItemRenderer<BossDoor1DisplayItem> {
     }
 
     public RenderType getRenderType(BossDoor1DisplayItem animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
-        return RenderType.entityTranslucentCull((ResourceLocation)this.getTextureLocation(animatable));
+        return RenderType.entityTranslucent((ResourceLocation)this.getTextureLocation(animatable));
     }
 }
 

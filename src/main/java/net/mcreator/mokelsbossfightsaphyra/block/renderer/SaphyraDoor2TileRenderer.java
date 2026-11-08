@@ -27,7 +27,7 @@ extends GeoBlockRenderer<SaphyraDoor2TileEntity> {
     }
 
     public RenderType getRenderType(SaphyraDoor2TileEntity animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
-        return RenderType.entityTranslucentCull((ResourceLocation)this.getTextureLocation(animatable));
+        return RenderType.entityTranslucent((ResourceLocation)this.getTextureLocation(animatable));
     }
 }
 

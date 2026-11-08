@@ -46,7 +46,7 @@ import net.minecraft.world.phys.BlockHitResult;
 public class LockedFogWorshipBlock
 extends WallBlock {
     public LockedFogWorshipBlock() {
-        super(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT).sound(SoundType.GLASS).strength(-1.0f, 3600000.0f).lightLevel(s -> 5).pushReaction(PushReaction.IGNORE).isSuffocating((bs, br, bp) -> true).isViewBlocking((bs, br, bp) -> true).noOcclusion());
+        super(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT).sound(SoundType.GLASS).strength(-1.0f, 3600000.0f).lightLevel(s -> 5).pushReaction(PushReaction.IGNORE).hasPostProcess((bs, br, bp) -> true).emissiveRendering((bs, br, bp) -> true).forceSolidOn());
     }
 
     public PathType getBlockPathType(BlockState state, BlockGetter world, BlockPos pos, Mob entity) {

@@ -266,8 +266,8 @@ implements GeoEntity {
                 level.addFreshEntity(drop);
                 com.hp.saphyrareborn.procedures.LinaraClockTowerProcedure.onPuppetDefeated(level, this);
             }
+            this.dropExperience(this.getLastAttacker());
             this.remove(Entity.RemovalReason.KILLED);
-            this.discard();
         }
     }
 

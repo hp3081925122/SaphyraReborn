@@ -102,7 +102,7 @@ implements ItemSupplier {
     public static WitchBossProjectileEntity shoot(Level world, LivingEntity entity, RandomSource random, float power, double damage, int knockback) {
         WitchBossProjectileEntity entityarrow = new WitchBossProjectileEntity((EntityType<? extends WitchBossProjectileEntity>)((EntityType)MokelsBossfightSaphyraModEntities.WITCH_BOSS_PROJECTILE.get()), entity, world);
         entityarrow.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, power * 2.0f, 0.0f);
-        entityarrow.setNoPhysics(true);
+        entityarrow.setSilent(true);
         entityarrow.setCritArrow(false);
         entityarrow.setBaseDamage(damage);
         world.addFreshEntity((Entity)entityarrow);
@@ -112,10 +112,10 @@ implements ItemSupplier {
     public static WitchBossProjectileEntity shoot(LivingEntity entity, LivingEntity target) {
         WitchBossProjectileEntity entityarrow = new WitchBossProjectileEntity((EntityType<? extends WitchBossProjectileEntity>)((EntityType)MokelsBossfightSaphyraModEntities.WITCH_BOSS_PROJECTILE.get()), entity, entity.level());
         double dx = target.getX() - entity.getX();
-        double dy = target.getY() + (double)target.getBbHeight() - 1.1;
+        double dy = target.getY() + (double)target.getEyeHeight() - 1.1;
         double dz = target.getZ() - entity.getZ();
         entityarrow.shoot(dx, dy - entityarrow.getY() + Math.hypot(dx, dz) * (double)0.2f, dz, 2.0f, 12.0f);
-        entityarrow.setNoPhysics(true);
+        entityarrow.setSilent(true);
         entityarrow.setBaseDamage(5.0);
         entityarrow.setCritArrow(false);
         entity.level().addFreshEntity((Entity)entityarrow);

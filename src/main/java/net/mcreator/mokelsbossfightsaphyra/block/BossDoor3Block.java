@@ -99,7 +99,7 @@ EntityBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public BossDoor3Block() {
-        super(BlockBehaviour.Properties.of().sound(SoundType.METAL).strength(-1.0f, 3600000.0f).noOcclusion().pushReaction(PushReaction.IGNORE).isValidSpawn((bs, br, bp, entityType) -> false));
+        super(BlockBehaviour.Properties.of().sound(SoundType.METAL).strength(-1.0f, 3600000.0f).noOcclusion().pushReaction(PushReaction.IGNORE).isRedstoneConductor((bs, br, bp) -> false));
         this.registerDefaultState((BlockState)((BlockState)((BlockState)this.stateDefinition.any()).setValue((Property)FACING, (Comparable)Direction.NORTH)).setValue((Property)WATERLOGGED, (Comparable)Boolean.valueOf(false)));
     }
 
@@ -113,7 +113,7 @@ EntityBlock {
     }
 
     public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
-        return state.getFluidState().isSource();
+        return state.getFluidState().isEmpty();
     }
 
     public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {

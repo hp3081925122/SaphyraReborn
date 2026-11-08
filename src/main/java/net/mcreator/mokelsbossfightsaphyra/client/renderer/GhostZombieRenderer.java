@@ -40,7 +40,7 @@ extends GeoEntityRenderer<GhostZombieEntity> {
     }
 
     public RenderType getRenderType(GhostZombieEntity animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
-        return RenderType.entityTranslucentCull((ResourceLocation)this.getTextureLocation(animatable));
+        return RenderType.entityTranslucent((ResourceLocation)this.getTextureLocation(animatable));
     }
 
     public void preRender(PoseStack poseStack, GhostZombieEntity entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int color) {

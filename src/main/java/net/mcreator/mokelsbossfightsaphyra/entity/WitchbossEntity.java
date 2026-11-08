@@ -293,8 +293,8 @@ implements GeoEntity {
     protected void tickDeath() {
         ++this.deathTime;
         if (this.deathTime == 180) {
+            this.dropExperience(this.getLastAttacker());
             this.remove(Entity.RemovalReason.KILLED);
-            this.discard();
             WitchbossDeathTimeIsReachedProcedure.execute((LevelAccessor)this.level(), (Entity)this);
         }
     }

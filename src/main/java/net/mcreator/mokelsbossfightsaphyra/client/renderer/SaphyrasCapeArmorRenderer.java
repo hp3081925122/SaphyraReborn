@@ -37,7 +37,7 @@ extends GeoArmorRenderer<SaphyrasCapeItem> {
     }
 
     public RenderType getRenderType(SaphyrasCapeItem animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
-        return RenderType.entityTranslucentCull((ResourceLocation)this.getTextureLocation(animatable));
+        return RenderType.entityTranslucent((ResourceLocation)this.getTextureLocation(animatable));
     }
 }
 

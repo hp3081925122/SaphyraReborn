@@ -106,16 +106,15 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class MothbossEntity
 extends PathfinderMob
 implements GeoEntity {
+    private static final String[] TRIGGERABLE_ANIMATIONS = {"pose", "pose2", "flying", "pose3", "attacksmite", "idle", "walk", "aggro", "attackswordonce", "attackground", "attacksky", "attacktwirl", "attackback", "block", "attackstab", "attacktriple", "death"};
+    private AnimationController<?> procedureController;
     public static final EntityDataAccessor<Boolean> SHOOT = SynchedEntityData.defineId(MothbossEntity.class, (EntityDataSerializer)EntityDataSerializers.BOOLEAN);
-    public static final EntityDataAccessor<String> ANIMATION = SynchedEntityData.defineId(MothbossEntity.class, (EntityDataSerializer)EntityDataSerializers.STRING);
     public static final EntityDataAccessor<String> TEXTURE = SynchedEntityData.defineId(MothbossEntity.class, (EntityDataSerializer)EntityDataSerializers.STRING);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache((GeoAnimatable)this);
     private boolean swinging;
     private boolean lastloop;
     private long lastSwing;
-    public String animationprocedure = "empty";
     private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.NOTCHED_12);
-    String prevAnim = "empty";
 
     public MothbossEntity(EntityType<MothbossEntity> type, Level world) {
         super(type, world);
@@ -128,7 +127,6 @@ implements GeoEntity {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(SHOOT, false);
-        builder.define(ANIMATION, "undefined");
         builder.define(TEXTURE, "saphyramothbosstexture");
     }
 
@@ -251,12 +249,12 @@ implements GeoEntity {
     }
 
     private PlayState movementPredicate(AnimationState event) {
-        if (this.animationprocedure.equals("empty")) {
+        if (this.isDeadOrDying()) {
+            return event.setAndContinue(RawAnimation.begin().thenPlay("death"));
+        }
+        if (!this.isProcedureAnimating()) {
             if (!(!event.isMoving() && event.getLimbSwingAmount() > -0.15f && event.getLimbSwingAmount() < 0.15f || this.isSprinting())) {
                 return event.setAndContinue(RawAnimation.begin().thenLoop("walk"));
-            }
-            if (this.isDeadOrDying()) {
-                return event.setAndContinue(RawAnimation.begin().thenPlay("death"));
             }
             if (this.isSprinting() && event.isMoving()) {
                 return event.setAndContinue(RawAnimation.begin().thenLoop("aggro"));
@@ -267,21 +265,11 @@ implements GeoEntity {
     }
 
     private PlayState procedurePredicate(AnimationState event) {
-        if (!this.animationprocedure.equals("empty") && event.getController().getAnimationState() == AnimationController.State.STOPPED || !this.animationprocedure.equals(this.prevAnim) && !this.animationprocedure.equals("empty")) {
-            if (!this.animationprocedure.equals(this.prevAnim)) {
-                event.getController().forceAnimationReset();
-            }
-            event.getController().setAnimation(RawAnimation.begin().thenPlay(this.animationprocedure));
-            if (event.getController().getAnimationState() == AnimationController.State.STOPPED) {
-                this.animationprocedure = "empty";
-                event.getController().forceAnimationReset();
-            }
-        } else if (this.animationprocedure.equals("empty")) {
-            this.prevAnim = "empty";
-            return PlayState.STOP;
-        }
-        this.prevAnim = this.animationprocedure;
-        return PlayState.CONTINUE;
+        return event.getController().isPlayingTriggeredAnimation() && !this.isDeadOrDying() ? PlayState.CONTINUE : PlayState.STOP;
+    }
+
+    private boolean isProcedureAnimating() {
+        return this.procedureController != null && this.procedureController.isPlayingTriggeredAnimation();
     }
 
     protected void tickDeath() {
@@ -293,17 +281,22 @@ implements GeoEntity {
         }
     }
 
-    public String getSyncedAnimation() {
-        return (String)this.entityData.get(ANIMATION);
-    }
-
     public void setAnimation(String animation) {
-        this.entityData.set(ANIMATION,animation);
+        if ("empty".equals(animation)) {
+            this.stopTriggeredAnim("procedure", null);
+        } else {
+            this.triggerAnim("procedure", animation);
+        }
     }
 
     public void registerControllers(AnimatableManager.ControllerRegistrar data) {
         data.add(new AnimationController[]{new AnimationController((GeoAnimatable)this, "movement", 2, this::movementPredicate)});
-        data.add(new AnimationController[]{new AnimationController((GeoAnimatable)this, "procedure", 2, this::procedurePredicate)});
+        AnimationController<?> procedure = new AnimationController<>(this, "procedure", 2, this::procedurePredicate).receiveTriggeredAnimations();
+        for (String name : TRIGGERABLE_ANIMATIONS) {
+            procedure.triggerableAnim(name, RawAnimation.begin().thenPlay(name));
+        }
+        this.procedureController = procedure;
+        data.add(procedure);
     }
 
     public AnimatableInstanceCache getAnimatableInstanceCache() {

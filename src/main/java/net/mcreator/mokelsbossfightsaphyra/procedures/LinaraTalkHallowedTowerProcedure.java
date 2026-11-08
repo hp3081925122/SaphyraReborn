@@ -36,7 +36,7 @@ public class LinaraTalkHallowedTowerProcedure {
                     world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.cdfaa93f85e8"), false);
                 }
                 if (entity instanceof LinaraHallowedTowerEntity) {
-                    ((LinaraHallowedTowerEntity)entity).setAnimation("greetings");
+                    ((LinaraHallowedTowerEntity)entity).setAnimation("greeting");
                 }
             }
             MokelsBossfightSaphyraMod.queueServerWork(80, () -> {

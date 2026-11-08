@@ -73,3 +73,28 @@
 - Render Preview 目录加载：`D:\AI临时文件\Saphyra重生_renderpreview3.log`，目录包含 `saphyra_reborn`，1906 项条目，Saphyra 实体构造检查无失败。
 - 直接 HTTP 渲染证据：`D:\AI临时文件\RenderPreview\20261107-230758-26492\saphyra-witchboss-20.png` 和 `.json`，1280×720、foregroundPixels 17445、blackRatio 0、magentaRatio 0；技能动画截图 `saphyra-witchboss-slash-15.png`，foregroundPixels 19348、blackRatio 0、magentaRatio 0。
 - 全量预览器验证在工具自带 `minecraft:player` 粒子条目触发工具侧异常，Saphyra 目录加载与指定实体/动画的直接渲染捕获已通过。
+
+## 2026年11月08日 Boss 技能与动画优化
+
+依据：对照原版 JAR 反编译源码（`D:\AI临时文件\Saphyra重生\decompiled`、`missing_decompiled`）与 1.20.1 SRG 映射。编译证据：`D:\AI临时文件\Saphyra重生_compile_opt3.log`（`compileJava --offline` 退出码 0）。未做服务端/客户端运行测试。
+
+| 项目 | 原表现 / 原因 | 调整后 | 是否改变玩法 |
+| --- | --- | --- | --- |
+| 伤害来源方法对调 | 移植时 `m_7640_`(getDirectEntity) 与 `m_7639_`(getEntity) 整体对调，14 个实体的箭矢/药水免疫失效，`instanceof Player` 由“仅近战”变成“玩家造成的全部伤害” | 按原版恢复 | 否（恢复原版） |
+| 每 tick 朝向命令 | `/tp @s ~ ~ ~ facing entity @p` 执行源无实体，`@s` 为空，原版即无效，每 tick 白解析命令 | 删除 6 处；PutridRose 攻击模式只剩这条命令，procedure 一并删除 | 否 |
+| 全服停音乐 | `/stopsound @a music` 停掉全服所有维度玩家的音乐 | `BossMusic.stop` 只对同维度 128 格内玩家发停止音效包 | 远处/其他维度玩家不再被停音乐 |
+| 重复扫描 | `if (!扫描) … else if (扫描为空)` 连扫两次；Mothboss 另多扫一次 ServerPlayer | 改为单次扫描 + else | 否 |
+| 延时队列 | 移植版丢失原版“仅服务端线程入队”判断，客户端线程的调用会进服务端队列；任务异常会导致重复执行；停服不清空 | 恢复服务端线程判断、单任务异常隔离并记录日志、停服清空 | 否（恢复原版） |
+| 技能定身 | 100 级缓慢药水（30 处）充当施法锁，可被牛奶等清除 | `BossCastLock`：持久化截止 tick + 移速 -100% 临时修饰，取 max 延长语义与药水一致 | 否 |
+| Nameless 盾牌 | 100 级抗性药水充当无敌 | `BossCastLock.shield` + `getDamageAfterMagicAbsorb` 归零，保留受击反馈，尊重 bypasses_effects/resistance | 否 |
+| 技能伤害 | 43 处硬编码（14，1 处 30），Boss 攻击力为 0 | 攻击力默认 14，伤害 = 攻击力 × 倍率（1.0 / 30÷14）；近战 `doHurtTarget` 返回 false（原版攻击力 0 对玩家无伤害） | 默认数值不变；对非玩家目标的 0 伤害近战受击/击退不再出现 |
+| Boss 配置 | 无 | `config/saphyra_reborn-common.toml`：5 个 Boss 的生命/攻击/护甲，首次进入世界写入一次（NBT `SaphyraConfigApplied`），按原血量比例换算 | 新增 |
+| 动画同步 | 每 tick 反射读取同步字符串（`EntityAnimationFactory`） | GeckoLib triggerableAnim，注册模型 JSON 中全部动画；`"empty"` 改为停止触发动画 | 否 |
+| 死亡动画顺序 | 先判移动后判死亡，死亡时有击退会先播 walk；技能动画中死亡要等技能动画播完 | 死亡判断提前，procedure 控制器在死亡时让出 | 死亡动画立即播放 |
+| Linara 动画名 | 原版调用 `greetings`，JSON 为 `greeting`，动画从未播放 | 改为 `greeting` | 招呼动画首次可见 |
+
+未处理 / 待定：
+- 门、雕像方块动画名（状态整数 `"0"` 等与 JSON 键 `1/2/3`、`idle` 不对应）：对应关系无法从原资源确定，保持原样。
+- `STUN`/`IMMUNE` 只检查从未施加、未接线的动画（knightboss `stun`/`attackcharge`、Witchboss `spinattack`/`wandattack`、Mothboss `block`/`attacktriple` 等）、百分比血量转阶段：属于新增玩法，需要设计后再做。
+- `/title @a` 仍为全服广播；Rot 投射物 4 点伤害未挂钩攻击力（无可靠施法者引用）。
+- 待验证：服务端行为、Render Preview 动画对照。

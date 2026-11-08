@@ -405,5 +405,8 @@
   "entity.saphyra_reborn.rot_projectile": "Rot Projectile",
   "entity.saphyra_reborn.witch_boss_projectile": "Saphyra Projectile",
   "entity.saphyra_reborn.witch_boss_projectilefall": "Saphyra Projectile",
-  "text.saphyra_reborn.story.join_clocktower": "???: Meet me in the fractured clocktower."
+  "text.saphyra_reborn.story.join_clocktower": "???: Meet me in the fractured clocktower.",
+  "jade.saphyra_reborn.right_click_with": "Right-click with: %s",
+  "jade.saphyra_reborn.right_click_empty": "Right-click to interact",
+  "config.jade.plugin_saphyra_reborn.right_click_hint": "Saphyra Reborn: right-click hints"
 }

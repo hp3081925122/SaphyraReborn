@@ -405,5 +405,8 @@
   "entity.saphyra_reborn.rot_projectile": "腐烂弹",
   "entity.saphyra_reborn.witch_boss_projectile": "萨菲拉的弹幕",
   "entity.saphyra_reborn.witch_boss_projectilefall": "萨菲拉的弹幕",
-  "text.saphyra_reborn.story.join_clocktower": "？？？：来破碎钟楼找我。"
+  "text.saphyra_reborn.story.join_clocktower": "？？？：来破碎钟楼找我。",
+  "jade.saphyra_reborn.right_click_with": "手持 %s 右键",
+  "jade.saphyra_reborn.right_click_empty": "右键交互",
+  "config.jade.plugin_saphyra_reborn.right_click_hint": "Saphyra 重生：右键提示"
 }

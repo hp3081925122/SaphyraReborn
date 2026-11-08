@@ -59,7 +59,7 @@ public class AttackClawAttackProcedure {
                 ((WitchbossEntity)entity).setAnimation("clawattack");
             }
             if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
-                _entity1.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 50, 100, false, false));
+                com.hp.saphyrareborn.boss.BossCastLock.lock(_entity1, 50);
             }
             MokelsBossfightSaphyraMod.queueServerWork(22, () -> {
                 LivingEntity _livEnt3;
@@ -77,7 +77,7 @@ public class AttackClawAttackProcedure {
                     for (Entity entityiterator : _entfound1) {
                         LivingEntity _livEnt14;
                         if (entityiterator instanceof WitchbossEntity || !(entityiterator instanceof LivingEntity) || entityiterator instanceof LivingEntity && (_livEnt14 = (LivingEntity)entityiterator).hasEffect(MokelsBossfightSaphyraModMobEffects.IMMUNE)) continue;
-                        entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK), entity), 14.0f);
+                        entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK), entity), com.hp.saphyrareborn.boss.BossAttributes.skillDamage(entity, 1.0));
                         double _setval = MokelsBossfightSaphyraModVariables.getPlayerVariables(entityiterator).Grief + 20.0;
                         MokelsBossfightSaphyraModVariables.withPlayerVariables(entityiterator, capability -> {
                             capability.Grief = _setval;

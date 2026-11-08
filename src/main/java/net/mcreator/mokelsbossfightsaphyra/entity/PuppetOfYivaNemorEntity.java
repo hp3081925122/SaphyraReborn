@@ -182,8 +182,14 @@ implements GeoEntity {
         return super.getDefaultDimensions(pose).scale(1.1f);
     }
 
+    @Override
+    public boolean doHurtTarget(Entity target) {
+        return false;
+    }
+
     public void tick() {
         super.tick();
+        com.hp.saphyrareborn.boss.BossCastLock.tick(this);
         PuppetAttackPatternProcedure.execute((LevelAccessor)this.level(), this.getX(), this.getY(), this.getZ(), (Entity)this);
         this.refreshDimensions();
     }
@@ -223,7 +229,7 @@ implements GeoEntity {
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.27);
         builder = builder.add(Attributes.MAX_HEALTH, 300.0);
         builder = builder.add(Attributes.ARMOR, 0.0);
-        builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0);
+        builder = builder.add(Attributes.ATTACK_DAMAGE, 14.0);
         builder = builder.add(Attributes.FOLLOW_RANGE, 48.0);
         builder = builder.add(Attributes.STEP_HEIGHT, 1.8);
         return builder;

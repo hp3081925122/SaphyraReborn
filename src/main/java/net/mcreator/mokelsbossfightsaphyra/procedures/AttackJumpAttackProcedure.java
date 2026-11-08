@@ -66,7 +66,7 @@ public class AttackJumpAttackProcedure {
                 ((WitchbossEntity)entity).setAnimation("jumpattack");
             }
             if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
-                _entity1.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 9, 100, false, false));
+                com.hp.saphyrareborn.boss.BossCastLock.lock(_entity1, 9);
             }
             if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
                 _entity1.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 60, 1, false, false));
@@ -77,7 +77,7 @@ public class AttackJumpAttackProcedure {
                     Level _level1;
                     LivingEntity _entity2;
                     if (entity instanceof LivingEntity && !(_entity2 = (LivingEntity)entity).level().isClientSide()) {
-                        _entity2.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 17, 100, false, false));
+                        com.hp.saphyrareborn.boss.BossCastLock.lock(_entity2, 17);
                     }
                     if (world instanceof Level) {
                         _level1 = (Level)world;
@@ -96,7 +96,7 @@ public class AttackJumpAttackProcedure {
                     for (Entity entityiterator : _entfound1) {
                         LivingEntity _livEnt20;
                         if (entityiterator instanceof WitchbossEntity || !(entityiterator instanceof LivingEntity) || entityiterator instanceof LivingEntity && (_livEnt20 = (LivingEntity)entityiterator).hasEffect(MokelsBossfightSaphyraModMobEffects.IMMUNE)) continue;
-                        entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK)), 14.0f);
+                        entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK)), com.hp.saphyrareborn.boss.BossAttributes.skillDamage(entity, 1.0));
                         double _setval = MokelsBossfightSaphyraModVariables.getPlayerVariables(entityiterator).Grief + 20.0;
                         MokelsBossfightSaphyraModVariables.withPlayerVariables(entityiterator, capability -> {
                             capability.Grief = _setval;

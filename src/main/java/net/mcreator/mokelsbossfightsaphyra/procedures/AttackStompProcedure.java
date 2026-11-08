@@ -67,7 +67,7 @@ public class AttackStompProcedure {
                 ((NamelessEntity)entity).setAnimation("attackstomp");
             }
             if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
-                _entity1.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 100, false, false));
+                com.hp.saphyrareborn.boss.BossCastLock.lock(_entity1, 80);
             }
             MokelsBossfightSaphyraMod.queueServerWork(56, () -> {
                 LivingEntity _livEnt3;
@@ -94,7 +94,7 @@ public class AttackStompProcedure {
                     for (Entity entityiterator : _entfound1) {
                         LivingEntity _livEnt22;
                         if (entityiterator instanceof NamelessEntity || !(entityiterator instanceof LivingEntity) || entityiterator instanceof LivingEntity && (_livEnt22 = (LivingEntity)entityiterator).hasEffect(MokelsBossfightSaphyraModMobEffects.IMMUNE)) continue;
-                        entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK), entity), 14.0f);
+                        entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK), entity), com.hp.saphyrareborn.boss.BossAttributes.skillDamage(entity, 1.0));
                         double _setval = MokelsBossfightSaphyraModVariables.getPlayerVariables(entityiterator).Rotting + 40.0;
                         MokelsBossfightSaphyraModVariables.withPlayerVariables(entityiterator, capability -> {
                             capability.Rotting = _setval;

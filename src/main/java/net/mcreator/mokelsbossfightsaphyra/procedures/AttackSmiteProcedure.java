@@ -48,7 +48,7 @@ public class AttackSmiteProcedure {
                 ((MothbossEntity)entity).setAnimation("attacksmite");
             }
             if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
-                _entity1.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 50, 100, false, false));
+                com.hp.saphyrareborn.boss.BossCastLock.lock(_entity1, 50);
             }
             MokelsBossfightSaphyraMod.queueServerWork(27, () -> {
                 LivingEntity _livEnt3;

@@ -145,7 +145,7 @@ public class AttackFloatProcedure {
                                         for (Entity entityiterator : _entfound1) {
                                             LivingEntity _livEnt45;
                                             if (entityiterator instanceof NamelessEntity || !(entityiterator instanceof LivingEntity) || entityiterator instanceof LivingEntity && (_livEnt45 = (LivingEntity)entityiterator).hasEffect(MokelsBossfightSaphyraModMobEffects.IMMUNE)) continue;
-                                            entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK), entity), 14.0f);
+                                            entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK), entity), com.hp.saphyrareborn.boss.BossAttributes.skillDamage(entity, 1.0));
                                             double _setval = MokelsBossfightSaphyraModVariables.getPlayerVariables(entityiterator).Rotting + 10.0;
                                             MokelsBossfightSaphyraModVariables.withPlayerVariables(entityiterator, capability -> {
                                                 capability.Rotting = _setval;

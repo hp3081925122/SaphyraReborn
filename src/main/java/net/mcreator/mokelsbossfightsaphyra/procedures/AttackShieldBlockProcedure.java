@@ -26,10 +26,10 @@ public class AttackShieldBlockProcedure {
                 ((NamelessEntity)entity).setAnimation("attackshield");
             }
             if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
-                _entity1.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 90, 100, false, false));
+                com.hp.saphyrareborn.boss.BossCastLock.lock(_entity1, 90);
             }
             if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
-                _entity1.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 80, 100, false, false));
+                com.hp.saphyrareborn.boss.BossCastLock.shield(_entity1, 80);
             }
         }
     }

@@ -54,7 +54,7 @@ public class AttackskyProcedure {
                 ((MothbossEntity)entity).setAnimation("attacksky");
             }
             if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
-                _entity1.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 90, 100, false, false));
+                com.hp.saphyrareborn.boss.BossCastLock.lock(_entity1, 90);
             }
             MokelsBossfightSaphyraMod.queueServerWork(25, () -> {
                 LivingEntity _livEnt3;

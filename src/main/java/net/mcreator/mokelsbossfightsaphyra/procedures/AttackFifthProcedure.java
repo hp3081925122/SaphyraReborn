@@ -68,7 +68,7 @@ public class AttackFifthProcedure {
                 ((PuppetOfYivaNemorEntity)entity).setAnimation("attackfifth");
             }
             if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
-                _entity1.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 50, 100, false, false));
+                com.hp.saphyrareborn.boss.BossCastLock.lock(_entity1, 50);
             }
             MokelsBossfightSaphyraMod.queueServerWork(27, () -> {
                 LivingEntity _livEnt3;
@@ -94,7 +94,7 @@ public class AttackFifthProcedure {
                         for (Entity entityiterator : _entfound1) {
                             LivingEntity _livEnt18;
                             if (entityiterator instanceof NamelessEntity || !(entityiterator instanceof LivingEntity) || entityiterator instanceof LivingEntity && (_livEnt18 = (LivingEntity)entityiterator).hasEffect(MokelsBossfightSaphyraModMobEffects.IMMUNE)) continue;
-                            entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK)), 14.0f);
+                            entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK)), com.hp.saphyrareborn.boss.BossAttributes.skillDamage(entity, 1.0));
                             final double _setval1 = MokelsBossfightSaphyraModVariables.getPlayerVariables(entityiterator).Rotting + 20.0;
                             MokelsBossfightSaphyraModVariables.withPlayerVariables(entityiterator, capability -> {
                                 capability.Rotting = _setval1;
@@ -112,7 +112,7 @@ public class AttackFifthProcedure {
                         for (Entity entityiterator : _entfound1) {
                             LivingEntity _livEnt32;
                             if (entityiterator instanceof PuppetOfYivaNemorEntity || !(entityiterator instanceof LivingEntity) || entityiterator instanceof LivingEntity && (_livEnt32 = (LivingEntity)entityiterator).hasEffect(MokelsBossfightSaphyraModMobEffects.IMMUNE)) continue;
-                            entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK)), 14.0f);
+                            entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK)), com.hp.saphyrareborn.boss.BossAttributes.skillDamage(entity, 1.0));
                             final double _setval2 = MokelsBossfightSaphyraModVariables.getPlayerVariables(entityiterator).Rotting + 20.0;
                             MokelsBossfightSaphyraModVariables.withPlayerVariables(entityiterator, capability -> {
                                 capability.Rotting = _setval2;
@@ -130,7 +130,7 @@ public class AttackFifthProcedure {
                         for (Entity entityiterator : _entfound1) {
                             LivingEntity _livEnt46;
                             if (entityiterator instanceof PuppetOfYivaNemorEntity || !(entityiterator instanceof LivingEntity) || entityiterator instanceof LivingEntity && (_livEnt46 = (LivingEntity)entityiterator).hasEffect(MokelsBossfightSaphyraModMobEffects.IMMUNE)) continue;
-                            entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK)), 14.0f);
+                            entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK)), com.hp.saphyrareborn.boss.BossAttributes.skillDamage(entity, 1.0));
                             final double _setval3 = MokelsBossfightSaphyraModVariables.getPlayerVariables(entityiterator).Rotting + 20.0;
                             MokelsBossfightSaphyraModVariables.withPlayerVariables(entityiterator, capability -> {
                                 capability.Rotting = _setval3;

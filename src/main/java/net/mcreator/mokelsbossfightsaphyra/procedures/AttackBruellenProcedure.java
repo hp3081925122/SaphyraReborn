@@ -73,7 +73,7 @@ public class AttackBruellenProcedure {
                 ((NamelessEntity)entity).setAnimation("attackbr\u00fcllen");
             }
             if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
-                _entity1.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 110, 100, false, false));
+                com.hp.saphyrareborn.boss.BossCastLock.lock(_entity1, 110);
             }
             MokelsBossfightSaphyraMod.queueServerWork(26, () -> {
                 LivingEntity _livEnt3;
@@ -100,7 +100,7 @@ public class AttackBruellenProcedure {
                     for (Entity entityiterator : _entfound1) {
                         LivingEntity _livEnt22;
                         if (entityiterator instanceof NamelessEntity || !(entityiterator instanceof LivingEntity) || entityiterator instanceof LivingEntity && (_livEnt22 = (LivingEntity)entityiterator).hasEffect(MokelsBossfightSaphyraModMobEffects.IMMUNE)) continue;
-                        entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK), entity), 14.0f);
+                        entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK), entity), com.hp.saphyrareborn.boss.BossAttributes.skillDamage(entity, 1.0));
                         double _setval = MokelsBossfightSaphyraModVariables.getPlayerVariables(entityiterator).Rotting + 40.0;
                         MokelsBossfightSaphyraModVariables.withPlayerVariables(entityiterator, capability -> {
                             capability.Rotting = _setval;

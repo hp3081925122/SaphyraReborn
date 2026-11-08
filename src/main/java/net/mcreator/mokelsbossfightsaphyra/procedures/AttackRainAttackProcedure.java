@@ -38,7 +38,7 @@ public class AttackRainAttackProcedure {
                 ((WitchbossEntity)entity).setAnimation("rainattack");
             }
             if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
-                _entity1.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 50, 100, false, false));
+                com.hp.saphyrareborn.boss.BossCastLock.lock(_entity1, 50);
             }
             if (entity.isAlive()) {
                 if (world instanceof ServerLevel) {

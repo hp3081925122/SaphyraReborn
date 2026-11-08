@@ -71,7 +71,7 @@ public class AttackFourthProcedure {
                 ((PuppetOfYivaNemorEntity)entity).setAnimation("attackfourth");
             }
             if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
-                _entity1.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 45, 100, false, false));
+                com.hp.saphyrareborn.boss.BossCastLock.lock(_entity1, 45);
             }
             if (entity.isAlive()) {
                 entity.setDeltaMovement(new Vec3(-1.0 * entity.getLookAngle().x, 0.01, -1.0 * entity.getLookAngle().z));
@@ -162,7 +162,7 @@ public class AttackFourthProcedure {
                     for (Entity entityiterator : _entfound1) {
                         LivingEntity _livEnt50;
                         if (entityiterator instanceof PuppetOfYivaNemorEntity || !(entityiterator instanceof LivingEntity) || entityiterator instanceof LivingEntity && (_livEnt50 = (LivingEntity)entityiterator).hasEffect(MokelsBossfightSaphyraModMobEffects.IMMUNE)) continue;
-                        entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK)), 14.0f);
+                        entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK)), com.hp.saphyrareborn.boss.BossAttributes.skillDamage(entity, 1.0));
                         double _setval = MokelsBossfightSaphyraModVariables.getPlayerVariables(entityiterator).Rotting + 20.0;
                         MokelsBossfightSaphyraModVariables.withPlayerVariables(entityiterator, capability -> {
                             capability.Rotting = _setval;

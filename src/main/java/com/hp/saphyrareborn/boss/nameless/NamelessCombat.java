@@ -79,7 +79,13 @@ public final class NamelessCombat {
             return;
         }
         LivingEntity target = this.boss.getTarget();
+        boolean floating = this.skill == NamelessSkill.FLOAT;
+        if (this.boss.isNoGravity() != floating) {
+            this.boss.setNoGravity(floating);
+        }
         this.tickMusic(level, target);
+        this.faceTarget(target);
+        this.debugLog(target);
         if (!this.phase2 && BossConfig.NAMELESS_PHASE2_ENABLED.get()
                 && this.boss.getHealth() <= this.boss.getMaxHealth() * BossConfig.NAMELESS_PHASE2_RATIO.get()) {
             this.startPhaseShift(level);
@@ -118,6 +124,49 @@ public final class NamelessCombat {
             this.pendingPoint = -1;
             this.firePoint(level, point);
         }
+    }
+
+    private float turnRate() {
+        if (this.phaseShiftTicks > 0 || this.staggerTicks > 0) {
+            return 0.0f;
+        }
+        if (this.skill == null) {
+            return 30.0f;
+        }
+        return switch (this.skill) {
+            case ROT -> this.skillTick >= 10 ? 0.0f : 10.0f;
+            case FLOAT -> this.skillTick >= 21 ? 0.0f : 10.0f;
+            default -> 10.0f;
+        };
+    }
+
+    private void faceTarget(LivingEntity target) {
+        if (target == null || !target.isAlive()) {
+            return;
+        }
+        this.boss.getLookControl().setLookAt(target, 30.0f, 30.0f);
+        float rate = this.turnRate();
+        double dx = target.getX() - this.boss.getX();
+        double dz = target.getZ() - this.boss.getZ();
+        if (rate <= 0.0f || dx * dx + dz * dz < 1.0E-4) {
+            return;
+        }
+        float want = (float) (Mth.atan2(dz, dx) * (180.0 / Math.PI)) - 90.0f;
+        float yaw = Mth.approachDegrees(this.boss.getYRot(), want, rate);
+        this.boss.setYRot(yaw);
+        this.boss.setYBodyRot(yaw);
+    }
+
+    private void debugLog(LivingEntity target) {
+        if (target == null || this.boss.tickCount % 100 != 0) {
+            return;
+        }
+        double dx = target.getX() - this.boss.getX();
+        double dz = target.getZ() - this.boss.getZ();
+        float want = (float) (Mth.atan2(dz, dx) * (180.0 / Math.PI)) - 90.0f;
+        com.hp.saphyrareborn.MokelsBossfightSaphyraMod.LOGGER.info("[NamelessDebug] id={} onGround={} noGravity={} yRot={} bodyRot={} headRot={} targetYaw={} navDone={} skill={} timeline={} phase2={}",
+                this.boss.getId(), this.boss.onGround(), this.boss.isNoGravity(), String.format("%.1f", Mth.wrapDegrees(this.boss.getYRot())), String.format("%.1f", Mth.wrapDegrees(this.boss.yBodyRot)),
+                String.format("%.1f", Mth.wrapDegrees(this.boss.getYHeadRot())), String.format("%.1f", Mth.wrapDegrees(want)), this.boss.getNavigation().isDone(), this.skill, this.timeline, this.phase2);
     }
 
     public boolean onBlockedHit(DamageSource source, float amount) {

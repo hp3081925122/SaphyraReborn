@@ -129,7 +129,16 @@ implements GeoEntity {
         super(type, world);
         this.xpReward = 600;
         this.setNoAi(false);
-        this.setNoGravity(true);
+    }
+
+    @Override
+    protected net.minecraft.world.entity.ai.control.BodyRotationControl createBodyControl() {
+        return new net.minecraft.world.entity.ai.control.BodyRotationControl(this) {
+            @Override
+            public void clientTick() {
+                NamelessEntity.this.yBodyRot = NamelessEntity.this.getYRot();
+            }
+        };
     }
 
     protected void defineSynchedData(SynchedEntityData.Builder builder) {

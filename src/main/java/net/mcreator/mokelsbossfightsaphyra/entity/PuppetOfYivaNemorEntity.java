@@ -260,6 +260,14 @@ implements GeoEntity {
     protected void tickDeath() {
         ++this.deathTime;
         if (this.deathTime == 80) {
+            // 死亡时掉落伊瓦的傀儡的记忆，写法同无名守门人
+            if (this.level() instanceof net.minecraft.server.level.ServerLevel level) {
+                level.sendParticles((net.minecraft.core.particles.SimpleParticleType)com.hp.saphyrareborn.init.MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get(), this.getX(), this.getY(), this.getZ(), 400, 0.6, 1.7, 0.6, 0.01);
+                net.minecraft.world.entity.item.ItemEntity drop = new net.minecraft.world.entity.item.ItemEntity(level, this.getX(), this.getY(), this.getZ(), new net.minecraft.world.item.ItemStack(com.hp.saphyrareborn.init.MokelsBossfightSaphyraModItems.PUPPET_OF_YIVA_REMEMBRANCE.get()));
+                drop.setPickUpDelay(2);
+                drop.setUnlimitedLifetime();
+                level.addFreshEntity(drop);
+            }
             this.remove(Entity.RemovalReason.KILLED);
             this.discard();
         }

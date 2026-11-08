@@ -55,6 +55,9 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class AttackFloatProcedure {
     public static void execute(LevelAccessor world, Entity entity) {
+        if (entity instanceof net.minecraft.world.entity.Mob _guardMob && _guardMob.getTarget() == null) {
+            return; // 目标丢失（被眩晕、目标死亡等），放弃本次攻击，避免空指针崩溃
+        }
         LivingEntity _livEnt1;
         if (entity == null) {
             return;

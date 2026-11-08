@@ -25,6 +25,9 @@ import net.minecraft.world.phys.Vec3;
 
 public class AttackDashForthProcedure {
     public static void execute(LevelAccessor world, Entity entity) {
+        if (entity instanceof net.minecraft.world.entity.Mob _guardMob && _guardMob.getTarget() == null) {
+            return; // 目标丢失（被眩晕、目标死亡等），放弃本次攻击，避免空指针崩溃
+        }
         if (entity == null) {
             return;
         }
@@ -34,6 +37,7 @@ public class AttackDashForthProcedure {
         }
         entity.setDeltaMovement(new Vec3(0.0, 1.0, 0.0));
         MokelsBossfightSaphyraMod.queueServerWork(2, () -> {
+            if (entity instanceof net.minecraft.world.entity.Mob _lamMob && _lamMob.getTarget() == null) return; // 延迟期间目标丢失
             LivingEntity livingEntity;
             LivingEntity livingEntity2;
             LivingEntity livingEntity3;

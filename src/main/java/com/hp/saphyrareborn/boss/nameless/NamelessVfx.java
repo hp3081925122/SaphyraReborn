@@ -26,6 +26,7 @@ public record NamelessVfx(byte kind, double x, double y, double z, float yaw, fl
     public static final byte CHARGE = 8;
     public static final byte PHASE_SHIFT = 9;
     public static final byte SHIELD_RAISE = 10;
+    public static final byte ROT_POOL = 11;
 
     public static final int SLASH_LEFT = 0;
     public static final int SLASH_RIGHT = 1;

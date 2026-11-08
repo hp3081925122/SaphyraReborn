@@ -96,8 +96,9 @@ implements ItemSupplier {
 
     public void onHitBlock(BlockHitResult blockHitResult) {
         super.onHitBlock(blockHitResult);
-        if (this.poolAge < 0 && !this.level().isClientSide()) {
+        if (this.poolAge < 0 && this.level() instanceof net.minecraft.server.level.ServerLevel level) {
             this.poolAge = 0;
+            com.hp.saphyrareborn.boss.nameless.NamelessVfx.send(level, com.hp.saphyrareborn.boss.nameless.NamelessVfx.ROT_POOL, this.position(), 0.0f, 2.6f, POOL_TICKS);
         }
     }
 
@@ -106,9 +107,11 @@ implements ItemSupplier {
         double x = this.getX();
         double y = this.getY();
         double z = this.getZ();
+        if (this.poolAge % 4 == 0 && this.poolAge <= POOL_TICKS) {
+            level.sendParticles(com.hp.saphyrareborn.init.MokelsBossfightSaphyraModParticleTypes.REDFLAME_PARTICLE.get(), x, y, z, 3, 0.5, 0.5, 0.5, 0.01);
+            level.sendParticles(com.hp.saphyrareborn.init.MokelsBossfightSaphyraModParticleTypes.REDFIRE_PARTICLE.get(), x, y, z, 2, 0.5, 0.5, 0.5, 0.01);
+        }
         if (this.poolAge % 2 == 0 && this.poolAge <= POOL_TICKS) {
-            level.sendParticles(com.hp.saphyrareborn.init.MokelsBossfightSaphyraModParticleTypes.REDFLAME_PARTICLE.get(), x, y, z, 20, 0.5, 0.5, 0.5, 0.01);
-            level.sendParticles(com.hp.saphyrareborn.init.MokelsBossfightSaphyraModParticleTypes.REDFIRE_PARTICLE.get(), x, y, z, 15, 0.5, 0.5, 0.5, 0.01);
             for (net.minecraft.world.entity.player.Player player : level.getEntitiesOfClass(net.minecraft.world.entity.player.Player.class, new net.minecraft.world.phys.AABB(x, y, z, x, y, z).inflate(3.0), com.hp.saphyrareborn.boss.nameless.NamelessCombat::canBeHit)) {
                 com.hp.saphyrareborn.boss.nameless.NamelessCombat.addRotting(player, 1.0);
             }

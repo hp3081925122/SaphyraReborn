@@ -372,10 +372,10 @@ implements GeoEntity {
         }
         net.minecraft.util.RandomSource random = this.getRandom();
         double w = this.getBbWidth() * 0.6;
-        for (int i = 0; i < 2; i++) {
+        if (this.tickCount % 2 == 0) {
             this.level().addParticle(com.hp.saphyrareborn.init.MokelsBossfightSaphyraModParticleTypes.REDFLAME_PARTICLE.get(), this.getX() + (random.nextDouble() - 0.5) * w * 2.0, this.getY() + random.nextDouble() * this.getBbHeight(), this.getZ() + (random.nextDouble() - 0.5) * w * 2.0, 0.0, 0.02 + random.nextDouble() * 0.03, 0.0);
         }
-        if (random.nextInt(3) == 0) {
+        if (random.nextInt(8) == 0) {
             this.level().addParticle(new net.minecraft.core.particles.DustParticleOptions(new org.joml.Vector3f(0.45f, 0.03f, 0.05f), 1.4f), this.getX() + (random.nextDouble() - 0.5) * w * 2.0, this.getY() + 0.1, this.getZ() + (random.nextDouble() - 0.5) * w * 2.0, 0.0, 0.0, 0.0);
         }
     }

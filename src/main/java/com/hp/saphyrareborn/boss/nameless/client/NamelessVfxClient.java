@@ -3,15 +3,20 @@ package com.hp.saphyrareborn.boss.nameless.client;
 import com.hp.saphyrareborn.MokelsBossfightSaphyraMod;
 import com.hp.saphyrareborn.boss.nameless.NamelessVfx;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModParticleTypes;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderStateShard;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.core.particles.DustColorTransitionOptions;
-import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -22,20 +27,26 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
-import org.joml.Vector3f;
 
 @EventBusSubscriber(modid = MokelsBossfightSaphyraMod.MODID, value = Dist.CLIENT)
 public final class NamelessVfxClient {
-    private static final DustParticleOptions CRIMSON = new DustParticleOptions(new Vector3f(0.62f, 0.05f, 0.07f), 1.5f);
-    private static final DustParticleOptions DARK = new DustParticleOptions(new Vector3f(0.22f, 0.02f, 0.03f), 2.2f);
-    private static final DustParticleOptions GOLD = new DustParticleOptions(new Vector3f(1.0f, 0.75f, 0.35f), 0.8f);
-    private static final DustColorTransitionOptions EMBER = new DustColorTransitionOptions(new Vector3f(1.0f, 0.35f, 0.2f), new Vector3f(0.35f, 0.0f, 0.02f), 1.2f);
+    private static final RenderType GLOW = RenderType.create("saphyra_nameless_glow", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 8192, false, true,
+            RenderType.CompositeState.builder()
+                    .setShaderState(RenderStateShard.RENDERTYPE_LIGHTNING_SHADER)
+                    .setTransparencyState(RenderStateShard.LIGHTNING_TRANSPARENCY)
+                    .setCullState(RenderStateShard.NO_CULL)
+                    .setWriteMaskState(RenderStateShard.COLOR_WRITE)
+                    .setLayeringState(RenderStateShard.VIEW_OFFSET_Z_LAYERING)
+                    .createCompositeState(false));
     private static final int MAX_EFFECTS = 64;
+    private static final double RENDER_RANGE_SQR = 128.0 * 128.0;
     private static final List<Fx> ACTIVE = new ArrayList<>();
     private static ClientLevel lastLevel;
     private static float shake;
@@ -62,19 +73,44 @@ public final class NamelessVfxClient {
                 ACTIVE.add(new Fx(payload));
             }
         }
-        if (!mc.isPaused()) {
-            Iterator<Fx> it = ACTIVE.iterator();
-            while (it.hasNext()) {
-                Fx fx = it.next();
-                if (fx.tick(level)) {
-                    it.remove();
-                }
-            }
-            shake *= 0.82f;
-            if (shake < 0.01f) {
-                shake = 0.0f;
+        if (mc.isPaused()) {
+            return;
+        }
+        Iterator<Fx> it = ACTIVE.iterator();
+        while (it.hasNext()) {
+            Fx fx = it.next();
+            fx.tickParticles(level, level.random);
+            fx.age++;
+            if (fx.age > fx.life) {
+                it.remove();
             }
         }
+        shake *= 0.82f;
+        if (shake < 0.01f) {
+            shake = 0.0f;
+        }
+    }
+
+    @SubscribeEvent
+    public static void onRender(RenderLevelStageEvent event) {
+        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES || ACTIVE.isEmpty()) {
+            return;
+        }
+        Vec3 cam = event.getCamera().getPosition();
+        float partial = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        PoseStack pose = event.getPoseStack();
+        pose.pushPose();
+        pose.translate(-cam.x, -cam.y, -cam.z);
+        MultiBufferSource.BufferSource buffers = Minecraft.getInstance().renderBuffers().bufferSource();
+        VertexConsumer consumer = buffers.getBuffer(GLOW);
+        PoseStack.Pose last = pose.last();
+        for (Fx fx : ACTIVE) {
+            if (cam.distanceToSqr(fx.x, fx.y, fx.z) < RENDER_RANGE_SQR) {
+                fx.render(new Painter(consumer, last), fx.age + partial);
+            }
+        }
+        buffers.endBatch(GLOW);
+        pose.popPose();
     }
 
     @SubscribeEvent
@@ -101,8 +137,7 @@ public final class NamelessVfxClient {
         if (d >= range) {
             return;
         }
-        float s = (float) (intensity * (1.0 - d / range));
-        shake = Math.min(1.5f, Math.max(shake, s));
+        shake = Math.min(1.5f, Math.max(shake, (float) (intensity * (1.0 - d / range))));
     }
 
     private static ParticleOptions redFlame() {
@@ -111,6 +146,68 @@ public final class NamelessVfxClient {
 
     private static ParticleOptions redFire() {
         return MokelsBossfightSaphyraModParticleTypes.REDFIRE_PARTICLE.get();
+    }
+
+    private static float clamp01(float v) {
+        return v < 0.0f ? 0.0f : Math.min(v, 1.0f);
+    }
+
+    private static float easeOut(float v) {
+        float c = clamp01(v);
+        return 1.0f - (1.0f - c) * (1.0f - c);
+    }
+
+    private record Painter(VertexConsumer vc, PoseStack.Pose pose) {
+        void quad(double x0, double y0, double z0, float[] c0, double x1, double y1, double z1, float[] c1,
+                  double x2, double y2, double z2, float[] c2, double x3, double y3, double z3, float[] c3) {
+            this.v(x0, y0, z0, c0);
+            this.v(x1, y1, z1, c1);
+            this.v(x2, y2, z2, c2);
+            this.v(x3, y3, z3, c3);
+        }
+
+        void v(double x, double y, double z, float[] c) {
+            this.vc.addVertex(this.pose, (float) x, (float) y, (float) z).setColor(c[0], c[1], c[2], c[3]);
+        }
+
+        void annulus(double cx, double y, double cz, double rIn, double rOut, int segs, float[] inner, float[] outer) {
+            if (rOut <= 0.0 || rOut <= rIn) {
+                return;
+            }
+            for (int i = 0; i < segs; i++) {
+                double a0 = Math.PI * 2.0 * i / segs;
+                double a1 = Math.PI * 2.0 * (i + 1) / segs;
+                double c0 = Math.cos(a0), s0 = Math.sin(a0), c1 = Math.cos(a1), s1 = Math.sin(a1);
+                this.quad(cx + c0 * rIn, y, cz + s0 * rIn, inner, cx + c0 * rOut, y, cz + s0 * rOut, outer,
+                        cx + c1 * rOut, y, cz + s1 * rOut, outer, cx + c1 * rIn, y, cz + s1 * rIn, inner);
+            }
+        }
+
+        void wall(double cx, double y0, double y1, double cz, double r, int segs, double fromAngle, double toAngle, float[] bottom, float[] top) {
+            for (int i = 0; i < segs; i++) {
+                double a0 = fromAngle + (toAngle - fromAngle) * i / segs;
+                double a1 = fromAngle + (toAngle - fromAngle) * (i + 1) / segs;
+                double x0 = cx + Math.cos(a0) * r, z0 = cz + Math.sin(a0) * r;
+                double x1 = cx + Math.cos(a1) * r, z1 = cz + Math.sin(a1) * r;
+                this.quad(x0, y0, z0, bottom, x1, y0, z1, bottom, x1, y1, z1, top, x0, y1, z0, top);
+            }
+        }
+    }
+
+    private static float[] rgba(float r, float g, float b, float a) {
+        return new float[]{r, g, b, clamp01(a)};
+    }
+
+    private static float[] core(float a) {
+        return rgba(1.0f, 0.42f, 0.25f, a);
+    }
+
+    private static float[] crimson(float a) {
+        return rgba(0.85f, 0.05f, 0.08f, a);
+    }
+
+    private static float[] gold(float a) {
+        return rgba(1.0f, 0.72f, 0.3f, a);
     }
 
     private static final class Fx {
@@ -122,6 +219,8 @@ public final class NamelessVfxClient {
         private final int extra;
         private final double fx;
         private final double fz;
+        private final double yawRad;
+        private final int life;
         private int age;
 
         Fx(NamelessVfx p) {
@@ -131,333 +230,364 @@ public final class NamelessVfxClient {
             this.z = p.z();
             this.size = Math.max(0.5f, Math.min(p.size(), 32.0f));
             this.extra = Math.max(0, Math.min(p.extra(), 400));
-            double rad = Math.toRadians(p.yaw());
-            this.fx = -Math.sin(rad);
-            this.fz = Math.cos(rad);
-        }
-
-        boolean tick(ClientLevel level) {
-            RandomSource r = level.random;
-            boolean done = switch (this.kind) {
-                case NamelessVfx.SLASH -> this.slash(level, r);
-                case NamelessVfx.SLAM -> this.slam(level, r);
-                case NamelessVfx.TELEGRAPH_RING -> this.telegraphRing(level, r);
-                case NamelessVfx.TELEGRAPH_LINE -> this.telegraphLine(level, r);
-                case NamelessVfx.ROT_PILLAR -> this.rotPillar(level, r);
-                case NamelessVfx.ROAR -> this.roar(level, r);
-                case NamelessVfx.SHIELD_SPARK -> this.shieldSpark(level, r);
-                case NamelessVfx.SHIELD_BREAK -> this.shieldBreak(level, r);
-                case NamelessVfx.CHARGE -> this.charge(level, r, this.size, this.extra, 6);
-                case NamelessVfx.PHASE_SHIFT -> this.phaseShift(level, r);
-                case NamelessVfx.SHIELD_RAISE -> this.shieldRaise(level, r);
-                default -> true;
+            this.yawRad = Math.toRadians(p.yaw());
+            this.fx = -Math.sin(this.yawRad);
+            this.fz = Math.cos(this.yawRad);
+            this.life = switch (this.kind) {
+                case NamelessVfx.SLASH -> 7;
+                case NamelessVfx.SLAM -> Math.max(2, this.extra) + 6;
+                case NamelessVfx.TELEGRAPH_RING, NamelessVfx.TELEGRAPH_LINE -> Math.max(2, this.extra) + 4;
+                case NamelessVfx.ROT_PILLAR -> this.extra + 14;
+                case NamelessVfx.ROAR -> 18;
+                case NamelessVfx.SHIELD_SPARK -> 5;
+                case NamelessVfx.SHIELD_RAISE -> Math.max(4, this.extra);
+                case NamelessVfx.SHIELD_BREAK -> 10;
+                case NamelessVfx.CHARGE -> Math.max(2, this.extra) + 3;
+                case NamelessVfx.PHASE_SHIFT -> 52;
+                case NamelessVfx.ROT_POOL -> Math.max(4, this.extra);
+                default -> 0;
             };
-            this.age++;
-            return done;
         }
 
-        private double sideX() {
-            return this.fz;
+        private double faceAngle() {
+            return Math.atan2(this.fz, this.fx);
         }
 
-        private double sideZ() {
-            return -this.fx;
-        }
-
-        private boolean slash(ClientLevel level, RandomSource r) {
-            int steps = 4;
-            double radius = this.size * 0.75;
-            if (this.extra == NamelessVfx.SLASH_OVERHEAD) {
-                double from = Math.toRadians(-35.0);
-                double to = Math.toRadians(110.0);
-                double a0 = from + (to - from) * this.age / steps;
-                double a1 = from + (to - from) * (this.age + 1) / steps;
-                int count = 18;
-                for (int i = 0; i <= count; i++) {
-                    double a = a0 + (a1 - a0) * i / count;
-                    double up = Math.cos(a) * radius;
-                    double fw = Math.sin(a) * radius;
-                    double px = this.x + this.fx * fw;
-                    double py = this.y + 0.4 + Math.max(0.0, up);
-                    double pz = this.z + this.fz * fw;
-                    level.addParticle(CRIMSON, px, py, pz, 0.0, 0.0, 0.0);
-                    level.addParticle(redFlame(), px, py, pz, this.fx * 0.04, 0.02, this.fz * 0.04);
-                    if (i % 3 == 0) {
-                        level.addParticle(EMBER, px + this.fx * 0.3, py, pz + this.fz * 0.3, 0.0, 0.0, 0.0);
+        void tickParticles(ClientLevel level, RandomSource r) {
+            switch (this.kind) {
+                case NamelessVfx.SLASH -> {
+                    if (this.age == 0) {
+                        level.addParticle(ParticleTypes.SWEEP_ATTACK, this.x + this.fx * 2.0, this.y + 1.2, this.z + this.fz * 2.0, 0.0, 0.0, 0.0);
+                        addShake(this.x, this.y, this.z, 0.18f, 12.0);
                     }
-                }
-                if (this.age == steps - 1) {
-                    double gx = this.x + this.fx * radius;
-                    double gz = this.z + this.fz * radius;
-                    this.debris(level, r, gx, this.y, gz, 14, 0.25);
-                    for (int i = 0; i < 16; i++) {
-                        level.addParticle(redFire(), gx + r.nextGaussian() * 0.4, this.y + 0.1, gz + r.nextGaussian() * 0.4, r.nextGaussian() * 0.08, 0.12 + r.nextDouble() * 0.15, r.nextGaussian() * 0.08);
-                    }
-                }
-            } else {
-                double dir = this.extra == NamelessVfx.SLASH_RIGHT ? -1.0 : 1.0;
-                double from = Math.toRadians(-85.0) * dir;
-                double to = Math.toRadians(85.0) * dir;
-                double a0 = from + (to - from) * this.age / steps;
-                double a1 = from + (to - from) * (this.age + 1) / steps;
-                int count = 18;
-                for (int i = 0; i <= count; i++) {
-                    double a = a0 + (a1 - a0) * i / count;
-                    double cos = Math.cos(a);
-                    double sin = Math.sin(a);
-                    double dx = this.fx * cos + this.sideX() * sin;
-                    double dz = this.fz * cos + this.sideZ() * sin;
-                    double tilt = sin * 0.5 * dir;
-                    for (int layer = 0; layer < 2; layer++) {
-                        double rr = radius * (layer == 0 ? 1.0 : 0.82);
-                        double px = this.x + dx * rr;
-                        double py = this.y + 1.3 + tilt;
-                        double pz = this.z + dz * rr;
-                        level.addParticle(layer == 0 ? CRIMSON : DARK, px, py, pz, 0.0, 0.0, 0.0);
-                        if (layer == 0) {
-                            level.addParticle(redFlame(), px, py, pz, dx * 0.05, 0.01, dz * 0.05);
+                    if (this.age == 3) {
+                        double reach = this.size * 0.75;
+                        for (int i = 0; i < 6; i++) {
+                            double a = this.faceAngle() + (r.nextDouble() - 0.5) * 2.4;
+                            level.addParticle(redFlame(), this.x + Math.cos(a) * reach, this.y + 0.6 + r.nextDouble() * 1.2, this.z + Math.sin(a) * reach, 0.0, 0.03, 0.0);
                         }
                     }
-                    if (i % 4 == 0) {
-                        level.addParticle(EMBER, this.x + dx * radius * 1.08, this.y + 1.3 + tilt, this.z + dz * radius * 1.08, 0.0, 0.0, 0.0);
+                }
+                case NamelessVfx.SLAM -> {
+                    if (this.age == 0) {
+                        this.debris(level, r, this.x, this.y, this.z, (int) Math.min(18, 6 + this.size), 0.35);
+                        for (int i = 0; i < 8; i++) {
+                            level.addParticle(redFlame(), this.x + r.nextGaussian() * 0.5, this.y + 0.2, this.z + r.nextGaussian() * 0.5, r.nextGaussian() * 0.08, 0.2 + r.nextDouble() * 0.25, r.nextGaussian() * 0.08);
+                        }
+                        addShake(this.x, this.y, this.z, Math.min(1.0f, 0.15f + this.size * 0.045f), this.size * 2.5 + 8.0);
                     }
                 }
+                case NamelessVfx.ROT_PILLAR -> {
+                    int local = this.age - this.extra;
+                    if (local == 0) {
+                        this.debris(level, r, this.x, this.y, this.z, 5, 0.3);
+                        for (int i = 0; i < 5; i++) {
+                            level.addParticle(redFlame(), this.x + r.nextGaussian() * 0.6, this.y + 0.2, this.z + r.nextGaussian() * 0.6, 0.0, 0.3 + r.nextDouble() * 0.3, 0.0);
+                        }
+                        level.addParticle(ParticleTypes.LARGE_SMOKE, this.x, this.y + 0.6, this.z, 0.0, 0.08, 0.0);
+                        addShake(this.x, this.y, this.z, 0.25f, 10.0);
+                    }
+                }
+                case NamelessVfx.ROAR -> {
+                    if (this.age == 0) {
+                        for (int i = 0; i < 30; i++) {
+                            double a = r.nextDouble() * Math.PI * 2.0;
+                            double speed = 0.45 + r.nextDouble() * 0.35;
+                            level.addParticle(redFlame(), this.x, this.y + 1.2 + r.nextDouble() * 1.6, this.z, Math.cos(a) * speed, r.nextGaussian() * 0.03, Math.sin(a) * speed);
+                        }
+                        addShake(this.x, this.y, this.z, 0.9f, this.size * 2.0 + 8.0);
+                    }
+                }
+                case NamelessVfx.SHIELD_SPARK -> {
+                    if (this.age == 0) {
+                        double px = this.x + this.fx * 1.3, py = this.y + 1.7, pz = this.z + this.fz * 1.3;
+                        for (int i = 0; i < (int) (5 * this.size); i++) {
+                            level.addParticle(ParticleTypes.CRIT, px, py, pz, this.fx * 0.3 + r.nextGaussian() * 0.2, r.nextGaussian() * 0.15 + 0.05, this.fz * 0.3 + r.nextGaussian() * 0.2);
+                        }
+                    }
+                }
+                case NamelessVfx.SHIELD_RAISE -> {
+                    if (this.age == 0) {
+                        for (int i = 0; i < 6; i++) {
+                            level.addParticle(ParticleTypes.CRIT, this.x + this.fx * 1.2, this.y + 1.6, this.z + this.fz * 1.2, r.nextGaussian() * 0.2, r.nextGaussian() * 0.2, r.nextGaussian() * 0.2);
+                        }
+                    }
+                }
+                case NamelessVfx.SHIELD_BREAK -> {
+                    if (this.age == 0) {
+                        double px = this.x + this.fx * 1.2, py = this.y + 1.6, pz = this.z + this.fz * 1.2;
+                        ItemParticleOption shard = new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.SHIELD));
+                        for (int i = 0; i < 12; i++) {
+                            level.addParticle(shard, px, py, pz, r.nextGaussian() * 0.25, 0.15 + r.nextDouble() * 0.3, r.nextGaussian() * 0.25);
+                        }
+                        for (int i = 0; i < 8; i++) {
+                            level.addParticle(ParticleTypes.CRIT, px, py, pz, r.nextGaussian() * 0.4, r.nextGaussian() * 0.4, r.nextGaussian() * 0.4);
+                        }
+                        level.addParticle(ParticleTypes.FLASH, px, py, pz, 0.0, 0.0, 0.0);
+                        addShake(this.x, this.y, this.z, 0.6f, 16.0);
+                    }
+                }
+                case NamelessVfx.CHARGE -> {
+                    if (this.age % 2 == 0 && this.age < this.life - 3) {
+                        double a = r.nextDouble() * Math.PI * 2.0;
+                        double d = this.size * 1.2;
+                        double px = this.x + Math.cos(a) * d, py = this.y + 0.6 + r.nextDouble() * 2.0, pz = this.z + Math.sin(a) * d;
+                        level.addParticle(redFlame(), px, py, pz, (this.x - px) * 0.09, (this.y + 1.6 - py) * 0.09, (this.z - pz) * 0.09);
+                    }
+                }
+                case NamelessVfx.PHASE_SHIFT -> {
+                    if (this.age < 30 && this.age % 2 == 0) {
+                        double a = r.nextDouble() * Math.PI * 2.0;
+                        double px = this.x + Math.cos(a) * 5.0, py = this.y + 0.5 + r.nextDouble() * 2.5, pz = this.z + Math.sin(a) * 5.0;
+                        level.addParticle(redFlame(), px, py, pz, (this.x - px) * 0.09, (this.y + 1.6 - py) * 0.09, (this.z - pz) * 0.09);
+                    }
+                    if (this.age == 30) {
+                        for (int i = 0; i < 40; i++) {
+                            double a = r.nextDouble() * Math.PI * 2.0;
+                            double speed = 0.4 + r.nextDouble() * 0.5;
+                            level.addParticle(redFlame(), this.x, this.y + 0.5 + r.nextDouble() * 2.5, this.z, Math.cos(a) * speed, r.nextGaussian() * 0.05, Math.sin(a) * speed);
+                        }
+                        this.debris(level, r, this.x, this.y, this.z, 20, 0.45);
+                        level.addParticle(ParticleTypes.FLASH, this.x, this.y + 1.5, this.z, 0.0, 0.0, 0.0);
+                        addShake(this.x, this.y, this.z, 1.2f, 32.0);
+                    }
+                }
+                case NamelessVfx.ROT_POOL -> {
+                    if (this.age % 6 == 0) {
+                        level.addParticle(redFire(), this.x + r.nextGaussian() * 1.0, this.y + 0.1, this.z + r.nextGaussian() * 1.0, 0.0, 0.05, 0.0);
+                    }
+                }
+                default -> {
+                }
             }
-            if (this.age == 0) {
-                level.addParticle(ParticleTypes.SWEEP_ATTACK, this.x + this.fx * 2.0, this.y + 1.2, this.z + this.fz * 2.0, 0.0, 0.0, 0.0);
-                addShake(this.x, this.y, this.z, 0.18f, 12.0);
-            }
-            return this.age >= steps - 1;
         }
 
-        private boolean slam(ClientLevel level, RandomSource r) {
+        void render(Painter p, float t) {
+            switch (this.kind) {
+                case NamelessVfx.SLASH -> this.renderSlash(p, t);
+                case NamelessVfx.SLAM -> this.renderSlam(p, t);
+                case NamelessVfx.TELEGRAPH_RING -> this.renderTelegraphRing(p, t);
+                case NamelessVfx.TELEGRAPH_LINE -> this.renderTelegraphLine(p, t);
+                case NamelessVfx.ROT_PILLAR -> this.renderPillar(p, t - this.extra, this.size * 0.6, 5.0, 1.0f);
+                case NamelessVfx.ROAR -> this.renderRoar(p, t);
+                case NamelessVfx.SHIELD_SPARK -> this.renderFlare(p, t, 5.0f, 0.5 + 0.4 * this.size);
+                case NamelessVfx.SHIELD_RAISE -> this.renderBarrier(p, t);
+                case NamelessVfx.SHIELD_BREAK -> this.renderShieldBreak(p, t);
+                case NamelessVfx.CHARGE -> this.renderCharge(p, t, this.size, Math.max(2, this.extra));
+                case NamelessVfx.PHASE_SHIFT -> this.renderPhaseShift(p, t);
+                case NamelessVfx.ROT_POOL -> this.renderPool(p, t);
+                default -> {
+                }
+            }
+        }
+
+        private void renderSlash(Painter p, float t) {
+            float reveal = easeOut(t / 3.0f);
+            float fade = 1.0f - clamp01((t - 3.0f) / 4.0f);
+            if (fade <= 0.0f) {
+                return;
+            }
+            double outer = this.size * 0.78;
+            double inner = this.size * 0.5;
+            int segs = 20;
+            boolean overhead = this.extra == NamelessVfx.SLASH_OVERHEAD;
+            double dir = this.extra == NamelessVfx.SLASH_RIGHT ? -1.0 : 1.0;
+            double from = overhead ? Math.toRadians(-35.0) : Math.toRadians(-85.0) * dir;
+            double to = overhead ? Math.toRadians(110.0) : Math.toRadians(85.0) * dir;
+            double end = from + (to - from) * reveal;
+            for (int i = 0; i < segs; i++) {
+                double f0 = (double) i / segs;
+                double f1 = (double) (i + 1) / segs;
+                double a0 = from + (end - from) * f0;
+                double a1 = from + (end - from) * f1;
+                float w0 = (float) (0.25 + 0.75 * f0) * fade;
+                float w1 = (float) (0.25 + 0.75 * f1) * fade;
+                double[] o0 = this.slashPoint(a0, outer, overhead, dir);
+                double[] o1 = this.slashPoint(a1, outer, overhead, dir);
+                double[] i0 = this.slashPoint(a0, inner, overhead, dir);
+                double[] i1 = this.slashPoint(a1, inner, overhead, dir);
+                p.quad(i0[0], i0[1], i0[2], crimson(0.0f), o0[0], o0[1], o0[2], core(w0 * 0.9f),
+                        o1[0], o1[1], o1[2], core(w1 * 0.9f), i1[0], i1[1], i1[2], crimson(0.0f));
+                double[] e0 = this.slashPoint(a0, outer * 1.08, overhead, dir);
+                double[] e1 = this.slashPoint(a1, outer * 1.08, overhead, dir);
+                p.quad(o0[0], o0[1], o0[2], core(w0 * 0.9f), e0[0], e0[1], e0[2], crimson(0.0f),
+                        e1[0], e1[1], e1[2], crimson(0.0f), o1[0], o1[1], o1[2], core(w1 * 0.9f));
+            }
+        }
+
+        private double[] slashPoint(double a, double radius, boolean overhead, double dir) {
+            if (overhead) {
+                double up = Math.cos(a) * radius;
+                double fw = Math.sin(a) * radius;
+                return new double[]{this.x + this.fx * fw, this.y + 0.4 + Math.max(0.0, up), this.z + this.fz * fw};
+            }
+            double cos = Math.cos(a);
+            double sin = Math.sin(a);
+            double dx = this.fx * cos + this.fz * sin;
+            double dz = this.fz * cos - this.fx * sin;
+            return new double[]{this.x + dx * radius, this.y + 1.3 + sin * 0.5 * dir, this.z + dz * radius};
+        }
+
+        private void renderSlam(Painter p, float t) {
             int ticks = Math.max(2, this.extra);
-            if (this.age == 0) {
-                this.debris(level, r, this.x, this.y, this.z, (int) Math.min(60, 8 + this.size * 3), 0.35);
-                for (int i = 0; i < 20; i++) {
-                    level.addParticle(redFlame(), this.x + r.nextGaussian() * 0.5, this.y + 0.2, this.z + r.nextGaussian() * 0.5, r.nextGaussian() * 0.1, 0.2 + r.nextDouble() * 0.3, r.nextGaussian() * 0.1);
-                }
-                addShake(this.x, this.y, this.z, Math.min(1.0f, 0.15f + this.size * 0.045f), this.size * 2.5 + 8.0);
-            }
-            double radius = this.size * (this.age + 1) / ticks;
-            int count = (int) Math.min(140, Math.max(12, radius * Math.PI * 2.0 * 1.2));
-            for (int i = 0; i < count; i++) {
-                double a = Math.PI * 2.0 * i / count + r.nextDouble() * 0.05;
-                double cx = Math.cos(a);
-                double cz = Math.sin(a);
-                double px = this.x + cx * radius;
-                double pz = this.z + cz * radius;
-                level.addParticle(DARK, px, this.y + 0.1, pz, 0.0, 0.0, 0.0);
-                if (i % 2 == 0) {
-                    level.addParticle(redFire(), px, this.y + 0.1, pz, cx * 0.04, 0.04 + r.nextDouble() * 0.06, cz * 0.04);
-                }
-                if (i % 5 == 0) {
-                    level.addParticle(EMBER, px, this.y + 0.3 + r.nextDouble() * 0.4, pz, 0.0, 0.0, 0.0);
-                }
-            }
-            return this.age >= ticks - 1;
+            float prog = easeOut(t / ticks);
+            float fade = 1.0f - clamp01((t - ticks) / 6.0f);
+            double r = this.size * prog;
+            double w = Math.max(0.35, this.size * 0.12);
+            int segs = (int) Math.min(64, Math.max(16, this.size * 4.0));
+            p.annulus(this.x, this.y + 0.06, this.z, Math.max(0.0, r - w), r, segs, crimson(0.0f), core(0.85f * fade));
+            p.annulus(this.x, this.y + 0.06, this.z, r, r + w * 0.5, segs, core(0.85f * fade), crimson(0.0f));
+            p.annulus(this.x, this.y + 0.05, this.z, 0.0, r, segs, crimson(0.18f * fade), crimson(0.05f * fade));
+            double h = 0.9 * (1.0 - prog) + 0.2;
+            p.wall(this.x, this.y, this.y + h, this.z, r, segs, 0.0, Math.PI * 2.0, crimson(0.55f * fade), crimson(0.0f));
         }
 
-        private boolean telegraphRing(ClientLevel level, RandomSource r) {
+        private void renderTelegraphRing(Painter p, float t) {
             int dur = Math.max(2, this.extra);
-            if (this.age % 2 == 0) {
-                this.circle(level, CRIMSON, this.size, (int) Math.min(110, Math.max(16, this.size * 4.0)), 0.12, 0.0);
-                double inner = this.size * this.age / dur;
-                if (inner > 0.4) {
-                    this.circle(level, EMBER, inner, (int) Math.min(90, Math.max(10, inner * 3.0)), 0.15, 0.0);
-                }
+            float pulse = 0.75f + 0.25f * Mth.sin(t * 0.8f);
+            int segs = (int) Math.min(72, Math.max(20, this.size * 4.0));
+            if (t <= dur) {
+                p.annulus(this.x, this.y + 0.07, this.z, this.size - 0.22, this.size, segs, crimson(0.5f * pulse), crimson(0.7f * pulse));
+                double inner = this.size * clamp01(t / dur);
+                p.annulus(this.x, this.y + 0.06, this.z, 0.0, inner, segs, crimson(0.06f), crimson(0.22f));
+                p.annulus(this.x, this.y + 0.065, this.z, Math.max(0.0, inner - 0.25), inner, segs, core(0.0f), core(0.6f));
+            } else {
+                float flash = 1.0f - clamp01((t - dur) / 4.0f);
+                p.annulus(this.x, this.y + 0.07, this.z, 0.0, this.size, segs, core(0.25f * flash), core(0.6f * flash));
             }
-            if (this.age == dur - 1) {
-                this.circle(level, redFlame(), this.size, (int) Math.min(120, this.size * 4.0), 0.2, 0.08);
-            }
-            return this.age >= dur - 1;
         }
 
-        private boolean telegraphLine(ClientLevel level, RandomSource r) {
+        private void renderTelegraphLine(Painter p, float t) {
             int dur = Math.max(2, this.extra);
+            float a = t <= dur ? 0.35f + 0.15f * Mth.sin(t * 0.9f) : 0.5f * (1.0f - clamp01((t - dur) / 4.0f));
+            double sx = this.fz, sz = -this.fx;
+            double w = 0.7;
+            double len = this.size + 2.0;
+            p.quad(this.x + sx * w + this.fx, this.y + 0.07, this.z + sz * w + this.fz, crimson(0.0f),
+                    this.x - sx * w + this.fx, this.y + 0.07, this.z - sz * w + this.fz, crimson(0.0f),
+                    this.x - sx * w + this.fx * len, this.y + 0.07, this.z - sz * w + this.fz * len, crimson(a),
+                    this.x + sx * w + this.fx * len, this.y + 0.07, this.z + sz * w + this.fz * len, crimson(a));
             double scale = this.size / 19.0;
-            if (this.age % 2 == 0) {
-                for (double d = 1.0; d <= this.size + 1.5; d += 0.7) {
-                    level.addParticle(CRIMSON, this.x + this.fx * d, this.y + 0.12, this.z + this.fz * d, 0.0, 0.0, 0.0);
-                }
-                for (double d : new double[]{5.0, 12.0, 19.0}) {
-                    double cx = this.x + this.fx * d * scale;
-                    double cz = this.z + this.fz * d * scale;
-                    double rr = 1.2 + 0.8 * this.age / dur;
-                    for (int i = 0; i < 12; i++) {
-                        double a = Math.PI * 2.0 * i / 12;
-                        level.addParticle(EMBER, cx + Math.cos(a) * rr, this.y + 0.14, cz + Math.sin(a) * rr, 0.0, 0.0, 0.0);
-                    }
-                }
+            double grow = 1.2 + 0.8 * clamp01(t / dur);
+            for (double d : new double[]{5.0, 12.0, 19.0}) {
+                double cx = this.x + this.fx * d * scale;
+                double cz = this.z + this.fz * d * scale;
+                p.annulus(cx, this.y + 0.075, cz, grow - 0.2, grow, 20, core(a), core(a * 1.3f));
+                p.annulus(cx, this.y + 0.07, cz, 0.0, grow - 0.2, 20, crimson(a * 0.3f), crimson(a * 0.5f));
             }
-            return this.age >= dur - 1;
         }
 
-        private boolean rotPillar(ClientLevel level, RandomSource r) {
-            int start = this.extra;
-            if (this.age < start) {
-                return false;
+        private void renderPillar(Painter p, float local, double radius, double height, float strength) {
+            if (local < 0.0f) {
+                return;
             }
-            int local = this.age - start;
-            if (local == 0) {
-                this.debris(level, r, this.x, this.y, this.z, 12, 0.3);
-                this.circle(level, DARK, this.size * 1.6, 24, 0.1, 0.0);
-                addShake(this.x, this.y, this.z, 0.25f, 10.0);
+            float rise = easeOut(local / 3.0f);
+            float fade = (1.0f - clamp01((local - 4.0f) / 9.0f)) * strength;
+            if (fade <= 0.0f) {
+                return;
             }
-            if (local == 1) {
-                this.circle(level, redFire(), this.size * 2.0, 28, 0.1, 0.05);
-            }
-            for (int i = 0; i < 10; i++) {
-                double a = r.nextDouble() * Math.PI * 2.0;
-                double d = Math.sqrt(r.nextDouble()) * this.size * 0.5;
-                level.addParticle(redFlame(), this.x + Math.cos(a) * d, this.y + 0.1, this.z + Math.sin(a) * d, 0.0, 0.25 + r.nextDouble() * 0.35, 0.0);
-            }
-            if (local % 2 == 0) {
-                level.addParticle(ParticleTypes.LARGE_SMOKE, this.x + r.nextGaussian() * 0.4, this.y + 0.5, this.z + r.nextGaussian() * 0.4, 0.0, 0.08, 0.0);
-                level.addParticle(redFire(), this.x, this.y + 0.2, this.z, r.nextGaussian() * 0.05, 0.4, r.nextGaussian() * 0.05);
-            }
-            return local >= 7;
+            double h = height * rise;
+            p.wall(this.x, this.y, this.y + h, this.z, radius, 14, 0.0, Math.PI * 2.0, core(0.75f * fade), crimson(0.0f));
+            p.wall(this.x, this.y, this.y + h * 0.7, this.z, radius * 0.45, 10, 0.0, Math.PI * 2.0, core(0.9f * fade), core(0.0f));
+            double ring = radius * (1.0 + 1.8 * easeOut(local / 4.0f));
+            p.annulus(this.x, this.y + 0.06, this.z, ring * 0.7, ring, 24, crimson(0.0f), core(0.6f * fade));
         }
 
-        private boolean roar(ClientLevel level, RandomSource r) {
-            if (this.age == 0) {
-                for (int i = 0; i < 140; i++) {
-                    double a = r.nextDouble() * Math.PI * 2.0;
-                    double speed = 0.45 + r.nextDouble() * 0.35;
-                    level.addParticle(redFlame(), this.x, this.y + 1.2 + r.nextDouble() * 1.6, this.z, Math.cos(a) * speed, r.nextGaussian() * 0.03, Math.sin(a) * speed);
-                }
-                addShake(this.x, this.y, this.z, 0.9f, this.size * 2.0 + 8.0);
-            }
+        private void renderRoar(Painter p, float t) {
             for (int wave = 0; wave < 3; wave++) {
-                int local = this.age - wave * 4;
-                if (local < 0 || local > 8) {
+                float local = t - wave * 4;
+                if (local < 0.0f || local > 10.0f) {
                     continue;
                 }
-                double radius = this.size * (local + 1) / 9.0;
-                int count = (int) Math.min(100, Math.max(16, radius * 5.0));
-                double height = this.y + 0.3 + wave * 0.9;
-                for (int i = 0; i < count; i++) {
-                    double a = Math.PI * 2.0 * i / count;
-                    level.addParticle(wave == 1 ? EMBER : DARK, this.x + Math.cos(a) * radius, height, this.z + Math.sin(a) * radius, 0.0, 0.0, 0.0);
-                }
+                float prog = easeOut(local / 10.0f);
+                float fade = 1.0f - clamp01(local / 10.0f);
+                double r = this.size * prog;
+                double cy = this.y + 0.4 + wave * 0.8;
+                int segs = (int) Math.min(64, Math.max(20, r * 4.0));
+                p.wall(this.x, cy, cy + 1.4, this.z, r, segs, 0.0, Math.PI * 2.0, crimson(0.0f), wave == 1 ? core(0.55f * fade) : crimson(0.6f * fade));
+                p.wall(this.x, cy + 1.4, cy + 2.2, this.z, r, segs, 0.0, Math.PI * 2.0, wave == 1 ? core(0.55f * fade) : crimson(0.6f * fade), crimson(0.0f));
             }
-            return this.age >= 16;
+            float fade = 1.0f - clamp01(t / 14.0f);
+            double r = this.size * easeOut(t / 8.0f);
+            p.annulus(this.x, this.y + 0.06, this.z, r * 0.85, r, 48, crimson(0.0f), crimson(0.6f * fade));
         }
 
-        private boolean shieldSpark(ClientLevel level, RandomSource r) {
-            double px = this.x + this.fx * 1.3;
-            double py = this.y + 1.7;
-            double pz = this.z + this.fz * 1.3;
-            int count = (int) (12 * this.size);
-            for (int i = 0; i < count; i++) {
-                double vx = this.fx * 0.3 + r.nextGaussian() * 0.2;
-                double vy = r.nextGaussian() * 0.15 + 0.05;
-                double vz = this.fz * 0.3 + r.nextGaussian() * 0.2;
-                level.addParticle(ParticleTypes.CRIT, px, py, pz, vx, vy, vz);
-                if (i % 2 == 0) {
-                    level.addParticle(GOLD, px + r.nextGaussian() * 0.3, py + r.nextGaussian() * 0.3, pz + r.nextGaussian() * 0.3, 0.0, 0.0, 0.0);
-                }
+        private void renderFlare(Painter p, float t, float lifeTicks, double radius) {
+            float fade = 1.0f - clamp01(t / lifeTicks);
+            if (fade <= 0.0f) {
+                return;
             }
-            level.addParticle(ParticleTypes.ENCHANTED_HIT, px, py, pz, this.fx * 0.2, 0.0, this.fz * 0.2);
-            return true;
+            double cx = this.x + this.fx * 1.35, cy = this.y + 1.7, cz = this.z + this.fz * 1.35;
+            double sx = this.fz, sz = -this.fx;
+            double r = radius * (0.6 + 0.4 * easeOut(t / 2.0f));
+            float[] c = gold(0.95f * fade);
+            float[] e = gold(0.0f);
+            p.quad(cx - sx * r, cy, cz - sz * r, e, cx, cy + r * 0.25, cz, c, cx + sx * r, cy, cz + sz * r, e, cx, cy - r * 0.25, cz, c);
+            p.quad(cx - sx * r * 0.25, cy, cz - sz * r * 0.25, c, cx, cy + r, cz, e, cx + sx * r * 0.25, cy, cz + sz * r * 0.25, c, cx, cy - r, cz, e);
         }
 
-        private boolean shieldRaise(ClientLevel level, RandomSource r) {
-            int dur = Math.max(4, this.extra);
-            if (this.age % 4 == 0) {
-                for (int i = 0; i <= 10; i++) {
-                    double a = Math.toRadians(-70.0 + 140.0 * i / 10);
-                    double dx = this.fx * Math.cos(a) + this.sideX() * Math.sin(a);
-                    double dz = this.fz * Math.cos(a) + this.sideZ() * Math.sin(a);
-                    level.addParticle(i % 2 == 0 ? GOLD : CRIMSON, this.x + dx * 1.5, this.y + 1.0 + r.nextDouble() * 1.2, this.z + dz * 1.5, 0.0, 0.01, 0.0);
-                }
+        private void renderBarrier(Painter p, float t) {
+            float in = clamp01(t / 4.0f);
+            float out = 1.0f - clamp01((t - (this.life - 5)) / 5.0f);
+            float a = in * out * (0.75f + 0.25f * Mth.sin(t * 0.6f));
+            if (a <= 0.0f) {
+                return;
             }
-            if (this.age == 0) {
-                for (int i = 0; i < 16; i++) {
-                    level.addParticle(ParticleTypes.CRIT, this.x + this.fx * 1.2, this.y + 1.6, this.z + this.fz * 1.2, r.nextGaussian() * 0.2, r.nextGaussian() * 0.2, r.nextGaussian() * 0.2);
-                }
-            }
-            return this.age >= dur;
+            double face = this.faceAngle();
+            double span = Math.toRadians(65.0);
+            p.wall(this.x, this.y + 0.2, this.y + 1.5, this.z, 1.7, 12, face - span, face + span, gold(0.05f * a), gold(0.28f * a));
+            p.wall(this.x, this.y + 1.5, this.y + 2.8, this.z, 1.7, 12, face - span, face + span, gold(0.28f * a), gold(0.05f * a));
+            p.wall(this.x, this.y + 0.2, this.y + 0.35, this.z, 1.72, 12, face - span, face + span, crimson(0.7f * a), crimson(0.7f * a));
         }
 
-        private boolean shieldBreak(ClientLevel level, RandomSource r) {
-            double px = this.x + this.fx * 1.2;
-            double py = this.y + 1.6;
-            double pz = this.z + this.fz * 1.2;
-            ItemParticleOption shard = new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.SHIELD));
-            for (int i = 0; i < 30; i++) {
-                level.addParticle(shard, px, py, pz, r.nextGaussian() * 0.25, 0.15 + r.nextDouble() * 0.3, r.nextGaussian() * 0.25);
-                level.addParticle(ParticleTypes.CRIT, px, py, pz, r.nextGaussian() * 0.4, r.nextGaussian() * 0.4, r.nextGaussian() * 0.4);
-            }
-            for (int i = 0; i < 40; i++) {
-                double a = r.nextDouble() * Math.PI * 2.0;
-                level.addParticle(redFlame(), px, py, pz, Math.cos(a) * 0.3, r.nextGaussian() * 0.1, Math.sin(a) * 0.3);
-                level.addParticle(DARK, px + r.nextGaussian() * 0.6, py + r.nextGaussian() * 0.6, pz + r.nextGaussian() * 0.6, 0.0, 0.0, 0.0);
-            }
-            level.addParticle(ParticleTypes.FLASH, px, py, pz, 0.0, 0.0, 0.0);
-            addShake(this.x, this.y, this.z, 0.6f, 16.0);
-            return true;
+        private void renderShieldBreak(Painter p, float t) {
+            float fade = 1.0f - clamp01(t / 10.0f);
+            double r = 1.7 + 2.0 * easeOut(t / 6.0f);
+            double face = this.faceAngle();
+            double span = Math.toRadians(80.0);
+            p.wall(this.x, this.y + 0.2, this.y + 2.8, this.z, r, 14, face - span, face + span, gold(0.5f * fade), gold(0.0f));
+            p.annulus(this.x, this.y + 0.06, this.z, r * 0.8, r, 32, crimson(0.0f), core(0.6f * fade));
+            this.renderFlare(p, t, 6.0f, 1.4);
         }
 
-        private boolean charge(ClientLevel level, RandomSource r, double radius, int dur, int perTick) {
-            dur = Math.max(2, dur);
-            double cy = this.y + 1.6;
-            for (int i = 0; i < perTick; i++) {
-                double theta = r.nextDouble() * Math.PI * 2.0;
-                double phi = Math.acos(2.0 * r.nextDouble() - 1.0);
-                double px = this.x + Math.sin(phi) * Math.cos(theta) * radius;
-                double py = cy + Math.cos(phi) * radius * 0.6;
-                double pz = this.z + Math.sin(phi) * Math.sin(theta) * radius;
-                level.addParticle(redFlame(), px, py, pz, (this.x - px) * 0.09, (cy - py) * 0.09, (this.z - pz) * 0.09);
+        private void renderCharge(Painter p, float t, double radius, int dur) {
+            float prog = clamp01(t / dur);
+            if (t <= dur) {
+                double r = radius * 1.4 * (1.0 - prog) + 0.3;
+                p.annulus(this.x, this.y + 0.07, this.z, r - 0.3, r, 40, crimson(0.0f), core(0.25f + 0.5f * prog));
+                p.wall(this.x, this.y, this.y + 3.0, this.z, 0.5 + 0.3 * prog, 10, 0.0, Math.PI * 2.0, crimson(0.45f * prog), crimson(0.0f));
+            } else {
+                float fade = 1.0f - clamp01((t - dur) / 3.0f);
+                p.annulus(this.x, this.y + 0.07, this.z, 0.0, radius * 0.8, 32, core(0.6f * fade), crimson(0.0f));
             }
-            double ground = radius * 1.4 * (1.0 - (double) this.age / dur);
-            if (this.age % 2 == 0 && ground > 0.3) {
-                this.circle(level, DARK, ground, (int) Math.max(10, ground * 5.0), 0.1, 0.0);
-            }
-            if (this.age >= dur - 1) {
-                for (int i = 0; i < 30; i++) {
-                    level.addParticle(redFire(), this.x, cy, this.z, r.nextGaussian() * 0.2, r.nextGaussian() * 0.2, r.nextGaussian() * 0.2);
-                }
-                return true;
-            }
-            return false;
         }
 
-        private boolean phaseShift(ClientLevel level, RandomSource r) {
-            int roar = 30;
-            if (this.age < roar) {
-                this.charge(level, r, 5.0, roar, 10);
-                return false;
+        private void renderPhaseShift(Painter p, float t) {
+            if (t < 30.0f) {
+                this.renderCharge(p, t, 5.0, 30);
+                double r2 = 7.0 * (1.0 - t / 30.0f) + 0.5;
+                p.annulus(this.x, this.y + 0.08, this.z, r2 - 0.25, r2, 48, crimson(0.0f), crimson(0.5f));
+                return;
             }
-            int local = this.age - roar;
-            if (local == 0) {
-                for (int i = 0; i < 200; i++) {
-                    double a = r.nextDouble() * Math.PI * 2.0;
-                    double speed = 0.4 + r.nextDouble() * 0.5;
-                    level.addParticle(redFlame(), this.x, this.y + 0.5 + r.nextDouble() * 2.5, this.z, Math.cos(a) * speed, r.nextGaussian() * 0.05, Math.sin(a) * speed);
-                }
-                this.debris(level, r, this.x, this.y, this.z, 50, 0.45);
-                level.addParticle(ParticleTypes.FLASH, this.x, this.y + 1.5, this.z, 0.0, 0.0, 0.0);
-                addShake(this.x, this.y, this.z, 1.2f, 32.0);
-            }
-            int pillar = Math.max(0, 16 - local);
-            for (int i = 0; i < pillar; i++) {
-                double a = r.nextDouble() * Math.PI * 2.0;
-                double d = r.nextDouble() * 1.2;
-                level.addParticle(redFlame(), this.x + Math.cos(a) * d, this.y + 0.2, this.z + Math.sin(a) * d, 0.0, 0.6 + r.nextDouble() * 0.6, 0.0);
-            }
-            if (local < 10) {
-                double radius = this.size * (local + 1) / 10.0 * 1.5;
-                this.circle(level, local % 2 == 0 ? EMBER : DARK, radius, (int) Math.min(100, radius * 5.0), 0.15, 0.0);
-            }
-            return local >= 16;
+            float local = t - 30.0f;
+            this.renderPillar(p, local, 1.6, 14.0, 1.4f);
+            float fade = 1.0f - clamp01(local / 16.0f);
+            double r = this.size * 2.5 * easeOut(local / 10.0f);
+            p.annulus(this.x, this.y + 0.06, this.z, r * 0.8, r, 64, crimson(0.0f), core(0.8f * fade));
+            p.wall(this.x, this.y, this.y + 1.5, this.z, r, 64, 0.0, Math.PI * 2.0, crimson(0.5f * fade), crimson(0.0f));
         }
 
-        private void circle(ClientLevel level, ParticleOptions particle, double radius, int count, double yOffset, double vy) {
-            for (int i = 0; i < count; i++) {
-                double a = Math.PI * 2.0 * i / count;
-                level.addParticle(particle, this.x + Math.cos(a) * radius, this.y + yOffset, this.z + Math.sin(a) * radius, 0.0, vy, 0.0);
+        private void renderPool(Painter p, float t) {
+            float in = clamp01(t / 5.0f);
+            float out = 1.0f - clamp01((t - (this.life - 8)) / 8.0f);
+            float a = in * out;
+            if (a <= 0.0f) {
+                return;
             }
+            float pulse = 0.8f + 0.2f * Mth.sin(t * 0.5f);
+            p.annulus(this.x, this.y + 0.06, this.z, 0.0, 2.6, 24, crimson(0.35f * a * pulse), crimson(0.15f * a));
+            p.annulus(this.x, this.y + 0.065, this.z, 2.6, 3.0, 24, core(0.5f * a * pulse), crimson(0.0f));
+            p.wall(this.x, this.y, this.y + 0.9, this.z, 2.4, 16, 0.0, Math.PI * 2.0, crimson(0.3f * a * pulse), crimson(0.0f));
         }
 
         private void debris(ClientLevel level, RandomSource r, double px, double py, double pz, int count, double speed) {

@@ -101,7 +101,9 @@ implements ItemSupplier {
 
     public void tick() {
         super.tick();
-        NamelessProjectileFallWhileProjectileFlyingTickProcedure.execute((LevelAccessor)this.level(), this.getX(), this.getY(), this.getZ());
+        if (this.tickCount % 2 == 0) {
+            NamelessProjectileFallWhileProjectileFlyingTickProcedure.execute((LevelAccessor)this.level(), this.getX(), this.getY(), this.getZ());
+        }
         if (this.inGround) {
             this.discard();
         }

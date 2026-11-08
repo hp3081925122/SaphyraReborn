@@ -226,8 +226,8 @@ public final class NamelessCombat {
             this.boss.setPhase2Visual(true);
             this.sound(level, "saphyra_reborn:namelessscream", SoundSource.HOSTILE, 2.0f, 0.8f);
             Vec3 c = this.boss.position();
-            level.sendParticles(this.redFlame(), c.x, c.y + 1.0, c.z, 300, 3.0, 1.5, 3.0, 0.05);
-            level.sendParticles(this.redFire(), c.x, c.y, c.z, 150, 6.0, 0.5, 6.0, 0.01);
+            level.sendParticles(this.redFlame(), c.x, c.y + 1.0, c.z, 50, 3.0, 1.5, 3.0, 0.05);
+            level.sendParticles(this.redFire(), c.x, c.y, c.z, 25, 6.0, 0.5, 6.0, 0.01);
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, this.boss.getBoundingBox().inflate(6.0), e -> e != this.boss && !(e instanceof NamelessEntity))) {
                 e.knockback(0.8, this.boss.getX() - e.getX(), this.boss.getZ() - e.getZ());
                 e.hurtMarked = true;
@@ -422,7 +422,7 @@ public final class NamelessCombat {
                 if (t == 31) {
                     Vec3 c = this.boss.position();
                     this.sound(level, "entity.generic.explode", SoundSource.NEUTRAL, 2.0f, 1.0f);
-                    level.sendParticles(ParticleTypes.EXPLOSION, c.x, c.y, c.z, 100, 2.5, 0.5, 2.5, 0.01);
+                    level.sendParticles(ParticleTypes.EXPLOSION, c.x, c.y, c.z, 12, 2.5, 0.5, 2.5, 0.01);
                     this.hitAround(level, c, 5.0, 1.0, 10.0);
                     NamelessVfx.send(level, NamelessVfx.SLAM, c, this.boss.getYRot(), 5.0f, 5);
                     NamelessVfx.send(level, NamelessVfx.TELEGRAPH_RING, c, this.boss.getYRot(), 15.0f, 40);
@@ -523,7 +523,7 @@ public final class NamelessCombat {
                 for (int i = 0; i < ROT_DISTANCES.length; i++) {
                     double d = ROT_DISTANCES[i];
                     Vec3 p = new Vec3(this.boss.getX() + dir[0] * d, this.boss.getY(), this.boss.getZ() + dir[1] * d);
-                    level.sendParticles(this.redFlame(), p.x, p.y, p.z, 100, 2.0, 0.5, 2.0, 0.01);
+                    level.sendParticles(this.redFlame(), p.x, p.y, p.z, 16, 2.0, 0.5, 2.0, 0.01);
                     this.hitAround(level, p, 4.0, 1.0, 10.0);
                     NamelessVfx.send(level, NamelessVfx.ROT_PILLAR, p, 0.0f, 2.0f, i * 2);
                 }
@@ -550,8 +550,8 @@ public final class NamelessCombat {
     private void eruption(ServerLevel level, double radius, double rot, SoundSource source, String sound, boolean slam) {
         Vec3 c = this.boss.position();
         this.sound(level, sound, source, 2.0f, 1.0f);
-        level.sendParticles(this.redFlame(), c.x, c.y, c.z, 600, 8.0, 0.5, 8.0, 0.01);
-        level.sendParticles(this.redFire(), c.x, c.y, c.z, 300, 8.0, 0.5, 8.0, 0.01);
+        level.sendParticles(this.redFlame(), c.x, c.y, c.z, 80, 8.0, 0.5, 8.0, 0.01);
+        level.sendParticles(this.redFire(), c.x, c.y, c.z, 40, 8.0, 0.5, 8.0, 0.01);
         this.hitAround(level, c, radius, 1.0, rot);
         if (slam) {
             NamelessVfx.send(level, NamelessVfx.SLAM, c, this.boss.getYRot(), (float) radius, 10);

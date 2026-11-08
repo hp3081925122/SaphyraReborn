@@ -417,5 +417,7 @@
   "text.saphyra_reborn.title.manic": "狂乱",
   "text.saphyra_reborn.title.emerged_victorious": "凯旋而归",
   "text.saphyra_reborn.title.burden_lifted": "重负已解",
-  "text.saphyra_reborn.title.rot": "腐烂"
+  "text.saphyra_reborn.title.rot": "腐烂",
+  "tooltip.saphyra_reborn.key_opens": "可打开：%s",
+  "tooltip.saphyra_reborn.key_highlight": "手持时会透过墙体高亮对应的门"
 }

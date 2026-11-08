@@ -417,5 +417,7 @@
   "text.saphyra_reborn.title.manic": "Manic",
   "text.saphyra_reborn.title.emerged_victorious": "EMERGED VICTORIOUS",
   "text.saphyra_reborn.title.burden_lifted": "Burden Lifted",
-  "text.saphyra_reborn.title.rot": "Rot"
+  "text.saphyra_reborn.title.rot": "Rot",
+  "tooltip.saphyra_reborn.key_opens": "Opens: %s",
+  "tooltip.saphyra_reborn.key_highlight": "Highlights its lock through walls while held"
 }

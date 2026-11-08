@@ -35,6 +35,7 @@ public final class StoryHighlightRenderer {
     private static final float LINE_WIDTH = 4.0f;
     private static final float[] GOLD = {1.0f, 0.75f, 0.0f};
     private static final float[] AQUA = {0.1f, 0.9f, 1.0f};
+    private static final float[] VIOLET = {0.85f, 0.3f, 1.0f};
 
     private StoryHighlightRenderer() {
     }
@@ -46,7 +47,8 @@ public final class StoryHighlightRenderer {
         }
         List<BlockPos> containers = StoryHighlightState.containers();
         List<BlockPos> targets = StoryHighlightState.targets();
-        if ((containers.isEmpty() && targets.isEmpty()) || Minecraft.getInstance().level == null) {
+        List<BlockPos> locks = KeyLockHighlight.locks();
+        if ((containers.isEmpty() && targets.isEmpty() && locks.isEmpty()) || Minecraft.getInstance().level == null) {
             return;
         }
         Vec3 cam = event.getCamera().getPosition();
@@ -66,6 +68,7 @@ public final class StoryHighlightRenderer {
         Matrix4f m = pose.last().pose();
         for (BlockPos p : containers) if (near(p, cam)) fillBox(fill, m, p, GOLD);
         for (BlockPos p : targets) if (near(p, cam)) fillBox(fill, m, p, AQUA);
+        for (BlockPos p : locks) if (near(p, cam)) fillBox(fill, m, p, VIOLET);
         draw(fill);
 
         // solid outline
@@ -74,6 +77,7 @@ public final class StoryHighlightRenderer {
         BufferBuilder lines = Tesselator.getInstance().begin(VertexFormat.Mode.LINES, DefaultVertexFormat.POSITION_COLOR_NORMAL);
         for (BlockPos p : containers) if (near(p, cam)) LevelRenderer.renderLineBox(pose, lines, box(p), GOLD[0], GOLD[1], GOLD[2], 1.0f);
         for (BlockPos p : targets) if (near(p, cam)) LevelRenderer.renderLineBox(pose, lines, box(p), AQUA[0], AQUA[1], AQUA[2], 1.0f);
+        for (BlockPos p : locks) if (near(p, cam)) LevelRenderer.renderLineBox(pose, lines, box(p), VIOLET[0], VIOLET[1], VIOLET[2], 1.0f);
         draw(lines);
         RenderSystem.lineWidth(1.0f);
 

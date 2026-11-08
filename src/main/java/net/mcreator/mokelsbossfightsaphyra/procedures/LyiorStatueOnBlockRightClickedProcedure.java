@@ -61,7 +61,7 @@ public class LyiorStatueOnBlockRightClickedProcedure {
         }
         if (world instanceof ServerLevel) {
             _level1 = (ServerLevel)world;
-            _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @a title {\"text\":\"lost spirit marked\",\"color\":\"aqua\"}");
+            _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @a title {\"translate\":\"text.saphyra_reborn.title.lost_spirit_marked\",\"fallback\":\"lost spirit marked\",\"color\":\"aqua\"}");
         }
         if (world instanceof Level _soundLevel) {
             if (!_soundLevel.isClientSide()) {

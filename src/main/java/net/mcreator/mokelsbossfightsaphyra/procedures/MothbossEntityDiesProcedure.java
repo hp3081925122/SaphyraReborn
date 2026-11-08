@@ -52,7 +52,7 @@ public class MothbossEntityDiesProcedure {
             }
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
-                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @a title {\"text\":\"EMERGED VICTORIOUS\",\"bold\":true,\"color\":\"#FFCF25\"}");
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @a title {\"translate\":\"text.saphyra_reborn.title.emerged_victorious\",\"fallback\":\"EMERGED VICTORIOUS\",\"bold\":true,\"color\":\"#FFCF25\"}");
             }
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;

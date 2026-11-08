@@ -410,5 +410,12 @@
   "jade.saphyra_reborn.right_click_empty": "Right-click to interact",
   "config.jade.plugin_saphyra_reborn.right_click_hint": "Saphyra Reborn: right-click hints",
   "text.saphyra_reborn.door.opens": "The door opens",
-  "text.saphyra_reborn.door.need_sinister_key": "You need a \"Sinister\" key"
+  "text.saphyra_reborn.door.need_sinister_key": "You need a \"Sinister\" key",
+  "text.saphyra_reborn.title.disgust": "Disgust",
+  "text.saphyra_reborn.title.grief": "Grief",
+  "text.saphyra_reborn.title.lost_spirit_marked": "lost spirit marked",
+  "text.saphyra_reborn.title.manic": "Manic",
+  "text.saphyra_reborn.title.emerged_victorious": "EMERGED VICTORIOUS",
+  "text.saphyra_reborn.title.burden_lifted": "Burden Lifted",
+  "text.saphyra_reborn.title.rot": "Rot"
 }

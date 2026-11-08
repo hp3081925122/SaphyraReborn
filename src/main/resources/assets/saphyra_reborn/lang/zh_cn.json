@@ -410,5 +410,12 @@
   "jade.saphyra_reborn.right_click_empty": "右键交互",
   "config.jade.plugin_saphyra_reborn.right_click_hint": "Saphyra 重生：右键提示",
   "text.saphyra_reborn.door.opens": "门开了",
-  "text.saphyra_reborn.door.need_sinister_key": "你需要一把「邪异之门钥匙」"
+  "text.saphyra_reborn.door.need_sinister_key": "你需要一把「邪异之门钥匙」",
+  "text.saphyra_reborn.title.disgust": "厌恶",
+  "text.saphyra_reborn.title.grief": "悲恸",
+  "text.saphyra_reborn.title.lost_spirit_marked": "迷失之魂已被标记",
+  "text.saphyra_reborn.title.manic": "狂乱",
+  "text.saphyra_reborn.title.emerged_victorious": "凯旋而归",
+  "text.saphyra_reborn.title.burden_lifted": "重负已解",
+  "text.saphyra_reborn.title.rot": "腐烂"
 }

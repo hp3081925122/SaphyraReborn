@@ -23,14 +23,6 @@
       }
     ]
   },
-  "witchbossfighttheme": {
-    "sounds": [
-      {
-        "name": "saphyra_reborn:witchbossfighttheme",
-        "stream": true
-      }
-    ]
-  },
   "crimsonflasksound": {
     "sounds": [
       {
@@ -44,14 +36,6 @@
       {
         "name": "saphyra_reborn:spellcastsaphyra",
         "stream": false
-      }
-    ]
-  },
-  "saphyras_theme": {
-    "sounds": [
-      {
-        "name": "saphyra_reborn:saphyras_theme_1",
-        "stream": true
       }
     ]
   },

@@ -174,8 +174,9 @@ EntityBlock {
         return Collections.singletonList(new ItemStack((ItemLike)this, 1));
     }
 
-    public void onRemove(BlockState blockstate, Level world, BlockPos pos, BlockState oldState, boolean moving) {
-        super.onRemove(blockstate, world, pos, oldState, moving);
+    @Override
+    public void onPlace(BlockState blockstate, Level world, BlockPos pos, BlockState oldState, boolean moving) {
+        super.onPlace(blockstate, world, pos, oldState, moving);
         world.scheduleTick(pos, this, 1);
     }
 

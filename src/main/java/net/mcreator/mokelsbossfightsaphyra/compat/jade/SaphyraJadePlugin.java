@@ -53,7 +53,8 @@ public class SaphyraJadePlugin implements IWailaPlugin {
                 m.put(MokelsBossfightSaphyraModBlocks.LOCKED_FOG_CHAIN.get(), MokelsBossfightSaphyraModItems.HALLOWED_KEY_2);
                 m.put(MokelsBossfightSaphyraModBlocks.LOCKED_FOG_SHATTERED.get(), MokelsBossfightSaphyraModItems.HALLOWED_KEY_3);
                 m.put(MokelsBossfightSaphyraModBlocks.SAPHYRA_DOOR_1.get(), MokelsBossfightSaphyraModItems.SAPHYRA_KEY);
-                m.put(MokelsBossfightSaphyraModBlocks.BOSS_DOOR_1.get(), null);
+                m.put(MokelsBossfightSaphyraModBlocks.BOSS_DOOR_1.get(), MokelsBossfightSaphyraModItems.WARRIOR_KEY);
+                m.put(MokelsBossfightSaphyraModBlocks.BOSS_DOOR2.get(), null);
                 hints = m;
             }
             return hints;

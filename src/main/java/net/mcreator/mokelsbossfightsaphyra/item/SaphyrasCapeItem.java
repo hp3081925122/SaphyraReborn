@@ -123,7 +123,15 @@ implements GeoItem {
         super.appendHoverText(itemstack, context, list, flag);
     }
 
-    public void onArmorTick(ItemStack itemstack, Level world, Player entity) {
+    @Override
+    public void inventoryTick(ItemStack itemstack, Level world, Entity holder, int slot, boolean selected) {
+        super.inventoryTick(itemstack, world, holder, slot, selected);
+        if (holder instanceof Player player && player.getItemBySlot(EquipmentSlot.CHEST) == itemstack) {
+            this.onArmorTick(itemstack, world, player);
+        }
+    }
+
+    private void onArmorTick(ItemStack itemstack, Level world, Player entity) {
         SaphyrasCapeItem armor;
         Item item = itemstack.getItem();
         if (item instanceof SaphyrasCapeItem && (armor = (SaphyrasCapeItem)item).getType() == ArmorItem.Type.CHESTPLATE) {

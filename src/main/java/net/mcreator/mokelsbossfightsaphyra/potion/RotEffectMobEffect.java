@@ -26,7 +26,8 @@ extends MobEffect {
         super(MobEffectCategory.HARMFUL, -6750208);
     }
 
-    public void addAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
+    @Override
+    public void onEffectStarted(LivingEntity entity, int amplifier) {
         RotEffectEffectStartedappliedProcedure.execute((LevelAccessor)entity.level(), (Entity)entity);
     }
 
@@ -35,7 +36,8 @@ extends MobEffect {
         return true;
     }
 
-    public boolean isDurationEffectTick(int duration, int amplifier) {
+    @Override
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
         return true;
     }
 }

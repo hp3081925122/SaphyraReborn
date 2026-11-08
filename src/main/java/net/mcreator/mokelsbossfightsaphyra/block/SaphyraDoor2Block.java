@@ -160,7 +160,8 @@ EntityBlock {
         return super.updateShape(state, facing, facingState, world, currentPos, facingPos);
     }
 
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader world, BlockPos pos, Player player) {
         return new ItemStack((ItemLike)MokelsBossfightSaphyraModBlocks.BOSS_DOOR_1.get());
     }
 

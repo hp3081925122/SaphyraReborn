@@ -54,6 +54,17 @@ implements ItemSupplier {
         super(type, world);
     }
 
+    @Override
+    protected void doKnockback(net.minecraft.world.entity.LivingEntity target, net.minecraft.world.damagesource.DamageSource source) {
+        super.doKnockback(target, source);
+        if (this.legacyKnockback > 0) {
+            net.minecraft.world.phys.Vec3 push = this.getDeltaMovement().multiply(1.0, 0.0, 1.0).normalize().scale(this.legacyKnockback * 0.6);
+            if (push.lengthSqr() > 0.0) {
+                target.push(push.x, 0.1, push.z);
+            }
+        }
+    }
+
     public void setKnockback(int value) {
         this.legacyKnockback = value;
     }

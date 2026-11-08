@@ -27,7 +27,8 @@ extends MobEffect {
         super(MobEffectCategory.HARMFUL, -16764007);
     }
 
-    public void addAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
+    @Override
+    public void onEffectStarted(LivingEntity entity, int amplifier) {
         GriefEffectEffectStartedappliedProcedure.execute((LevelAccessor)entity.level(), (Entity)entity);
     }
 
@@ -41,7 +42,8 @@ extends MobEffect {
         GriefEffectEffectExpiresProcedure.execute((LevelAccessor)entity.level(), (Entity)entity);
     }
 
-    public boolean isDurationEffectTick(int duration, int amplifier) {
+    @Override
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
         return true;
     }
 }

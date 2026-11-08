@@ -37,8 +37,8 @@ extends MobEffect {
         return true;
     }
 
-    public void applyEffectTick(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
-        
+    /** Called from {@link CurseEffectEvents} when the effect expires or is removed. */
+    public static void onRemoved(LivingEntity entity) {
         GriefEffectEffectExpiresProcedure.execute((LevelAccessor)entity.level(), (Entity)entity);
     }
 

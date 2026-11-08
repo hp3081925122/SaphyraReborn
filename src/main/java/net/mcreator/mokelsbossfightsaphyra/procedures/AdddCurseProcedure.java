@@ -41,9 +41,9 @@ public class AdddCurseProcedure {
                 if (world instanceof Level) {
                     Level _level1 = (Level)world;
                     if (!_level1.isClientSide()) {
-                        _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:rule_spell")), SoundSource.NEUTRAL, 1.0f, 1.0f);
+                        _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:rule_spell")), SoundSource.NEUTRAL, 1.0f, 1.0f);
                     } else {
-                        _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:rule_spell")), SoundSource.NEUTRAL, 1.0f, 1.0f, false);
+                        _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:rule_spell")), SoundSource.NEUTRAL, 1.0f, 1.0f, false);
                     }
                 }
             } else if (!entity.isShiftKeyDown()) {
@@ -55,9 +55,9 @@ public class AdddCurseProcedure {
                 if (world instanceof Level) {
                     Level _level2 = (Level)world;
                     if (!_level2.isClientSide()) {
-                        _level2.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:rule_spell")), SoundSource.NEUTRAL, 1.0f, 1.0f);
+                        _level2.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:rule_spell")), SoundSource.NEUTRAL, 1.0f, 1.0f);
                     } else {
-                        _level2.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:rule_spell")), SoundSource.NEUTRAL, 1.0f, 1.0f, false);
+                        _level2.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:rule_spell")), SoundSource.NEUTRAL, 1.0f, 1.0f, false);
                     }
                 }
             }

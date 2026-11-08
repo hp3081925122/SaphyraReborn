@@ -138,7 +138,7 @@ public class RightClickKeyShatteredProcedure {
                                                                         _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), 1, (Container)_player.getInventory());
                                                                     }
                                                                     if (!world.isClientSide() && world.getServer() != null) {
-                                                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"the barrier broke"), false);
+                                                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.7c359237fd1e"), false);
                                                                     }
                                                                     break block66;
                                                                 }
@@ -158,7 +158,7 @@ public class RightClickKeyShatteredProcedure {
                                                                 if (itemStack13.getItem() != ItemStack.EMPTY.getItem()) break block68;
                                                             }
                                                             if (!world.isClientSide() && world.getServer() != null) {
-                                                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"you need a \"Shattered\" key"), false);
+                                                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.04de6379c769"), false);
                                                             }
                                                             break block66;
                                                         }
@@ -178,7 +178,7 @@ public class RightClickKeyShatteredProcedure {
                                                         if (itemStack11.getItem() != MokelsBossfightSaphyraModItems.KEY_3.get()) break block70;
                                                     }
                                                     if (!world.isClientSide() && world.getServer() != null) {
-                                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"you need a \"Shattered\" key"), false);
+                                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.04de6379c769"), false);
                                                     }
                                                     break block66;
                                                 }
@@ -198,7 +198,7 @@ public class RightClickKeyShatteredProcedure {
                                                 if (itemStack9.getItem() != MokelsBossfightSaphyraModItems.KEY_4.get()) break block72;
                                             }
                                             if (!world.isClientSide() && world.getServer() != null) {
-                                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"you need a \"Shattered\" key"), false);
+                                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.04de6379c769"), false);
                                             }
                                             break block66;
                                         }
@@ -218,7 +218,7 @@ public class RightClickKeyShatteredProcedure {
                                         if (itemStack7.getItem() != MokelsBossfightSaphyraModItems.KEY_2.get()) break block74;
                                     }
                                     if (!world.isClientSide() && world.getServer() != null) {
-                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"you need a \"Shattered\" key"), false);
+                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.04de6379c769"), false);
                                     }
                                     break block66;
                                 }
@@ -238,7 +238,7 @@ public class RightClickKeyShatteredProcedure {
                                 if (itemStack5.getItem() != MokelsBossfightSaphyraModItems.HALLOWED_KEY_1.get()) break block76;
                             }
                             if (!world.isClientSide() && world.getServer() != null) {
-                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"you need a \"Shattered\" key"), false);
+                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.04de6379c769"), false);
                             }
                             break block66;
                         }
@@ -258,7 +258,7 @@ public class RightClickKeyShatteredProcedure {
                         if (itemStack3.getItem() != MokelsBossfightSaphyraModItems.KEY_1.get()) break block78;
                     }
                     if (!world.isClientSide() && world.getServer() != null) {
-                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"you need a \"Shattered\" key"), false);
+                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.04de6379c769"), false);
                     }
                     break block66;
                 }
@@ -278,7 +278,7 @@ public class RightClickKeyShatteredProcedure {
                 if (itemStack.getItem() != MokelsBossfightSaphyraModItems.HALLOWED_KEY_2.get()) break block66;
             }
             if (!world.isClientSide() && world.getServer() != null) {
-                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"you need a \"Shattered\" key"), false);
+                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.04de6379c769"), false);
             }
         }
     }

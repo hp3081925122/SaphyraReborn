@@ -163,7 +163,7 @@ WorldlyContainer {
     }
 
     protected Component getDefaultName() {
-        return Component.literal((String)"lyior_statue");
+        return Component.translatable("text.saphyra_reborn.hardcoded.bcff4a4c6146");
     }
 
     public int getMaxStackSize() {
@@ -175,7 +175,7 @@ WorldlyContainer {
     }
 
     public Component getDisplayName() {
-        return Component.literal((String)"Statue Of Lyior");
+        return Component.translatable("text.saphyra_reborn.hardcoded.5c7a7d2c2ed2");
     }
 
     protected NonNullList<ItemStack> getItems() {

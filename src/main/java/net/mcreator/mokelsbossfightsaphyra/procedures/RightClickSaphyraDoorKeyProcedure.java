@@ -187,7 +187,7 @@ public class RightClickSaphyraDoorKeyProcedure {
                                                                                 _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), 1, (Container)_player.getInventory());
                                                                             }
                                                                             if (!world.isClientSide() && world.getServer() != null) {
-                                                                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"The Door Opens"), false);
+                                                                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.fdc72eca01ae"), false);
                                                                             }
                                                                             break block82;
                                                                         }
@@ -207,7 +207,7 @@ public class RightClickSaphyraDoorKeyProcedure {
                                                                         if (itemStack15.getItem() != ItemStack.EMPTY.getItem()) break block84;
                                                                     }
                                                                     if (!world.isClientSide() && world.getServer() != null) {
-                                                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"you need a \"Sword\" key"), false);
+                                                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.fa1dbfee18ff"), false);
                                                                     }
                                                                     break block82;
                                                                 }
@@ -227,7 +227,7 @@ public class RightClickSaphyraDoorKeyProcedure {
                                                                 if (itemStack13.getItem() != MokelsBossfightSaphyraModItems.KEY_3.get()) break block86;
                                                             }
                                                             if (!world.isClientSide() && world.getServer() != null) {
-                                                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"you need a \"Sword\" key"), false);
+                                                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.fa1dbfee18ff"), false);
                                                             }
                                                             break block82;
                                                         }
@@ -247,7 +247,7 @@ public class RightClickSaphyraDoorKeyProcedure {
                                                         if (itemStack11.getItem() != MokelsBossfightSaphyraModItems.KEY_1.get()) break block88;
                                                     }
                                                     if (!world.isClientSide() && world.getServer() != null) {
-                                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"you need a \"Sword\" key"), false);
+                                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.fa1dbfee18ff"), false);
                                                     }
                                                     break block82;
                                                 }
@@ -267,7 +267,7 @@ public class RightClickSaphyraDoorKeyProcedure {
                                                 if (itemStack9.getItem() != MokelsBossfightSaphyraModItems.HALLOWED_KEY_3.get()) break block90;
                                             }
                                             if (!world.isClientSide() && world.getServer() != null) {
-                                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"you need a \"Sword\" key"), false);
+                                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.fa1dbfee18ff"), false);
                                             }
                                             break block82;
                                         }
@@ -287,7 +287,7 @@ public class RightClickSaphyraDoorKeyProcedure {
                                         if (itemStack7.getItem() != MokelsBossfightSaphyraModItems.HALLOWED_KEY_1.get()) break block92;
                                     }
                                     if (!world.isClientSide() && world.getServer() != null) {
-                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"you need a \"Sword\" key"), false);
+                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.fa1dbfee18ff"), false);
                                     }
                                     break block82;
                                 }
@@ -307,7 +307,7 @@ public class RightClickSaphyraDoorKeyProcedure {
                                 if (itemStack5.getItem() != MokelsBossfightSaphyraModItems.KEY_2.get()) break block94;
                             }
                             if (!world.isClientSide() && world.getServer() != null) {
-                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"you need a \"Sword\" key"), false);
+                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.fa1dbfee18ff"), false);
                             }
                             break block82;
                         }
@@ -327,7 +327,7 @@ public class RightClickSaphyraDoorKeyProcedure {
                         if (itemStack3.getItem() != MokelsBossfightSaphyraModItems.HALLOWED_KEY_2.get()) break block96;
                     }
                     if (!world.isClientSide() && world.getServer() != null) {
-                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"you need a \"Sword\" key"), false);
+                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.fa1dbfee18ff"), false);
                     }
                     break block82;
                 }
@@ -347,7 +347,7 @@ public class RightClickSaphyraDoorKeyProcedure {
                 if (itemStack.getItem() != MokelsBossfightSaphyraModItems.KEY_4.get()) break block82;
             }
             if (!world.isClientSide() && world.getServer() != null) {
-                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"you need a \"Sword\" key"), false);
+                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.fa1dbfee18ff"), false);
             }
         }
     }

@@ -42,15 +42,15 @@ public class WitchbossStopSoundProcedure {
             _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(sourceentity.getX(), sourceentity.getY(), sourceentity.getZ()), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
         }
         if (!world.isClientSide() && world.getServer() != null) {
-            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Saphyra: Very well..."), false);
+            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.ee2c28c0ac25"), false);
         }
         MokelsBossfightSaphyraMod.queueServerWork(60, () -> {
             if (!world.isClientSide() && world.getServer() != null) {
-                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Saphyra: Enough playing around."), false);
+                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.ab329751d0a6"), false);
             }
             MokelsBossfightSaphyraMod.queueServerWork(80, () -> {
                 if (!world.isClientSide() && world.getServer() != null) {
-                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Saphyra: Let's get serious."), false);
+                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.02d68fd52055"), false);
                 }
             });
         });

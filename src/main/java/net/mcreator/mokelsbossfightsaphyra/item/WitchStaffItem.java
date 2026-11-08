@@ -58,8 +58,8 @@ extends SwordItem {
 
     public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, context, list, flag);
-        list.add((Component)Component.literal((String)"Ability: Bow down for an area attack that deals 20 damage points"));
-        list.add((Component)Component.literal((String)"(The very first staff of the Ivory Devil)"));
+        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.efbaba6d2f01"));
+        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.2c1c80b68da4"));
     }
 }
 

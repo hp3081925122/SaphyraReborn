@@ -31,9 +31,9 @@ extends Item {
 
     public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, context, list, flag);
-        list.add((Component)Component.literal((String)"Having it near you fills you with an unbearable amount of joy."));
+        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.d35fd39a42ca"));
         list.add((Component)Component.literal((String)""));
-        list.add((Component)Component.literal((String)"STORY ITEM"));
+        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.d38b85ee6dba"));
     }
 
     public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {

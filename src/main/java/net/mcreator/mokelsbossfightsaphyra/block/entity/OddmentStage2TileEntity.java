@@ -163,7 +163,7 @@ WorldlyContainer {
     }
 
     protected Component getDefaultName() {
-        return Component.literal((String)"oddment_stage_2");
+        return Component.translatable("text.saphyra_reborn.hardcoded.5f818dbfccca");
     }
 
     public int getMaxStackSize() {
@@ -175,7 +175,7 @@ WorldlyContainer {
     }
 
     public Component getDisplayName() {
-        return Component.literal((String)"1st Oddment");
+        return Component.translatable("text.saphyra_reborn.hardcoded.7bb353bd6a44");
     }
 
     protected NonNullList<ItemStack> getItems() {

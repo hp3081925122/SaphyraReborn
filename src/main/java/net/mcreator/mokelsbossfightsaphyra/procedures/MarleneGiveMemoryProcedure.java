@@ -104,22 +104,22 @@ public class MarleneGiveMemoryProcedure {
                         ((ServerLevel)_level2).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.REDFLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 300, 0.2, 1.0, 0.2, 0.05);
                     }
                     if (!world.isClientSide() && world.getServer() != null) {
-                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Marlene: ..."), false);
+                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.28d85d8b7b88"), false);
                     }
                 }
                 MokelsBossfightSaphyraMod.queueServerWork(60, () -> {
                     if (entity.isAlive()) {
                         if (!world.isClientSide() && world.getServer() != null) {
-                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Marlene: Thee should head to the observatory"), false);
+                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.e0231395050d"), false);
                         }
                         MokelsBossfightSaphyraMod.queueServerWork(120, () -> {
                             if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Marlene: Mother wishes to test thy strength in a duel."), false);
+                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.a43a76d635d9"), false);
                             }
                             MokelsBossfightSaphyraMod.queueServerWork(140, () -> {
                                 if (entity.isAlive()) {
                                     if (!world.isClientSide() && world.getServer() != null) {
-                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Marlene: Take this key"), false);
+                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.a79b47592347"), false);
                                     }
                                     if (entity.isAlive() && world instanceof ServerLevel) {
                                         ServerLevel _level3 = (ServerLevel)world;
@@ -131,7 +131,7 @@ public class MarleneGiveMemoryProcedure {
                                 }
                                 MokelsBossfightSaphyraMod.queueServerWork(80, () -> {
                                     if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Marlene: I wish thee good luck..."), false);
+                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.4ef9e8d4e63f"), false);
                                     }
                                 });
                             });

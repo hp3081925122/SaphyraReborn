@@ -58,7 +58,7 @@ extends SwordItem {
 
     public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, context, list, flag);
-        list.add((Component)Component.literal((String)"(A text is carved into the blade, it reads: \"o kindred of mine, thy wings are wilted\")"));
+        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.2f73f6ca82ad"));
     }
 }
 

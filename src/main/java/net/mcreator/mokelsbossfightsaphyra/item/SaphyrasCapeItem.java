@@ -89,11 +89,12 @@ implements GeoItem {
 
     public SaphyrasCapeItem(ArmorItem.Type type, Item.Properties properties) {
         super(Holder.direct(new ArmorMaterial(
+                // 1.20.1 原版护甲值（13/15/16/11 是耐久倍率，不是护甲值）
                 Map.of(
-                        ArmorItem.Type.HELMET, 13,
-                        ArmorItem.Type.CHESTPLATE, 15,
-                        ArmorItem.Type.LEGGINGS, 16,
-                        ArmorItem.Type.BOOTS, 11
+                        ArmorItem.Type.HELMET, 2,
+                        ArmorItem.Type.CHESTPLATE, 10,
+                        ArmorItem.Type.LEGGINGS, 5,
+                        ArmorItem.Type.BOOTS, 2
                 ),
                 15,
                 SoundEvents.ARMOR_EQUIP_LEATHER,

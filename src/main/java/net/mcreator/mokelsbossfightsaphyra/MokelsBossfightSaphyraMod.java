@@ -5,7 +5,6 @@ import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModBlocks;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModEntities;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModItems;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModMobEffects;
-import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModPaintings;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModParticleTypes;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModSounds;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModTabs;
@@ -48,7 +47,6 @@ public final class MokelsBossfightSaphyraMod {
         MokelsBossfightSaphyraModEntities.REGISTRY.register(modBus);
         MokelsBossfightSaphyraModTabs.REGISTRY.register(modBus);
         MokelsBossfightSaphyraModMobEffects.REGISTRY.register(modBus);
-        MokelsBossfightSaphyraModPaintings.REGISTRY.register(modBus);
         MokelsBossfightSaphyraModParticleTypes.REGISTRY.register(modBus);
     }
 

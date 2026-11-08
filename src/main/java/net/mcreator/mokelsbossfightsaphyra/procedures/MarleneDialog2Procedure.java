@@ -19,15 +19,15 @@ public class MarleneDialog2Procedure {
             return;
         }
         if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Marlene: Good..."), false);
+            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.24eba98311a1"), false);
         }
         MokelsBossfightSaphyraMod.queueServerWork(60, () -> {
             if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Marlene: As promised, i shall convert the memory you achieved."), false);
+                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.6c16af8781b5"), false);
             }
             MokelsBossfightSaphyraMod.queueServerWork(140, () -> {
                 if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Marlene: Just Hand it over."), false);
+                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.67d689daa281"), false);
                 }
             });
         });

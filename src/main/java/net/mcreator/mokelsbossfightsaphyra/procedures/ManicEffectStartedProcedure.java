@@ -89,7 +89,7 @@ public class ManicEffectStartedProcedure {
             LivingEntity _entity1;
             AbstractClientPlayer player;
             ModifierLayer animation;
-            if (world.isClientSide() && entity instanceof AbstractClientPlayer && (animation = (ModifierLayer)PlayerAnimationAccess.getPlayerAssociatedData((AbstractClientPlayer)(player = (AbstractClientPlayer)entity)).get(ResourceLocation.fromNamespaceAndPath("mokels_bossfight_saphyra", "player_animation"))) != null) {
+            if (world.isClientSide() && entity instanceof AbstractClientPlayer && (animation = (ModifierLayer)PlayerAnimationAccess.getPlayerAssociatedData((AbstractClientPlayer)(player = (AbstractClientPlayer)entity)).get(ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "player_animation"))) != null) {
                 animation.setAnimation((IAnimation)new KeyframeAnimationPlayer((dev.kosmx.playerAnim.core.data.KeyframeAnimation)PlayerAnimationRegistry.getAnimation(ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "manic"))));
             }
             if (!world.isClientSide() && entity instanceof Player && world instanceof ServerLevel) {
@@ -99,7 +99,7 @@ public class ManicEffectStartedProcedure {
                 synchronized (list) {
                     for (Connection connection : connections) {
                         if (connection.isConnecting() || !connection.isConnected()) continue;
-                        MokelsBossfightSaphyraMod.PACKET_HANDLER.sendTo((Object)new AnimationsSetUpProcedure.MokelsBossfightSaphyraModAnimationMessage((Component)Component.literal((String)"manic"), entity.getId(), true), connection, NetworkDirection.PLAY_TO_CLIENT);
+                        MokelsBossfightSaphyraMod.PACKET_HANDLER.sendTo((Object)new AnimationsSetUpProcedure.MokelsBossfightSaphyraModAnimationMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.3dc8a52d4388"), entity.getId(), true), connection, NetworkDirection.PLAY_TO_CLIENT);
                     }
                 }
             }

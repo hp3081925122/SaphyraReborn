@@ -60,31 +60,31 @@ public class MothbossEntityDiesProcedure {
             }
             if (world instanceof Level _soundLevel) {
                 if (!_soundLevel.isClientSide()) {
-                    _soundLevel.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:bosskilled")), SoundSource.MASTER, 2.0f, 1.0f);
+                    _soundLevel.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:bosskilled")), SoundSource.MASTER, 2.0f, 1.0f);
                 } else {
-                    _soundLevel.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:bosskilled")), SoundSource.MASTER, 2.0f, 1.0f, false);
+                    _soundLevel.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:bosskilled")), SoundSource.MASTER, 2.0f, 1.0f, false);
                 }
             }
         });
         MokelsBossfightSaphyraMod.queueServerWork(20, () -> {
             if (!world.isClientSide() && world.getServer() != null) {
-                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Saphyra: At last, I have found one, enduring enough to confront the horrors that linger within this world"), false);
+                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.4c0454a3d5ff"), false);
             }
             MokelsBossfightSaphyraMod.queueServerWork(200, () -> {
                 if (!world.isClientSide() && world.getServer() != null) {
-                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Saphyra: Though I regret placing this burden upon thee, know that thou art the chosen one to end our suffering."), false);
+                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.6552ce1771ff"), false);
                 }
                 MokelsBossfightSaphyraMod.queueServerWork(240, () -> {
                     if (!world.isClientSide() && world.getServer() != null) {
-                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Saphyra: forgive me..."), false);
+                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.29bc1ab20244"), false);
                     }
                     MokelsBossfightSaphyraMod.queueServerWork(160, () -> {
                         if (!world.isClientSide() && world.getServer() != null) {
-                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"END OF CHAPTER 1"), false);
+                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.dbdddc8c1139"), false);
                         }
                         MokelsBossfightSaphyraMod.queueServerWork(140, () -> {
                             if (!world.isClientSide() && world.getServer() != null) {
-                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"CHAPTER 2 COMING SOON"), false);
+                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.df30fc944e36"), false);
                             }
                         });
                     });

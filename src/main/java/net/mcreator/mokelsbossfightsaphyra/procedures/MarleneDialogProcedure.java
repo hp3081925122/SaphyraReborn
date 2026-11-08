@@ -45,47 +45,47 @@ public class MarleneDialogProcedure {
         if (entity.getPersistentData().getDouble("IA") == 20.0) {
             MokelsBossfightSaphyraMod.queueServerWork(20, () -> {
                 if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Marlene: Who art thou?"), false);
+                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.5221475cf21f"), false);
                 }
                 MokelsBossfightSaphyraMod.queueServerWork(80, () -> {
                     if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Marlene: Did mother send thee forth?"), false);
+                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.0dc694559f11"), false);
                     }
                     MokelsBossfightSaphyraMod.queueServerWork(120, () -> {
                         if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Marlene: ..."), false);
+                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.28d85d8b7b88"), false);
                         }
                         MokelsBossfightSaphyraMod.queueServerWork(60, () -> {
                             if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Marlene: good..."), false);
+                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.f3808c3da42d"), false);
                             }
                             MokelsBossfightSaphyraMod.queueServerWork(60, () -> {
                                 if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Marlene: well..."), false);
+                                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.66149a0f6591"), false);
                                 }
                                 MokelsBossfightSaphyraMod.queueServerWork(60, () -> {
                                     if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Marlene: i sense thou got your hold on a memory?"), false);
+                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.38eeb6646738"), false);
                                     }
                                     MokelsBossfightSaphyraMod.queueServerWork(140, () -> {
                                         if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Marlene: I shall convert it,"), false);
+                                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.bb1dd95ef458"), false);
                                         }
                                         MokelsBossfightSaphyraMod.queueServerWork(80, () -> {
                                             if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Marlene: but only if thou offer me thy help first."), false);
+                                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.d5e599b9e3ca"), false);
                                             }
                                             MokelsBossfightSaphyraMod.queueServerWork(160, () -> {
                                                 if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                                                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Marlene: I am a scholar of the written word, a seeker of forgotten lore"), false);
+                                                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.8fb04962eed3"), false);
                                                 }
                                                 MokelsBossfightSaphyraMod.queueServerWork(180, () -> {
                                                     if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Marlene: Bring me a book, a tale I have not yet encountered."), false);
+                                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.cbd3483b7581"), false);
                                                     }
                                                     MokelsBossfightSaphyraMod.queueServerWork(180, () -> {
                                                         if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                                                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Marlene: When thou hast found it, return to me, and I shall grant thy wish."), false);
+                                                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.171f4fc46d59"), false);
                                                         }
                                                     });
                                                 });

@@ -82,9 +82,9 @@ public class AttackBruellenProcedure {
                     if (world instanceof Level) {
                         _level1 = (Level)world;
                         if (!_level1.isClientSide()) {
-                            _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelessscream")), SoundSource.HOSTILE, 2.0f, 1.0f);
+                            _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:namelessscream")), SoundSource.HOSTILE, 2.0f, 1.0f);
                         } else {
-                            _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:namelessscream")), SoundSource.HOSTILE, 2.0f, 1.0f, false);
+                            _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:namelessscream")), SoundSource.HOSTILE, 2.0f, 1.0f, false);
                         }
                     }
                     if (world instanceof ServerLevel) {

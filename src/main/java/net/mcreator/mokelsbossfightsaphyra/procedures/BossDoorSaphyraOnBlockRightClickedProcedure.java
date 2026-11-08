@@ -45,9 +45,9 @@ public class BossDoorSaphyraOnBlockRightClickedProcedure {
             if (world instanceof Level) {
                 Level _level1 = (Level)world;
                 if (!_level1.isClientSide()) {
-                    _level1.playSound(null, BlockPos.containing((double)x, (double)y, (double)z), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:heavydooropening")), SoundSource.BLOCKS, 1.0f, 1.0f);
+                    _level1.playSound(null, BlockPos.containing((double)x, (double)y, (double)z), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:heavydooropening")), SoundSource.BLOCKS, 1.0f, 1.0f);
                 } else {
-                    _level1.playLocalSound(x, y, z, (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:heavydooropening")), SoundSource.BLOCKS, 1.0f, 1.0f, false);
+                    _level1.playLocalSound(x, y, z, (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:heavydooropening")), SoundSource.BLOCKS, 1.0f, 1.0f, false);
                 }
             }
         });

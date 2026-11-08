@@ -28,9 +28,9 @@ extends Item {
 
     public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, context, list, flag);
-        list.add((Component)Component.literal((String)"Godmother of every infant of Aenthir. One of the few witches that survived the day of the white flame. "));
+        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.2c25f113495f"));
         list.add((Component)Component.literal((String)""));
-        list.add((Component)Component.literal((String)"STORY ITEM"));
+        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.d38b85ee6dba"));
     }
 }
 

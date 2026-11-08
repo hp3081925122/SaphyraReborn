@@ -28,7 +28,7 @@ extends Item {
 
     public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, context, list, flag);
-        list.add((Component)Component.literal((String)"Fires your stomach contents onto your enemys"));
+        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.af57ee3fb5ea"));
     }
 }
 

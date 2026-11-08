@@ -45,7 +45,7 @@ public class NamelessProjectileFallProjectileHitsLivingEntityProcedure {
                 capability.Rotting = _setval;
                 capability.syncPlayerVariables(entity);
             });
-            entity.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ResourceKey.create((ResourceKey)Registries.DAMAGE_TYPE, (ResourceLocation)ResourceLocation.parse("mokels_bossfight_saphyra:rot")))), 4.0f);
+            entity.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ResourceKey.create((ResourceKey)Registries.DAMAGE_TYPE, (ResourceLocation)ResourceLocation.parse("saphyra_reborn:rot")))), 4.0f);
         }
     }
 }

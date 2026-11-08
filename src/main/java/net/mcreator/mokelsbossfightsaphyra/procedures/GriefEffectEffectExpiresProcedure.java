@@ -47,7 +47,7 @@ public class GriefEffectEffectExpiresProcedure {
                 return false;
             }
         }.checkGamemode(entity)) {
-            entity.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ResourceKey.create((ResourceKey)Registries.DAMAGE_TYPE, (ResourceLocation)ResourceLocation.parse("mokels_bossfight_saphyra:grief")))), 14.0f);
+            entity.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ResourceKey.create((ResourceKey)Registries.DAMAGE_TYPE, (ResourceLocation)ResourceLocation.parse("saphyra_reborn:grief")))), 14.0f);
         }
     }
 }

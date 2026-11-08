@@ -71,7 +71,7 @@ public class RotEffectOnEffectActiveTickProcedure {
             }
         }.checkGamemode(entity)) {
             ServerLevel _level1;
-            entity.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ResourceKey.create((ResourceKey)Registries.DAMAGE_TYPE, (ResourceLocation)ResourceLocation.parse("mokels_bossfight_saphyra:rot")))), 4.0f);
+            entity.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ResourceKey.create((ResourceKey)Registries.DAMAGE_TYPE, (ResourceLocation)ResourceLocation.parse("saphyra_reborn:rot")))), 4.0f);
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
                 ((ServerLevel)_level1).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.REDFIRE_PARTICLE.get()), entity.getX(), 1.0 + entity.getY(), entity.getZ(), 15, 0.2, 0.2, 0.2, 0.1);

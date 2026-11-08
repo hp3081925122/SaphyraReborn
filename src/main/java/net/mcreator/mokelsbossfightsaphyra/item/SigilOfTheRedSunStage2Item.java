@@ -28,9 +28,9 @@ extends Item {
 
     public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, context, list, flag);
-        list.add((Component)Component.literal((String)"Under the red sun, all hope was lost, and the age of witchcraft came to an end. A new god was born."));
+        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.8c7a1e042576"));
         list.add((Component)Component.literal((String)""));
-        list.add((Component)Component.literal((String)"STORY ITEM"));
+        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.d38b85ee6dba"));
     }
 }
 

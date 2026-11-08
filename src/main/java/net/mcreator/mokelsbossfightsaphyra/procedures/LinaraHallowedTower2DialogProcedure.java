@@ -28,40 +28,40 @@ public class LinaraHallowedTower2DialogProcedure {
         }
         MokelsBossfightSaphyraMod.queueServerWork(20, () -> {
             if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Linara: I bid thee for forgiveness"), false);
+                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.7560f87a9c1a"), false);
             }
             MokelsBossfightSaphyraMod.queueServerWork(100, () -> {
                 if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Linara: My goal was to find out how resistant thou are against the vile curse called manic"), false);
+                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.9f35e05a8b10"), false);
                 }
                 MokelsBossfightSaphyraMod.queueServerWork(200, () -> {
                     if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Linara: And here thee standeth before me."), false);
+                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.be31d199d4ff"), false);
                     }
                     MokelsBossfightSaphyraMod.queueServerWork(120, () -> {
                         if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Linara: Without loosing your mind"), false);
+                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.cdab62ddd07d"), false);
                         }
                         MokelsBossfightSaphyraMod.queueServerWork(100, () -> {
                             if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Linara: So resistant..."), false);
+                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.64df7e23b08b"), false);
                             }
                             MokelsBossfightSaphyraMod.queueServerWork(80, () -> {
                                 if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Linara: So powerful..."), false);
+                                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.d7b5b380c818"), false);
                                 }
                                 MokelsBossfightSaphyraMod.queueServerWork(80, () -> {
                                     if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Linara: I have to go now."), false);
+                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.acdb0c1cc417"), false);
                                     }
                                     MokelsBossfightSaphyraMod.queueServerWork(80, () -> {
                                         if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Linara: My duty is needed elsewhere."), false);
+                                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.54d45dc09b74"), false);
                                         }
                                         MokelsBossfightSaphyraMod.queueServerWork(120, () -> {
                                             if (entity.isAlive()) {
                                                 if (!world.isClientSide() && world.getServer() != null) {
-                                                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Linara: May we meet again."), false);
+                                                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.a08809ae5164"), false);
                                                 }
                                                 if (entity instanceof LinaraEntity) {
                                                     ((LinaraEntity)entity).setAnimation("sky");
@@ -81,15 +81,15 @@ public class LinaraHallowedTower2DialogProcedure {
                                             }
                                             MokelsBossfightSaphyraMod.queueServerWork(160, () -> {
                                                 if (!world.isClientSide() && world.getServer() != null) {
-                                                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Linara: Please..."), false);
+                                                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.784e5026bbf3"), false);
                                                 }
                                                 MokelsBossfightSaphyraMod.queueServerWork(80, () -> {
                                                     if (!world.isClientSide() && world.getServer() != null) {
-                                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Linara: Do not give up..."), false);
+                                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.0307fa5d6cce"), false);
                                                     }
                                                     MokelsBossfightSaphyraMod.queueServerWork(100, () -> {
                                                         if (!world.isClientSide() && world.getServer() != null) {
-                                                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Linara: I believe in thou..."), false);
+                                                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.3e503d80422a"), false);
                                                         }
                                                     });
                                                 });

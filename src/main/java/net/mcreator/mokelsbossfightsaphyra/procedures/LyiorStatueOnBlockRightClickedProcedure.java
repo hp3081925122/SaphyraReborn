@@ -65,9 +65,9 @@ public class LyiorStatueOnBlockRightClickedProcedure {
         }
         if (world instanceof Level _soundLevel) {
             if (!_soundLevel.isClientSide()) {
-                _soundLevel.playSound(null, BlockPos.containing((double)x, (double)y, (double)z), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:lyiorsoundstatue")), SoundSource.BLOCKS, 1.0f, 1.0f);
+                _soundLevel.playSound(null, BlockPos.containing((double)x, (double)y, (double)z), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:lyiorsoundstatue")), SoundSource.BLOCKS, 1.0f, 1.0f);
             } else {
-                _soundLevel.playLocalSound(x, y, z, (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:lyiorsoundstatue")), SoundSource.BLOCKS, 1.0f, 1.0f, false);
+                _soundLevel.playLocalSound(x, y, z, (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:lyiorsoundstatue")), SoundSource.BLOCKS, 1.0f, 1.0f, false);
             }
         }
     }

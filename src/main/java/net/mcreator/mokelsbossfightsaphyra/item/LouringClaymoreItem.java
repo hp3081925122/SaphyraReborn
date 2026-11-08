@@ -71,7 +71,7 @@ extends SwordItem {
 
     public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, context, list, flag);
-        list.add((Component)Component.literal((String)"Passive Ability: Each time a target is hit, the grief bar slowly fills up. While you're cursed with grief, the Louring Claymore deals additional damage that ignores the targets armor protection"));
+        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.c32b92e7de7a"));
     }
 }
 

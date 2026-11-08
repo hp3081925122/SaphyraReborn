@@ -28,7 +28,7 @@ extends Item {
 
     public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, context, list, flag);
-        list.add((Component)Component.literal((String)"Cleanses the caster from the following curses: Rot, Grief"));
+        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.38b6adf9df38"));
     }
 }
 

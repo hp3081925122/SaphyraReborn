@@ -28,9 +28,9 @@ extends Item {
 
     public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, context, list, flag);
-        list.add((Component)Component.literal((String)"It's written in a language you don't understand"));
+        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.9a687530f04b"));
         list.add((Component)Component.literal((String)""));
-        list.add((Component)Component.literal((String)"STORY ITEM"));
+        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.d38b85ee6dba"));
     }
 }
 

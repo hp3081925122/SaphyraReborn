@@ -61,9 +61,9 @@ extends SwordItem {
 
     public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, context, list, flag);
-        list.add((Component)Component.literal((String)"The rusty steel cuts deep into your flesh. The blade is heavily damaged and the handle fell off long time ago."));
+        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.d1e0320c1fe4"));
         list.add((Component)Component.literal((String)""));
-        list.add((Component)Component.literal((String)"Holding it rapidly fills up your rot bar"));
+        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.82fcc3e1a7fe"));
     }
 
     public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {

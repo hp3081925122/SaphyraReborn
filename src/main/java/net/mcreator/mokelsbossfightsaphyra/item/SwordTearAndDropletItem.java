@@ -71,7 +71,7 @@ extends SwordItem {
 
     public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, context, list, flag);
-        list.add((Component)Component.literal((String)"Deals 75% additional damage when it's raining and 150% additional damage during thunderstorms"));
+        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.19fa7ee0e5c3"));
     }
 }
 

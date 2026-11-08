@@ -101,3 +101,9 @@ publishing {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
+
+// AFL 3.0：随 JAR 分发许可证和署名声明
+tasks.named('processResources', ProcessResources).configure {
+    from(layout.projectDirectory.file('LICENSE')) { into 'META-INF' }
+    from(layout.projectDirectory.file('NOTICE.md')) { into 'META-INF' }
+}

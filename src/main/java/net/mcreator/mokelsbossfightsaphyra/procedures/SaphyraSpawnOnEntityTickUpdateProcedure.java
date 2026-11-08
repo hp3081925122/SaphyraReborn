@@ -69,7 +69,7 @@ public class SaphyraSpawnOnEntityTickUpdateProcedure {
             MokelsBossfightSaphyraMod.queueServerWork(20, () -> {
                 if (entity.isAlive()) {
                     if (!world.isClientSide() && world.getServer() != null) {
-                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Saphyra: Welcome, to the very heart of our universe."), false);
+                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.e33cdf6a74a4"), false);
                     }
                     if (world instanceof ServerLevel) {
                         ServerLevel _level1 = (ServerLevel)world;
@@ -79,7 +79,7 @@ public class SaphyraSpawnOnEntityTickUpdateProcedure {
                 MokelsBossfightSaphyraMod.queueServerWork(160, () -> {
                     if (entity.isAlive()) {
                         if (!world.isClientSide() && world.getServer() != null) {
-                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Saphyra: And the birthplace of Meryd and the white flame."), false);
+                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.02608f68c0b4"), false);
                         }
                         if (world instanceof ServerLevel) {
                             ServerLevel _level2 = (ServerLevel)world;
@@ -89,7 +89,7 @@ public class SaphyraSpawnOnEntityTickUpdateProcedure {
                     MokelsBossfightSaphyraMod.queueServerWork(160, () -> {
                         if (entity.isAlive()) {
                             if (!world.isClientSide() && world.getServer() != null) {
-                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Saphyra: I urge thou not to hold back."), false);
+                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.f51f30739c4d"), false);
                             }
                             if (world instanceof ServerLevel) {
                                 ServerLevel _level3 = (ServerLevel)world;
@@ -99,7 +99,7 @@ public class SaphyraSpawnOnEntityTickUpdateProcedure {
                         MokelsBossfightSaphyraMod.queueServerWork(100, () -> {
                             if (entity.isAlive()) {
                                 if (!world.isClientSide() && world.getServer() != null) {
-                                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Saphyra: Well then, let us begin."), false);
+                                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.f7c02d877843"), false);
                                 }
                                 if (world instanceof ServerLevel) {
                                     ServerLevel _level4 = (ServerLevel)world;

@@ -163,7 +163,7 @@ WorldlyContainer {
     }
 
     protected Component getDefaultName() {
-        return Component.literal((String)"saphyra_door_1");
+        return Component.translatable("text.saphyra_reborn.hardcoded.e464eb2bec79");
     }
 
     public int getMaxStackSize() {
@@ -175,7 +175,7 @@ WorldlyContainer {
     }
 
     public Component getDisplayName() {
-        return Component.literal((String)"Azure Boss Door");
+        return Component.translatable("text.saphyra_reborn.hardcoded.bf8ff6f1a698");
     }
 
     protected NonNullList<ItemStack> getItems() {

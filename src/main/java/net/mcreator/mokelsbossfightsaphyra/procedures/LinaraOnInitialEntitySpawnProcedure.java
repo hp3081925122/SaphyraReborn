@@ -42,39 +42,39 @@ public class LinaraOnInitialEntitySpawnProcedure {
                     ((LinaraEntity)entity).setAnimation("greeting");
                 }
                 if (!world.isClientSide() && world.getServer() != null) {
-                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"???: Greetings,"), false);
+                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.946d4f2b9892"), false);
                 }
             }
         });
         MokelsBossfightSaphyraMod.queueServerWork(100, () -> {
             if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Linara: I am Linara, one of the many scions of the children of aenthir"), false);
+                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.25f0689d5df9"), false);
             }
         });
         MokelsBossfightSaphyraMod.queueServerWork(240, () -> {
             if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Linara: Thou wert cast into this realm with a purpose."), false);
+                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.635cb3cf1ced"), false);
             }
         });
         MokelsBossfightSaphyraMod.queueServerWork(340, () -> {
             if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Linara: We are both of like kind."), false);
+                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.8b14dcb57f6f"), false);
             }
         });
         MokelsBossfightSaphyraMod.queueServerWork(440, () -> {
             if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Linara: Led by the grace of the white flame."), false);
+                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.825c7a88c6fb"), false);
             }
         });
         MokelsBossfightSaphyraMod.queueServerWork(540, () -> {
             if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Linara: Alas, our encounter is blessed with fleeting attention."), false);
+                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.98afb9d4a4d5"), false);
             }
         });
         MokelsBossfightSaphyraMod.queueServerWork(660, () -> {
             if (entity.isAlive()) {
                 if (!world.isClientSide() && world.getServer() != null) {
-                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Linara: Here, take this invitation and show it to my mistress."), false);
+                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.fe0e9d32df21"), false);
                 }
                 if (entity instanceof LinaraEntity) {
                     ((LinaraEntity)entity).setAnimation("give");
@@ -101,13 +101,13 @@ public class LinaraOnInitialEntitySpawnProcedure {
         });
         MokelsBossfightSaphyraMod.queueServerWork(740, () -> {
             if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Linara: She awaits thy arrival in the main hallowed tower."), false);
+                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.9814873faa4e"), false);
             }
         });
         MokelsBossfightSaphyraMod.queueServerWork(840, () -> {
             if (entity.isAlive()) {
                 if (!world.isClientSide() && world.getServer() != null) {
-                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Linara: farewell."), false);
+                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.6a806fc0cf5d"), false);
                 }
                 if (entity instanceof LinaraEntity) {
                     ((LinaraEntity)entity).setAnimation("sky");

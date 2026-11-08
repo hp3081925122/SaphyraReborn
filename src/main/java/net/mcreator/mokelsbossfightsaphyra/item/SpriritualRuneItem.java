@@ -28,7 +28,7 @@ extends Item {
 
     public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, context, list, flag);
-        list.add((Component)Component.literal((String)"can be exchanged for weapons by speaking to a Wandering Trader"));
+        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.3c4b5f4c5f8b"));
     }
 }
 

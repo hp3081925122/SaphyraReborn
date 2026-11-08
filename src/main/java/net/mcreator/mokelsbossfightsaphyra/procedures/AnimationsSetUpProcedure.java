@@ -55,7 +55,7 @@ import net.neoforged.network.NetworkEvent;
 public class AnimationsSetUpProcedure {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
-        PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(ResourceLocation.fromNamespaceAndPath("mokels_bossfight_saphyra", "player_animation"), 1000, AnimationsSetUpProcedure::registerPlayerAnimations);
+        PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "player_animation"), 1000, AnimationsSetUpProcedure::registerPlayerAnimations);
     }
 
     private static IAnimation registerPlayerAnimations(AbstractClientPlayer player) {
@@ -100,7 +100,7 @@ public class AnimationsSetUpProcedure {
                 ModifierLayer animation;
                 Player player;
                 Level level = Minecraft.getInstance().player.level();
-                if (level.getEntity(message.target) != null && (player = (Player)level.getEntity(message.target)) instanceof AbstractClientPlayer && (animation = (ModifierLayer)PlayerAnimationAccess.getPlayerAssociatedData((AbstractClientPlayer)(player_ = (AbstractClientPlayer)player)).get(ResourceLocation.fromNamespaceAndPath("mokels_bossfight_saphyra", "player_animation"))) != null && (message.override || !animation.isActive())) {
+                if (level.getEntity(message.target) != null && (player = (Player)level.getEntity(message.target)) instanceof AbstractClientPlayer && (animation = (ModifierLayer)PlayerAnimationAccess.getPlayerAssociatedData((AbstractClientPlayer)(player_ = (AbstractClientPlayer)player)).get(ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "player_animation"))) != null && (message.override || !animation.isActive())) {
                     animation.setAnimation((IAnimation)new KeyframeAnimationPlayer((dev.kosmx.playerAnim.core.data.KeyframeAnimation)PlayerAnimationRegistry.getAnimation(ResourceLocation.fromNamespaceAndPath("saphyra_reborn", message.animation.getString()))));
                 }
             });

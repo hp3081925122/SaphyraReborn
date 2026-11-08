@@ -28,7 +28,7 @@ extends Item {
 
     public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, context, list, flag);
-        list.add((Component)Component.literal((String)"Every living creature in a 64 block radius will be highlighted (this does not include other players)"));
+        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.6f0c2f2a01ed"));
     }
 }
 

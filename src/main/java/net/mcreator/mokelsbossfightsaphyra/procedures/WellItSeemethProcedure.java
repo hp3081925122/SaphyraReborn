@@ -34,31 +34,31 @@ public class WellItSeemethProcedure {
         }
         if (entity.getPersistentData().getDouble("IA") == 20.0) {
             if (!world.isClientSide() && world.getServer() != null) {
-                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"???: Welcome"), false);
+                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.589f19fd9a63"), false);
             }
             MokelsBossfightSaphyraMod.queueServerWork(80, () -> {
                 if (entity.isAlive()) {
                     if (!world.isClientSide() && world.getServer() != null) {
-                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"???: Linara informed me of thy imminent arrival."), false);
+                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.00cd4898683f"), false);
                     }
                     MokelsBossfightSaphyraMod.queueServerWork(120, () -> {
                         if (entity.isAlive()) {
                             if (!world.isClientSide() && world.getServer() != null) {
-                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Saphyra: I am Saphyra, one of the few remaining witches that still draw breath in this world."), false);
+                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.8fc2aaa537b9"), false);
                             }
                             MokelsBossfightSaphyraMod.queueServerWork(180, () -> {
                                 if (entity.isAlive()) {
                                     if (!world.isClientSide() && world.getServer() != null) {
-                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Saphyra: As the leader of the children of aenthir, I welcome thee into my guiding embrace."), false);
+                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.e83a41005eaf"), false);
                                     }
                                     MokelsBossfightSaphyraMod.queueServerWork(180, () -> {
                                         if (entity.isAlive()) {
                                             if (!world.isClientSide() && world.getServer() != null) {
-                                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Saphyra: Hand me the invitation Linara gave thee."), false);
+                                                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.662d9862454e"), false);
                                             }
                                             MokelsBossfightSaphyraMod.queueServerWork(120, () -> {
                                                 if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
-                                                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"Saphyra: And i will gladly adopt thou into my loving care"), false);
+                                                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.89e39c5710f8"), false);
                                                 }
                                             });
                                         }

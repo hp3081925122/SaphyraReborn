@@ -197,9 +197,9 @@ public class SaphyraAttackPatternProcedure {
             if (world instanceof Level) {
                 _level1 = (Level)world;
                 if (!_level1.isClientSide()) {
-                    _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:saphyrastheme1")), SoundSource.MUSIC, 2.0f, 1.0f);
+                    _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:saphyrastheme1")), SoundSource.MUSIC, 2.0f, 1.0f);
                 } else {
-                    _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:saphyrastheme1")), SoundSource.MUSIC, 2.0f, 1.0f, false);
+                    _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:saphyrastheme1")), SoundSource.MUSIC, 2.0f, 1.0f, false);
                 }
             }
             if (world instanceof ServerLevel) {
@@ -211,9 +211,9 @@ public class SaphyraAttackPatternProcedure {
             if (world instanceof Level) {
                 _level1 = (Level)world;
                 if (!_level1.isClientSide()) {
-                    _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:saphyrastheme2")), SoundSource.MUSIC, 2.0f, 1.0f);
+                    _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:saphyrastheme2")), SoundSource.MUSIC, 2.0f, 1.0f);
                 } else {
-                    _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:saphyrastheme2")), SoundSource.MUSIC, 2.0f, 1.0f, false);
+                    _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:saphyrastheme2")), SoundSource.MUSIC, 2.0f, 1.0f, false);
                 }
             }
             if (world instanceof ServerLevel) {
@@ -225,9 +225,9 @@ public class SaphyraAttackPatternProcedure {
             if (world instanceof Level) {
                 _level1 = (Level)world;
                 if (!_level1.isClientSide()) {
-                    _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:saphyrastheme3")), SoundSource.MUSIC, 2.0f, 1.0f);
+                    _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:saphyrastheme3")), SoundSource.MUSIC, 2.0f, 1.0f);
                 } else {
-                    _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:saphyrastheme3")), SoundSource.MUSIC, 2.0f, 1.0f, false);
+                    _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:saphyrastheme3")), SoundSource.MUSIC, 2.0f, 1.0f, false);
                 }
             }
             if (world instanceof ServerLevel) {
@@ -243,9 +243,9 @@ public class SaphyraAttackPatternProcedure {
             if (world instanceof Level) {
                 _level1 = (Level)world;
                 if (!_level1.isClientSide()) {
-                    _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:saphyrastheme4")), SoundSource.MUSIC, 2.0f, 1.0f);
+                    _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:saphyrastheme4")), SoundSource.MUSIC, 2.0f, 1.0f);
                 } else {
-                    _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:saphyrastheme4")), SoundSource.MUSIC, 2.0f, 1.0f, false);
+                    _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:saphyrastheme4")), SoundSource.MUSIC, 2.0f, 1.0f, false);
                 }
             }
         }
@@ -253,9 +253,9 @@ public class SaphyraAttackPatternProcedure {
             if (world instanceof Level) {
                 _level1 = (Level)world;
                 if (!_level1.isClientSide()) {
-                    _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:saphyrastheme5")), SoundSource.MUSIC, 2.0f, 1.0f);
+                    _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:saphyrastheme5")), SoundSource.MUSIC, 2.0f, 1.0f);
                 } else {
-                    _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:saphyrastheme5")), SoundSource.MUSIC, 2.0f, 1.0f, false);
+                    _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:saphyrastheme5")), SoundSource.MUSIC, 2.0f, 1.0f, false);
                 }
             }
             if (world instanceof ServerLevel) {
@@ -267,9 +267,9 @@ public class SaphyraAttackPatternProcedure {
             if (world instanceof Level) {
                 _level1 = (Level)world;
                 if (!_level1.isClientSide()) {
-                    _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:saphyrastheme6")), SoundSource.MUSIC, 2.0f, 1.0f);
+                    _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:saphyrastheme6")), SoundSource.MUSIC, 2.0f, 1.0f);
                 } else {
-                    _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:saphyrastheme6")), SoundSource.MUSIC, 2.0f, 1.0f, false);
+                    _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:saphyrastheme6")), SoundSource.MUSIC, 2.0f, 1.0f, false);
                 }
             }
             if (world instanceof ServerLevel) {

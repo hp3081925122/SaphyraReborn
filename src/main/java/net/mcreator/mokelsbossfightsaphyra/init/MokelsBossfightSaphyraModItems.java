@@ -134,7 +134,7 @@ public class MokelsBossfightSaphyraModItems {
     public static final DeferredHolder<Item, Item> RULE_OF_HATERED = REGISTRY.register("rule_of_hatered", () -> new RuleOfHateredItem());
     public static final DeferredHolder<Item, Item> GLUTTONOUS_FLASK = REGISTRY.register("gluttonous_flask", () -> new GluttonousFlaskItem());
     public static final DeferredHolder<Item, Item> SPACE_BLOCK = MokelsBossfightSaphyraModItems.block(MokelsBossfightSaphyraModBlocks.SPACE_BLOCK);
-    public static final DeferredHolder<Item, SaphyrasCapeItem> SAPHYRAS_CAPE_CHESTPLATE = REGISTRY.register("saphyras_cape_chestplate", () -> new SaphyrasCapeItem(ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+    public static final DeferredHolder<Item, SaphyrasCapeItem> SAPHYRAS_CAPE_CHESTPLATE = REGISTRY.register("saphyras_cape_chestplate", () -> new SaphyrasCapeItem(ArmorItem.Type.CHESTPLATE, new Item.Properties().durability(16 * 25)));
     public static final DeferredHolder<Item, Item> ODDMENT_STAGE_2 = REGISTRY.register(MokelsBossfightSaphyraModBlocks.ODDMENT_STAGE_2.getId().getPath(), () -> new OddmentStage2DisplayItem((Block)MokelsBossfightSaphyraModBlocks.ODDMENT_STAGE_2.get(), new Item.Properties()));
     public static final DeferredHolder<Item, Item> RULE_OF_HUNGER = REGISTRY.register("rule_of_hunger", () -> new RuleOfHungerItem());
     public static final DeferredHolder<Item, Item> RULE_OF_THE_P_LAGUED = REGISTRY.register("rule_of_the_p_lagued", () -> new RuleOfThePLaguedItem());

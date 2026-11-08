@@ -64,9 +64,9 @@ public class NamelessEntityDiesForRealProcedure {
             }
             if (world instanceof Level _soundLevel) {
                 if (!_soundLevel.isClientSide()) {
-                    _soundLevel.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:bosskilled")), SoundSource.MASTER, 2.0f, 1.0f);
+                    _soundLevel.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:bosskilled")), SoundSource.MASTER, 2.0f, 1.0f);
                 } else {
-                    _soundLevel.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("mokels_bossfight_saphyra:bosskilled")), SoundSource.MASTER, 2.0f, 1.0f, false);
+                    _soundLevel.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:bosskilled")), SoundSource.MASTER, 2.0f, 1.0f, false);
                 }
             }
         });

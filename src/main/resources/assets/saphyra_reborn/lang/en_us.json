@@ -102,7 +102,7 @@
   "subtitles.usingflaskofhealing": "Usingflaskofhealing",
   "key.saphyra_reborn.playerparticletest": "Playerparticletest",
   "block.saphyra_reborn.locked_fog_hatered": "Fog (Hatred)",
-  "item_group.saphyra_reborn.saphyra_reborn": "The Shattered Goddess",
+  "item_group.saphyra_reborn.mokels_witch_boss": "The Shattered Goddess",
   "item.saphyra_reborn.hallowed_key_1": "Hallowed Sigil Key (Worship)",
   "item.saphyra_reborn.hallowed_key_2": "Hallowed Sigil Key (Chain)",
   "item.saphyra_reborn.hallowed_key_3": "Hallowed Sigil Key (Shattered)",
@@ -397,5 +397,12 @@
   "text.saphyra_reborn.book.augurium_5.page4": "Manic:\nIntense positive thoughts flood the affected person, causing severe deformation, twitching and laughing.\n\nAffection:\nForcing the affected person to show love. This very rarely results in death. ",
   "text.saphyra_reborn.book.augurium_5.page5": "Devotion:\nÉívÒ:Áºz1æ‹<XtIù‰B$š‡:Zðyæ£¼»¼9ú1“ãá/3»]p7pia¦fÑÆ&¢‡r¥ó•/\n\nSome curses are only dangerous to humanoid creatures. This includes: Manic, Devotion, Affection.",
   "text.saphyra_reborn.rule.despair.desc": "Hopelessness drains the strength of every enemy nearby",
-  "text.saphyra_reborn.rule.sobbing.desc": "Your tears drown the enemies around you"
+  "text.saphyra_reborn.rule.sobbing.desc": "Your tears drown the enemies around you",
+  "entity.saphyra_reborn.disgust_projectile_fall": "Disgust Projectile",
+  "entity.saphyra_reborn.mirror_blade_projectile": "Mirror Blade",
+  "entity.saphyra_reborn.nameless_invisible_projectile": "Nameless Gatekeeper Projectile",
+  "entity.saphyra_reborn.nameless_projectile_fall": "Nameless Gatekeeper Projectile",
+  "entity.saphyra_reborn.rot_projectile": "Rot Projectile",
+  "entity.saphyra_reborn.witch_boss_projectile": "Saphyra Projectile",
+  "entity.saphyra_reborn.witch_boss_projectilefall": "Saphyra Projectile"
 }

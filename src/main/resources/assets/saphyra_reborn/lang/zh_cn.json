@@ -102,7 +102,7 @@
   "subtitles.usingflaskofhealing": "使用治疗药剂",
   "key.saphyra_reborn.playerparticletest": "Playerparticletest",
   "block.saphyra_reborn.locked_fog_hatered": "雾（憎恨）",
-  "item_group.saphyra_reborn.saphyra_reborn": "破碎女神",
+  "item_group.saphyra_reborn.mokels_witch_boss": "破碎女神",
   "item.saphyra_reborn.hallowed_key_1": "圣塔印记钥匙（崇拜）",
   "item.saphyra_reborn.hallowed_key_2": "圣塔印记钥匙（锁链）",
   "item.saphyra_reborn.hallowed_key_3": "圣塔印记钥匙（破碎）",
@@ -397,5 +397,12 @@
   "text.saphyra_reborn.book.augurium_5.page4": "狂乱：\n强烈的积极念头涌入受影响者脑中，导致严重的畸变、抽搐与大笑。\n\n爱慕：\n迫使受影响者表达爱意，极少致死。",
   "text.saphyra_reborn.book.augurium_5.page5": "虔信：\nÉívÒ:Áºz1æ‹<XtIù‰B$š‡:Zðyæ£¼»¼9ú1“ãá/3»]p7pia¦fÑÆ&¢‡r¥ó•/\n\n有些诅咒只对类人生物有危险，包括：狂乱、虔信、爱慕。",
   "text.saphyra_reborn.rule.despair.desc": "无望会抽干周围所有敌人的力气",
-  "text.saphyra_reborn.rule.sobbing.desc": "你的泪水会淹没周围的敌人"
+  "text.saphyra_reborn.rule.sobbing.desc": "你的泪水会淹没周围的敌人",
+  "entity.saphyra_reborn.disgust_projectile_fall": "厌恶弹",
+  "entity.saphyra_reborn.mirror_blade_projectile": "镜刃",
+  "entity.saphyra_reborn.nameless_invisible_projectile": "无名守门人的弹幕",
+  "entity.saphyra_reborn.nameless_projectile_fall": "无名守门人的弹幕",
+  "entity.saphyra_reborn.rot_projectile": "腐烂弹",
+  "entity.saphyra_reborn.witch_boss_projectile": "萨菲拉的弹幕",
+  "entity.saphyra_reborn.witch_boss_projectilefall": "萨菲拉的弹幕"
 }

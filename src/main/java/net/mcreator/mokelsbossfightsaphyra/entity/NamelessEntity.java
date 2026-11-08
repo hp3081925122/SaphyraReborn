@@ -194,16 +194,30 @@ implements GeoEntity {
         if (source.is(DamageTypes.FALL)) {
             return false;
         }
-        if (!this.level().isClientSide()) {
-            if (this.combat.isInvulnerable() && !source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-                return false;
-            }
-            if (com.hp.saphyrareborn.boss.BossCastLock.blocksDamage(this, source)) {
-                this.combat.onBlockedHit(source, amount);
-                return false;
-            }
+        if (this.level().isClientSide()) {
+            return super.hurt(source, amount);
         }
-        return super.hurt(source, amount);
+        if (this.combat.isInvulnerable() && !source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            this.logHurt(source, amount, false, "phase_shift");
+            return false;
+        }
+        if (com.hp.saphyrareborn.boss.BossCastLock.blocksDamage(this, source)) {
+            this.combat.onBlockedHit(source, amount);
+            this.logHurt(source, amount, false, "shield");
+            return false;
+        }
+        int cooldown = this.invulnerableTime;
+        float before = this.getHealth();
+        boolean result = super.hurt(source, amount);
+        this.logHurt(source, amount, result, cooldown > 10 ? "vanilla_cooldown(" + cooldown + ",lastHurt=" + this.lastHurt + ",dealt=" + (before - this.getHealth()) + ")" : "normal(dealt=" + (before - this.getHealth()) + ")");
+        return result;
+    }
+
+    private void logHurt(DamageSource source, float amount, boolean result, String reason) {
+        if (source.getEntity() instanceof Player) {
+            com.hp.saphyrareborn.MokelsBossfightSaphyraMod.LOGGER.info("[NamelessHurtDebug] tick={} type={} amount={} result={} reason={} health={}",
+                    this.tickCount, source.getMsgId(), amount, result, reason, this.getHealth());
+        }
     }
 
     public void die(DamageSource source) {

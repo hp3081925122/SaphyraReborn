@@ -40,7 +40,6 @@
  *  net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal
  *  net.minecraft.world.entity.monster.Monster
  *  net.minecraft.world.entity.player.Player
- *  net.minecraft.world.entity.projectile.AbstractArrow
  *  net.minecraft.world.level.Level
  *  net.minecraft.world.level.LevelAccessor
  *  net.minecraft.world.level.ServerLevelAccessor
@@ -103,7 +102,6 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -182,9 +180,6 @@ implements GeoEntity {
     }
 
     public boolean hurt(DamageSource source, float amount) {
-        if (source.getDirectEntity() instanceof AbstractArrow) {
-            return false;
-        }
         return super.hurt(source, amount);
     }
 

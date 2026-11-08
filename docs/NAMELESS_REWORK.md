@@ -117,6 +117,13 @@
 - 加入预备、出招、收招各段，使用缓动，命中帧与服务端 tick 对齐。
 - 收招回到中立姿势。
 - 新增 `stagger`（3s）和 `phaseshift`（3s）。
+- 次级运动烘焙（`D:/AI临时文件/Saphyra重生/nameless_rework/scripts/bake_secondary.py`），作用于全部攻击动画以及 stagger、phaseshift：
+  - 惯性跟随：武器随手臂速度做弹簧滞后；头随身体滞后；三根羽饰做欠阻尼摆动；左臂随身体滞后。
+  - 命中前后重心变化：命中前上提，命中瞬间下沉并前倾；重攻击的幅度更大。
+  - 脚步：命中时前后脚错步。
+  - 呼吸：静止段有呼吸起伏。
+  - 叠加量乘以首尾包络，起止姿势仍与 idle 一致。动画里缺少的骨骼通道以 idle 姿势为底，避免覆盖 movement 控制器时出现跳变。
+  - 按 30fps 采样后删除共线的冗余关键帧。
 
 ## 6. 配置（`saphyra_reborn-common.toml` → `bosses.nameless_mechanics`）
 

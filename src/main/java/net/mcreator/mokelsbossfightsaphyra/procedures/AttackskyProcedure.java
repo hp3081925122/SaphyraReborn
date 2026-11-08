@@ -84,7 +84,6 @@ public class AttackskyProcedure {
                                             WitchBossProjectilefallEntity entityToSpawn = new WitchBossProjectilefallEntity((EntityType<? extends WitchBossProjectilefallEntity>)((EntityType)MokelsBossfightSaphyraModEntities.WITCH_BOSS_PROJECTILEFALL.get()), level);
                                             entityToSpawn.setOwner(shooter);
                                             entityToSpawn.setBaseDamage(damage);
-                                            entityToSpawn.setKnockback(knockback);
                                             entityToSpawn.setSilent(true);
                                             entityToSpawn.setPierceLevel(piercing);
                                             return entityToSpawn;

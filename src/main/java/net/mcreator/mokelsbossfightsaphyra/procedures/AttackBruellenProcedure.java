@@ -117,7 +117,6 @@ public class AttackBruellenProcedure {
                                 NamelessInvisibleProjectileEntity entityToSpawn = new NamelessInvisibleProjectileEntity((EntityType<? extends NamelessInvisibleProjectileEntity>)((EntityType)MokelsBossfightSaphyraModEntities.NAMELESS_INVISIBLE_PROJECTILE.get()), level);
                                 entityToSpawn.setOwner(shooter);
                                 entityToSpawn.setBaseDamage(damage);
-                                entityToSpawn.setKnockback(knockback);
                                 entityToSpawn.setSilent(true);
                                 return entityToSpawn;
                             }

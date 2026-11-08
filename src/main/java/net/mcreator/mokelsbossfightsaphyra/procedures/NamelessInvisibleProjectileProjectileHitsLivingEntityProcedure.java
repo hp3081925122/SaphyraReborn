@@ -711,7 +711,6 @@ public class NamelessInvisibleProjectileProjectileHitsLivingEntityProcedure {
                     public Projectile getArrow(Level level, float damage, int knockback) {
                         NamelessProjectileFallEntity entityToSpawn = new NamelessProjectileFallEntity((EntityType<? extends NamelessProjectileFallEntity>)((EntityType)MokelsBossfightSaphyraModEntities.NAMELESS_PROJECTILE_FALL.get()), level);
                         entityToSpawn.setBaseDamage(damage);
-                        entityToSpawn.setKnockback(knockback);
                         entityToSpawn.setSilent(true);
                         return entityToSpawn;
                     }

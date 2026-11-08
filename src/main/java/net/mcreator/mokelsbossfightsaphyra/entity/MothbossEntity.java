@@ -121,7 +121,8 @@ implements GeoEntity {
         this.xpReward = 1000;
         this.setNoAi(false);
         
-        this.setNoGravity(true);
+        this.setPersistenceRequired();
+        this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.STEP_HEIGHT).setBaseValue(1.2);
     }
 
     protected void defineSynchedData(SynchedEntityData.Builder builder) {

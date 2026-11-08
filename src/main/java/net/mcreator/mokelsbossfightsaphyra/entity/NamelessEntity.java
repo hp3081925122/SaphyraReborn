@@ -129,6 +129,7 @@ implements GeoEntity {
         super(type, world);
         this.xpReward = 600;
         this.setNoAi(false);
+        this.setPersistenceRequired();
     }
 
     @Override

@@ -109,7 +109,7 @@ implements GeoEntity {
         super(type, world);
         this.xpReward = 0;
         this.setNoAi(false);
-        this.setNoGravity(true);
+        this.setPersistenceRequired();
         this.moveControl = new FlyingMoveControl((Mob)this, 10, true);
     }
 

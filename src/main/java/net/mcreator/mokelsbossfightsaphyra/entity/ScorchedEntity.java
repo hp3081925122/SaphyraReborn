@@ -113,7 +113,7 @@ implements GeoEntity {
         super(type, world);
         this.xpReward = 20;
         this.setNoAi(false);
-        this.setNoGravity(true);
+        this.setPersistenceRequired();
     }
 
     protected void defineSynchedData(SynchedEntityData.Builder builder) {

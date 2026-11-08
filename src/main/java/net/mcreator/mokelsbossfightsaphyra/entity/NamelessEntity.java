@@ -62,7 +62,6 @@ import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModEntities;
 import com.hp.saphyrareborn.procedures.NamelessAttackPatternProcedure;
 import com.hp.saphyrareborn.procedures.NamelessDeathTimeIsReachedProcedure;
 import com.hp.saphyrareborn.procedures.NamelessEntityDiesForRealProcedure;
-import com.hp.saphyrareborn.procedures.NamelessEntityDiesProcedure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -206,11 +205,6 @@ implements GeoEntity {
         if (compound.contains("Dataanimations")) {
             this.entityData.set(DATA_animations,compound.getBoolean("Dataanimations"));
         }
-    }
-
-    public void awardKillScore(Entity entity, int score, DamageSource damageSource) {
-        super.awardKillScore(entity, score, damageSource);
-        NamelessEntityDiesProcedure.execute((Entity)this);
     }
 
     @Override

@@ -80,12 +80,10 @@ public class RotEffectOnEffectActiveTickProcedure {
                 _level1 = (ServerLevel)world;
                 ((ServerLevel)_level1).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.REDFLAME_PARTICLE.get()), entity.getX(), 1.0 + entity.getY(), entity.getZ(), 30, 0.2, 0.2, 0.2, 0.1);
             }
-            Vec3 _center1 = new Vec3(entity.getX(), entity.getY(), entity.getZ());
-            List<Entity> _entfound1 = world.getEntitiesOfClass(Entity.class, new AABB(_center1, _center1).inflate(16.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center1))).toList();
-            for (Entity entityiterator : _entfound1) {
-                LivingEntity _entity1;
-                if (!(entityiterator instanceof NamelessEntity) || !(entityiterator instanceof LivingEntity) || (_entity1 = (LivingEntity)entityiterator).level().isClientSide()) continue;
-                _entity1.addEffect(new MobEffectInstance(MobEffects.HARM, 1, 2, false, false));
+            if (!world.isClientSide()) {
+                for (NamelessEntity nameless : world.getEntitiesOfClass(NamelessEntity.class, entity.getBoundingBox().inflate(16.0), NamelessEntity::isAlive)) {
+                    nameless.heal(16.0f);
+                }
             }
         }
         if (entity.getPersistentData().getDouble("ROT") == 80.0) {

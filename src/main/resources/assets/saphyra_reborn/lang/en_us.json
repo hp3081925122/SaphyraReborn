@@ -370,5 +370,19 @@
   "text.saphyra_reborn.hardcoded.89e39c5710f8": "Saphyra: And I will gladly adopt thee into my loving care",
   "text.saphyra_reborn.hardcoded.ee2c28c0ac25": "Saphyra: Very well...",
   "text.saphyra_reborn.hardcoded.ab329751d0a6": "Saphyra: Enough playing around.",
-  "text.saphyra_reborn.hardcoded.02d68fd52055": "Saphyra: Let's get serious."
+  "text.saphyra_reborn.hardcoded.02d68fd52055": "Saphyra: Let's get serious.",
+  "entity.saphyra_reborn.linara_clock_tower": "Linara",
+  "text.saphyra_reborn.story.sigil3_hint": "It pulls you towards the Fractured Clock Tower",
+  "text.saphyra_reborn.story.sigil3_wrong_place": "The sigil stays silent. This is not the place.",
+  "text.saphyra_reborn.story.puppet_awakens": "The red sun answers. Something stirs inside the tower...",
+  "text.saphyra_reborn.story.marlene_saphyra_1": "Marlene: Mother's memory... It still burns with the red sun.",
+  "text.saphyra_reborn.story.marlene_saphyra_2": "Marlene: The sigil has awakened once more.",
+  "text.saphyra_reborn.story.marlene_saphyra_3": "Marlene: Take it back to the Fractured Clock Tower, where thy journey began.",
+  "text.saphyra_reborn.story.linara_ct_1": "Linara: So the puppet has fallen at last.",
+  "text.saphyra_reborn.story.linara_ct_2": "Linara: The Manic Eye thou brought me showed me where it hid.",
+  "text.saphyra_reborn.story.linara_ct_3": "Linara: It was once a child of Aenthir, bound by Yiva's strings.",
+  "text.saphyra_reborn.story.linara_ct_4": "Linara: Give me its memory, and I shall set its soul free.",
+  "text.saphyra_reborn.story.linara_ct_5": "Linara: ...It is at peace now.",
+  "text.saphyra_reborn.story.linara_ct_6": "Linara: Take these. They belonged to it before the binding.",
+  "text.saphyra_reborn.story.linara_ct_7": "Linara: Our paths shall cross again. Farewell."
 }

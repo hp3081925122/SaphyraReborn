@@ -267,6 +267,7 @@ implements GeoEntity {
                 drop.setPickUpDelay(2);
                 drop.setUnlimitedLifetime();
                 level.addFreshEntity(drop);
+                com.hp.saphyrareborn.procedures.LinaraClockTowerProcedure.onPuppetDefeated(level, this);
             }
             this.remove(Entity.RemovalReason.KILLED);
             this.discard();

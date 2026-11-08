@@ -24,6 +24,7 @@ import com.hp.saphyrareborn.entity.GhostZombieEntity;
 import com.hp.saphyrareborn.entity.InfestedWitchEntity;
 import com.hp.saphyrareborn.entity.LinaraEntity;
 import com.hp.saphyrareborn.entity.LinaraHallowedTower2Entity;
+import com.hp.saphyrareborn.entity.LinaraClockTowerEntity;
 import com.hp.saphyrareborn.entity.LinaraHallowedTowerEntity;
 import com.hp.saphyrareborn.entity.MarleneHumanFormDialog2Entity;
 import com.hp.saphyrareborn.entity.MarleneHumanFormEntity;
@@ -93,6 +94,7 @@ public class MokelsBossfightSaphyraModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<MarleneHumanFormDialog2Entity>> MARLENE_HUMAN_FORM_DIALOG_2 = MokelsBossfightSaphyraModEntities.register("marlene_human_form_dialog_2", EntityType.Builder.of(MarleneHumanFormDialog2Entity::new, (MobCategory)MobCategory.AMBIENT).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).noSave().sized(0.6f, 1.9f));
     public static final DeferredHolder<EntityType<?>, EntityType<LinaraHallowedTowerEntity>> LINARA_HALLOWED_TOWER = MokelsBossfightSaphyraModEntities.register("linara_hallowed_tower", EntityType.Builder.of(LinaraHallowedTowerEntity::new, (MobCategory)MobCategory.AMBIENT).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).noSave().sized(0.8f, 1.2f));
     public static final DeferredHolder<EntityType<?>, EntityType<LinaraHallowedTower2Entity>> LINARA_HALLOWED_TOWER_2 = MokelsBossfightSaphyraModEntities.register("linara_hallowed_tower_2", EntityType.Builder.of(LinaraHallowedTower2Entity::new, (MobCategory)MobCategory.AMBIENT).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).noSave().sized(0.8f, 1.2f));
+    public static final DeferredHolder<EntityType<?>, EntityType<LinaraClockTowerEntity>> LINARA_CLOCK_TOWER = MokelsBossfightSaphyraModEntities.register("linara_clock_tower", EntityType.Builder.of(LinaraClockTowerEntity::new, (MobCategory)MobCategory.AMBIENT).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).sized(0.8f, 1.2f));
     public static final DeferredHolder<EntityType<?>, EntityType<ScorchedEntity>> SCORCHED = MokelsBossfightSaphyraModEntities.register("scorched", EntityType.Builder.of(ScorchedEntity::new, (MobCategory)MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).sized(0.6f, 1.8f));
     public static final DeferredHolder<EntityType<?>, EntityType<InfestedWitchEntity>> INFESTED_WITCH = MokelsBossfightSaphyraModEntities.register("infested_witch", EntityType.Builder.of(InfestedWitchEntity::new, (MobCategory)MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).sized(1.0f, 1.4f));
     public static final DeferredHolder<EntityType<?>, EntityType<SaphyraSpawnEntity>> SAPHYRA_SPAWN = MokelsBossfightSaphyraModEntities.register("saphyra_spawn", EntityType.Builder.of(SaphyraSpawnEntity::new, (MobCategory)MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).noSave().sized(0.5f, 0.5f));
@@ -122,6 +124,7 @@ public class MokelsBossfightSaphyraModEntities {
             MarleneHumanFormDialog2Entity.init();
             LinaraHallowedTowerEntity.init();
             LinaraHallowedTower2Entity.init();
+            LinaraClockTowerEntity.init();
             ScorchedEntity.init();
             InfestedWitchEntity.init();
             SaphyraSpawnEntity.init();
@@ -148,6 +151,7 @@ public class MokelsBossfightSaphyraModEntities {
         event.put((EntityType)MARLENE_HUMAN_FORM_DIALOG_2.get(), MarleneHumanFormDialog2Entity.createAttributes().build());
         event.put((EntityType)LINARA_HALLOWED_TOWER.get(), LinaraHallowedTowerEntity.createAttributes().build());
         event.put((EntityType)LINARA_HALLOWED_TOWER_2.get(), LinaraHallowedTower2Entity.createAttributes().build());
+        event.put((EntityType)LINARA_CLOCK_TOWER.get(), LinaraClockTowerEntity.createAttributes().build());
         event.put((EntityType)SCORCHED.get(), ScorchedEntity.createAttributes().build());
         event.put((EntityType)INFESTED_WITCH.get(), InfestedWitchEntity.createAttributes().build());
         event.put((EntityType)SAPHYRA_SPAWN.get(), SaphyraSpawnEntity.createAttributes().build());

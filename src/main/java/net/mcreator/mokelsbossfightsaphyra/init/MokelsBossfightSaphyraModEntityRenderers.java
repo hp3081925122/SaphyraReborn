@@ -16,6 +16,7 @@ import com.hp.saphyrareborn.client.renderer.GhostSpiritRenderer;
 import com.hp.saphyrareborn.client.renderer.GhostZombieRenderer;
 import com.hp.saphyrareborn.client.renderer.InfestedWitchRenderer;
 import com.hp.saphyrareborn.client.renderer.LinaraHallowedTower2Renderer;
+import com.hp.saphyrareborn.client.renderer.LinaraClockTowerRenderer;
 import com.hp.saphyrareborn.client.renderer.LinaraHallowedTowerRenderer;
 import com.hp.saphyrareborn.client.renderer.LinaraRenderer;
 import com.hp.saphyrareborn.client.renderer.MarleneHumanFormDialog2Renderer;
@@ -70,6 +71,7 @@ public class MokelsBossfightSaphyraModEntityRenderers {
         event.registerEntityRenderer((EntityType)MokelsBossfightSaphyraModEntities.MARLENE_HUMAN_FORM_DIALOG_2.get(), MarleneHumanFormDialog2Renderer::new);
         event.registerEntityRenderer((EntityType)MokelsBossfightSaphyraModEntities.LINARA_HALLOWED_TOWER.get(), LinaraHallowedTowerRenderer::new);
         event.registerEntityRenderer((EntityType)MokelsBossfightSaphyraModEntities.LINARA_HALLOWED_TOWER_2.get(), LinaraHallowedTower2Renderer::new);
+        event.registerEntityRenderer((EntityType)MokelsBossfightSaphyraModEntities.LINARA_CLOCK_TOWER.get(), LinaraClockTowerRenderer::new);
         event.registerEntityRenderer((EntityType)MokelsBossfightSaphyraModEntities.SCORCHED.get(), ScorchedRenderer::new);
         event.registerEntityRenderer((EntityType)MokelsBossfightSaphyraModEntities.INFESTED_WITCH.get(), InfestedWitchRenderer::new);
         event.registerEntityRenderer((EntityType)MokelsBossfightSaphyraModEntities.SAPHYRA_SPAWN.get(), SaphyraSpawnRenderer::new);

@@ -30,7 +30,6 @@ public final class MokelsBossfightSaphyraModVariables {
     }
 
     public static final class PlayerVariables implements INBTSerializable<CompoundTag> {
-        public double Dash;
         public double Rotting;
         public double Grief;
         public double Manic;
@@ -44,7 +43,6 @@ public final class MokelsBossfightSaphyraModVariables {
 
         public CompoundTag writeNBT() {
             CompoundTag nbt = new CompoundTag();
-            nbt.putDouble("Dash", Dash);
             nbt.putDouble("Rotting", Rotting);
             nbt.putDouble("Grief", Grief);
             nbt.putDouble("Manic", Manic);
@@ -65,7 +63,6 @@ public final class MokelsBossfightSaphyraModVariables {
 
         @Override
         public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
-            Dash = nbt.getDouble("Dash");
             Rotting = nbt.getDouble("Rotting");
             Grief = nbt.getDouble("Grief");
             Manic = nbt.getDouble("Manic");
@@ -133,7 +130,6 @@ public final class MokelsBossfightSaphyraModVariables {
     public static void clonePlayer(PlayerEvent.Clone event) {
         PlayerVariables original = getPlayerVariables(event.getOriginal());
         PlayerVariables clone = getPlayerVariables(event.getEntity());
-        clone.Dash = original.Dash;
         clone.Rotting = original.Rotting;
         clone.Grief = original.Grief;
         clone.Manic = original.Manic;

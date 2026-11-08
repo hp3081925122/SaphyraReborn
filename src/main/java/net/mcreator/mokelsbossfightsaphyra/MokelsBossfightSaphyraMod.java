@@ -38,7 +38,6 @@ public final class MokelsBossfightSaphyraMod {
 
     public MokelsBossfightSaphyraMod(IEventBus modBus, ModContainer container) {
         NeoForge.EVENT_BUS.register(this);
-        container.registerConfig(net.neoforged.fml.config.ModConfig.Type.COMMON, com.hp.saphyrareborn.configuration.StaminaBarConfiguration.SPEC, "stamina bar config.toml");
         SaphyraAttachments.REGISTRY.register(modBus);
         MokelsBossfightSaphyraModSounds.REGISTRY.register(modBus);
         MokelsBossfightSaphyraModBlocks.REGISTRY.register(modBus);

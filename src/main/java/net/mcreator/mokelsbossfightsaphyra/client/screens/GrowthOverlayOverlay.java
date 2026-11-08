@@ -28,10 +28,6 @@ import com.hp.saphyrareborn.procedures.DevotionBarProc3Procedure;
 import com.hp.saphyrareborn.procedures.DevotionBarProc4Procedure;
 import com.hp.saphyrareborn.procedures.DevotionBarProc5Procedure;
 import com.hp.saphyrareborn.procedures.DevotionBarProc6Procedure;
-import com.hp.saphyrareborn.procedures.EnduranceOverlayProcedure2Procedure;
-import com.hp.saphyrareborn.procedures.EnduranceOverlayProcedure3Procedure;
-import com.hp.saphyrareborn.procedures.EnduranceOverlayProcedureProcedure;
-import com.hp.saphyrareborn.procedures.EnduranceOverlayUltimativeProcedure;
 import com.hp.saphyrareborn.procedures.GriefBarProc0Procedure;
 import com.hp.saphyrareborn.procedures.GriefBarProc2Procedure;
 import com.hp.saphyrareborn.procedures.GriefBarProc3Procedure;
@@ -235,18 +231,6 @@ public class GrowthOverlayOverlay {
         }
         if (DevotionBarProc5Procedure.execute((Entity)entity)) {
             event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/rooting_part.png"), w / 2 + 17, h / 2 + 8, 0.0f, 0.0f, 16, 16, 16, 16);
-        }
-        if (EnduranceOverlayUltimativeProcedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/guidashbar.png"), w / 2 + 93, h / 2 + 104, 0.0f, 0.0f, 7, 22, 7, 22);
-        }
-        if (EnduranceOverlayProcedure3Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/dashpart.png"), w / 2 + 94, h / 2 + 105, 0.0f, 0.0f, 5, 7, 5, 7);
-        }
-        if (EnduranceOverlayProcedureProcedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/dashpart3.png"), w / 2 + 94, h / 2 + 119, 0.0f, 0.0f, 5, 7, 5, 7);
-        }
-        if (EnduranceOverlayProcedure2Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/dashpart2.png"), w / 2 + 94, h / 2 + 112, 0.0f, 0.0f, 5, 7, 5, 7);
         }
         RenderSystem.depthMask((boolean)true);
         RenderSystem.defaultBlendFunc();

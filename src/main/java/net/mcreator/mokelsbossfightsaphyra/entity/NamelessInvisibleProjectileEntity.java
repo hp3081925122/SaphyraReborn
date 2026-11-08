@@ -24,7 +24,6 @@
 package com.hp.saphyrareborn.entity;
 
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModEntities;
-import com.hp.saphyrareborn.procedures.NamelessInvisibleProjectileProjectileHitsLivingEntityProcedure;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.util.RandomSource;
@@ -47,6 +46,8 @@ public class NamelessInvisibleProjectileEntity
 extends AbstractArrow
 implements ItemSupplier {
     private int legacyKnockback;
+    private static final int POOL_TICKS = 60;
+    private int poolAge = -1;
     public static final ItemStack PROJECTILE_ITEM = new ItemStack((ItemLike)Blocks.AIR);
 
     public NamelessInvisibleProjectileEntity(EntityType<? extends NamelessInvisibleProjectileEntity> type, Level world) {
@@ -95,13 +96,60 @@ implements ItemSupplier {
 
     public void onHitBlock(BlockHitResult blockHitResult) {
         super.onHitBlock(blockHitResult);
-        NamelessInvisibleProjectileProjectileHitsLivingEntityProcedure.execute((LevelAccessor)this.level(), blockHitResult.getBlockPos().getX(), blockHitResult.getBlockPos().getY(), blockHitResult.getBlockPos().getZ());
+        if (this.poolAge < 0 && !this.level().isClientSide()) {
+            this.poolAge = 0;
+        }
+    }
+
+    private void tickRotPool(net.minecraft.server.level.ServerLevel level) {
+        this.poolAge++;
+        double x = this.getX();
+        double y = this.getY();
+        double z = this.getZ();
+        if (this.poolAge % 2 == 0 && this.poolAge <= POOL_TICKS) {
+            level.sendParticles(com.hp.saphyrareborn.init.MokelsBossfightSaphyraModParticleTypes.REDFLAME_PARTICLE.get(), x, y, z, 20, 0.5, 0.5, 0.5, 0.01);
+            level.sendParticles(com.hp.saphyrareborn.init.MokelsBossfightSaphyraModParticleTypes.REDFIRE_PARTICLE.get(), x, y, z, 15, 0.5, 0.5, 0.5, 0.01);
+            for (net.minecraft.world.entity.player.Player player : level.getEntitiesOfClass(net.minecraft.world.entity.player.Player.class, new net.minecraft.world.phys.AABB(x, y, z, x, y, z).inflate(3.0), com.hp.saphyrareborn.boss.nameless.NamelessCombat::canBeHit)) {
+                com.hp.saphyrareborn.boss.nameless.NamelessCombat.addRotting(player, 1.0);
+            }
+        }
+        if (this.poolAge >= POOL_TICKS) {
+            for (int i = 0; i < 3; i++) {
+                NamelessProjectileFallEntity fall = new NamelessProjectileFallEntity(MokelsBossfightSaphyraModEntities.NAMELESS_PROJECTILE_FALL.get(), level);
+                fall.setOwner(this.getOwner());
+                fall.setBaseDamage(0.0);
+                fall.setKnockback(1);
+                fall.setSilent(true);
+                fall.setPos(x, y + 1.0, z);
+                fall.shoot(0.0, 90.0, 0.0, 0.7f, 15.0f);
+                level.addFreshEntity(fall);
+            }
+            this.discard();
+        }
+    }
+
+    @Override
+    public void addAdditionalSaveData(net.minecraft.nbt.CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("RotPoolAge", this.poolAge);
+    }
+
+    @Override
+    public void readAdditionalSaveData(net.minecraft.nbt.CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.contains("RotPoolAge")) {
+            this.poolAge = tag.getInt("RotPoolAge");
+        }
     }
 
     public void tick() {
         super.tick();
-        if (this.inGround) {
-            this.discard();
+        if (this.level() instanceof net.minecraft.server.level.ServerLevel level) {
+            if (this.poolAge >= 0) {
+                this.tickRotPool(level);
+            } else if (this.inGround) {
+                this.discard();
+            }
         }
     }
 

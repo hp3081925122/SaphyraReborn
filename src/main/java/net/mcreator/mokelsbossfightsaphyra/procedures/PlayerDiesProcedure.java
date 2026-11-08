@@ -25,6 +25,9 @@ public class PlayerDiesProcedure {
         for (LivingEntity boss : level.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(RESET_RADIUS), PlayerDiesProcedure::isResettingBoss)) {
             if (boss.isAlive()) {
                 boss.setHealth(boss.getMaxHealth());
+                if (boss instanceof NamelessEntity nameless) {
+                    nameless.getCombat().resetFight();
+                }
             }
             boss.getPersistentData().putDouble("music", 0.0);
             found = true;

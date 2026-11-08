@@ -31,6 +31,15 @@ public final class BossCastLock {
         extend(entity, SHIELD_KEY, ticks);
     }
 
+    public static void release(LivingEntity entity) {
+        if (entity.level().isClientSide()) {
+            return;
+        }
+        entity.getPersistentData().remove(LOCK_KEY);
+        entity.getPersistentData().remove(SHIELD_KEY);
+        apply(entity, false);
+    }
+
     public static boolean blocksDamage(LivingEntity entity, DamageSource source) {
         return entity.level().getGameTime() < entity.getPersistentData().getLong(SHIELD_KEY)
                 && !source.is(DamageTypeTags.BYPASSES_EFFECTS)

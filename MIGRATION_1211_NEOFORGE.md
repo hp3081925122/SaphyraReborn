@@ -98,3 +98,23 @@
 - `STUN`/`IMMUNE` 只检查从未施加、未接线的动画（knightboss `stun`/`attackcharge`、Witchboss `spinattack`/`wandattack`、Mothboss `block`/`attacktriple` 等）、百分比血量转阶段：属于新增玩法，需要设计后再做。
 - `/title @a` 仍为全服广播；Rot 投射物 4 点伤害未挂钩攻击力（无可靠施法者引用）。
 - 待验证：服务端行为、Render Preview 动画对照。
+
+## 2026年11月08日 无名守门人重做 & Boss 回血写法
+
+设计与验收清单见 `docs/NAMELESS_REWORK.md`。
+
+| 项 | 原实现 | 现实现 |
+|---|---|---|
+| 玩家死亡重置 Boss | 施加 HARM/HEAL 等级 10000，靠亡灵判定把伤害变成回血 | `setHealth(getMaxHealth())`，无名同时重置阶段与技能 |
+| 腐朽效果给无名回血 | HARM II（亡灵回 16） | `heal(16)` |
+| `NamelessEntityDiesProcedure` | 传入的是 Boss 自身，玩家判断永远不成立 | 删除（原版即无效） |
+| 无名时间轴/技能 | `NamelessAttackPatternProcedure` + 11 个 Attack procedure + 全局闭包 | `boss/nameless/NamelessCombat` 实体内状态机，状态存 NBT |
+| 腐朽雨 | 每枚落点约 30 个全局闭包 | 隐形投射物落地后自身转为腐朽池（NBT 记录进度），60 tick 抛出 3 枚下落投射物 |
+| 下落投射物伤害 | 固定 4 | `skillDamage(施法者, 4/14)` |
+| 音乐切换 | 先播新曲再 `/stopsound @a music` | 先停 128 格内音乐再播新曲 |
+| `WalkToBlockProcedure` | 让实体移动到自己脚下（无效果） | 删除 |
+| 动画 | 线性、命中帧比判定早 4~5 tick、无收招 | 保留原姿势，按判定 tick 重定时、加缓动与收招；新增 stagger、phaseshift；跃斩动画从起跳开始播 |
+
+新增：二阶段（50%，可配置）、双斩两段（0.6×2）、盾反破防（6% 最大生命，可配置）、S2C `nameless_vfx` 特效包与客户端镜头震动。
+配置：`bosses.nameless_mechanics`。
+待验：游戏内特效观感、二阶段与破防手感（未做客户端/服务端测试）。

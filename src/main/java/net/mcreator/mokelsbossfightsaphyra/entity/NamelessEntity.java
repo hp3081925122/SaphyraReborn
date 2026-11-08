@@ -59,7 +59,6 @@ package com.hp.saphyrareborn.entity;
 
 import com.hp.saphyrareborn.entity.WitchbossEntity;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModEntities;
-import com.hp.saphyrareborn.procedures.NamelessAttackPatternProcedure;
 import com.hp.saphyrareborn.procedures.NamelessDeathTimeIsReachedProcedure;
 import com.hp.saphyrareborn.procedures.NamelessEntityDiesForRealProcedure;
 import net.minecraft.core.BlockPos;
@@ -113,11 +112,13 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class NamelessEntity
 extends Monster
 implements GeoEntity {
-    private static final String[] TRIGGERABLE_ANIMATIONS = {"idle", "pose", "walk", "attackcharge", "attackdouble", "attackshield", "attackshieldslash", "attackbr\u00fcllen", "attackonce", "attacksuper", "death", "sit", "attackground", "attackrot", "attackstomp", "attackfloat", "stun", "spawn", "idlespawn"};
+    private static final String[] TRIGGERABLE_ANIMATIONS = {"idle", "pose", "walk", "attackcharge", "attackdouble", "attackshield", "attackshieldslash", "attackbr\u00fcllen", "attackonce", "attacksuper", "death", "sit", "attackground", "attackrot", "attackstomp", "attackfloat", "stun", "spawn", "idlespawn", "stagger", "phaseshift"};
     private AnimationController<?> procedureController;
     public static final EntityDataAccessor<Boolean> SHOOT = SynchedEntityData.defineId(NamelessEntity.class, (EntityDataSerializer)EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<String> TEXTURE = SynchedEntityData.defineId(NamelessEntity.class, (EntityDataSerializer)EntityDataSerializers.STRING);
     public static final EntityDataAccessor<Boolean> DATA_animations = SynchedEntityData.defineId(NamelessEntity.class, (EntityDataSerializer)EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Boolean> PHASE2 = SynchedEntityData.defineId(NamelessEntity.class, EntityDataSerializers.BOOLEAN);
+    private final com.hp.saphyrareborn.boss.nameless.NamelessCombat combat = new com.hp.saphyrareborn.boss.nameless.NamelessCombat(this);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache((GeoAnimatable)this);
     private boolean swinging;
     private boolean lastloop;
@@ -136,6 +137,7 @@ implements GeoEntity {
         builder.define(SHOOT, false);
         builder.define(TEXTURE, "knightbosstexture");
         builder.define(DATA_animations, true);
+        builder.define(PHASE2, false);
     }
 
     public void setTexture(String texture) {
@@ -183,6 +185,15 @@ implements GeoEntity {
         if (source.is(DamageTypes.FALL)) {
             return false;
         }
+        if (!this.level().isClientSide()) {
+            if (this.combat.isInvulnerable() && !source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+                return false;
+            }
+            if (com.hp.saphyrareborn.boss.BossCastLock.blocksDamage(this, source)) {
+                this.combat.onBlockedHit(source, amount);
+                return false;
+            }
+        }
         return super.hurt(source, amount);
     }
 
@@ -195,6 +206,7 @@ implements GeoEntity {
         super.addAdditionalSaveData(compound);
         compound.putString("Texture", this.getTexture());
         compound.putBoolean("Dataanimations", ((Boolean)this.entityData.get(DATA_animations)).booleanValue());
+        compound.put("NamelessCombat", this.combat.save());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -204,6 +216,9 @@ implements GeoEntity {
         }
         if (compound.contains("Dataanimations")) {
             this.entityData.set(DATA_animations,compound.getBoolean("Dataanimations"));
+        }
+        if (compound.contains("NamelessCombat")) {
+            this.combat.load(compound.getCompound("NamelessCombat"));
         }
     }
 
@@ -228,7 +243,11 @@ implements GeoEntity {
     public void tick() {
         super.tick();
         com.hp.saphyrareborn.boss.BossCastLock.tick(this);
-        NamelessAttackPatternProcedure.execute((LevelAccessor)this.level(), this.getX(), this.getY(), this.getZ(), (Entity)this);
+        if (this.level().isClientSide()) {
+            this.tickPhase2Aura();
+        } else {
+            this.combat.tick();
+        }
         this.refreshDimensions();
     }
 
@@ -300,6 +319,41 @@ implements GeoEntity {
             this.remove(Entity.RemovalReason.KILLED);
             this.discard();
             NamelessDeathTimeIsReachedProcedure.execute((LevelAccessor)this.level(), this.getX(), this.getY(), this.getZ());
+        }
+    }
+
+    public com.hp.saphyrareborn.boss.nameless.NamelessCombat getCombat() {
+        return this.combat;
+    }
+
+    public void restartAnimation(String animation) {
+        this.stopTriggeredAnim("procedure", null);
+        this.triggerAnim("procedure", animation);
+    }
+
+    public void stopProcedureAnimation() {
+        this.stopTriggeredAnim("procedure", null);
+    }
+
+    public void setPhase2Visual(boolean value) {
+        this.entityData.set(PHASE2, value);
+    }
+
+    public boolean isPhase2Visual() {
+        return this.entityData.get(PHASE2);
+    }
+
+    private void tickPhase2Aura() {
+        if (!this.isPhase2Visual() || !this.isAlive()) {
+            return;
+        }
+        net.minecraft.util.RandomSource random = this.getRandom();
+        double w = this.getBbWidth() * 0.6;
+        for (int i = 0; i < 2; i++) {
+            this.level().addParticle(com.hp.saphyrareborn.init.MokelsBossfightSaphyraModParticleTypes.REDFLAME_PARTICLE.get(), this.getX() + (random.nextDouble() - 0.5) * w * 2.0, this.getY() + random.nextDouble() * this.getBbHeight(), this.getZ() + (random.nextDouble() - 0.5) * w * 2.0, 0.0, 0.02 + random.nextDouble() * 0.03, 0.0);
+        }
+        if (random.nextInt(3) == 0) {
+            this.level().addParticle(new net.minecraft.core.particles.DustParticleOptions(new org.joml.Vector3f(0.45f, 0.03f, 0.05f), 1.4f), this.getX() + (random.nextDouble() - 0.5) * w * 2.0, this.getY() + 0.1, this.getZ() + (random.nextDouble() - 0.5) * w * 2.0, 0.0, 0.0, 0.0);
         }
     }
 

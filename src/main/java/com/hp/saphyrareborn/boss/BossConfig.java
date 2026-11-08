@@ -9,6 +9,11 @@ public final class BossConfig {
     public static final Entry NAMELESS;
     public static final Entry PUPPET;
     public static final Entry PUTRID_ROSE;
+    public static final ModConfigSpec.BooleanValue NAMELESS_PHASE2_ENABLED;
+    public static final ModConfigSpec.DoubleValue NAMELESS_PHASE2_RATIO;
+    public static final ModConfigSpec.DoubleValue NAMELESS_PHASE2_CADENCE;
+    public static final ModConfigSpec.DoubleValue NAMELESS_SHIELD_BREAK_RATIO;
+    public static final ModConfigSpec.IntValue NAMELESS_STAGGER_TICKS;
 
     static {
         ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
@@ -19,6 +24,13 @@ public final class BossConfig {
         NAMELESS = new Entry(builder, "nameless", 450.0, 14.0, 0.0);
         PUPPET = new Entry(builder, "puppet_of_yiva_nemor", 300.0, 14.0, 0.0);
         PUTRID_ROSE = new Entry(builder, "putrid_rose", 1000.0, 0.0, 0.0);
+        builder.push("nameless_mechanics");
+        NAMELESS_PHASE2_ENABLED = builder.comment("是否启用无名守门人二阶段").define("phase2_enabled", true);
+        NAMELESS_PHASE2_RATIO = builder.comment("血量低于最大生命的该比例时进入二阶段").defineInRange("phase2_health_ratio", 0.5, 0.01, 0.99);
+        NAMELESS_PHASE2_CADENCE = builder.comment("二阶段出招节奏倍率，越小出招越快").defineInRange("phase2_cadence", 0.75, 0.3, 1.0);
+        NAMELESS_SHIELD_BREAK_RATIO = builder.comment("举盾期间累计被格挡伤害达到最大生命的该比例时破防，0 为关闭").defineInRange("shield_break_ratio", 0.06, 0.0, 1.0);
+        NAMELESS_STAGGER_TICKS = builder.comment("破防硬直时长（tick）").defineInRange("stagger_ticks", 60, 10, 400);
+        builder.pop();
         builder.pop();
         SPEC = builder.build();
     }

@@ -40,7 +40,7 @@ public class PlayerJoinedWorldProcedure {
                 ItemHandlerHelper.giveItemToPlayer((Player)_player, (ItemStack)_setstack);
             }
             if (!world.isClientSide() && world.getServer() != null) {
-                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.literal((String)"???: Meet me in the fractured clocktower."), false);
+                world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.story.join_clocktower"), false);
             }
         }
     }

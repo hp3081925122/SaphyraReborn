@@ -404,5 +404,6 @@
   "entity.saphyra_reborn.nameless_projectile_fall": "Nameless Gatekeeper Projectile",
   "entity.saphyra_reborn.rot_projectile": "Rot Projectile",
   "entity.saphyra_reborn.witch_boss_projectile": "Saphyra Projectile",
-  "entity.saphyra_reborn.witch_boss_projectilefall": "Saphyra Projectile"
+  "entity.saphyra_reborn.witch_boss_projectilefall": "Saphyra Projectile",
+  "text.saphyra_reborn.story.join_clocktower": "???: Meet me in the fractured clocktower."
 }

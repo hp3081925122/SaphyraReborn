@@ -218,13 +218,19 @@ implements GeoEntity {
         WitchbossThisEntityKillsAnotherOneProcedure.execute((LevelAccessor)this.level(), (Entity)this);
     }
 
+    @Override
+    public net.minecraft.world.entity.EntityDimensions getDefaultDimensions(net.minecraft.world.entity.Pose pose) {
+        return super.getDefaultDimensions(pose).scale(1.1f);
+    }
+
     public void tick() {
         super.tick();
         SaphyraAttackPatternProcedure.execute((LevelAccessor)this.level(), this.getX(), this.getY(), this.getZ(), (Entity)this);
         this.refreshDimensions();
     }
 
-    public boolean isPickable() {
+    @Override
+    public boolean isPushable() {
         return false;
     }
 
@@ -234,9 +240,6 @@ implements GeoEntity {
     protected void pushEntities() {
     }
 
-    public boolean isPushable() {
-        return false;
-    }
 
     public void startSeenByPlayer(ServerPlayer player) {
         super.startSeenByPlayer(player);

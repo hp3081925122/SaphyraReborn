@@ -219,6 +219,11 @@ implements GeoEntity {
         }
     }
 
+    @Override
+    public net.minecraft.world.entity.EntityDimensions getDefaultDimensions(net.minecraft.world.entity.Pose pose) {
+        return super.getDefaultDimensions(pose).scale(1.1f);
+    }
+
     public void tick() {
         super.tick();
         NamelessSpawnOnEntityTickUpdateProcedure.execute((LevelAccessor)this.level(), this.getX(), this.getY(), this.getZ(), (Entity)this);

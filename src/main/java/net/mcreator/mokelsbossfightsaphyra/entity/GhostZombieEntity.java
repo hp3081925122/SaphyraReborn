@@ -191,7 +191,8 @@ implements GeoEntity {
         this.refreshDimensions();
     }
 
-    public boolean isPickable() {
+    @Override
+    public boolean isPushable() {
         return false;
     }
 

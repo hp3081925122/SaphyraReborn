@@ -198,7 +198,8 @@ implements GeoEntity {
         this.refreshDimensions();
     }
 
-    public boolean isPickable() {
+    @Override
+    public boolean isPushable() {
         return false;
     }
 
@@ -208,9 +209,6 @@ implements GeoEntity {
     protected void pushEntities() {
     }
 
-    public boolean isPushable() {
-        return false;
-    }
 
     public void startSeenByPlayer(ServerPlayer player) {
         super.startSeenByPlayer(player);

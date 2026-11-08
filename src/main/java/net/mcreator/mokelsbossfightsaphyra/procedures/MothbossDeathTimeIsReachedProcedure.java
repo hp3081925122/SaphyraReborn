@@ -39,7 +39,7 @@ public class MothbossDeathTimeIsReachedProcedure {
         }
         if (world instanceof ServerLevel) {
             _level1 = (ServerLevel)world;
-            ItemEntity entityToSpawn = new ItemEntity((Level)_level1, entity.getX(), entity.getY(), entity.getZ(), new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.BOTTOMLESS_BAG.get()));
+            ItemEntity entityToSpawn = new ItemEntity((Level)_level1, entity.getX(), entity.getY(), entity.getZ(), new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.SAPHYRA_REMEMBRANCE.get()));
             entityToSpawn.setPickUpDelay(2);
             entityToSpawn.setUnlimitedLifetime();
             _level1.addFreshEntity((Entity)entityToSpawn);

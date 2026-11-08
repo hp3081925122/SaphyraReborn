@@ -544,7 +544,7 @@ public final class NamelessCombat {
     private void slash(ServerLevel level, double multiplier, double rot, int variant, String sound) {
         this.sound(level, sound, SoundSource.NEUTRAL, 2.0f, 1.0f);
         this.hitAround(level, this.boss.position(), 6.0, multiplier, rot);
-        NamelessVfx.send(level, NamelessVfx.SLASH, this.boss.position(), this.boss.getYRot(), 4.5f, variant);
+        NamelessVfx.send(level, NamelessVfx.SLASH, this.boss.position(), this.boss.getYRot(), 6.0f, variant);
     }
 
     private void eruption(ServerLevel level, double radius, double rot, SoundSource source, String sound, boolean slam) {
@@ -573,7 +573,20 @@ public final class NamelessCombat {
     private void hitAround(ServerLevel level, Vec3 center, double radius, double multiplier, double rot) {
         DamageSource source = this.boss.damageSources().mobAttack(this.boss);
         float damage = BossAttributes.skillDamage(this.boss, multiplier);
-        for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, new AABB(center, center).inflate(radius), NamelessCombat::canBeHit)) {
+        double height = Math.max(3.0, radius * 0.4);
+        AABB box = new AABB(center.x - radius, center.y - 1.0, center.z - radius, center.x + radius, center.y + height, center.z + radius);
+        for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, box, NamelessCombat::canBeHit)) {
+            AABB bb = e.getBoundingBox();
+            double nx = Mth.clamp(center.x, bb.minX, bb.maxX) - center.x;
+            double nz = Mth.clamp(center.z, bb.minZ, bb.maxZ) - center.z;
+            double dist = Math.sqrt(nx * nx + nz * nz);
+            if (dist > radius) {
+                continue;
+            }
+            if (e instanceof Player) {
+                com.hp.saphyrareborn.MokelsBossfightSaphyraMod.LOGGER.info("[NamelessHitDebug] skill={} tick={} radius={} edgeDist={} centerDist={} dy={} damage={}",
+                        this.skill, this.skillTick, radius, String.format("%.2f", dist), String.format("%.2f", Math.sqrt(center.distanceToSqr(e.getX(), center.y, e.getZ()))), String.format("%.2f", e.getY() - center.y), damage);
+            }
             e.hurt(source, damage);
             if (e instanceof Player player) {
                 addRotting(player, rot);

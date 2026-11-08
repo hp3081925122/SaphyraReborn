@@ -387,8 +387,8 @@ public final class NamelessVfxClient {
             if (fade <= 0.0f) {
                 return;
             }
-            double outer = this.size * 0.78;
-            double inner = this.size * 0.5;
+            double outer = this.size * 0.92;
+            double inner = this.size * 0.55;
             int segs = 20;
             boolean overhead = this.extra == NamelessVfx.SLASH_OVERHEAD;
             double dir = this.extra == NamelessVfx.SLASH_RIGHT ? -1.0 : 1.0;

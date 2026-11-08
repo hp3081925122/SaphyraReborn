@@ -60,7 +60,7 @@ extends SwordItem {
             public Ingredient getRepairIngredient() {
                 return Ingredient.EMPTY;
             }
-        }, new Item.Properties());
+        }, WeaponProperties.sword(7.0f, -3.0f));
     }
 
     public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {

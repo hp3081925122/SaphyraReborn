@@ -44,7 +44,7 @@ extends SwordItem {
             public Ingredient getRepairIngredient() {
                 return Ingredient.EMPTY;
             }
-        }, new Item.Properties());
+        }, WeaponProperties.sword(2.5f, -2.0f));
     }
 }
 

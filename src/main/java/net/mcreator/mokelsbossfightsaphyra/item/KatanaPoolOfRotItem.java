@@ -56,7 +56,7 @@ extends SwordItem {
             public Ingredient getRepairIngredient() {
                 return Ingredient.EMPTY;
             }
-        }, new Item.Properties());
+        }, WeaponProperties.sword(5.0f, -1.6f));
     }
 
     public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {

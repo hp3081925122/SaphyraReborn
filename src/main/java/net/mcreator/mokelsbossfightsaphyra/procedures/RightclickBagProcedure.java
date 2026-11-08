@@ -84,6 +84,15 @@ public class RightclickBagProcedure {
                 entityToSpawn.setUnlimitedLifetime();
                 _level.addFreshEntity((Entity)entityToSpawn);
             }
+            // Saphyra Reborn: items the original never handed out
+            if (world instanceof ServerLevel _extraLevel) {
+                for (ItemLike extra : new ItemLike[]{MokelsBossfightSaphyraModItems.SAPHYRAS_CAPE_CHESTPLATE.get(), MokelsBossfightSaphyraModItems.GLUTTONOUS_FLASK.get()}) {
+                    ItemEntity drop = new ItemEntity((Level)_extraLevel, entity.getX(), 0.5 + entity.getY(), entity.getZ(), new ItemStack(extra));
+                    drop.setPickUpDelay(0);
+                    drop.setUnlimitedLifetime();
+                    _extraLevel.addFreshEntity((Entity)drop);
+                }
+            }
         }
     }
 }

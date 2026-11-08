@@ -68,7 +68,10 @@ public final class LinaraClockTowerProcedure {
             for (ItemStack reward : List.of(
                     new ItemStack(MokelsBossfightSaphyraModItems.SPIRIT_RUNE_SWORD.get()),
                     new ItemStack(MokelsBossfightSaphyraModItems.SPRIRITUAL_RUNE.get()),
-                    new ItemStack(MokelsBossfightSaphyraModItems.EMPTY_RULE.get()))) {
+                    new ItemStack(MokelsBossfightSaphyraModItems.EMPTY_RULE.get()),
+                    new ItemStack(MokelsBossfightSaphyraModItems.RULE_OF_THE_P_LAGUED.get()),
+                    new ItemStack(MokelsBossfightSaphyraModItems.RULE_OF_EXUDATION.get()),
+                    new ItemStack(MokelsBossfightSaphyraModItems.MIRROR_BLADE.get()))) {
                 ItemEntity drop = new ItemEntity(level, linara.getX(), linara.getY(), linara.getZ(), reward);
                 drop.setPickUpDelay(2);
                 drop.setUnlimitedLifetime();

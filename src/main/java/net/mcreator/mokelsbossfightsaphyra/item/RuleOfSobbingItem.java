@@ -13,6 +13,11 @@
 package com.hp.saphyrareborn.item;
 
 import java.util.List;
+import com.hp.saphyrareborn.procedures.RuleCurseCastProcedure;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -28,29 +33,18 @@ extends Item {
 
     public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, context, list, flag);
-        list.add((Component)Component.literal((String)""));
+        list.add((Component)Component.translatable("text.saphyra_reborn.rule.sobbing.desc"));
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (hand != InteractionHand.MAIN_HAND) {
+            return InteractionResultHolder.pass(stack);
+        }
+        if (level instanceof ServerLevel serverLevel) {
+            RuleCurseCastProcedure.cast(serverLevel, player, stack, RuleCurseCastProcedure.Rule.SOBBING);
+        }
+        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

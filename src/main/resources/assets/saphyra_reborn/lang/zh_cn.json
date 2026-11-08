@@ -395,5 +395,7 @@
   "text.saphyra_reborn.book.augurium_5.page2": "诅咒共有 7 种。\n\n厌恶：\n使人不停呕吐，直至饿死。\n\n悲恸：\n无法控制的哭泣会让受影响者溺死在泪水中，偶尔会导致自杀。\n",
   "text.saphyra_reborn.book.augurium_5.page3": "腐烂：\n微小的真菌生长会引发剧烈高热，随后释放细小的孢子。\n\n扎根：\n根须从地面钻出，将受影响者牢牢固定在原地。\n\n",
   "text.saphyra_reborn.book.augurium_5.page4": "狂乱：\n强烈的积极念头涌入受影响者脑中，导致严重的畸变、抽搐与大笑。\n\n爱慕：\n迫使受影响者表达爱意，极少致死。",
-  "text.saphyra_reborn.book.augurium_5.page5": "虔信：\nÉívÒ:Áºz1æ‹<XtIù‰B$š‡:Zðyæ£¼»¼9ú1“ãá/3»]p7pia¦fÑÆ&¢‡r¥ó•/\n\n有些诅咒只对类人生物有危险，包括：狂乱、虔信、爱慕。"
+  "text.saphyra_reborn.book.augurium_5.page5": "虔信：\nÉívÒ:Áºz1æ‹<XtIù‰B$š‡:Zðyæ£¼»¼9ú1“ãá/3»]p7pia¦fÑÆ&¢‡r¥ó•/\n\n有些诅咒只对类人生物有危险，包括：狂乱、虔信、爱慕。",
+  "text.saphyra_reborn.rule.despair.desc": "无望会抽干周围所有敌人的力气",
+  "text.saphyra_reborn.rule.sobbing.desc": "你的泪水会淹没周围的敌人"
 }

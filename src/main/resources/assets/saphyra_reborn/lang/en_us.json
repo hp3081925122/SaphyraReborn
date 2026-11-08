@@ -395,5 +395,7 @@
   "text.saphyra_reborn.book.augurium_5.page2": "There are 7 types of curses.\n\nDisgust: \nCauses vomiting until death by starvation.\n\nGrief: \nUncontrollable crying causes the affected to drown in tears. Can rarely lead to suicide.\n",
   "text.saphyra_reborn.book.augurium_5.page3": "Rot:\nMicroscopic fungal growth causes immense heat. Followed by small spore emissions.\n\nRooting:\nRoots shoot out of the ground, holding the affected person in place.\n\n",
   "text.saphyra_reborn.book.augurium_5.page4": "Manic:\nIntense positive thoughts flood the affected person, causing severe deformation, twitching and laughing.\n\nAffection:\nForcing the affected person to show love. This very rarely results in death. ",
-  "text.saphyra_reborn.book.augurium_5.page5": "Devotion:\nÉívÒ:Áºz1æ‹<XtIù‰B$š‡:Zðyæ£¼»¼9ú1“ãá/3»]p7pia¦fÑÆ&¢‡r¥ó•/\n\nSome curses are only dangerous to humanoid creatures. This includes: Manic, Devotion, Affection."
+  "text.saphyra_reborn.book.augurium_5.page5": "Devotion:\nÉívÒ:Áºz1æ‹<XtIù‰B$š‡:Zðyæ£¼»¼9ú1“ãá/3»]p7pia¦fÑÆ&¢‡r¥ó•/\n\nSome curses are only dangerous to humanoid creatures. This includes: Manic, Devotion, Affection.",
+  "text.saphyra_reborn.rule.despair.desc": "Hopelessness drains the strength of every enemy nearby",
+  "text.saphyra_reborn.rule.sobbing.desc": "Your tears drown the enemies around you"
 }

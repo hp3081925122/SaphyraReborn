@@ -35,7 +35,7 @@ public class IfPlayerDiesStopMusicProcedure {
         }
         if ((entity instanceof Player || entity instanceof ServerPlayer) && world instanceof ServerLevel) {
             ServerLevel _level = (ServerLevel)world;
-            _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/stopsound @a music saphyra_reborn:witchbossfighttheme");
+            com.hp.saphyrareborn.boss.BossMusic.stop(_level, x, y, z, "saphyra_reborn:witchbossfighttheme");
         }
     }
 }

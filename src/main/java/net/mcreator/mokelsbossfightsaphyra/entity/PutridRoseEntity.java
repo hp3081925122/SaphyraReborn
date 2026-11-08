@@ -55,7 +55,6 @@
 package com.hp.saphyrareborn.entity;
 
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModEntities;
-import com.hp.saphyrareborn.procedures.PutridRoseAttackPatternProcedure;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.protocol.Packet;
@@ -179,7 +178,6 @@ implements GeoEntity {
 
     public void tick() {
         super.tick();
-        PutridRoseAttackPatternProcedure.execute((LevelAccessor)this.level(), this.getX(), this.getY(), this.getZ());
         this.refreshDimensions();
     }
 

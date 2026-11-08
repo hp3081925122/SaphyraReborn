@@ -73,16 +73,16 @@ public class MothbossAttackPatternProcedure {
         }
         if (entity.getPersistentData().getDouble("IA") == 20.0) {
             if (Math.random() < 0.5) {
-                if (!world.getEntitiesOfClass(Player.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty() || !world.getEntitiesOfClass(ServerPlayer.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty()) {
+                if (!world.getEntitiesOfClass(Player.class, AABB.ofSize(new Vec3(x, y, z), 14.0, 14.0, 14.0), e -> true).isEmpty()) {
                     AttackDashBackProcedure.execute(world, entity);
                     AttackSmiteProcedure.execute(world, entity);
-                } else if (world.getEntitiesOfClass(Player.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty() && world.getEntitiesOfClass(ServerPlayer.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty()) {
+                } else {
                     AttackSmiteProcedure.execute(world, entity);
                 }
             } else if (Math.random() < 1.0) {
-                if (!world.getEntitiesOfClass(Player.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty() || !world.getEntitiesOfClass(ServerPlayer.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty()) {
+                if (!world.getEntitiesOfClass(Player.class, AABB.ofSize(new Vec3(x, y, z), 14.0, 14.0, 14.0), e -> true).isEmpty()) {
                     AttackSwordOnceProcedure.execute(world, entity);
-                } else if (world.getEntitiesOfClass(Player.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty() && world.getEntitiesOfClass(ServerPlayer.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty()) {
+                } else {
                     AttackDashForthProcedure.execute(world, entity);
                     AttackSwordOnceProcedure.execute(world, entity);
                 }
@@ -90,16 +90,16 @@ public class MothbossAttackPatternProcedure {
         }
         if (entity.getPersistentData().getDouble("IA") == 120.0) {
             if (Math.random() < 0.5) {
-                if (!world.getEntitiesOfClass(Player.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty() || !world.getEntitiesOfClass(ServerPlayer.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty()) {
+                if (!world.getEntitiesOfClass(Player.class, AABB.ofSize(new Vec3(x, y, z), 14.0, 14.0, 14.0), e -> true).isEmpty()) {
                     AttacktwirlProcedure.execute(world, entity);
-                } else if (world.getEntitiesOfClass(Player.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty() && world.getEntitiesOfClass(ServerPlayer.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty()) {
+                } else {
                     AttacktwirlProcedure.execute(world, entity);
                     AttackDashForthProcedure.execute(world, entity);
                 }
             } else if (Math.random() < 1.0) {
-                if (!world.getEntitiesOfClass(Player.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty() || !world.getEntitiesOfClass(ServerPlayer.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty()) {
+                if (!world.getEntitiesOfClass(Player.class, AABB.ofSize(new Vec3(x, y, z), 14.0, 14.0, 14.0), e -> true).isEmpty()) {
                     AttackGroundMothProcedure.execute(world, entity);
-                } else if (world.getEntitiesOfClass(Player.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty() && world.getEntitiesOfClass(ServerPlayer.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty()) {
+                } else {
                     AttackDashForthProcedure.execute(world, entity);
                     AttackGroundMothProcedure.execute(world, entity);
                 }
@@ -107,17 +107,17 @@ public class MothbossAttackPatternProcedure {
         }
         if (entity.getPersistentData().getDouble("IA") == 240.0) {
             if (Math.random() < 0.5) {
-                if (!world.getEntitiesOfClass(Player.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty() || !world.getEntitiesOfClass(ServerPlayer.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty()) {
+                if (!world.getEntitiesOfClass(Player.class, AABB.ofSize(new Vec3(x, y, z), 14.0, 14.0, 14.0), e -> true).isEmpty()) {
                     AttackskyProcedure.execute(world, entity);
                     AttackDashBackProcedure.execute(world, entity);
-                } else if (world.getEntitiesOfClass(Player.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty() && world.getEntitiesOfClass(ServerPlayer.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty()) {
+                } else {
                     AttackskyProcedure.execute(world, entity);
                 }
             } else if (Math.random() < 1.0) {
-                if (!world.getEntitiesOfClass(Player.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty() || !world.getEntitiesOfClass(ServerPlayer.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty()) {
+                if (!world.getEntitiesOfClass(Player.class, AABB.ofSize(new Vec3(x, y, z), 14.0, 14.0, 14.0), e -> true).isEmpty()) {
                     AttackBackProcedure.execute(world, entity);
                     MokelsBossfightSaphyraMod.queueServerWork(35, () -> AttackSwordOnceProcedure.execute(world, entity));
-                } else if (world.getEntitiesOfClass(Player.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty() && world.getEntitiesOfClass(ServerPlayer.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty()) {
+                } else {
                     AttackBackProcedure.execute(world, entity);
                     AttackDashForthProcedure.execute(world, entity);
                     MokelsBossfightSaphyraMod.queueServerWork(35, () -> {
@@ -150,7 +150,7 @@ public class MothbossAttackPatternProcedure {
             }
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
-                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                com.hp.saphyrareborn.boss.BossMusic.stop(_level1, entity.getX(), entity.getY(), entity.getZ(), null);
             }
         }
         if (entity.getPersistentData().getDouble("music") == 320.0 && entity.isAlive()) {
@@ -164,7 +164,7 @@ public class MothbossAttackPatternProcedure {
             }
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
-                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                com.hp.saphyrareborn.boss.BossMusic.stop(_level1, entity.getX(), entity.getY(), entity.getZ(), null);
             }
         }
         if (entity.getPersistentData().getDouble("music") == 620.0 && entity.isAlive()) {
@@ -178,7 +178,7 @@ public class MothbossAttackPatternProcedure {
             }
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
-                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                com.hp.saphyrareborn.boss.BossMusic.stop(_level1, entity.getX(), entity.getY(), entity.getZ(), null);
             }
         }
         if (entity.getPersistentData().getDouble("music") == 920.0 && entity.isAlive()) {
@@ -192,7 +192,7 @@ public class MothbossAttackPatternProcedure {
             }
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
-                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                com.hp.saphyrareborn.boss.BossMusic.stop(_level1, entity.getX(), entity.getY(), entity.getZ(), null);
             }
         }
         if (entity.getPersistentData().getDouble("music") == 1220.0 && entity.isAlive()) {
@@ -206,7 +206,7 @@ public class MothbossAttackPatternProcedure {
             }
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
-                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                com.hp.saphyrareborn.boss.BossMusic.stop(_level1, entity.getX(), entity.getY(), entity.getZ(), null);
             }
         }
         if (entity.getPersistentData().getDouble("music") == 1520.0 && entity.isAlive()) {
@@ -220,15 +220,11 @@ public class MothbossAttackPatternProcedure {
             }
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
-                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                com.hp.saphyrareborn.boss.BossMusic.stop(_level1, entity.getX(), entity.getY(), entity.getZ(), null);
             }
         }
         if (entity.getPersistentData().getDouble("music") == 1780.0) {
             entity.getPersistentData().putDouble("music", 0.0);
-        }
-        if (world instanceof ServerLevel) {
-            _level1 = (ServerLevel)world;
-            _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/tp @s ~ ~ ~ facing entity @p[distance=0..48]");
         }
     }
 }

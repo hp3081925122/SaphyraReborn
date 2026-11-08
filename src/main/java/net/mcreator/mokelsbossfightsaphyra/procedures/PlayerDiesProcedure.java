@@ -55,7 +55,7 @@ public class PlayerDiesProcedure {
                     }
                     if (world instanceof ServerLevel) {
                         _level = (ServerLevel)world;
-                        _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                        com.hp.saphyrareborn.boss.BossMusic.stop(_level, x, y, z, null);
                     }
                     entityiterator.getPersistentData().putDouble("music", 0.0);
                 }
@@ -65,7 +65,7 @@ public class PlayerDiesProcedure {
                     }
                     if (world instanceof ServerLevel) {
                         _level = (ServerLevel)world;
-                        _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                        com.hp.saphyrareborn.boss.BossMusic.stop(_level, x, y, z, null);
                     }
                     entityiterator.getPersistentData().putDouble("music", 0.0);
                 }
@@ -75,7 +75,7 @@ public class PlayerDiesProcedure {
                     }
                     if (world instanceof ServerLevel) {
                         _level = (ServerLevel)world;
-                        _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                        com.hp.saphyrareborn.boss.BossMusic.stop(_level, x, y, z, null);
                     }
                     entityiterator.getPersistentData().putDouble("music", 0.0);
                 }
@@ -85,7 +85,7 @@ public class PlayerDiesProcedure {
                 }
                 if (world instanceof ServerLevel) {
                     _level = (ServerLevel)world;
-                    _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, 4, "", (Component)Component.literal((String)""), _level.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                    com.hp.saphyrareborn.boss.BossMusic.stop(_level, x, y, z, null);
                 }
                 entityiterator.getPersistentData().putDouble("music", 0.0);
             }

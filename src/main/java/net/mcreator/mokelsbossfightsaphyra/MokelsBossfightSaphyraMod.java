@@ -11,6 +11,7 @@ import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModTabs;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -22,6 +23,9 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
+import net.neoforged.neoforge.event.server.ServerStoppedEvent;
+import net.neoforged.fml.LogicalSide;
+import net.neoforged.fml.util.thread.EffectiveSide;
 import net.neoforged.network.NetworkEvent;
 import net.neoforged.network.NetworkRegistry;
 import net.neoforged.network.simple.SimpleChannel;
@@ -54,19 +58,46 @@ public final class MokelsBossfightSaphyraMod {
     }
 
     public static void queueServerWork(int ticks, Runnable action) {
-        if (ticks <= 0) { action.run(); return; }
+        if (EffectiveSide.get() != LogicalSide.SERVER) {
+            return;
+        }
+        if (ticks <= 0) {
+            runSafely(action);
+            return;
+        }
         WORK_QUEUE.add(new AbstractMap.SimpleEntry<>(action, ticks));
+    }
+
+    private static void runSafely(Runnable action) {
+        try {
+            action.run();
+        } catch (RuntimeException e) {
+            LOGGER.error("Saphyra delayed task failed", e);
+        }
     }
 
     @SubscribeEvent
     public void tick(ServerTickEvent.Post event) {
-        ArrayList<AbstractMap.SimpleEntry<Runnable, Integer>> ready = new ArrayList<>();
-        for (AbstractMap.SimpleEntry<Runnable, Integer> work : WORK_QUEUE) {
-            work.setValue(work.getValue() - 1);
-            if (work.getValue() <= 0) ready.add(work);
+        ArrayList<Runnable> ready = new ArrayList<>();
+        Iterator<AbstractMap.SimpleEntry<Runnable, Integer>> it = WORK_QUEUE.iterator();
+        while (it.hasNext()) {
+            AbstractMap.SimpleEntry<Runnable, Integer> work = it.next();
+            int left = work.getValue() - 1;
+            if (left <= 0) {
+                it.remove();
+                ready.add(work.getKey());
+            } else {
+                work.setValue(left);
+            }
         }
-        for (AbstractMap.SimpleEntry<Runnable, Integer> work : ready) work.getKey().run();
-        WORK_QUEUE.removeAll(ready);
+        for (Runnable action : ready) {
+            runSafely(action);
+        }
+    }
+
+    @SubscribeEvent
+    public void onServerStopped(ServerStoppedEvent event) {
+        WORK_QUEUE.clear();
     }
 }
 

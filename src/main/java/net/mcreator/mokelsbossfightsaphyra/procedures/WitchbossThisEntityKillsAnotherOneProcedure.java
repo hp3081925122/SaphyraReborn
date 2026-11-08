@@ -33,7 +33,7 @@ public class WitchbossThisEntityKillsAnotherOneProcedure {
         }
         if ((sourceentity instanceof ServerPlayer || sourceentity instanceof Player) && world instanceof ServerLevel) {
             ServerLevel _level1 = (ServerLevel)world;
-            _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(sourceentity.getX(), sourceentity.getY(), sourceentity.getZ()), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+            com.hp.saphyrareborn.boss.BossMusic.stop(_level1, sourceentity.getX(), sourceentity.getY(), sourceentity.getZ(), null);
         }
     }
 }

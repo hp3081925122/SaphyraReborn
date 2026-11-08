@@ -92,7 +92,7 @@ public class SaphyraAttackPatternProcedure {
                 if (livingEntity3 instanceof LivingEntity) {
                     if (!world.getEntitiesOfClass(Player.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty()) {
                         AttackSlashAttackProcedure.execute(world, entity);
-                    } else if (world.getEntitiesOfClass(Player.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty()) {
+                    } else {
                         AttackDashForthProcedure.execute(world, entity);
                         AttackSlashAttackProcedure.execute(world, entity);
                     }
@@ -108,7 +108,7 @@ public class SaphyraAttackPatternProcedure {
                 if (livingEntity4 instanceof LivingEntity) {
                     if (!world.getEntitiesOfClass(Player.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty()) {
                         AttackClawAttackProcedure.execute(world, entity);
-                    } else if (world.getEntitiesOfClass(Player.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty()) {
+                    } else {
                         AttackClawAttackProcedure.execute(world, entity);
                         AttackDashForthProcedure.execute(world, entity);
                     }
@@ -127,7 +127,7 @@ public class SaphyraAttackPatternProcedure {
                 if (livingEntity5 instanceof LivingEntity) {
                     if (!world.getEntitiesOfClass(Player.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty()) {
                         AttackClawProcedure.execute(world, entity);
-                    } else if (world.getEntitiesOfClass(Player.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty()) {
+                    } else {
                         AttackClawProcedure.execute(world, entity);
                         AttackDashForthProcedure.execute(world, entity);
                     }
@@ -159,7 +159,7 @@ public class SaphyraAttackPatternProcedure {
                     if (!world.getEntitiesOfClass(Player.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty()) {
                         AttackGroundAttackProcedure.execute(world, entity);
                         AttackDashBackProcedure.execute(world, entity);
-                    } else if (world.getEntitiesOfClass(Player.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty()) {
+                    } else {
                         AttackGroundAttackProcedure.execute(world, entity);
                     }
                 }
@@ -174,7 +174,7 @@ public class SaphyraAttackPatternProcedure {
                 if (livingEntity8 instanceof LivingEntity) {
                     if (!world.getEntitiesOfClass(Player.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty()) {
                         AttackAxeAttackProcedure.execute(world, entity);
-                    } else if (world.getEntitiesOfClass(Player.class, AABB.ofSize((Vec3)new Vec3(x, y, z), (double)14.0, (double)14.0, (double)14.0), e -> true).isEmpty()) {
+                    } else {
                         AttackDashForthProcedure.execute(world, entity);
                         AttackAxeAttackProcedure.execute(world, entity);
                     }
@@ -204,7 +204,7 @@ public class SaphyraAttackPatternProcedure {
             }
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
-                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                com.hp.saphyrareborn.boss.BossMusic.stop(_level1, entity.getX(), entity.getY(), entity.getZ(), null);
             }
         }
         if (entity.getPersistentData().getDouble("music") == 320.0 && entity.isAlive()) {
@@ -218,7 +218,7 @@ public class SaphyraAttackPatternProcedure {
             }
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
-                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                com.hp.saphyrareborn.boss.BossMusic.stop(_level1, entity.getX(), entity.getY(), entity.getZ(), null);
             }
         }
         if (entity.getPersistentData().getDouble("music") == 620.0 && entity.isAlive()) {
@@ -232,13 +232,13 @@ public class SaphyraAttackPatternProcedure {
             }
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
-                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                com.hp.saphyrareborn.boss.BossMusic.stop(_level1, entity.getX(), entity.getY(), entity.getZ(), null);
             }
         }
         if (entity.getPersistentData().getDouble("music") == 920.0 && entity.isAlive()) {
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
-                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                com.hp.saphyrareborn.boss.BossMusic.stop(_level1, entity.getX(), entity.getY(), entity.getZ(), null);
             }
             if (world instanceof Level) {
                 _level1 = (Level)world;
@@ -260,7 +260,7 @@ public class SaphyraAttackPatternProcedure {
             }
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
-                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                com.hp.saphyrareborn.boss.BossMusic.stop(_level1, entity.getX(), entity.getY(), entity.getZ(), null);
             }
         }
         if (entity.getPersistentData().getDouble("music") == 1520.0 && entity.isAlive()) {
@@ -274,15 +274,11 @@ public class SaphyraAttackPatternProcedure {
             }
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
-                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                com.hp.saphyrareborn.boss.BossMusic.stop(_level1, entity.getX(), entity.getY(), entity.getZ(), null);
             }
         }
         if (entity.getPersistentData().getDouble("music") == 1780.0) {
             entity.getPersistentData().putDouble("music", 0.0);
-        }
-        if (world instanceof ServerLevel) {
-            _level1 = (ServerLevel)world;
-            _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, (ServerLevel)_level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/tp @s ~ ~ ~ facing entity @p[distance=0..48]");
         }
     }
 }

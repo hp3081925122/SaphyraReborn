@@ -52,7 +52,7 @@ public class NamelessEntityDiesForRealProcedure {
             ServerLevel _level1;
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
-                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/stopsound @a music");
+                com.hp.saphyrareborn.boss.BossMusic.stop(_level1, x, y, z, null);
             }
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;

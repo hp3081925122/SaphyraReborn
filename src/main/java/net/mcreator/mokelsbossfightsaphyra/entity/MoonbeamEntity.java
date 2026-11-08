@@ -192,17 +192,17 @@ implements GeoEntity {
     }
 
     public boolean hurt(DamageSource source, float amount) {
-        MoonbeamEntityIsHurtProcedure.execute((LevelAccessor)this.level(), this.getX(), this.getY(), this.getZ(), (Entity)this, source.getDirectEntity());
+        MoonbeamEntityIsHurtProcedure.execute((LevelAccessor)this.level(), this.getX(), this.getY(), this.getZ(), (Entity)this, source.getEntity());
         if (source.is(DamageTypes.IN_FIRE)) {
             return false;
         }
-        if (source.getEntity() instanceof AbstractArrow) {
+        if (source.getDirectEntity() instanceof AbstractArrow) {
             return false;
         }
-        if (source.getEntity() instanceof Player) {
+        if (source.getDirectEntity() instanceof Player) {
             return false;
         }
-        if (source.getEntity() instanceof ThrownPotion || source.getEntity() instanceof AreaEffectCloud) {
+        if (source.getDirectEntity() instanceof ThrownPotion || source.getDirectEntity() instanceof AreaEffectCloud) {
             return false;
         }
         if (source.is(DamageTypes.FALL)) {

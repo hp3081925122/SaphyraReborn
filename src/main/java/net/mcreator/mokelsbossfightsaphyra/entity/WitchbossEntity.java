@@ -184,7 +184,7 @@ implements GeoEntity {
     }
 
     public boolean hurt(DamageSource source, float amount) {
-        if (source.getEntity() instanceof AbstractArrow) {
+        if (source.getDirectEntity() instanceof AbstractArrow) {
             return false;
         }
         return super.hurt(source, amount);
@@ -192,7 +192,7 @@ implements GeoEntity {
 
     public void die(DamageSource source) {
         super.die(source);
-        WitchbossStopSoundProcedure.execute((LevelAccessor)this.level(), (Entity)this, source.getDirectEntity());
+        WitchbossStopSoundProcedure.execute((LevelAccessor)this.level(), (Entity)this, source.getEntity());
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata) {

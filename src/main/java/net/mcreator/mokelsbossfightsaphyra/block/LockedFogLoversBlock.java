@@ -53,7 +53,8 @@ extends WallBlock {
         return PathType.OPEN;
     }
 
-    public InteractionResult use(BlockState blockstate, Level world, BlockPos pos, Player entity, InteractionHand hand, BlockHitResult hit) {
+    @Override
+    protected InteractionResult useWithoutItem(BlockState blockstate, Level world, BlockPos pos, Player entity, BlockHitResult hit) {
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();

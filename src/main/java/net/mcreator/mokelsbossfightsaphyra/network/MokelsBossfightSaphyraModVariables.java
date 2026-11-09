@@ -37,6 +37,7 @@ public final class MokelsBossfightSaphyraModVariables {
         public double Zplayer;
         public double Devotion;
         public int LinaraQuest;
+        public boolean SigilGiven;
 
         public void syncPlayerVariables(Entity entity) {
             if (!entity.level().isClientSide()) entity.syncData(SaphyraAttachments.PLAYER_VARIABLES.get());
@@ -51,6 +52,7 @@ public final class MokelsBossfightSaphyraModVariables {
             nbt.putDouble("Zplayer", Zplayer);
             nbt.putDouble("Devotion", Devotion);
             nbt.putInt("LinaraQuest", LinaraQuest);
+            nbt.putBoolean("SigilGiven", SigilGiven);
             return nbt;
         }
 
@@ -72,6 +74,7 @@ public final class MokelsBossfightSaphyraModVariables {
             Zplayer = nbt.getDouble("Zplayer");
             Devotion = nbt.getDouble("Devotion");
             LinaraQuest = nbt.getInt("LinaraQuest");
+            SigilGiven = nbt.getBoolean("SigilGiven");
         }
     }
 
@@ -140,6 +143,7 @@ public final class MokelsBossfightSaphyraModVariables {
         clone.Zplayer = original.Zplayer;
         clone.Devotion = original.Devotion;
         clone.LinaraQuest = original.LinaraQuest;
+        clone.SigilGiven = original.SigilGiven;
     }
 }
 

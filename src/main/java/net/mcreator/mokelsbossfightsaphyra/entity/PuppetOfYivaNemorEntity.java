@@ -53,7 +53,6 @@
 package com.hp.saphyrareborn.entity;
 
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModEntities;
-import com.hp.saphyrareborn.procedures.PuppetAttackPatternProcedure;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -99,11 +98,13 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class PuppetOfYivaNemorEntity
 extends Monster
 implements GeoEntity {
-    private static final String[] TRIGGERABLE_ANIMATIONS = {"idle", "walk", "attackfirst", "attacksecond", "attackthird", "attackfourth", "attackfifth", "death", "pose"};
+    private static final String[] TRIGGERABLE_ANIMATIONS = {"idle", "walk", "attackfirst", "attacksecond", "attackthird", "attackfourth", "attackfifth", "death", "pose", "phaseshift"};
     private AnimationController<?> procedureController;
     public static final EntityDataAccessor<Boolean> SHOOT = SynchedEntityData.defineId(PuppetOfYivaNemorEntity.class, (EntityDataSerializer)EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<String> TEXTURE = SynchedEntityData.defineId(PuppetOfYivaNemorEntity.class, (EntityDataSerializer)EntityDataSerializers.STRING);
     public static final EntityDataAccessor<Boolean> DATA_animations = SynchedEntityData.defineId(PuppetOfYivaNemorEntity.class, (EntityDataSerializer)EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Boolean> PHASE2 = SynchedEntityData.defineId(PuppetOfYivaNemorEntity.class, EntityDataSerializers.BOOLEAN);
+    private final com.hp.saphyrareborn.boss.puppet.PuppetCombat combat = new com.hp.saphyrareborn.boss.puppet.PuppetCombat(this);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache((GeoAnimatable)this);
     private boolean swinging;
     private boolean lastloop;
@@ -122,6 +123,7 @@ implements GeoEntity {
         builder.define(SHOOT, false);
         builder.define(TEXTURE, "puppettexture");
         builder.define(DATA_animations, true);
+        builder.define(PHASE2, false);
     }
 
     public void setTexture(String texture) {
@@ -156,6 +158,9 @@ implements GeoEntity {
         if (source.is(DamageTypes.FALL)) {
             return false;
         }
+        if (!this.level().isClientSide() && this.combat.isInvulnerable() && !source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            return false;
+        }
         return super.hurt(source, amount);
     }
 
@@ -163,6 +168,7 @@ implements GeoEntity {
         super.addAdditionalSaveData(compound);
         compound.putString("Texture", this.getTexture());
         compound.putBoolean("Dataanimations", ((Boolean)this.entityData.get(DATA_animations)).booleanValue());
+        compound.put("PuppetCombat", this.combat.save());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -172,6 +178,9 @@ implements GeoEntity {
         }
         if (compound.contains("Dataanimations")) {
             this.entityData.set(DATA_animations,compound.getBoolean("Dataanimations"));
+        }
+        if (compound.contains("PuppetCombat")) {
+            this.combat.load(compound.getCompound("PuppetCombat"));
         }
     }
 
@@ -188,8 +197,60 @@ implements GeoEntity {
     public void tick() {
         super.tick();
         com.hp.saphyrareborn.boss.BossCastLock.tick(this);
-        PuppetAttackPatternProcedure.execute((LevelAccessor)this.level(), this.getX(), this.getY(), this.getZ(), (Entity)this);
+        if (this.level().isClientSide()) {
+            this.tickPhase2Aura();
+        } else {
+            this.combat.tick();
+        }
         this.refreshDimensions();
+    }
+
+    @Override
+    protected net.minecraft.world.entity.ai.control.BodyRotationControl createBodyControl() {
+        return new net.minecraft.world.entity.ai.control.BodyRotationControl(this) {
+            @Override
+            public void clientTick() {
+                PuppetOfYivaNemorEntity.this.yBodyRot = PuppetOfYivaNemorEntity.this.getYRot();
+            }
+        };
+    }
+
+    public com.hp.saphyrareborn.boss.puppet.PuppetCombat getCombat() {
+        return this.combat;
+    }
+
+    public void restartAnimation(String animation) {
+        this.stopTriggeredAnim("procedure", null);
+        this.triggerAnim("procedure", animation);
+    }
+
+    public void stopProcedureAnimation() {
+        this.stopTriggeredAnim("procedure", null);
+    }
+
+    public void setPhase2Visual(boolean value) {
+        this.entityData.set(PHASE2, value);
+    }
+
+    public boolean isPhase2Visual() {
+        return this.entityData.get(PHASE2);
+    }
+
+    private void tickPhase2Aura() {
+        if (!this.isPhase2Visual() || !this.isAlive()) {
+            return;
+        }
+        net.minecraft.util.RandomSource random = this.getRandom();
+        double w = this.getBbWidth() * 0.7;
+        if (this.tickCount % 3 == 0) {
+            this.level().addParticle(com.hp.saphyrareborn.init.MokelsBossfightSaphyraModParticleTypes.REDFLAME_PARTICLE.get(), this.getX() + (random.nextDouble() - 0.5) * w * 2.0, this.getY() + random.nextDouble() * this.getBbHeight(), this.getZ() + (random.nextDouble() - 0.5) * w * 2.0, 0.0, 0.02 + random.nextDouble() * 0.02, 0.0);
+        }
+        if (random.nextInt(4) == 0) {
+            this.level().addParticle(net.minecraft.core.particles.ParticleTypes.SMOKE, this.getX() + (random.nextDouble() - 0.5) * w * 2.0, this.getY() + 0.5 + random.nextDouble() * this.getBbHeight(), this.getZ() + (random.nextDouble() - 0.5) * w * 2.0, 0.0, 0.03, 0.0);
+        }
+        if (random.nextInt(9) == 0) {
+            this.level().addParticle(net.minecraft.core.particles.ParticleTypes.LAVA, this.getX() + (random.nextDouble() - 0.5) * w * 2.0, this.getY() + 0.3 + random.nextDouble() * this.getBbHeight() * 0.6, this.getZ() + (random.nextDouble() - 0.5) * w * 2.0, 0.0, 0.0, 0.0);
+        }
     }
 
     @Override

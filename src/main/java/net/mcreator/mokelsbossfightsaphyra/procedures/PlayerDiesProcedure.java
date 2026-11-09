@@ -34,6 +34,9 @@ public class PlayerDiesProcedure {
                 if (boss instanceof WitchbossEntity witch) {
                     witch.getCombat().resetFight();
                 }
+                if (boss instanceof PuppetOfYivaNemorEntity puppet) {
+                    puppet.getCombat().resetFight();
+                }
             }
             boss.getPersistentData().putDouble("music", 0.0);
             found = true;

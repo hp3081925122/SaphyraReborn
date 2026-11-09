@@ -152,3 +152,15 @@
 - 原版 `PlayerJoinedWorldProcedure` 按世界计数器 `playerjoinedworld == 1` 发放赤日印记，多人服务器上只有第一个进入的玩家能拿到。
 - 现在改为玩家变量 `SigilGiven`：会存档，死亡克隆时也会复制。每个玩家首次登录时发 1 枚，提示只发给本人，不再全服广播。
 - 旧存档中没有该标记、但背包里已有任意赤日印记（含破损的）的玩家，只补写标记，不重复发放。日志标签为 `[SigilDebug]`。
+
+## 伊瓦的傀儡重做（2026年11月09日）
+
+详见 `docs/PUPPET_REWORK.md`。
+
+- 原 `PuppetAttackPatternProcedure`、`AttackFirst~Fifth`（含从未调用的 `AttackThird`）和 `PuppetDash` 已删除，改由 `boss/puppet/PuppetCombat` 状态机实现。
+  - 节点、分支、连发、半径、倍率和腐朽值与原版一致，判定对齐到动画出手帧。
+  - 修复音乐“先播后停”。
+- 炎刺改为出手前 0.5 秒锁定方向并显示预警（玩法调整）。
+- 二阶段：`attackthird` 做成炎狱双斩，attacksecond 派生十字炎刑；新增 `phaseshift` 动画。配置在 `bosses.puppet_mechanics`。
+- 特效：新增 S2C 包 `puppet_vfx` 和 `PuppetVfxClient`，红焰粒子从每处 100 个降到 24 个，用几何火柱补足。
+- 动画：攻击动画追加收招，加了双剑、小臂、头部的次级运动。脚本在 `D:/AI临时文件/Saphyra重生/puppet_rework/scripts/puppet_anims.py`。

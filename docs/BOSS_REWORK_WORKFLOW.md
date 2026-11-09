@@ -80,7 +80,7 @@ Combat 的固定骨架（直接复制 `WitchCombat` 改）：
   - 扇形招式另加半角判断。
   - 不要用 `inflate` 方块范围，它在斜角方向会多打 41%。
 - **伤害源**：原版带攻击者就用 `damageSources().mobAttack(boss)`；不带就用 `new DamageSource(MOB_ATTACK holder)`，保留“没有击退”的原版手感。
-- **悲恸值**：直接改 `PlayerVariables.Grief` 后调用 `syncPlayerVariables`。
+- **悲恸值**：直接改 `PlayerVariables.Grief` 后调用 `syncPlayerVariables`。注意伊瓦的傀儡和无名守门人加的是腐朽值 `Rotting`，先看原 procedure 改的是哪个变量。
 - **转阶段**：
   - 持续 60 tick，期间无敌（实体 `hurt` 中检查 `isInvulnerable`）。
   - t30 爆发：推开周围目标，不造成伤害，同时把同步数据 `PHASE2` 置为 true。
@@ -122,6 +122,7 @@ Combat 的固定骨架（直接复制 `WitchCombat` 改）：
   - 无名守门人：腐绿
   - 象牙恶魔：象牙白和幽蓝
   - 萨菲拉：月银、巫紫和幽灵青
+  - 伊瓦的傀儡：炽白、焰橙、余烬红和暗绯
 - 特效尺寸必须和判定半径一致：特效比判定小，玩家会觉得自己在特效外还被打到。
 - 粒子只做点缀，每次几到几十个。原版几百上千的粒子喷发要换成几何体。
 
@@ -170,7 +171,7 @@ Blockbench MCP 打开后用 `risky_eval` 操作：
 | 无名守门人 | 已重做 | `NAMELESS_REWORK.md` |
 | 象牙恶魔 | 已重做 | `MOTH_REWORK.md` |
 | 萨菲拉 | 已重做，待游戏内测试 | `SAPHYRA_REWORK.md` |
-| 伊瓦的傀儡 | 未开始（入口 `PuppetAttackPatternProcedure`，5 段攻击动画） | — |
+| 伊瓦的傀儡 | 已重做，待游戏内测试 | `PUPPET_REWORK.md` |
 | 腐烂玫瑰 | 未开始（原地射击，只有 scream 和 spawn 两个动画） | — |
 
 ## 9. 风险

@@ -1,4 +1,4 @@
-# 墨蛾（mothboss）重做设计
+# 象牙恶魔（mothboss）重做设计
 
 日期：2026年11月09日
 范围：`entity/MothbossEntity`、`boss/moth/*`、`boss/client/BossVfxRender`、`animations/saphyramothboss.animation.json`、`BossConfig`
@@ -91,7 +91,7 @@
 | TWIRL | 3 片旋转刃弧，半径从 2.5 扩大到 7 | 电火花每 3 tick |
 | WINGS | 身后一对半透明蛾翼（上下翼共 4 片），扇动，带眼斑 | 鳞粉每 4 tick |
 
-WARD、TWIRL、WINGS、CHARGE 会跟随最近的墨蛾实体移动。
+WARD、TWIRL、WINGS、CHARGE 会跟随最近的象牙恶魔实体移动。
 
 ## 5. 动画
 

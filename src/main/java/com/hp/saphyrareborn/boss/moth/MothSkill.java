@@ -1,13 +1,13 @@
 package com.hp.saphyrareborn.boss.moth;
 
 public enum MothSkill {
-    SMITE("attacksmite", 50, 50),
-    ONCE("attackswordonce", 50, 50),
+    SMITE("attacksmite", 48, 48),
+    ONCE("attackswordonce", 48, 48),
     TWIRL("attacktwirl", 80, 80),
-    GROUND("attackground", 80, 80),
-    SKY("attacksky", 90, 90),
-    BACK("attackback", 35, 35),
-    BACK_ONCE("attackback", 35, 85),
+    GROUND("attackground", 68, 68),
+    SKY("attacksky", 88, 88),
+    BACK("attackback", 33, 33),
+    BACK_ONCE("attackback", 35, 83),
     STAB("attackstab", 30, 32),
     TRIPLE("attacktriple", 50, 50),
     BLOCK("block", 70, 70);

@@ -317,12 +317,12 @@ public final class MothCombat {
         Vec3 c = this.boss.position();
         float yaw = this.boss.getYRot();
         switch (next) {
-            case SMITE -> MothVfx.send(level, MothVfx.CHARGE, c, yaw, 2.0f, 27);
-            case TWIRL -> MothVfx.send(level, MothVfx.TWIRL, c, yaw, 7.0f, 54);
-            case GROUND -> MothVfx.send(level, MothVfx.CHARGE, c, yaw, 3.0f, 34);
+            case SMITE -> MothVfx.send(level, MothVfx.CHARGE, c, yaw, 2.0f, 22);
+            case TWIRL -> MothVfx.send(level, MothVfx.TWIRL, c, yaw, 7.0f, 48);
+            case GROUND -> MothVfx.send(level, MothVfx.CHARGE, c, yaw, 3.0f, 28);
             case SKY -> {
-                MothVfx.send(level, MothVfx.WINGS, c, yaw, 4.0f, 50);
-                MothVfx.send(level, MothVfx.CHARGE, c, yaw, 3.0f, 25);
+                MothVfx.send(level, MothVfx.WINGS, c, yaw, 4.0f, 42);
+                MothVfx.send(level, MothVfx.CHARGE, c, yaw, 3.0f, 18);
             }
             case BLOCK -> {
                 BossCastLock.shield(this.boss, BLOCK_WINDOW);
@@ -378,7 +378,7 @@ public final class MothCombat {
         int end = this.skill.duration;
         switch (this.skill) {
             case SMITE -> {
-                if (t == 27) {
+                if (t == 22) {
                     this.sound(level, "entity.evoker.cast_spell", SoundSource.HOSTILE, 1.6f, 0.7f);
                     for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, new AABB(c, c).inflate(15.0), MothCombat::canBeHit)) {
                         if (horizontalEdgeDistance(e, c.x, c.z) > 15.0) {
@@ -390,17 +390,17 @@ public final class MothCombat {
                 }
             }
             case ONCE -> {
-                if (t == 30) {
+                if (t == 24) {
                     this.slashOnce(level);
                 }
             }
             case TWIRL -> {
-                if (t == 24) {
+                if (t == 20) {
                     this.sound(level, "entity.player.attack.sweep", SoundSource.NEUTRAL, 2.0f, 1.2f);
                     this.hitAround(level, c, 4.0, 1.0, 20.0, 0.0);
                     MothVfx.send(level, MothVfx.SLASH, c, yaw, 4.0f, MothVfx.SLASH_SPIN);
                 }
-                if (t == 54) {
+                if (t == 48) {
                     this.sound(level, "entity.player.attack.sweep", SoundSource.NEUTRAL, 2.0f, 1.0f);
                     this.hitAround(level, c, 7.0, 1.0, 20.0, 0.0);
                     MothVfx.send(level, MothVfx.SLASH, c, yaw, 7.0f, MothVfx.SLASH_SPIN);
@@ -408,18 +408,18 @@ public final class MothCombat {
                 }
             }
             case GROUND -> {
-                if (t == 20) {
+                if (t == 14) {
                     MothVfx.send(level, MothVfx.TELEGRAPH_RING, c, yaw, 5.0f, 14);
                     MothVfx.send(level, MothVfx.TELEGRAPH_RING, c, yaw, 8.0f, 28);
                 }
-                if (t == 34) {
+                if (t == 28) {
                     this.sound(level, "entity.generic.explode", SoundSource.NEUTRAL, 2.0f, 0.75f);
                     level.sendParticles(ParticleTypes.EXPLOSION, c.x, c.y, c.z, 12, 2.0, 0.5, 2.0, 0.01);
                     this.hitAround(level, c, 5.0, 1.0, 20.0, 0.0);
                     MothVfx.send(level, MothVfx.SHOCKWAVE, c, yaw, 5.0f, 5);
                     MothVfx.send(level, MothVfx.LIGHTNING, c, yaw, 10.0f, this.boss.getRandom().nextInt(1000));
                 }
-                if (t == 48) {
+                if (t == 42) {
                     this.sound(level, "entity.player.attack.sweep", SoundSource.NEUTRAL, 2.0f, 1.2f);
                     this.hitAround(level, c, 8.0, 1.0, 20.0, 0.0);
                     MothVfx.send(level, MothVfx.SLASH, c, yaw, 8.0f, MothVfx.SLASH_SPIN);
@@ -427,7 +427,7 @@ public final class MothCombat {
                 }
             }
             case SKY -> {
-                if (t == 25) {
+                if (t == 18) {
                     this.sound(level, "entity.evoker.prepare_attack", SoundSource.HOSTILE, 2.0f, 0.8f);
                     level.sendParticles(MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get(), c.x, c.y + 1.0, c.z, 20, 0.3, 0.6, 0.3, 0.04);
                     for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, new AABB(c, c).inflate(32.0), MothCombat::canBeHit)) {
@@ -436,7 +436,7 @@ public final class MothCombat {
                         MothVfx.send(level, MothVfx.LEVITATE, e.position(), 0.0f, 1.2f, 25);
                     }
                 }
-                if (t == 50) {
+                if (t == 42) {
                     for (int id : this.skyTargets) {
                         if (level.getEntity(id) instanceof LivingEntity e && e.isAlive()) {
                             this.strikes.add(new Strike(e.getX(), e.getY() - 4.0, e.getZ(), this.clock + 4, 1.3, 12.0, 1.0, 0.0));
@@ -447,12 +447,12 @@ public final class MothCombat {
                 }
             }
             case BACK -> {
-                if (t == 20) {
+                if (t == 16) {
                     this.backSlash(level);
                 }
             }
             case BACK_ONCE -> {
-                if (t == 20) {
+                if (t == 16) {
                     this.backSlash(level);
                 }
                 if (t == 35) {
@@ -462,7 +462,7 @@ public final class MothCombat {
                         this.dashForth(level);
                     }
                 }
-                if (t == 65) {
+                if (t == 59) {
                     this.slashOnce(level);
                 }
             }

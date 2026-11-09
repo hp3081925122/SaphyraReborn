@@ -78,7 +78,7 @@ public class ActivateHallowedOddmentProcedure {
             if (entity instanceof Player) {
                 _player = (Player)entity;
                 ItemStack _stktoremove = new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.SIGIL_OF_THE_RED_SUN_STAGE_2.get());
-                _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), 1, (Container)_player.inventoryMenu.getCraftSlots());
+                _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), 1, (Container)_player.getInventory());
             }
             if (world instanceof ServerLevel) {
                 ServerLevel _level1 = (ServerLevel)world;

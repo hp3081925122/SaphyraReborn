@@ -54,7 +54,7 @@ public class RightclickSinisterBagProcedure {
             if (entity instanceof Player) {
                 Player _player = (Player)entity;
                 ItemStack _stktoremove = new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.SINISTER_BAG.get());
-                _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), 1, (Container)_player.inventoryMenu.getCraftSlots());
+                _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), 1, (Container)_player.getInventory());
             }
             if (world instanceof ServerLevel) {
                 _level = (ServerLevel)world;

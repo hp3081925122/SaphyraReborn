@@ -57,29 +57,22 @@ public class SaphyraDialog03Procedure {
                                     world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.911b6172a72e"), false);
                                 }
                                 MokelsBossfightSaphyraMod.queueServerWork(80, () -> {
-                                    if (entity.isAlive()) {
-                                        if (!world.isClientSide() && world.getServer() != null) {
-                                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.68f988765128"), false);
-                                        }
-                                        MokelsBossfightSaphyraMod.queueServerWork(20, () -> {
-                                            ItemEntity entityToSpawn;
-                                            ServerLevel _level1;
-                                            if (world instanceof ServerLevel) {
-                                                _level1 = (ServerLevel)world;
-                                                entityToSpawn = new ItemEntity((Level)_level1, entity.getX() + entity.getLookAngle().x * 2.0, entity.getY(), entity.getZ() + entity.getLookAngle().z * 2.0, new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.HALLOWED_KEY_2.get()));
-                                                entityToSpawn.setPickUpDelay(0);
-                                                entityToSpawn.setUnlimitedLifetime();
-                                                _level1.addFreshEntity((Entity)entityToSpawn);
-                                            }
-                                            if (world instanceof ServerLevel) {
-                                                _level1 = (ServerLevel)world;
-                                                entityToSpawn = new ItemEntity((Level)_level1, entity.getX() + entity.getLookAngle().x * 2.0, entity.getY(), entity.getZ() + entity.getLookAngle().z * 2.0, new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.HALLOWED_KEY_2.get()));
-                                                entityToSpawn.setPickUpDelay(0);
-                                                entityToSpawn.setUnlimitedLifetime();
-                                                _level1.addFreshEntity((Entity)entityToSpawn);
-                                            }
-                                        });
+                                    if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
+                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.68f988765128"), false);
                                     }
+                                    final double dropX = entity.getX();
+                                    final double dropY = entity.getY();
+                                    final double dropZ = entity.getZ();
+                                    MokelsBossfightSaphyraMod.queueServerWork(20, () -> {
+                                        if (world instanceof ServerLevel _level1) {
+                                            for (int drop = 0; drop < 2; drop++) {
+                                                ItemEntity entityToSpawn = new ItemEntity((Level)_level1, dropX, dropY, dropZ, new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.HALLOWED_KEY_2.get()));
+                                                entityToSpawn.setPickUpDelay(0);
+                                                entityToSpawn.setUnlimitedLifetime();
+                                                _level1.addFreshEntity((Entity)entityToSpawn);
+                                            }
+                                        }
+                                    });
                                     MokelsBossfightSaphyraMod.queueServerWork(120, () -> {
                                         if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
                                             world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.3a9db853bb56"), false);

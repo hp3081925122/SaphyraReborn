@@ -67,7 +67,6 @@ public final class LinaraClockTowerProcedure {
             level.sendParticles(MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get(), linara.getX(), linara.getY(), linara.getZ(), 300, 0.2, 1.0, 0.2, 0.05);
             for (ItemStack reward : List.of(
                     new ItemStack(MokelsBossfightSaphyraModItems.SPIRIT_RUNE_SWORD.get()),
-                    new ItemStack(MokelsBossfightSaphyraModItems.SPRIRITUAL_RUNE.get()),
                     new ItemStack(MokelsBossfightSaphyraModItems.EMPTY_RULE.get()),
                     new ItemStack(MokelsBossfightSaphyraModItems.RULE_OF_THE_P_LAGUED.get()),
                     new ItemStack(MokelsBossfightSaphyraModItems.RULE_OF_EXUDATION.get()),

@@ -86,7 +86,7 @@ public class RightclickSinisterBagProcedure {
             }
             // Saphyra Reborn: items the original never handed out
             if (world instanceof ServerLevel _extraLevel) {
-                for (ItemLike extra : new ItemLike[]{MokelsBossfightSaphyraModItems.RULE_OF_DESPAIR.get(), MokelsBossfightSaphyraModItems.RULE_OF_SOBBING.get(), MokelsBossfightSaphyraModItems.VOCAL_CORDS.get()}) {
+                for (ItemLike extra : new ItemLike[]{MokelsBossfightSaphyraModItems.RULE_OF_DESPAIR.get(), MokelsBossfightSaphyraModItems.RULE_OF_SOBBING.get()}) {
                     ItemEntity drop = new ItemEntity((Level)_extraLevel, entity.getX(), 0.5 + entity.getY(), entity.getZ(), new ItemStack(extra));
                     drop.setPickUpDelay(0);
                     drop.setUnlimitedLifetime();

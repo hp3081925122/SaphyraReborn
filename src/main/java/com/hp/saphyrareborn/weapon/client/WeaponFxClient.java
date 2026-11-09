@@ -48,6 +48,15 @@ public final class WeaponFxClient {
     private static final ResourceLocation BOLT = tex("bolt");
     private static final ResourceLocation SPLASH = tex("splash");
     private static final ResourceLocation SUN = tex("sun");
+    private static final ResourceLocation SLASH_MARK = tex("slash_mark");
+    private static final ResourceLocation IMPACT = tex("impact");
+    private static final ResourceLocation SHARD = tex("shard");
+    private static final ResourceLocation GLYPH = tex("glyph");
+    private static final ResourceLocation STAR = tex("star");
+    private static final ResourceLocation DROPLET = tex("droplet");
+    private static final Vec3 UP = new Vec3(0.0, 1.0, 0.0);
+    private static final DustParticleOptions ROT_DUST = new DustParticleOptions(new Vector3f(0.5f, 0.23f, 0.16f), 1.0f);
+    private static final DustParticleOptions NAMELESS_DUST = new DustParticleOptions(new Vector3f(0.6f, 0.08f, 0.06f), 1.1f);
     private static final List<Fx> ACTIVE = new ArrayList<>();
     private static final Map<Integer, Integer> LAST_SWING = new HashMap<>();
     private static final Map<Integer, Integer> SWING_COUNT = new HashMap<>();
@@ -182,6 +191,14 @@ public final class WeaponFxClient {
                     new double[]{cx + ca - sa, y, cz + sa + ca}, 1.0f, vMax, new double[]{cx - ca - sa, y, cz - sa + ca}, 0.0f, vMax, c, c);
         }
 
+        void billboardUV(double cx, double cy, double cz, double halfW, double halfH, double angle, Vector3f left, Vector3f up, float u0, float u1, float v0, float v1, float[] c) {
+            double cos = Math.cos(angle), sin = Math.sin(angle);
+            double lx = (left.x() * cos + up.x() * sin) * halfW, ly = (left.y() * cos + up.y() * sin) * halfW, lz = (left.z() * cos + up.z() * sin) * halfW;
+            double ux = (up.x() * cos - left.x() * sin) * halfH, uy = (up.y() * cos - left.y() * sin) * halfH, uz = (up.z() * cos - left.z() * sin) * halfH;
+            this.quad(new double[]{cx + lx + ux, cy + ly + uy, cz + lz + uz}, u0, v0, new double[]{cx - lx + ux, cy - ly + uy, cz - lz + uz}, u1, v0,
+                    new double[]{cx - lx - ux, cy - ly - uy, cz - lz - uz}, u1, v1, new double[]{cx + lx - ux, cy + ly - uy, cz + lz - uz}, u0, v1, c, c);
+        }
+
         void billboard(double cx, double cy, double cz, double half, Vector3f left, Vector3f up, float vMin, float vMax, float[] c) {
             double lx = left.x() * half, ly = left.y() * half, lz = left.z() * half;
             double ux = up.x() * half, uy = up.y() * half, uz = up.z() * half;
@@ -227,7 +244,12 @@ public final class WeaponFxClient {
             this.fz = Math.cos(rad);
             this.seed = Double.doubleToLongBits(pos.x * 31.0 + pos.z) ^ kind;
             this.life = switch (kind) {
-                case TRAIL -> 9;
+                case TRAIL -> switch (style) {
+                    case SPIRIT_RUNE_SWORD, TEAR_AND_DROPLET -> 15;
+                    case KATANA_HEAVY, NAMELESS, LOURING_CLAYMORE -> 11;
+                    default -> 9;
+                };
+                case WeaponFx.HIT -> 15;
                 case WeaponFx.SPARK, WeaponFx.STAFF_CAST -> 7;
                 case WeaponFx.CROSS_SLASH -> 9;
                 case WeaponFx.DASH_SLASH -> 12;
@@ -241,7 +263,15 @@ public final class WeaponFxClient {
         }
 
         void tickParticles(ClientLevel level, RandomSource r) {
+            if (this.kind == TRAIL) {
+                this.tickSwing(level, r);
+                return;
+            }
             if (this.age != 0) {
+                return;
+            }
+            if (this.kind == WeaponFx.HIT) {
+                this.tickHit(level, r);
                 return;
             }
             double x = this.pos.x, y = this.pos.y, z = this.pos.z;
@@ -312,7 +342,8 @@ public final class WeaponFxClient {
                 this.pos = this.owner.getPosition(partial);
             }
             switch (this.kind) {
-                case TRAIL -> this.renderTrail(c, t, partial);
+                case TRAIL -> this.renderSwing(c, t);
+                case WeaponFx.HIT -> this.renderHit(c, t);
                 case WeaponFx.SPARK -> this.renderSpark(c, t, this.pos, this.size);
                 case WeaponFx.STAFF_CAST -> this.renderStaffCast(c, t);
                 case WeaponFx.CROSS_SLASH -> this.renderCross(c, t);
@@ -332,42 +363,436 @@ public final class WeaponFxClient {
             }
         }
 
-        private void renderTrail(Canvas c, float t, float partial) {
-            float reveal = easeOut(t / 2.5f);
-            float fade = 1.0f - clamp01((t - 2.5f) / 5.5f);
-            if (fade <= 0.0f) {
-                return;
-            }
+        private boolean firstPerson() {
             Minecraft mc = Minecraft.getInstance();
-            boolean firstPerson = this.owner == mc.player && mc.options.getCameraType().isFirstPerson();
-            float alpha = fade * (firstPerson ? 0.55f : 0.95f);
-            boolean even = this.extra % 2 == 0;
-            double dir = even ? 1.0 : -1.0;
-            double tilt = this.style.heavy && even ? Math.toRadians(68.0) : Math.toRadians(even ? 18.0 : -22.0);
+            return this.owner == mc.player && mc.options.getCameraType().isFirstPerson();
+        }
+
+        private boolean even() {
+            return this.extra % 2 == 0;
+        }
+
+        private double dir() {
+            return this.even() ? 1.0 : -1.0;
+        }
+
+        private double mainTilt() {
+            return this.style.heavy && this.even() ? Math.toRadians(68.0) : Math.toRadians(this.even() ? 18.0 : -22.0);
+        }
+
+        private Vec3[] basis(double tilt, boolean fp) {
             Vec3 f = Vec3.directionFromRotation(Mth.clamp(this.pitch, -60.0f, 60.0f), this.yaw);
-            Vec3 r = f.cross(new Vec3(0.0, 1.0, 0.0));
+            Vec3 r = f.cross(UP);
             if (r.lengthSqr() < 1.0E-4) {
                 r = new Vec3(-this.fz, 0.0, this.fx);
             }
             r = r.normalize();
             Vec3 u = r.cross(f).normalize();
             Vec3 side = r.scale(Math.cos(tilt)).add(u.scale(Math.sin(tilt)));
-            Vec3 center = this.pos.add(0.0, this.owner.getEyeHeight() - 0.4, 0.0).add(f.scale(firstPerson ? 0.45 : 0.15));
-            double from = Math.toRadians(-105.0) * dir;
-            double to = Math.toRadians(85.0) * dir;
-            double head = from + (to - from) * reveal;
-            double tail = from + (to - from) * clamp01((t - 1.5f) / 6.0f) * 0.9;
-            double outer = this.size;
-            double inner = this.size * 0.5;
+            Vec3 center = this.pos.add(0.0, this.owner.getEyeHeight() - 0.4, 0.0).add(f.scale(fp ? 0.45 : 0.15));
+            return new Vec3[]{center, f, side};
+        }
+
+        private static Vec3 at(Vec3[] b, double a, double radius) {
+            return b[0].add(b[1].scale(Math.cos(a) * radius)).add(b[2].scale(Math.sin(a) * radius));
+        }
+
+        private static double ang(double deg, double dir) {
+            return Math.toRadians(deg) * dir;
+        }
+
+        private static float[] fade(float[] c, float k) {
+            return new float[]{c[0], c[1], c[2], c[3] * k};
+        }
+
+        private static double headAngle(float t, double from, double to, float reveal) {
+            return from + (to - from) * easeOut(t / reveal);
+        }
+
+        private static double tailAngle(float t, double from, double to, float reveal, float fadeLen) {
+            return from + (to - from) * clamp01((t - reveal * 0.6f) / (fadeLen + reveal)) * 0.9;
+        }
+
+        private void band(Canvas c, Vec3[] b, float t, double from, double to, double outer, double inner, float reveal, float fadeLen, float alpha) {
+            if (t <= 0.0f) {
+                return;
+            }
+            float fade = 1.0f - clamp01((t - reveal) / fadeLen);
+            if (fade <= 0.0f) {
+                return;
+            }
+            double head = headAngle(t, from, to, reveal);
+            double tail = tailAngle(t, from, to, reveal, fadeLen);
             Sprite s = c.sprite(this.style.trail);
-            float[] col = white(alpha);
-            int segs = 18;
-            for (int i = 0; i < segs; i++) {
-                double k0 = (double) i / segs, k1 = (double) (i + 1) / segs;
+            float[] col = white(alpha * fade);
+            for (int i = 0; i < 18; i++) {
+                double k0 = i / 18.0, k1 = (i + 1) / 18.0;
                 double a0 = tail + (head - tail) * k0, a1 = tail + (head - tail) * k1;
-                double[] o0 = arc(center, f, side, a0, outer), o1 = arc(center, f, side, a1, outer);
-                double[] i0 = arc(center, f, side, a0, inner), i1 = arc(center, f, side, a1, inner);
-                s.quad(o0, (float) k0, 0.0f, o1, (float) k1, 0.0f, i1, (float) k1, 1.0f, i0, (float) k0, 1.0f, col, col);
+                s.quad(arc(b[0], b[1], b[2], a0, outer), (float) k0, 0.0f, arc(b[0], b[1], b[2], a1, outer), (float) k1, 0.0f,
+                        arc(b[0], b[1], b[2], a1, inner), (float) k1, 1.0f, arc(b[0], b[1], b[2], a0, inner), (float) k0, 1.0f, col, col);
+            }
+        }
+
+        private void glowBand(Canvas c, Vec3[] b, float t, double from, double to, double outer, double inner, float reveal, float fadeLen, float[] outerColor, float[] innerColor) {
+            if (t <= 0.0f) {
+                return;
+            }
+            float fade = 1.0f - clamp01((t - reveal) / fadeLen);
+            if (fade <= 0.0f) {
+                return;
+            }
+            double head = headAngle(t, from, to, reveal);
+            double tail = tailAngle(t, from, to, reveal, fadeLen);
+            Painter p = c.glow();
+            for (int i = 0; i < 18; i++) {
+                float k0 = i / 18.0f, k1 = (i + 1) / 18.0f;
+                double a0 = tail + (head - tail) * k0, a1 = tail + (head - tail) * k1;
+                double[] o0 = arc(b[0], b[1], b[2], a0, outer), o1 = arc(b[0], b[1], b[2], a1, outer);
+                double[] i0 = arc(b[0], b[1], b[2], a0, inner), i1 = arc(b[0], b[1], b[2], a1, inner);
+                p.quad(o0[0], o0[1], o0[2], fade(outerColor, fade * k0), o1[0], o1[1], o1[2], fade(outerColor, fade * k1),
+                        i1[0], i1[1], i1[2], fade(innerColor, fade * k1), i0[0], i0[1], i0[2], fade(innerColor, fade * k0));
+            }
+        }
+
+        private void tickSwing(ClientLevel level, RandomSource r) {
+            if (this.age < 1 || this.age > 4 || this.owner == null) {
+                return;
+            }
+            this.pos = this.owner.position();
+            Vec3[] b = this.basis(this.mainTilt(), this.firstPerson());
+            double d = this.dir();
+            double from = ang(-105.0, d), to = ang(85.0, d);
+            double head = headAngle(this.age, from, to, 2.5f);
+            Vec3 p = at(b, from + (head - from) * r.nextDouble(), this.size * (0.6 + 0.35 * r.nextDouble()));
+            switch (this.style) {
+                case KATANA_POOL_OF_ROT -> {
+                    for (int i = 0; i < 2; i++) {
+                        level.addParticle(ROT_DUST, p.x + r.nextGaussian() * 0.15, p.y, p.z + r.nextGaussian() * 0.15, 0.0, -0.06, 0.0);
+                    }
+                }
+                case LOURING_CLAYMORE -> {
+                    if (this.age <= 3) {
+                        level.addParticle(ParticleTypes.SOUL, p.x, p.y, p.z, 0.0, 0.03, 0.0);
+                    }
+                }
+                case SUNVEIL -> {
+                    for (int i = 0; i < 2; i++) {
+                        level.addParticle(ParticleTypes.SMALL_FLAME, p.x + r.nextGaussian() * 0.1, p.y + r.nextGaussian() * 0.1, p.z + r.nextGaussian() * 0.1, 0.0, 0.02, 0.0);
+                    }
+                }
+                case NAMELESS -> {
+                    if (this.age == 2 && this.even() && this.owner.onGround()) {
+                        Vec3 g = this.pos.add(this.fx * this.size * 0.9, 0.0, this.fz * this.size * 0.9);
+                        BossVfxRender.debris(level, r, g.x, g.y, g.z, 6, 0.18);
+                        BossVfxRender.addShake(g.x, g.y, g.z, 0.12f, 8.0);
+                    }
+                    level.addParticle(NAMELESS_DUST, p.x, p.y, p.z, 0.0, -0.02, 0.0);
+                }
+                default -> {
+                }
+            }
+        }
+
+        private void renderSwing(Canvas c, float t) {
+            boolean fp = this.firstPerson();
+            float vis = fp ? 0.55f : 0.95f;
+            double d = this.dir();
+            double r = this.size;
+            if (this.style == WeaponStyle.WITCH_STAFF) {
+                this.renderStaffSwing(c, t, fp, vis);
+                return;
+            }
+            if (this.style == WeaponStyle.KATANA_LIGHT) {
+                Vec3[] b = this.basis(Math.toRadians(this.even() ? 14.0 : -18.0), fp);
+                this.band(c, b, t, ang(-100.0, d), ang(80.0, d), r, r * 0.8, 1.6f, 3.5f, vis);
+                Vec3[] b2 = this.basis(Math.toRadians(this.even() ? -8.0 : 6.0), fp);
+                this.band(c, b2, t - 1.0f, ang(-90.0, d), ang(75.0, d), r * 0.88, r * 0.72, 1.6f, 3.5f, vis * 0.6f);
+                return;
+            }
+            if (this.style == WeaponStyle.MIRROR_BLADE) {
+                for (int k = 0; k < 2; k++) {
+                    double side = k == 0 ? d : -d;
+                    Vec3[] b = this.basis(Math.toRadians(25.0 * side), fp);
+                    double from = ang(-70.0, side), to = ang(60.0, side);
+                    this.band(c, b, t, from, to, r, r * 0.75, 1.5f, 3.5f, vis);
+                    if (t < 4.0f) {
+                        Vec3 tip = at(b, headAngle(t, from, to, 1.5f), r * 0.9);
+                        int frame = Math.min(3, (int) (t / 1.2f));
+                        c.sprite(STAR).billboard(tip.x, tip.y, tip.z, 0.22, c.left(), c.up(), frame * 0.25f, (frame + 1) * 0.25f, color(this.style.light, vis));
+                    }
+                }
+                return;
+            }
+            Vec3[] b = this.basis(this.mainTilt(), fp);
+            double from = ang(-105.0, d), to = ang(85.0, d);
+            switch (this.style) {
+                case KATANA_HEAVY -> {
+                    this.band(c, b, t, from, to, r, r * 0.5, 2.5f, 5.5f, vis);
+                    this.band(c, b, t - 2.0f, from, to, r * 1.08, r * 0.62, 2.5f, 4.5f, vis * 0.35f);
+                    if (t < 5.0f) {
+                        float k = 1.0f - t / 5.0f;
+                        Vec3 mid = b[0].add(b[1].scale(r * 0.8));
+                        double len = r * 1.4 * easeOut(t / 1.5f);
+                        c.glow().beam(mid.x - b[2].x * len, mid.y - b[2].y * len, mid.z - b[2].z * len, mid.x + b[2].x * len, mid.y + b[2].y * len, mid.z + b[2].z * len,
+                                0.02 + 0.09 * k, white(0.95f * k * vis), color(this.style.main, 0.0f));
+                    }
+                }
+                case KATANA_POOL_OF_ROT -> {
+                    this.glowBand(c, b, t, from, to, r * 0.55, r * 0.35, 2.5f, 5.5f, color(this.style.main, 0.35f * vis), color(0x4A1A18, 0.0f));
+                    this.band(c, b, t, from, to, r, r * 0.5, 2.5f, 5.5f, vis);
+                }
+                case LOURING_CLAYMORE -> {
+                    this.glowBand(c, b, t - 0.5f, from, to, r * 1.18, r * 0.92, 2.5f, 6.0f, color(0x184860, 0.0f), color(0x3078A8, 0.5f * vis));
+                    this.band(c, b, t, from, to, r, r * 0.5, 2.5f, 5.5f, vis);
+                }
+                case SPIRIT_RUNE_SWORD -> {
+                    this.band(c, b, t, from, to, r, r * 0.5, 2.5f, 5.5f, vis);
+                    Sprite g = c.sprite(GLYPH);
+                    for (int k = 0; k < 5; k++) {
+                        float age = t - 0.5f * k;
+                        if (age <= 0.0f) {
+                            continue;
+                        }
+                        float a = vis * (1.0f - clamp01((age - 5.0f) / 6.0f));
+                        if (a <= 0.0f) {
+                            continue;
+                        }
+                        Vec3 p = at(b, from + (to - from) * (0.15 + 0.18 * k), r * 0.8).add(0.0, 0.04 * age, 0.0);
+                        int idx = (int) ((this.seed + k) & 3L);
+                        g.billboardUV(p.x, p.y, p.z, 0.13, 0.13, 0.0, c.left(), c.up(), idx * 0.25f, idx * 0.25f + 0.25f, 0.0f, 1.0f, color(this.style.light, a));
+                    }
+                }
+                case SUNVEIL -> {
+                    this.glowBand(c, b, t, from, to, r * 1.06, r * 0.55, 2.5f, 5.5f, color(0xFFF6B0, 0.5f * vis), color(0xF0D860, 0.0f));
+                    this.band(c, b, t, from, to, r, r * 0.5, 2.5f, 5.5f, vis);
+                }
+                case NAMELESS -> {
+                    this.glowBand(c, b, t, from, to, r * 1.1, r * 0.85, 2.5f, 5.5f, color(0x401010, 0.0f), color(0xF03030, 0.5f * vis));
+                    this.band(c, b, t, from, to, r, r * 0.42, 2.5f, 5.5f, vis);
+                    if (this.even() && t >= 2.0f) {
+                        this.renderCrack(c, t - 2.0f);
+                    }
+                }
+                case TEAR_AND_DROPLET -> {
+                    this.band(c, b, t, from, to, r, r * 0.5, 2.5f, 5.5f, vis);
+                    Sprite s = c.sprite(DROPLET);
+                    double sgn = Math.signum(to - from);
+                    for (int k = 0; k < 6; k++) {
+                        float te = 0.4f * k;
+                        float tau = t - te;
+                        if (tau <= 0.0f) {
+                            continue;
+                        }
+                        float a = vis * (1.0f - clamp01((tau - 6.0f) / 4.0f));
+                        if (a <= 0.0f) {
+                            continue;
+                        }
+                        double ang = headAngle(te, from, to, 2.5f);
+                        Vec3 p = at(b, ang, r * 0.9);
+                        Vec3 tan = b[1].scale(-Math.sin(ang) * sgn).add(b[2].scale(Math.cos(ang) * sgn));
+                        Vec3 q = p.add(tan.scale(0.18 * tau)).add(0.0, 0.1 * tau - 0.025 * tau * tau, 0.0);
+                        s.billboard(q.x, q.y, q.z, 0.09, c.left(), c.up(), 0.0f, 1.0f, color(this.style.light, a));
+                    }
+                }
+                default -> this.band(c, b, t, from, to, r, r * 0.5, 2.5f, 5.5f, vis);
+            }
+        }
+
+        private void renderCrack(Canvas c, float t) {
+            float fade = 1.0f - clamp01((t - 2.0f) / 7.0f);
+            if (fade <= 0.0f) {
+                return;
+            }
+            float grow = easeOut(t / 2.0f);
+            double gx = this.pos.x + this.fx * this.size * 0.9, gz = this.pos.z + this.fz * this.size * 0.9, gy = this.pos.y + 0.06;
+            Painter p = c.glow();
+            RandomSource rs = RandomSource.create(this.seed);
+            for (int i = 0; i < 5; i++) {
+                double a = Math.atan2(this.fz, this.fx) + (rs.nextDouble() - 0.5) * 2.6;
+                double len = (0.8 + rs.nextDouble() * 0.9) * grow;
+                double ex = gx + Math.cos(a) * len, ez = gz + Math.sin(a) * len;
+                double sx = -Math.sin(a) * 0.08, sz = Math.cos(a) * 0.08;
+                p.quad(gx + sx, gy, gz + sz, color(0xF03030, 0.9f * fade), gx - sx, gy, gz - sz, color(0xF03030, 0.9f * fade), ex, gy, ez, color(0x401010, 0.0f), ex, gy, ez, color(0x401010, 0.0f));
+            }
+            p.annulus(gx, gy, gz, 0.0, 0.7 * grow, 16, color(0xF03030, 0.45f * fade), color(0x401010, 0.0f));
+        }
+
+        private void renderStaffSwing(Canvas c, float t, boolean fp, float vis) {
+            float fade = 1.0f - clamp01((t - 3.0f) / 6.0f);
+            if (fade <= 0.0f) {
+                return;
+            }
+            Vec3 look = Vec3.directionFromRotation(this.pitch, this.yaw);
+            Vec3 rr = look.cross(UP);
+            if (rr.lengthSqr() < 1.0E-4) {
+                rr = new Vec3(-this.fz, 0.0, this.fx);
+            }
+            rr = rr.normalize();
+            Vec3 uu = rr.cross(look).normalize();
+            Vec3 at = this.pos.add(0.0, this.owner.getEyeHeight(), 0.0).add(look.scale(fp ? 1.1 : 0.9)).add(rr.scale(0.32)).add(uu.scale(-0.25));
+            double half = 0.25 + 0.3 * easeOut(t / 3.0f);
+            double spin = t * 0.35;
+            double cs = Math.cos(spin) * half, sn = Math.sin(spin) * half;
+            Vec3 a = rr.scale(cs).add(uu.scale(sn));
+            Vec3 b = uu.scale(cs).subtract(rr.scale(sn));
+            float[] col = color(this.style.light, vis * fade);
+            c.sprite(RUNE).quad(v(at.add(a).add(b)), 0.0f, 0.0f, v(at.subtract(a).add(b)), 1.0f, 0.0f, v(at.subtract(a).subtract(b)), 1.0f, 1.0f, v(at.add(a).subtract(b)), 0.0f, 1.0f, col, col);
+            int frame = Math.min(3, (int) (t / 2.0f));
+            Sprite star = c.sprite(STAR);
+            for (int k = 0; k < 3; k++) {
+                double o = spin * 1.6 + k * Math.PI * 2.0 / 3.0;
+                Vec3 p = at.add(rr.scale(Math.cos(o) * half * 1.3)).add(uu.scale(Math.sin(o) * half * 1.3));
+                star.billboard(p.x, p.y, p.z, 0.09, c.left(), c.up(), frame * 0.25f, (frame + 1) * 0.25f, color(this.style.main, vis * fade));
+            }
+            double len = 2.4 * easeOut(t / 2.0f);
+            Vec3 e = at.add(look.scale(len));
+            c.glow().beam(at.x, at.y, at.z, e.x, e.y, e.z, 0.22 * fade, color(this.style.light, 0.7f * fade * vis), color(this.style.main, 0.0f));
+        }
+
+        private static double[] v(Vec3 p) {
+            return new double[]{p.x, p.y, p.z};
+        }
+
+        private void tickHit(ClientLevel level, RandomSource r) {
+            double x = this.pos.x, y = this.pos.y, z = this.pos.z;
+            switch (this.style) {
+                case KATANA_HEAVY -> {
+                    for (int i = 0; i < 3; i++) {
+                        level.addParticle(ParticleTypes.CRIT, x, y, z, r.nextGaussian() * 0.3, r.nextGaussian() * 0.2, r.nextGaussian() * 0.3);
+                    }
+                }
+                case LOURING_CLAYMORE -> {
+                    for (int i = 0; i < 3; i++) {
+                        level.addParticle(ParticleTypes.SOUL, x + r.nextGaussian() * 0.3, y, z + r.nextGaussian() * 0.3, 0.0, 0.04, 0.0);
+                    }
+                }
+                case NAMELESS -> {
+                    for (int i = 0; i < 6; i++) {
+                        level.addParticle(NAMELESS_DUST, x, y, z, r.nextGaussian() * 0.15, r.nextDouble() * 0.1, r.nextGaussian() * 0.15);
+                    }
+                    BossVfxRender.addShake(x, y, z, 0.12f, 8.0);
+                }
+                case TEAR_AND_DROPLET -> {
+                    for (int i = 0; i < 4; i++) {
+                        level.addParticle(ParticleTypes.SPLASH, x + r.nextGaussian() * 0.3, y, z + r.nextGaussian() * 0.3, 0.0, 0.1, 0.0);
+                    }
+                }
+                case WITCH_STAFF -> {
+                    for (int i = 0; i < 4; i++) {
+                        level.addParticle(ParticleTypes.SOUL_FIRE_FLAME, x, y, z, r.nextGaussian() * 0.06, r.nextGaussian() * 0.06, r.nextGaussian() * 0.06);
+                    }
+                }
+                default -> {
+                }
+            }
+        }
+
+        private void renderHit(Canvas c, float t) {
+            RandomSource rs = RandomSource.create(this.seed);
+            switch (this.style) {
+                case KATANA_LIGHT, KATANA_POOL_OF_ROT, SUNVEIL -> this.slashMark(c, t, rs, 0.75 * this.size);
+                case KATANA_HEAVY -> {
+                    this.slashMark(c, t, rs, 0.9 * this.size);
+                    this.slashMark(c, t - 1.0f, rs, 0.7 * this.size);
+                    this.renderSpark(c, t, this.pos, this.size);
+                }
+                case LOURING_CLAYMORE -> this.impactRing(c, t, 0.8 * this.size, this.style.light);
+                case NAMELESS -> {
+                    this.impactRing(c, t, 0.9 * this.size, 0xF03030);
+                    this.slashMark(c, t, rs, 0.9 * this.size);
+                }
+                case MIRROR_BLADE -> this.renderShards(c, t, rs);
+                case SPIRIT_RUNE_SWORD -> this.renderSeal(c, t, rs);
+                case TEAR_AND_DROPLET -> this.renderWaterHit(c, t, rs);
+                case WITCH_STAFF -> {
+                    int frame = Math.min(3, (int) (t / 1.8f));
+                    float a = 1.0f - clamp01((t - 6.0f) / 3.0f);
+                    if (a > 0.0f) {
+                        c.sprite(STAR).billboard(this.pos.x, this.pos.y, this.pos.z, 0.5 * this.size, c.left(), c.up(), frame * 0.25f, (frame + 1) * 0.25f, color(this.style.light, a));
+                    }
+                    this.impactRing(c, t, 0.6 * this.size, this.style.main);
+                }
+            }
+        }
+
+        private void slashMark(Canvas c, float t, RandomSource rs, double half) {
+            double angle = (rs.nextDouble() - 0.5) * 1.4 + (rs.nextBoolean() ? 0.6 : -0.6);
+            if (t <= 0.0f) {
+                return;
+            }
+            float a = 1.0f - clamp01((t - 5.0f) / 3.0f);
+            if (a <= 0.0f) {
+                return;
+            }
+            int frame = Math.min(3, (int) (t / 1.6f));
+            c.sprite(SLASH_MARK).billboardUV(this.pos.x, this.pos.y, this.pos.z, half, half * 0.25, angle, c.left(), c.up(), 0.0f, 1.0f, frame * 0.25f, (frame + 1) * 0.25f, color(this.style.light, a));
+        }
+
+        private void impactRing(Canvas c, float t, double half, int rgb) {
+            float a = 1.0f - clamp01((t - 6.0f) / 3.0f);
+            if (a <= 0.0f) {
+                return;
+            }
+            int frame = Math.min(3, (int) (t / 2.0f));
+            c.sprite(IMPACT).billboard(this.pos.x, this.pos.y, this.pos.z, half, c.left(), c.up(), frame * 0.25f, (frame + 1) * 0.25f, color(rgb, a));
+        }
+
+        private void renderShards(Canvas c, float t, RandomSource rs) {
+            float a = 1.0f - clamp01((t - 8.0f) / 6.0f);
+            if (a <= 0.0f) {
+                return;
+            }
+            Sprite s = c.sprite(SHARD);
+            double base = Math.atan2(this.fz, this.fx);
+            for (int k = 0; k < 7; k++) {
+                double theta = base + (rs.nextDouble() - 0.5) * 2.6;
+                double speed = 0.12 + rs.nextDouble() * 0.14;
+                double vy = 0.05 + rs.nextDouble() * 0.25;
+                double spin = rs.nextDouble() * 6.0 + t * (0.4 + rs.nextDouble() * 0.4) * (k % 2 == 0 ? 1.0 : -1.0);
+                double half = 0.1 + rs.nextDouble() * 0.07;
+                double px = this.pos.x + Math.cos(theta) * speed * t;
+                double py = this.pos.y + vy * t - 0.02 * t * t;
+                double pz = this.pos.z + Math.sin(theta) * speed * t;
+                s.billboardUV(px, py, pz, half, half, spin, c.left(), c.up(), 0.0f, 1.0f, 0.0f, 1.0f, k % 2 == 0 ? white(a) : color(this.style.light, a));
+            }
+            if (t < 6.0f) {
+                int frame = Math.min(3, (int) (t / 1.5f));
+                c.sprite(STAR).billboard(this.pos.x, this.pos.y, this.pos.z, 0.35, c.left(), c.up(), frame * 0.25f, (frame + 1) * 0.25f, color(this.style.light, 1.0f));
+            }
+        }
+
+        private void renderSeal(Canvas c, float t, RandomSource rs) {
+            float a = 1.0f - clamp01((t - 6.0f) / 6.0f);
+            if (a <= 0.0f) {
+                return;
+            }
+            double h = 0.55 * this.size * (0.6 + 0.4 * easeOut(t / 3.0f));
+            c.sprite(RUNE).billboardUV(this.pos.x, this.pos.y, this.pos.z, h, h, t * 0.25, c.left(), c.up(), 0.0f, 1.0f, 0.0f, 1.0f, color(this.style.light, a));
+            Sprite g = c.sprite(GLYPH);
+            for (int k = 0; k < 3; k++) {
+                double ox = (rs.nextDouble() - 0.5) * 0.9, oz = (rs.nextDouble() - 0.5) * 0.9;
+                int idx = rs.nextInt(4);
+                float age = t - 1.5f * k;
+                if (age <= 0.0f) {
+                    continue;
+                }
+                g.billboardUV(this.pos.x + ox, this.pos.y + 0.2 + age * 0.05, this.pos.z + oz, 0.12, 0.12, 0.0, c.left(), c.up(), idx * 0.25f, idx * 0.25f + 0.25f, 0.0f, 1.0f, color(this.style.light, a));
+            }
+        }
+
+        private void renderWaterHit(Canvas c, float t, RandomSource rs) {
+            float a = 1.0f - clamp01((t - 7.0f) / 5.0f);
+            if (a <= 0.0f) {
+                return;
+            }
+            int frame = Math.min(3, (int) (t / 2.0f));
+            c.sprite(SPLASH).billboard(this.pos.x, this.pos.y, this.pos.z, 0.5 * this.size, c.left(), c.up(), frame * 0.25f, (frame + 1) * 0.25f, color(this.style.light, a));
+            Sprite s = c.sprite(DROPLET);
+            for (int k = 0; k < 5; k++) {
+                double theta = rs.nextDouble() * Math.PI * 2.0;
+                double speed = 0.08 + rs.nextDouble() * 0.07;
+                double vy = 0.15 + rs.nextDouble() * 0.1;
+                s.billboard(this.pos.x + Math.cos(theta) * speed * t, this.pos.y + vy * t - 0.03 * t * t, this.pos.z + Math.sin(theta) * speed * t, 0.08, c.left(), c.up(), 0.0f, 1.0f, color(this.style.light, a));
             }
         }
 

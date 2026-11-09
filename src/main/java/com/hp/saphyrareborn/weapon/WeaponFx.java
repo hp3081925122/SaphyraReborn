@@ -29,6 +29,7 @@ public record WeaponFx(byte kind, byte weapon, double x, double y, double z, flo
     public static final byte SUN_FLARE = 11;
     public static final byte ROT_SPLASH = 12;
     public static final byte MIRROR_BURST = 13;
+    public static final byte HIT = 14;
 
     private static final double SEND_RADIUS = 64.0;
     public static final ArrayDeque<WeaponFx> INBOX = new ArrayDeque<>();

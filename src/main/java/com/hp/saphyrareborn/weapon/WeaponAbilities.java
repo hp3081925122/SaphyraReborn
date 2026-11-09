@@ -104,7 +104,7 @@ public final class WeaponAbilities {
                 if (knockback > 0.0) {
                     e.knockback(knockback, center.x - e.getX(), center.z - e.getZ());
                 }
-                WeaponFx.send(level, WeaponFx.SPARK, styleOf(player), e.position().add(0.0, e.getBbHeight() * 0.6, 0.0), 0.0f, 1.0f, 0);
+                WeaponFx.send(level, WeaponFx.HIT, styleOf(player), e.position().add(0.0, e.getBbHeight() * 0.6, 0.0), player.getYRot(), 1.0f, 0);
             }
         }
         return count;
@@ -156,7 +156,7 @@ public final class WeaponAbilities {
             }
             if (e.hurt(source, damage)) {
                 hits++;
-                WeaponFx.send(level, WeaponFx.SPARK, WeaponStyle.KATANA_HEAVY, e.position().add(0.0, e.getBbHeight() * 0.6, 0.0), 0.0f, 1.4f, 0);
+                WeaponFx.send(level, WeaponFx.HIT, WeaponStyle.KATANA_HEAVY, e.position().add(0.0, e.getBbHeight() * 0.6, 0.0), player.getYRot(), 1.4f, 0);
             }
         }
         player.setDeltaMovement(dir.x * length * 0.32, 0.1, dir.z * length * 0.32);
@@ -248,7 +248,7 @@ public final class WeaponAbilities {
             MokelsBossfightSaphyraModVariables.PlayerVariables vars = MokelsBossfightSaphyraModVariables.getPlayerVariables(player);
             vars.Grief += 10.0;
             vars.syncPlayerVariables(player);
-            WeaponFx.send(level, WeaponFx.SPARK, WeaponStyle.LOURING_CLAYMORE, at, 0.0f, 1.2f, 0);
+            WeaponFx.send(level, WeaponFx.HIT, WeaponStyle.LOURING_CLAYMORE, at, player.getYRot(), 1.2f, 0);
             return;
         }
         target.invulnerableTime = 0;
@@ -295,7 +295,7 @@ public final class WeaponAbilities {
                     sound(level, at, "entity.player.attack.crit", 1.0f, 1.3f);
                     WeaponFx.send(level, WeaponFx.CROSS_SLASH, style, at, player.getYRot(), 1.6f, 0);
                 } else {
-                    WeaponFx.send(level, WeaponFx.SPARK, style, at, 0.0f, 0.8f, 0);
+                    WeaponFx.send(level, WeaponFx.HIT, style, at, player.getYRot(), 0.8f, 0);
                 }
             }
             case KATANA_POOL_OF_ROT -> {
@@ -327,12 +327,12 @@ public final class WeaponAbilities {
                     sound(level, at, "entity.generic.splash", 0.6f, 1.4f);
                     WeaponFx.send(level, WeaponFx.RAIN_SPLASH, style, target.position(), 0.0f, Math.max(1.0f, target.getBbWidth() + 0.5f), 0);
                 } else {
-                    WeaponFx.send(level, WeaponFx.SPARK, style, at, 0.0f, 0.8f, 0);
+                    WeaponFx.send(level, WeaponFx.HIT, style, at, player.getYRot(), 0.8f, 0);
                 }
             }
             case LOURING_CLAYMORE -> {
             }
-            default -> WeaponFx.send(level, WeaponFx.SPARK, style, at, 0.0f, style.heavy ? 1.2f : 0.9f, 0);
+            default -> WeaponFx.send(level, WeaponFx.HIT, style, at, player.getYRot(), style.heavy ? 1.2f : 0.9f, 0);
         }
     }
 

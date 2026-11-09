@@ -37,6 +37,7 @@ public class MokelsBossfightSaphyraModTabs {
         tabData.accept((ItemLike)MokelsBossfightSaphyraModItems.NAMELESS_SPAWN_EGG.get());
         tabData.accept((ItemLike)MokelsBossfightSaphyraModItems.WITCHBOSS_SPAWN_EGG.get());
         tabData.accept((ItemLike)MokelsBossfightSaphyraModItems.MOTHBOSS_SPAWN_EGG.get());
+            tabData.accept((ItemLike)MokelsBossfightSaphyraModItems.PUPPET_OF_YIVA_NEMOR_SPAWN_EGG.get());
         tabData.accept((ItemLike)MokelsBossfightSaphyraModItems.NAMELESS_SPAWN_SPAWN_EGG.get());
         tabData.accept((ItemLike)MokelsBossfightSaphyraModItems.SAPHYRA_SPAWN_SPAWN_EGG.get());
         tabData.accept((ItemLike)MokelsBossfightSaphyraModItems.NAMELESS_GATEKEEPER_REMEMBRANCE.get());

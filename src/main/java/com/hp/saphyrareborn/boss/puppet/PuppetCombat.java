@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -59,6 +60,9 @@ public final class PuppetCombat {
     private int skillTick;
     private int pendingPoint = -1;
     private boolean phase2;
+    /** Leap slash (FOURTH): latest tick the landing hit may resolve; must stay below the skill duration (46). */
+    private static final int FOURTH_HIT_LATEST = 42;
+    private boolean fourthLanded;
     private int phaseShiftTicks;
     private int dashDelay = -1;
     private PuppetSkill chainSkill;
@@ -293,6 +297,7 @@ public final class PuppetCombat {
         this.skill = next;
         this.skillTick = 0;
         this.struck.clear();
+        this.fourthLanded = false;
         this.boss.restartAnimation(next.animation);
         BossCastLock.lock(this.boss, next.lockTicks);
         Vec3 c = this.boss.position();
@@ -400,12 +405,28 @@ public final class PuppetCombat {
             this.boss.hurtMarked = true;
             PuppetVfx.send(level, PuppetVfx.DASH_TRAIL, this.boss.position(), yawOf(dx, dz), (float) Math.min(16.0, Math.sqrt(dx * dx + dz * dz)), 0);
         }
-        if (t == 30) {
+        // The slash used to land at a fixed tick while the puppet was still ~4 blocks up, so it missed grounded players.
+        // Now it resolves on touchdown (or at FOURTH_HIT_LATEST at the latest), with the hit box reaching down to the ground.
+        if (t >= 30 && !this.fourthLanded && (this.boss.onGround() || t >= FOURTH_HIT_LATEST)) {
+            this.fourthLanded = true;
             this.sound(level, "entity.player.attack.sweep", SoundSource.NEUTRAL, 2.0f, 1.0f);
-            this.meleeHit(level, 1.0, 20.0);
+            Vec3 front = this.front(MELEE_OFFSET);
+            this.hitAround(level, this.sourcelessDamage(level), front, MELEE_RADIUS, 1.0, 20.0, false, this.groundDepth(level, front));
             PuppetVfx.send(level, PuppetVfx.SLASH, this.boss.position(), this.boss.getYRot(), (float) (MELEE_OFFSET + MELEE_RADIUS), PuppetVfx.SLASH_DOUBLE);
-            PuppetVfx.send(level, PuppetVfx.SCORCH, this.front(MELEE_OFFSET), this.boss.getYRot(), (float) MELEE_RADIUS, 30);
+            PuppetVfx.send(level, PuppetVfx.SCORCH, front, this.boss.getYRot(), (float) MELEE_RADIUS, 30);
         }
+    }
+
+    /** How far below {@code at} the hit box must reach to touch the ground (at least 1, at most 8 blocks). */
+    private double groundDepth(ServerLevel level, Vec3 at) {
+        BlockPos.MutableBlockPos pos = BlockPos.containing(at).mutable();
+        for (int i = 0; i < 8; i++) {
+            if (!level.getBlockState(pos.below()).getCollisionShape(level, pos.below()).isEmpty()) {
+                return Math.max(1.0, at.y - pos.getY() + 1.0);
+            }
+            pos.move(0, -1, 0);
+        }
+        return 8.0;
     }
 
     private void tickFifth(ServerLevel level, int t) {
@@ -574,9 +595,13 @@ public final class PuppetCombat {
     }
 
     private void hitAround(ServerLevel level, DamageSource source, Vec3 center, double radius, double multiplier, double rotting, boolean once) {
+        this.hitAround(level, source, center, radius, multiplier, rotting, once, 1.0);
+    }
+
+    private void hitAround(ServerLevel level, DamageSource source, Vec3 center, double radius, double multiplier, double rotting, boolean once, double depth) {
         float damage = BossAttributes.skillDamage(this.boss, multiplier);
         double height = Math.max(3.0, radius * 0.4);
-        AABB box = new AABB(center.x - radius, center.y - 1.0, center.z - radius, center.x + radius, center.y + height, center.z + radius);
+        AABB box = new AABB(center.x - radius, center.y - depth, center.z - radius, center.x + radius, center.y + height, center.z + radius);
         String tag = this.skill == null ? "NONE" : this.skill.name();
         for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, box, PuppetCombat::canBeHit)) {
             if (horizontalEdgeDistance(e, center.x, center.z) > radius) {

@@ -114,6 +114,7 @@ public class MokelsBossfightSaphyraModItems {
     public static final DeferredHolder<Item, Item> SPIRIT_RUNE_SWORD = REGISTRY.register("spirit_rune_sword", () -> new SpiritRuneSwordItem());
     public static final DeferredHolder<Item, Item> BELL_SPIRIT = REGISTRY.register("bell_spirit", () -> new BellSpiritItem());
     public static final DeferredHolder<Item, Item> MOTHBOSS_SPAWN_EGG = REGISTRY.register("mothboss_spawn_egg", () -> new DeferredSpawnEggItem(MokelsBossfightSaphyraModEntities.MOTHBOSS, -5855578, -12527732, new Item.Properties()));
+    public static final DeferredHolder<Item, Item> PUPPET_OF_YIVA_NEMOR_SPAWN_EGG = REGISTRY.register("puppet_of_yiva_nemor_spawn_egg", () -> new DeferredSpawnEggItem(MokelsBossfightSaphyraModEntities.PUPPET_OF_YIVA_NEMOR, 0xB89478, 0x7A1010, new Item.Properties()));
     public static final DeferredHolder<Item, Item> RULE_OF_PURIFICATION = REGISTRY.register("rule_of_purification", () -> new RuleOfPurificationItem());
     public static final DeferredHolder<Item, Item> EMPTY_RULE = REGISTRY.register("empty_rule", () -> new EmptyRuleItem());
     public static final DeferredHolder<Item, Item> RULE_OF_VISION = REGISTRY.register("rule_of_vision", () -> new RuleOfVisionItem());

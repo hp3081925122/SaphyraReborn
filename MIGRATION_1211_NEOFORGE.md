@@ -119,3 +119,16 @@
 新增：二阶段（50%，可配置）、双斩两段（0.6×2）、盾反破防（6% 最大生命，可配置）、S2C `nameless_vfx` 特效包与客户端镜头震动。
 配置：`bosses.nameless_mechanics`。
 待验：游戏内特效观感、二阶段与破防手感（未做客户端/服务端测试）。
+
+## 墨蛾重做（2026年11月09日）
+
+| 项 | 原实现 | 现实现 |
+|---|---|---|
+| 出招时间轴 | `MothbossAttackPatternProcedure` + 全局闭包 | `boss/moth/MothCombat` 状态机，节点和分支不变 |
+| 技能 procedure | AttackSmite / SwordOnce / twirl / GroundMoth / sky / Back | 已删除，逻辑并入 `MothCombat`；AttackDashForth / DashBack 被傀儡和 Saphyra 共用，保留 |
+| 天罚、升空弹幕 | 每个目标 8 支下落或上升弹，固定 14 伤害 | 落点打击队列，伤害 = 攻击力 × 1.0，表现用几何特效 |
+| 判定 | `inflate(r)` 方块 | 圆柱（按碰撞箱边缘算水平距离） |
+| 二阶段 | 无 | 50% 血转阶段，新增突刺、三连斩、格挡反击（可配置） |
+| 特效渲染 | 粒子 | `MothVfx` 包 + `MothVfxClient` 几何体；与无名守门人共用 `boss/client/BossVfxRender` |
+
+详见 `docs/MOTH_REWORK.md`。

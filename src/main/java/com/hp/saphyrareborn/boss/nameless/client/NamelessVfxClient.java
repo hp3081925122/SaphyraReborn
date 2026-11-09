@@ -1,55 +1,40 @@
 package com.hp.saphyrareborn.boss.nameless.client;
 
 import com.hp.saphyrareborn.MokelsBossfightSaphyraMod;
+import com.hp.saphyrareborn.boss.client.BossVfxRender;
+import com.hp.saphyrareborn.boss.client.BossVfxRender.Painter;
 import com.hp.saphyrareborn.boss.nameless.NamelessVfx;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModParticleTypes;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import static com.hp.saphyrareborn.boss.client.BossVfxRender.clamp01;
+import static com.hp.saphyrareborn.boss.client.BossVfxRender.easeOut;
+import static com.hp.saphyrareborn.boss.client.BossVfxRender.rgba;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderStateShard;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import net.neoforged.neoforge.client.event.ViewportEvent;
 
 @EventBusSubscriber(modid = MokelsBossfightSaphyraMod.MODID, value = Dist.CLIENT)
 public final class NamelessVfxClient {
-    private static final RenderType GLOW = RenderType.create("saphyra_nameless_glow", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 8192, false, true,
-            RenderType.CompositeState.builder()
-                    .setShaderState(RenderStateShard.RENDERTYPE_LIGHTNING_SHADER)
-                    .setTransparencyState(RenderStateShard.LIGHTNING_TRANSPARENCY)
-                    .setCullState(RenderStateShard.NO_CULL)
-                    .setWriteMaskState(RenderStateShard.COLOR_WRITE)
-                    .setLayeringState(RenderStateShard.VIEW_OFFSET_Z_LAYERING)
-                    .createCompositeState(false));
     private static final int MAX_EFFECTS = 64;
-    private static final double RENDER_RANGE_SQR = 128.0 * 128.0;
     private static final List<Fx> ACTIVE = new ArrayList<>();
     private static ClientLevel lastLevel;
-    private static float shake;
 
     private NamelessVfxClient() {
     }
@@ -61,7 +46,6 @@ public final class NamelessVfxClient {
         if (level != lastLevel) {
             ACTIVE.clear();
             NamelessVfx.INBOX.clear();
-            shake = 0.0f;
             lastLevel = level;
         }
         if (level == null) {
@@ -85,10 +69,6 @@ public final class NamelessVfxClient {
                 it.remove();
             }
         }
-        shake *= 0.82f;
-        if (shake < 0.01f) {
-            shake = 0.0f;
-        }
     }
 
     @SubscribeEvent
@@ -102,42 +82,15 @@ public final class NamelessVfxClient {
         pose.pushPose();
         pose.translate(-cam.x, -cam.y, -cam.z);
         MultiBufferSource.BufferSource buffers = Minecraft.getInstance().renderBuffers().bufferSource();
-        VertexConsumer consumer = buffers.getBuffer(GLOW);
+        VertexConsumer consumer = buffers.getBuffer(BossVfxRender.GLOW);
         PoseStack.Pose last = pose.last();
         for (Fx fx : ACTIVE) {
-            if (cam.distanceToSqr(fx.x, fx.y, fx.z) < RENDER_RANGE_SQR) {
+            if (cam.distanceToSqr(fx.x, fx.y, fx.z) < BossVfxRender.RENDER_RANGE_SQR) {
                 fx.render(new Painter(consumer, last), fx.age + partial);
             }
         }
-        buffers.endBatch(GLOW);
+        buffers.endBatch(BossVfxRender.GLOW);
         pose.popPose();
-    }
-
-    @SubscribeEvent
-    public static void onCamera(ViewportEvent.ComputeCameraAngles event) {
-        if (shake <= 0.0f) {
-            return;
-        }
-        Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null) {
-            return;
-        }
-        float t = mc.player.tickCount + (float) event.getPartialTick();
-        event.setYaw(event.getYaw() + Mth.sin(t * 2.7f) * shake * 1.6f);
-        event.setPitch(event.getPitch() + Mth.cos(t * 3.1f) * shake * 1.2f);
-        event.setRoll(event.getRoll() + Mth.sin(t * 1.9f) * shake);
-    }
-
-    private static void addShake(double x, double y, double z, float intensity, double range) {
-        Player player = Minecraft.getInstance().player;
-        if (player == null) {
-            return;
-        }
-        double d = Math.sqrt(player.distanceToSqr(x, y, z));
-        if (d >= range) {
-            return;
-        }
-        shake = Math.min(1.5f, Math.max(shake, (float) (intensity * (1.0 - d / range))));
     }
 
     private static ParticleOptions redFlame() {
@@ -146,56 +99,6 @@ public final class NamelessVfxClient {
 
     private static ParticleOptions redFire() {
         return MokelsBossfightSaphyraModParticleTypes.REDFIRE_PARTICLE.get();
-    }
-
-    private static float clamp01(float v) {
-        return v < 0.0f ? 0.0f : Math.min(v, 1.0f);
-    }
-
-    private static float easeOut(float v) {
-        float c = clamp01(v);
-        return 1.0f - (1.0f - c) * (1.0f - c);
-    }
-
-    private record Painter(VertexConsumer vc, PoseStack.Pose pose) {
-        void quad(double x0, double y0, double z0, float[] c0, double x1, double y1, double z1, float[] c1,
-                  double x2, double y2, double z2, float[] c2, double x3, double y3, double z3, float[] c3) {
-            this.v(x0, y0, z0, c0);
-            this.v(x1, y1, z1, c1);
-            this.v(x2, y2, z2, c2);
-            this.v(x3, y3, z3, c3);
-        }
-
-        void v(double x, double y, double z, float[] c) {
-            this.vc.addVertex(this.pose, (float) x, (float) y, (float) z).setColor(c[0], c[1], c[2], c[3]);
-        }
-
-        void annulus(double cx, double y, double cz, double rIn, double rOut, int segs, float[] inner, float[] outer) {
-            if (rOut <= 0.0 || rOut <= rIn) {
-                return;
-            }
-            for (int i = 0; i < segs; i++) {
-                double a0 = Math.PI * 2.0 * i / segs;
-                double a1 = Math.PI * 2.0 * (i + 1) / segs;
-                double c0 = Math.cos(a0), s0 = Math.sin(a0), c1 = Math.cos(a1), s1 = Math.sin(a1);
-                this.quad(cx + c0 * rIn, y, cz + s0 * rIn, inner, cx + c0 * rOut, y, cz + s0 * rOut, outer,
-                        cx + c1 * rOut, y, cz + s1 * rOut, outer, cx + c1 * rIn, y, cz + s1 * rIn, inner);
-            }
-        }
-
-        void wall(double cx, double y0, double y1, double cz, double r, int segs, double fromAngle, double toAngle, float[] bottom, float[] top) {
-            for (int i = 0; i < segs; i++) {
-                double a0 = fromAngle + (toAngle - fromAngle) * i / segs;
-                double a1 = fromAngle + (toAngle - fromAngle) * (i + 1) / segs;
-                double x0 = cx + Math.cos(a0) * r, z0 = cz + Math.sin(a0) * r;
-                double x1 = cx + Math.cos(a1) * r, z1 = cz + Math.sin(a1) * r;
-                this.quad(x0, y0, z0, bottom, x1, y0, z1, bottom, x1, y1, z1, top, x0, y1, z0, top);
-            }
-        }
-    }
-
-    private static float[] rgba(float r, float g, float b, float a) {
-        return new float[]{r, g, b, clamp01(a)};
     }
 
     private static float[] core(float a) {
@@ -258,7 +161,7 @@ public final class NamelessVfxClient {
                 case NamelessVfx.SLASH -> {
                     if (this.age == 0) {
                         level.addParticle(ParticleTypes.SWEEP_ATTACK, this.x + this.fx * 2.0, this.y + 1.2, this.z + this.fz * 2.0, 0.0, 0.0, 0.0);
-                        addShake(this.x, this.y, this.z, 0.18f, 12.0);
+                        BossVfxRender.addShake(this.x, this.y, this.z, 0.18f, 12.0);
                     }
                     if (this.age == 3) {
                         double reach = this.size * 0.75;
@@ -270,22 +173,22 @@ public final class NamelessVfxClient {
                 }
                 case NamelessVfx.SLAM -> {
                     if (this.age == 0) {
-                        this.debris(level, r, this.x, this.y, this.z, (int) Math.min(18, 6 + this.size), 0.35);
+                        BossVfxRender.debris(level, r, this.x, this.y, this.z, (int) Math.min(18, 6 + this.size), 0.35);
                         for (int i = 0; i < 8; i++) {
                             level.addParticle(redFlame(), this.x + r.nextGaussian() * 0.5, this.y + 0.2, this.z + r.nextGaussian() * 0.5, r.nextGaussian() * 0.08, 0.2 + r.nextDouble() * 0.25, r.nextGaussian() * 0.08);
                         }
-                        addShake(this.x, this.y, this.z, Math.min(1.0f, 0.15f + this.size * 0.045f), this.size * 2.5 + 8.0);
+                        BossVfxRender.addShake(this.x, this.y, this.z, Math.min(1.0f, 0.15f + this.size * 0.045f), this.size * 2.5 + 8.0);
                     }
                 }
                 case NamelessVfx.ROT_PILLAR -> {
                     int local = this.age - this.extra;
                     if (local == 0) {
-                        this.debris(level, r, this.x, this.y, this.z, 5, 0.3);
+                        BossVfxRender.debris(level, r, this.x, this.y, this.z, 5, 0.3);
                         for (int i = 0; i < 5; i++) {
                             level.addParticle(redFlame(), this.x + r.nextGaussian() * 0.6, this.y + 0.2, this.z + r.nextGaussian() * 0.6, 0.0, 0.3 + r.nextDouble() * 0.3, 0.0);
                         }
                         level.addParticle(ParticleTypes.LARGE_SMOKE, this.x, this.y + 0.6, this.z, 0.0, 0.08, 0.0);
-                        addShake(this.x, this.y, this.z, 0.25f, 10.0);
+                        BossVfxRender.addShake(this.x, this.y, this.z, 0.25f, 10.0);
                     }
                 }
                 case NamelessVfx.ROAR -> {
@@ -295,7 +198,7 @@ public final class NamelessVfxClient {
                             double speed = 0.45 + r.nextDouble() * 0.35;
                             level.addParticle(redFlame(), this.x, this.y + 1.2 + r.nextDouble() * 1.6, this.z, Math.cos(a) * speed, r.nextGaussian() * 0.03, Math.sin(a) * speed);
                         }
-                        addShake(this.x, this.y, this.z, 0.9f, this.size * 2.0 + 8.0);
+                        BossVfxRender.addShake(this.x, this.y, this.z, 0.9f, this.size * 2.0 + 8.0);
                     }
                 }
                 case NamelessVfx.SHIELD_SPARK -> {
@@ -324,7 +227,7 @@ public final class NamelessVfxClient {
                             level.addParticle(ParticleTypes.CRIT, px, py, pz, r.nextGaussian() * 0.4, r.nextGaussian() * 0.4, r.nextGaussian() * 0.4);
                         }
                         level.addParticle(ParticleTypes.FLASH, px, py, pz, 0.0, 0.0, 0.0);
-                        addShake(this.x, this.y, this.z, 0.6f, 16.0);
+                        BossVfxRender.addShake(this.x, this.y, this.z, 0.6f, 16.0);
                     }
                 }
                 case NamelessVfx.CHARGE -> {
@@ -347,9 +250,9 @@ public final class NamelessVfxClient {
                             double speed = 0.4 + r.nextDouble() * 0.5;
                             level.addParticle(redFlame(), this.x, this.y + 0.5 + r.nextDouble() * 2.5, this.z, Math.cos(a) * speed, r.nextGaussian() * 0.05, Math.sin(a) * speed);
                         }
-                        this.debris(level, r, this.x, this.y, this.z, 20, 0.45);
+                        BossVfxRender.debris(level, r, this.x, this.y, this.z, 20, 0.45);
                         level.addParticle(ParticleTypes.FLASH, this.x, this.y + 1.5, this.z, 0.0, 0.0, 0.0);
-                        addShake(this.x, this.y, this.z, 1.2f, 32.0);
+                        BossVfxRender.addShake(this.x, this.y, this.z, 1.2f, 32.0);
                     }
                 }
                 case NamelessVfx.ROT_POOL -> {
@@ -588,17 +491,6 @@ public final class NamelessVfxClient {
             p.annulus(this.x, this.y + 0.06, this.z, 0.0, 2.6, 24, crimson(0.35f * a * pulse), crimson(0.15f * a));
             p.annulus(this.x, this.y + 0.065, this.z, 2.6, 3.0, 24, core(0.5f * a * pulse), crimson(0.0f));
             p.wall(this.x, this.y, this.y + 0.9, this.z, 2.4, 16, 0.0, Math.PI * 2.0, crimson(0.3f * a * pulse), crimson(0.0f));
-        }
-
-        private void debris(ClientLevel level, RandomSource r, double px, double py, double pz, int count, double speed) {
-            BlockState state = level.getBlockState(BlockPos.containing(px, py - 0.5, pz));
-            if (state.isAir() || state.getRenderShape() == RenderShape.INVISIBLE) {
-                return;
-            }
-            BlockParticleOption particle = new BlockParticleOption(ParticleTypes.BLOCK, state);
-            for (int i = 0; i < count; i++) {
-                level.addParticle(particle, px + r.nextGaussian() * 0.8, py + 0.1, pz + r.nextGaussian() * 0.8, r.nextGaussian() * speed * 0.4, speed + r.nextDouble() * speed, r.nextGaussian() * speed * 0.4);
-            }
         }
     }
 }

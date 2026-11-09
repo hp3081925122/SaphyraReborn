@@ -55,7 +55,6 @@
 package com.hp.saphyrareborn.entity;
 
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModEntities;
-import com.hp.saphyrareborn.procedures.MothbossAttackPatternProcedure;
 import com.hp.saphyrareborn.procedures.MothbossDeathTimeIsReachedProcedure;
 import com.hp.saphyrareborn.procedures.MothbossEntityDiesProcedure;
 import net.minecraft.nbt.CompoundTag;
@@ -106,9 +105,11 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class MothbossEntity
 extends PathfinderMob
 implements GeoEntity {
-    private static final String[] TRIGGERABLE_ANIMATIONS = {"pose", "pose2", "flying", "pose3", "attacksmite", "idle", "walk", "aggro", "attackswordonce", "attackground", "attacksky", "attacktwirl", "attackback", "block", "attackstab", "attacktriple", "death"};
+    private static final String[] TRIGGERABLE_ANIMATIONS = {"pose", "pose2", "flying", "pose3", "attacksmite", "idle", "walk", "aggro", "attackswordonce", "attackground", "attacksky", "attacktwirl", "attackback", "block", "attackstab", "attacktriple", "death", "phaseshift"};
     private AnimationController<?> procedureController;
     public static final EntityDataAccessor<Boolean> SHOOT = SynchedEntityData.defineId(MothbossEntity.class, (EntityDataSerializer)EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Boolean> PHASE2 = SynchedEntityData.defineId(MothbossEntity.class, EntityDataSerializers.BOOLEAN);
+    private final com.hp.saphyrareborn.boss.moth.MothCombat combat = new com.hp.saphyrareborn.boss.moth.MothCombat(this);
     public static final EntityDataAccessor<String> TEXTURE = SynchedEntityData.defineId(MothbossEntity.class, (EntityDataSerializer)EntityDataSerializers.STRING);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache((GeoAnimatable)this);
     private boolean swinging;
@@ -125,8 +126,19 @@ implements GeoEntity {
         this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.STEP_HEIGHT).setBaseValue(1.2);
     }
 
+    @Override
+    protected net.minecraft.world.entity.ai.control.BodyRotationControl createBodyControl() {
+        return new net.minecraft.world.entity.ai.control.BodyRotationControl(this) {
+            @Override
+            public void clientTick() {
+                MothbossEntity.this.yBodyRot = MothbossEntity.this.getYRot();
+            }
+        };
+    }
+
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
+        builder.define(PHASE2, false);
         builder.define(SHOOT, false);
         builder.define(TEXTURE, "saphyramothbosstexture");
     }
@@ -171,6 +183,16 @@ implements GeoEntity {
         if (source.is(DamageTypes.FALL)) {
             return false;
         }
+        if (this.level().isClientSide()) {
+            return super.hurt(source, amount);
+        }
+        if (this.combat.isInvulnerable() && !source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            return false;
+        }
+        if (com.hp.saphyrareborn.boss.BossCastLock.blocksDamage(this, source)) {
+            this.combat.onBlockedHit(source);
+            return false;
+        }
         return super.hurt(source, amount);
     }
 
@@ -182,12 +204,16 @@ implements GeoEntity {
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putString("Texture", this.getTexture());
+        compound.put("MothCombat", this.combat.save());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         if (compound.contains("Texture")) {
             this.setTexture(compound.getString("Texture"));
+        }
+        if (compound.contains("MothCombat")) {
+            this.combat.load(compound.getCompound("MothCombat"));
         }
     }
 
@@ -199,8 +225,58 @@ implements GeoEntity {
     public void tick() {
         super.tick();
         com.hp.saphyrareborn.boss.BossCastLock.tick(this);
-        MothbossAttackPatternProcedure.execute((LevelAccessor)this.level(), this.getX(), this.getY(), this.getZ(), (Entity)this);
+        if (this.level().isClientSide()) {
+            this.tickPhase2Aura();
+        } else {
+            this.combat.tick();
+        }
         this.refreshDimensions();
+    }
+
+    @Override
+    protected float getDamageAfterMagicAbsorb(DamageSource source, float amount) {
+        if (com.hp.saphyrareborn.boss.BossCastLock.blocksDamage(this, source)) {
+            return 0.0f;
+        }
+        return super.getDamageAfterMagicAbsorb(source, amount);
+    }
+
+    public com.hp.saphyrareborn.boss.moth.MothCombat getCombat() {
+        return this.combat;
+    }
+
+    public void restartAnimation(String animation) {
+        this.stopTriggeredAnim("procedure", null);
+        this.triggerAnim("procedure", animation);
+    }
+
+    public void stopProcedureAnimation() {
+        this.stopTriggeredAnim("procedure", null);
+    }
+
+    public void setPhase2Visual(boolean value) {
+        this.entityData.set(PHASE2, value);
+    }
+
+    public boolean isPhase2Visual() {
+        return this.entityData.get(PHASE2);
+    }
+
+    private void tickPhase2Aura() {
+        if (!this.isPhase2Visual() || !this.isAlive()) {
+            return;
+        }
+        net.minecraft.util.RandomSource random = this.getRandom();
+        double w = this.getBbWidth() * 0.7;
+        if (this.tickCount % 3 == 0) {
+            this.level().addParticle(com.hp.saphyrareborn.init.MokelsBossfightSaphyraModParticleTypes.GHOSTLY_FLAME_PARTICLE.get(), this.getX() + (random.nextDouble() - 0.5) * w * 2.0, this.getY() + random.nextDouble() * this.getBbHeight(), this.getZ() + (random.nextDouble() - 0.5) * w * 2.0, 0.0, 0.02 + random.nextDouble() * 0.02, 0.0);
+        }
+        if (random.nextInt(10) == 0) {
+            this.level().addParticle(net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK, this.getX() + (random.nextDouble() - 0.5) * w * 3.0, this.getY() + 0.5 + random.nextDouble() * this.getBbHeight(), this.getZ() + (random.nextDouble() - 0.5) * w * 3.0, 0.0, 0.0, 0.0);
+        }
+        if (random.nextInt(6) == 0) {
+            this.level().addParticle(net.minecraft.core.particles.ParticleTypes.END_ROD, this.getX() + (random.nextDouble() - 0.5) * w * 2.0, this.getY() + 0.2, this.getZ() + (random.nextDouble() - 0.5) * w * 2.0, 0.0, 0.03, 0.0);
+        }
     }
 
     @Override

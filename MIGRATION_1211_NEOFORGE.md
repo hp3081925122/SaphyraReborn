@@ -132,3 +132,17 @@
 | 特效渲染 | 粒子 | `MothVfx` 包 + `MothVfxClient` 几何体；与无名守门人共用 `boss/client/BossVfxRender` |
 
 详见 `docs/MOTH_REWORK.md`。
+
+## 萨菲拉重做（2026年11月09日）
+
+详见 `docs/SAPHYRA_REWORK.md`。
+
+- 原 `SaphyraAttackPatternProcedure` 和 7 个 Attack procedure（含从未调用的跳劈）已删除，改由 `boss/witch/WitchCombat` 状态机实现。节点、分支、半径、倍率和悲恸值与原版一致，判定对齐到动画出手帧。
+- 月光柱：
+  - 删除 `MoonbeamOnEntityTickUpdateProcedure`（每 tick 塞一个全局闭包）和 `MoonbeamOnInitialEntitySpawnProcedure`（靠闭包控制消失）。
+  - 改为实体年龄计时，持久化到 NBT `MoonAge`。
+  - 伤害跟随 Boss 攻击力。
+- 二阶段：`wandattack`、`jumpattack`、`spinattack` 做成新招，新增 `phaseshift` 动画。配置项在 `bosses.witchboss_mechanics`。
+- 特效：新增 S2C 包 `witch_vfx` 和 `WitchVfxClient`，用几何特效替代原版每次 300~900 个粒子的喷发。
+- 动画：所有攻击动画追加收招回 idle，并加了次级运动（帽子链、法杖、魔爪、袖子）。脚本在 `D:/AI临时文件/Saphyra重生/witch_rework/scripts/witch_anims.py`。
+- 死亡对话和死亡后生成象牙恶魔的流程没有改动。

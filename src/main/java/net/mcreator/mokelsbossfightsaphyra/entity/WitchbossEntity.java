@@ -62,7 +62,6 @@ package com.hp.saphyrareborn.entity;
 import javax.annotation.Nullable;
 import com.hp.saphyrareborn.entity.NamelessEntity;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModEntities;
-import com.hp.saphyrareborn.procedures.SaphyraAttackPatternProcedure;
 import com.hp.saphyrareborn.procedures.WitchbossDeathTimeIsReachedProcedure;
 import com.hp.saphyrareborn.procedures.WitchbossOnInitialEntitySpawnProcedure;
 import com.hp.saphyrareborn.procedures.WitchbossStopSoundProcedure;
@@ -119,9 +118,11 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class WitchbossEntity
 extends Monster
 implements GeoEntity {
-    private static final String[] TRIGGERABLE_ANIMATIONS = {"spawn", "idle", "walk", "slashattack", "clawattack", "attackclaw2", "jumpattack", "wandattack", "rainattack", "axeattack", "death", "spawncreative", "pose", "poster2", "anotherpose", "spinattack", "attackground", "sorry"};
+    private static final String[] TRIGGERABLE_ANIMATIONS = {"spawn", "idle", "walk", "slashattack", "clawattack", "attackclaw2", "jumpattack", "wandattack", "rainattack", "axeattack", "death", "spawncreative", "pose", "poster2", "anotherpose", "spinattack", "attackground", "sorry", "phaseshift"};
     private AnimationController<?> procedureController;
     public static final EntityDataAccessor<Boolean> SHOOT = SynchedEntityData.defineId(WitchbossEntity.class, (EntityDataSerializer)EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Boolean> PHASE2 = SynchedEntityData.defineId(WitchbossEntity.class, EntityDataSerializers.BOOLEAN);
+    private final com.hp.saphyrareborn.boss.witch.WitchCombat combat = new com.hp.saphyrareborn.boss.witch.WitchCombat(this);
     public static final EntityDataAccessor<String> TEXTURE = SynchedEntityData.defineId(WitchbossEntity.class, (EntityDataSerializer)EntityDataSerializers.STRING);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache((GeoAnimatable)this);
     private boolean swinging;
@@ -140,6 +141,7 @@ implements GeoEntity {
         super.defineSynchedData(builder);
         builder.define(SHOOT, false);
         builder.define(TEXTURE, "witchbosssittingtextureanimated");
+        builder.define(PHASE2, false);
     }
 
     public void setTexture(String texture) {
@@ -180,6 +182,9 @@ implements GeoEntity {
     }
 
     public boolean hurt(DamageSource source, float amount) {
+        if (!this.level().isClientSide() && this.combat.isInvulnerable() && !source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            return false;
+        }
         return super.hurt(source, amount);
     }
 
@@ -197,12 +202,16 @@ implements GeoEntity {
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putString("Texture", this.getTexture());
+        compound.put("WitchCombat", this.combat.save());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         if (compound.contains("Texture")) {
             this.setTexture(compound.getString("Texture"));
+        }
+        if (compound.contains("WitchCombat")) {
+            this.combat.load(compound.getCompound("WitchCombat"));
         }
     }
 
@@ -224,8 +233,60 @@ implements GeoEntity {
     public void tick() {
         super.tick();
         com.hp.saphyrareborn.boss.BossCastLock.tick(this);
-        SaphyraAttackPatternProcedure.execute((LevelAccessor)this.level(), this.getX(), this.getY(), this.getZ(), (Entity)this);
+        if (this.level().isClientSide()) {
+            this.tickPhase2Aura();
+        } else {
+            this.combat.tick();
+        }
         this.refreshDimensions();
+    }
+
+    @Override
+    protected net.minecraft.world.entity.ai.control.BodyRotationControl createBodyControl() {
+        return new net.minecraft.world.entity.ai.control.BodyRotationControl(this) {
+            @Override
+            public void clientTick() {
+                WitchbossEntity.this.yBodyRot = WitchbossEntity.this.getYRot();
+            }
+        };
+    }
+
+    public com.hp.saphyrareborn.boss.witch.WitchCombat getCombat() {
+        return this.combat;
+    }
+
+    public void restartAnimation(String animation) {
+        this.stopTriggeredAnim("procedure", null);
+        this.triggerAnim("procedure", animation);
+    }
+
+    public void stopProcedureAnimation() {
+        this.stopTriggeredAnim("procedure", null);
+    }
+
+    public void setPhase2Visual(boolean value) {
+        this.entityData.set(PHASE2, value);
+    }
+
+    public boolean isPhase2Visual() {
+        return this.entityData.get(PHASE2);
+    }
+
+    private void tickPhase2Aura() {
+        if (!this.isPhase2Visual() || !this.isAlive()) {
+            return;
+        }
+        net.minecraft.util.RandomSource random = this.getRandom();
+        double w = this.getBbWidth() * 0.7;
+        if (this.tickCount % 3 == 0) {
+            this.level().addParticle(com.hp.saphyrareborn.init.MokelsBossfightSaphyraModParticleTypes.GHOSTLY_FLAME_PARTICLE.get(), this.getX() + (random.nextDouble() - 0.5) * w * 2.0, this.getY() + random.nextDouble() * this.getBbHeight(), this.getZ() + (random.nextDouble() - 0.5) * w * 2.0, 0.0, 0.02 + random.nextDouble() * 0.02, 0.0);
+        }
+        if (random.nextInt(5) == 0) {
+            this.level().addParticle(net.minecraft.core.particles.ParticleTypes.WITCH, this.getX() + (random.nextDouble() - 0.5) * w * 3.0, this.getY() + 0.5 + random.nextDouble() * this.getBbHeight(), this.getZ() + (random.nextDouble() - 0.5) * w * 3.0, 0.0, 0.0, 0.0);
+        }
+        if (random.nextInt(7) == 0) {
+            this.level().addParticle(net.minecraft.core.particles.ParticleTypes.END_ROD, this.getX() + (random.nextDouble() - 0.5) * w * 2.0, this.getY() + this.getBbHeight() + 0.3, this.getZ() + (random.nextDouble() - 0.5) * w * 2.0, 0.0, -0.02, 0.0);
+        }
     }
 
     @Override

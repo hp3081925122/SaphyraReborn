@@ -31,6 +31,9 @@ public class PlayerDiesProcedure {
                 if (boss instanceof MothbossEntity moth) {
                     moth.getCombat().resetFight();
                 }
+                if (boss instanceof WitchbossEntity witch) {
+                    witch.getCombat().resetFight();
+                }
             }
             boss.getPersistentData().putDouble("music", 0.0);
             found = true;

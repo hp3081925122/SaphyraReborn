@@ -66,8 +66,6 @@ import javax.annotation.Nullable;
 import com.hp.saphyrareborn.entity.NamelessEntity;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModEntities;
 import com.hp.saphyrareborn.procedures.MoonbeamEntityIsHurtProcedure;
-import com.hp.saphyrareborn.procedures.MoonbeamOnEntityTickUpdateProcedure;
-import com.hp.saphyrareborn.procedures.MoonbeamOnInitialEntitySpawnProcedure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -108,6 +106,8 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -128,6 +128,9 @@ implements GeoEntity {
     private AnimationController<?> procedureController;
     public static final EntityDataAccessor<Boolean> SHOOT = SynchedEntityData.defineId(MoonbeamEntity.class, (EntityDataSerializer)EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<String> TEXTURE = SynchedEntityData.defineId(MoonbeamEntity.class, (EntityDataSerializer)EntityDataSerializers.STRING);
+    private static final int CHASE_DELAY = 60;
+    private static final int LIFETIME = 100;
+    private int moonAge;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache((GeoAnimatable)this);
     private boolean swinging;
     private boolean lastloop;
@@ -238,13 +241,13 @@ implements GeoEntity {
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata) {
         SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata);
-        MoonbeamOnInitialEntitySpawnProcedure.execute((LevelAccessor)world, (Entity)this);
         return retval;
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putString("Texture", this.getTexture());
+        compound.putInt("MoonAge", this.moonAge);
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -252,11 +255,23 @@ implements GeoEntity {
         if (compound.contains("Texture")) {
             this.setTexture(compound.getString("Texture"));
         }
+        this.moonAge = compound.getInt("MoonAge");
     }
 
     public void tick() {
         super.tick();
-        MoonbeamOnEntityTickUpdateProcedure.execute((LevelAccessor)this.level(), (Entity)this);
+        if (this.level() instanceof ServerLevel level) {
+            level.sendParticles(com.hp.saphyrareborn.init.MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get(), this.getX(), this.getY(), this.getZ(), 2, 0.1, 0.1, 0.1, 0.01);
+            this.moonAge++;
+            if (this.moonAge >= LIFETIME) {
+                this.discard();
+                return;
+            }
+            if (this.moonAge > CHASE_DELAY && this.getTarget() != null) {
+                Vec3 look = this.getLookAngle();
+                this.setDeltaMovement(new Vec3(0.5 * look.x, 0.5 * look.y, 0.5 * look.z));
+            }
+        }
         this.refreshDimensions();
     }
 

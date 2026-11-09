@@ -51,6 +51,16 @@ public class LinaraGiveManicEyeProcedure {
                 if (vars.LinaraQuest < 1) {
                     vars.LinaraQuest = 1;
                     vars.syncPlayerVariables(_player);
+                    // 独立支线：狂乱之眼换取第三阶段赤日印记，去破碎钟楼召唤伊瓦的傀儡
+                    if (world instanceof ServerLevel _sigilLevel) {
+                        net.minecraft.world.entity.item.ItemEntity sigil = new net.minecraft.world.entity.item.ItemEntity(_sigilLevel,
+                                entity.getX(), entity.getY(), entity.getZ(),
+                                new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.SIGIL_OF_THE_RED_SUN_STAGE_3.get()));
+                        sigil.setPickUpDelay(2);
+                        sigil.setUnlimitedLifetime();
+                        _sigilLevel.addFreshEntity(sigil);
+                    }
+                    StoryDialog.sequence(world, 10, "linara_give_sigil_1", 60, "linara_give_sigil_2");
                 }
             }
             if (world instanceof ServerLevel) {

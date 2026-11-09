@@ -170,19 +170,7 @@ public class MarleneGiveMemoryProcedure {
                             _level4 = (ServerLevel)world;
                             ((ServerLevel)_level4).sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 300, 0.2, 1.0, 0.2, 0.05);
                         }
-                        // 续作：萨菲拉的记忆唤醒第三阶段赤日印记，引向钟楼的伊瓦的傀儡
-                        int end = StoryDialog.sequence(world,
-                                20, "marlene_saphyra_1",
-                                100, "marlene_saphyra_2",
-                                100, "marlene_saphyra_3");
-                        MokelsBossfightSaphyraMod.queueServerWork(220, () -> {
-                            if (entity.isAlive() && world instanceof ServerLevel _level5) {
-                                ItemEntity sigil = new ItemEntity((Level)_level5, entity.getX(), entity.getY(), entity.getZ(), new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.SIGIL_OF_THE_RED_SUN_STAGE_3.get()));
-                                sigil.setPickUpDelay(2);
-                                sigil.setUnlimitedLifetime();
-                                _level5.addFreshEntity(sigil);
-                            }
-                        });
+                        // 第三阶段赤日印记改由莉娜拉在收下狂乱之眼时给出（伊瓦的傀儡独立支线）
                     }
                 });
             }

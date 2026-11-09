@@ -375,9 +375,6 @@
   "text.saphyra_reborn.story.sigil3_hint": "Right-click inside the Fractured Clock Tower to summon the Puppet of Yiva",
   "text.saphyra_reborn.story.sigil3_wrong_place": "This can only be used inside the Fractured Clock Tower.",
   "text.saphyra_reborn.story.puppet_awakens": "The Puppet of Yiva has appeared!",
-  "text.saphyra_reborn.story.marlene_saphyra_1": "Marlene: The Sigil of the Red Sun glows again.",
-  "text.saphyra_reborn.story.marlene_saphyra_2": "Marlene: Take it to the Fractured Clock Tower.",
-  "text.saphyra_reborn.story.marlene_saphyra_3": "Marlene: Use it inside the tower.",
   "text.saphyra_reborn.story.linara_ct_1": "Linara: You defeated the Puppet of Yiva.",
   "text.saphyra_reborn.story.linara_ct_2": "Linara: Thank you for the Manic Eye.",
   "text.saphyra_reborn.story.linara_ct_3": "Linara: I will take this memory.",
@@ -429,5 +426,7 @@
   "text.saphyra_reborn.weapon.nameless": "Right-click - Quake: slam the ground for 120% attack damage with knockback in a 3.5-block radius ahead (6s cooldown)",
   "text.saphyra_reborn.hint.saphyra_remembrance": "Give it to Marlene",
   "text.saphyra_reborn.hint.manic_eye": "Give it to Linara at the Three Hallowed Towers",
-  "text.saphyra_reborn.hint.puppet_of_yiva_remembrance": "Give it to Linara at the Fractured Clock Tower"
+  "text.saphyra_reborn.hint.puppet_of_yiva_remembrance": "Give it to Linara at the Fractured Clock Tower",
+  "text.saphyra_reborn.story.linara_give_sigil_1": "Linara: Take this sigil to the Fractured Clock Tower.",
+  "text.saphyra_reborn.story.linara_give_sigil_2": "Linara: Use it inside the tower, then bring me what you find."
 }

@@ -375,9 +375,6 @@
   "text.saphyra_reborn.story.sigil3_hint": "在破碎钟楼内右键使用，召唤伊瓦的傀儡",
   "text.saphyra_reborn.story.sigil3_wrong_place": "只能在破碎钟楼内使用。",
   "text.saphyra_reborn.story.puppet_awakens": "伊瓦的傀儡出现了！",
-  "text.saphyra_reborn.story.marlene_saphyra_1": "玛琳：赤日印记又亮起来了。",
-  "text.saphyra_reborn.story.marlene_saphyra_2": "玛琳：把它带去破碎钟楼。",
-  "text.saphyra_reborn.story.marlene_saphyra_3": "玛琳：在钟楼里使用它。",
   "text.saphyra_reborn.story.linara_ct_1": "莉娜拉：你击败了伊瓦的傀儡。",
   "text.saphyra_reborn.story.linara_ct_2": "莉娜拉：谢谢你带来的狂乱之眼。",
   "text.saphyra_reborn.story.linara_ct_3": "莉娜拉：这份记忆我收下了。",
@@ -429,5 +426,7 @@
   "text.saphyra_reborn.weapon.nameless": "右键·震地：重剑砸地，对前方半径 3.5 格造成 120% 攻击伤害并击退（冷却 6 秒）",
   "text.saphyra_reborn.hint.saphyra_remembrance": "交给玛琳",
   "text.saphyra_reborn.hint.manic_eye": "交给三座圣塔中的莉娜拉",
-  "text.saphyra_reborn.hint.puppet_of_yiva_remembrance": "交给破碎钟楼中的莉娜拉"
+  "text.saphyra_reborn.hint.puppet_of_yiva_remembrance": "交给破碎钟楼中的莉娜拉",
+  "text.saphyra_reborn.story.linara_give_sigil_1": "莉娜拉：把这枚印记带去破碎钟楼。",
+  "text.saphyra_reborn.story.linara_give_sigil_2": "莉娜拉：在钟楼里使用它，再把你得到的东西带来给我。"
 }

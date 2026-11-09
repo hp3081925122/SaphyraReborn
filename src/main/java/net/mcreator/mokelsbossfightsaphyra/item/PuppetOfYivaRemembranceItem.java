@@ -28,7 +28,7 @@ extends Item {
 
     public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, context, list, flag);
-        list.add((Component)Component.literal((String)""));
+        list.add(Component.translatable("text.saphyra_reborn.hint.puppet_of_yiva_remembrance").withStyle(net.minecraft.ChatFormatting.DARK_AQUA));
     }
 }
 

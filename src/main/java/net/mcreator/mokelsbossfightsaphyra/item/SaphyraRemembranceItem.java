@@ -30,6 +30,7 @@ extends Item {
         super.appendHoverText(itemstack, context, list, flag);
         list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.2c25f113495f"));
         list.add((Component)Component.literal((String)""));
+        list.add(Component.translatable("text.saphyra_reborn.hint.saphyra_remembrance").withStyle(net.minecraft.ChatFormatting.DARK_AQUA));
         list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.d38b85ee6dba"));
     }
 }

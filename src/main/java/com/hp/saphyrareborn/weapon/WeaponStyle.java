@@ -3,7 +3,7 @@ package com.hp.saphyrareborn.weapon;
 import com.hp.saphyrareborn.MokelsBossfightSaphyraMod;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModItems;
 import java.util.function.Supplier;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
@@ -22,7 +22,7 @@ public enum WeaponStyle {
     private static final WeaponStyle[] VALUES = values();
 
     private final Supplier<Item> item;
-    public final ResourceLocation trail;
+    public final Identifier trail;
     public final int light;
     public final int main;
     public final float radius;
@@ -30,7 +30,7 @@ public enum WeaponStyle {
 
     WeaponStyle(Supplier<Item> item, String name, int light, int main, float radius, boolean heavy) {
         this.item = item;
-        this.trail = ResourceLocation.fromNamespaceAndPath(MokelsBossfightSaphyraMod.MODID, "textures/vfx/trail_" + name + ".png");
+        this.trail = Identifier.fromNamespaceAndPath(MokelsBossfightSaphyraMod.MODID, "textures/vfx/trail_" + name + ".png");
         this.light = light;
         this.main = main;
         this.radius = radius;

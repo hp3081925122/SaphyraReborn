@@ -30,9 +30,9 @@ public class WellItSeemethProcedure {
             livingEntity = null;
         }
         if (livingEntity != null) {
-            entity.getPersistentData().putDouble("IA", entity.getPersistentData().getDouble("IA") + 1.0);
+            entity.getPersistentData().putDouble("IA", entity.getPersistentData().getDoubleOr("IA", 0.0) + 1.0);
         }
-        if (entity.getPersistentData().getDouble("IA") == 20.0) {
+        if (entity.getPersistentData().getDoubleOr("IA", 0.0) == 20.0) {
             if (!world.isClientSide() && world.getServer() != null) {
                 world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.589f19fd9a63"), false);
             }

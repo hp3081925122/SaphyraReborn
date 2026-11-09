@@ -8,7 +8,7 @@
  *  net.minecraft.server.level.ServerLevel
  *  net.minecraft.world.entity.Entity
  *  net.minecraft.world.entity.EntityType
- *  net.minecraft.world.entity.MobSpawnType
+ *  net.minecraft.world.entity.EntitySpawnReason
  *  net.minecraft.world.level.LevelAccessor
  */
 package com.hp.saphyrareborn.procedures;
@@ -21,7 +21,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.level.LevelAccessor;
 
 public class WitchbossDeathTimeIsReachedProcedure {
@@ -32,7 +32,7 @@ public class WitchbossDeathTimeIsReachedProcedure {
         }
         if (world instanceof ServerLevel) {
             _level1 = (ServerLevel)world;
-            Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.MOTHBOSS.get()).spawn(_level1, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), MobSpawnType.MOB_SUMMONED);
+            Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.MOTHBOSS.get()).spawn(_level1, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), EntitySpawnReason.MOB_SUMMONED);
             if (entityToSpawn != null) {
                 entityToSpawn.setYRot(entity.getYRot());
                 entityToSpawn.setYBodyRot(entity.getYRot());

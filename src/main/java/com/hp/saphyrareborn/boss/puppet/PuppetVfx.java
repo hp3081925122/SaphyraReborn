@@ -5,7 +5,7 @@ import java.util.ArrayDeque;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -39,7 +39,7 @@ public record PuppetVfx(byte kind, double x, double y, double z, float yaw, floa
     private static final double SEND_RADIUS = 96.0;
     public static final ArrayDeque<PuppetVfx> INBOX = new ArrayDeque<>();
 
-    public static final Type<PuppetVfx> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(MokelsBossfightSaphyraMod.MODID, "puppet_vfx"));
+    public static final Type<PuppetVfx> TYPE = new Type<>(Identifier.fromNamespaceAndPath(MokelsBossfightSaphyraMod.MODID, "puppet_vfx"));
     public static final StreamCodec<FriendlyByteBuf, PuppetVfx> CODEC = StreamCodec.ofMember(PuppetVfx::write, PuppetVfx::read);
 
     private static PuppetVfx read(FriendlyByteBuf buf) {

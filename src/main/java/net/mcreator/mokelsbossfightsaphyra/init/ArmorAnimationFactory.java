@@ -26,7 +26,7 @@ public class ArmorAnimationFactory {
                 continue;
             }
             CompoundTag tag = data.copyTag();
-            String animation = tag.getString("geckoAnim");
+            String animation = tag.getStringOr("geckoAnim", "");
             if (animation.isEmpty()) {
                 continue;
             }

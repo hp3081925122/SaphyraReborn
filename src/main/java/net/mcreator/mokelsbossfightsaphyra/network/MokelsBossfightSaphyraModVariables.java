@@ -1,19 +1,21 @@
 package com.hp.saphyrareborn.network;
 
 import com.hp.saphyrareborn.SaphyraAttachments;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.function.Consumer;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.SavedDataType;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.common.util.ValueIOSerializable;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 @EventBusSubscriber
@@ -29,7 +31,7 @@ public final class MokelsBossfightSaphyraModVariables {
         consumer.accept(getPlayerVariables(entity));
     }
 
-    public static final class PlayerVariables implements INBTSerializable<CompoundTag> {
+    public static final class PlayerVariables implements ValueIOSerializable {
         public double Rotting;
         public double Grief;
         public double Manic;
@@ -43,91 +45,72 @@ public final class MokelsBossfightSaphyraModVariables {
             if (!entity.level().isClientSide()) entity.syncData(SaphyraAttachments.PLAYER_VARIABLES.get());
         }
 
-        public CompoundTag writeNBT() {
-            CompoundTag nbt = new CompoundTag();
-            nbt.putDouble("Rotting", Rotting);
-            nbt.putDouble("Grief", Grief);
-            nbt.putDouble("Manic", Manic);
-            nbt.putDouble("Xplayer", Xplayer);
-            nbt.putDouble("Zplayer", Zplayer);
-            nbt.putDouble("Devotion", Devotion);
-            nbt.putInt("LinaraQuest", LinaraQuest);
-            nbt.putBoolean("SigilGiven", SigilGiven);
-            return nbt;
-        }
-
-        public void readNBT(Tag tag) {
-            deserializeNBT(null, (CompoundTag) tag);
+        @Override
+        public void serialize(ValueOutput output) {
+            output.putDouble("Rotting", Rotting);
+            output.putDouble("Grief", Grief);
+            output.putDouble("Manic", Manic);
+            output.putDouble("Xplayer", Xplayer);
+            output.putDouble("Zplayer", Zplayer);
+            output.putDouble("Devotion", Devotion);
+            output.putInt("LinaraQuest", LinaraQuest);
+            output.putBoolean("SigilGiven", SigilGiven);
         }
 
         @Override
-        public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-            return writeNBT();
-        }
-
-        @Override
-        public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
-            Rotting = nbt.getDouble("Rotting");
-            Grief = nbt.getDouble("Grief");
-            Manic = nbt.getDouble("Manic");
-            Xplayer = nbt.getDouble("Xplayer");
-            Zplayer = nbt.getDouble("Zplayer");
-            Devotion = nbt.getDouble("Devotion");
-            LinaraQuest = nbt.getInt("LinaraQuest");
-            SigilGiven = nbt.getBoolean("SigilGiven");
+        public void deserialize(ValueInput input) {
+            Rotting = input.getDoubleOr("Rotting", 0.0);
+            Grief = input.getDoubleOr("Grief", 0.0);
+            Manic = input.getDoubleOr("Manic", 0.0);
+            Xplayer = input.getDoubleOr("Xplayer", 0.0);
+            Zplayer = input.getDoubleOr("Zplayer", 0.0);
+            Devotion = input.getDoubleOr("Devotion", 0.0);
+            LinaraQuest = input.getIntOr("LinaraQuest", 0);
+            SigilGiven = input.getBooleanOr("SigilGiven", false);
         }
     }
 
     public static final class MapVariables extends SavedData {
-        private static final String DATA_NAME = "saphyra_reborn_mapvars";
         private static final MapVariables CLIENT = new MapVariables();
-
-        private static MapVariables load(CompoundTag tag, HolderLookup.Provider provider) {
-            MapVariables data = new MapVariables();
-            return data;
-        }
-
-        @Override
-        public CompoundTag save(CompoundTag tag, HolderLookup.Provider provider) {
-            return tag;
-        }
+        private static final SavedDataType<MapVariables> TYPE = new SavedDataType<>(
+                Identifier.fromNamespaceAndPath("saphyra_reborn", "mapvars"),
+                MapVariables::new,
+                RecordCodecBuilder.create(instance -> instance.point(new MapVariables())));
 
         public void syncData(LevelAccessor world) {
             setDirty();
         }
 
         public static MapVariables get(LevelAccessor world) {
-            if (world instanceof ServerLevel serverLevel) return serverLevel.getDataStorage().computeIfAbsent(new net.minecraft.world.level.saveddata.SavedData.Factory<>(MapVariables::new, MapVariables::load), DATA_NAME);
+            if (world instanceof ServerLevel serverLevel) return serverLevel.getDataStorage().computeIfAbsent(TYPE);
             return CLIENT;
         }
     }
 
     public static final class WorldVariables extends SavedData {
-        private static final String DATA_NAME = "saphyra_reborn_worldvars";
         public double Playerfacing = 1.0;
         public double playerjoinedworld;
         private static final WorldVariables CLIENT = new WorldVariables();
-
-        private static WorldVariables load(CompoundTag tag, HolderLookup.Provider provider) {
+        private static final Codec<WorldVariables> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                Codec.DOUBLE.optionalFieldOf("Playerfacing", 1.0).forGetter(data -> data.Playerfacing),
+                Codec.DOUBLE.optionalFieldOf("playerjoinedworld", 0.0).forGetter(data -> data.playerjoinedworld)
+        ).apply(instance, (facing, joined) -> {
             WorldVariables data = new WorldVariables();
-            data.Playerfacing = tag.getDouble("Playerfacing");
-            data.playerjoinedworld = tag.getDouble("playerjoinedworld");
+            data.Playerfacing = facing;
+            data.playerjoinedworld = joined;
             return data;
-        }
-
-        @Override
-        public CompoundTag save(CompoundTag tag, HolderLookup.Provider provider) {
-            tag.putDouble("Playerfacing", Playerfacing);
-            tag.putDouble("playerjoinedworld", playerjoinedworld);
-            return tag;
-        }
+        }));
+        private static final SavedDataType<WorldVariables> TYPE = new SavedDataType<>(
+                Identifier.fromNamespaceAndPath("saphyra_reborn", "worldvars"),
+                WorldVariables::new,
+                CODEC);
 
         public void syncData(LevelAccessor world) {
             setDirty();
         }
 
         public static WorldVariables get(LevelAccessor world) {
-            if (world instanceof ServerLevel serverLevel) return serverLevel.getDataStorage().computeIfAbsent(new net.minecraft.world.level.saveddata.SavedData.Factory<>(WorldVariables::new, WorldVariables::load), DATA_NAME);
+            if (world instanceof ServerLevel serverLevel) return serverLevel.getDataStorage().computeIfAbsent(TYPE);
             return CLIENT;
         }
     }

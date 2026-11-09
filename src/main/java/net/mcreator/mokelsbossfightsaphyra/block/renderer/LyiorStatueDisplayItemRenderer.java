@@ -3,22 +3,26 @@
  * 
  * Could not load the following classes:
  *  net.minecraft.client.renderer.MultiBufferSource
- *  net.minecraft.client.renderer.RenderType
- *  net.minecraft.resources.ResourceLocation
+ *  net.minecraft.client.renderer.rendertype.RenderType
+ *  net.minecraft.resources.Identifier
  *  net.minecraft.world.item.Item
- *  software.bernie.geckolib.model.GeoModel
- *  software.bernie.geckolib.renderer.GeoItemRenderer
+ *  com.geckolib.model.GeoModel
+ *  com.geckolib.renderer.GeoItemRenderer
  */
 package com.hp.saphyrareborn.block.renderer;
+
+import com.geckolib.renderer.base.GeoRenderState;
+
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 
 import com.hp.saphyrareborn.block.display.LyiorStatueDisplayItem;
 import com.hp.saphyrareborn.block.model.LyiorStatueDisplayModel;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
-import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.renderer.GeoItemRenderer;
+import com.geckolib.model.GeoModel;
+import com.geckolib.renderer.GeoItemRenderer;
 
 public class LyiorStatueDisplayItemRenderer
 extends GeoItemRenderer<LyiorStatueDisplayItem> {
@@ -26,8 +30,8 @@ extends GeoItemRenderer<LyiorStatueDisplayItem> {
         super((GeoModel)new LyiorStatueDisplayModel());
     }
 
-    public RenderType getRenderType(LyiorStatueDisplayItem animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
-        return RenderType.entityTranslucent((ResourceLocation)this.getTextureLocation(animatable));
+    public RenderType getRenderType(GeoRenderState state, Identifier texture) {
+        return RenderTypes.entityTranslucent(texture);
     }
 }
 

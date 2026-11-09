@@ -38,7 +38,7 @@ public final class BossAttributes {
             return;
         }
         BossConfig.Entry entry = entryFor(boss);
-        if (entry == null || boss.getPersistentData().getBoolean(APPLIED_KEY)) {
+        if (entry == null || boss.getPersistentData().getBooleanOr(APPLIED_KEY, false)) {
             return;
         }
         float ratio = boss.getMaxHealth() > 0.0f ? boss.getHealth() / boss.getMaxHealth() : 1.0f;

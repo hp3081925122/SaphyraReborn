@@ -23,14 +23,14 @@ import net.minecraft.world.level.Level;
 public class TheFirstGodItem
 extends Item {
     public TheFirstGodItem() {
-        super(new Item.Properties().stacksTo(1).rarity(Rarity.COMMON));
+        super(new Item.Properties().setId(com.hp.saphyrareborn.init.RegistryIds.item).stacksTo(1).rarity(Rarity.COMMON));
     }
 
-    public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
-        super.appendHoverText(itemstack, context, list, flag);
-        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.9a687530f04b"));
-        list.add((Component)Component.literal((String)""));
-        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.d38b85ee6dba"));
+    public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, net.minecraft.world.item.component.TooltipDisplay display, java.util.function.Consumer<Component> list, TooltipFlag flag) {
+        super.appendHoverText(itemstack, context, display, list, flag);
+        list.accept((Component)Component.translatable("text.saphyra_reborn.hardcoded.9a687530f04b"));
+        list.accept((Component)Component.literal((String)""));
+        list.accept((Component)Component.translatable("text.saphyra_reborn.hardcoded.d38b85ee6dba"));
     }
 }
 

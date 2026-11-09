@@ -25,7 +25,7 @@ import net.minecraft.world.level.material.PushReaction;
 public class BloodLanternBlock
 extends Block {
     public BloodLanternBlock() {
-        super(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT).sound(SoundType.GLASS).strength(-1.0f, 3600000.0f).lightLevel(s -> 15).pushReaction(PushReaction.IGNORE).hasPostProcess((bs, br, bp) -> true).emissiveRendering((bs, br, bp) -> true));
+        super(BlockBehaviour.Properties.of().setId(com.hp.saphyrareborn.init.RegistryIds.block).instrument(NoteBlockInstrument.HAT).sound(SoundType.GLASS).strength(-1.0f, 3600000.0f).lightLevel(s -> 15).pushReaction(PushReaction.IGNORE).emissiveRendering((bs, br, bp) -> true));
     }
 
     public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {

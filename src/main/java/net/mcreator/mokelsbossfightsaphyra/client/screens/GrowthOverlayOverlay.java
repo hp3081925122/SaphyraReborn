@@ -8,7 +8,7 @@
  *  net.minecraft.client.Minecraft
  *  net.minecraft.client.player.LocalPlayer
  *  net.minecraft.client.renderer.GameRenderer
- *  net.minecraft.resources.ResourceLocation
+ *  net.minecraft.resources.Identifier
  *  net.minecraft.world.entity.Entity
  *  net.minecraft.world.level.Level
  *  net.neoforged.api.distmarker.Dist
@@ -19,8 +19,8 @@
  */
 package com.hp.saphyrareborn.client.screens;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
+import net.neoforged.api.distmarker.Dist;
+import net.minecraft.client.renderer.RenderPipelines;
 import com.hp.saphyrareborn.procedures.DevotionBarProc0Procedure;
 import com.hp.saphyrareborn.procedures.DevotionBarProc1Procedure;
 import com.hp.saphyrareborn.procedures.DevotionBarProc2Procedure;
@@ -51,11 +51,9 @@ import com.hp.saphyrareborn.procedures.RottingBarProc6Procedure;
 import com.hp.saphyrareborn.procedures.RottingBarProcProcedure;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -79,164 +77,153 @@ public class GrowthOverlayOverlay {
             y = entity.getY();
             z = entity.getZ();
         }
-        RenderSystem.disableDepthTest();
-        RenderSystem.depthMask((boolean)false);
-        RenderSystem.enableBlend();
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.blendFuncSeparate((GlStateManager.SourceFactor)GlStateManager.SourceFactor.SRC_ALPHA, (GlStateManager.DestFactor)GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, (GlStateManager.SourceFactor)GlStateManager.SourceFactor.ONE, (GlStateManager.DestFactor)GlStateManager.DestFactor.ZERO);
-        RenderSystem.setShaderColor((float)1.0f, (float)1.0f, (float)1.0f, (float)1.0f);
         if (DevotionBarProc0Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/rooting_bar.png"), w / 2 + -60, h / 2 + 10, 0.0f, 0.0f, 109, 12, 109, 12);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/rooting_bar.png"), w / 2 + -60, h / 2 + 10, 0.0f, 0.0f, 109, 12, 109, 12);
         }
         if (DevotionBarProc0Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/devotion_bar.png"), w / 2 + -60, h / 2 + 19, 0.0f, 0.0f, 109, 12, 109, 12);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/devotion_bar.png"), w / 2 + -60, h / 2 + 19, 0.0f, 0.0f, 109, 12, 109, 12);
         }
         if (DevotionBarProc0Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/disgust_bar.png"), w / 2 + -60, h / 2 + 28, 0.0f, 0.0f, 109, 12, 109, 12);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/disgust_bar.png"), w / 2 + -60, h / 2 + 28, 0.0f, 0.0f, 109, 12, 109, 12);
         }
         if (DevotionBarProc0Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/affection_bar.png"), w / 2 + -60, h / 2 + 37, 0.0f, 0.0f, 109, 12, 109, 12);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/affection_bar.png"), w / 2 + -60, h / 2 + 37, 0.0f, 0.0f, 109, 12, 109, 12);
         }
         if (ManicBarProc0Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/manic_bar.png"), w / 2 + -60, h / 2 + 46, 0.0f, 0.0f, 109, 12, 109, 12);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/manic_bar.png"), w / 2 + -60, h / 2 + 46, 0.0f, 0.0f, 109, 12, 109, 12);
         }
         if (RottingBarProc0Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/rotting_bar.png"), w / 2 + -60, h / 2 + 55, 0.0f, 0.0f, 109, 12, 109, 12);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/rotting_bar.png"), w / 2 + -60, h / 2 + 55, 0.0f, 0.0f, 109, 12, 109, 12);
         }
         if (RottingBarProcProcedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/rotting_part.png"), w / 2 + -47, h / 2 + 53, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/rotting_part.png"), w / 2 + -47, h / 2 + 53, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (RottingBarProc2Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/rotting_part.png"), w / 2 + -31, h / 2 + 53, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/rotting_part.png"), w / 2 + -31, h / 2 + 53, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (RottingBarProc3Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/rotting_part.png"), w / 2 + -15, h / 2 + 53, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/rotting_part.png"), w / 2 + -15, h / 2 + 53, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (RottingBarProc4Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/rotting_part.png"), w / 2 + 1, h / 2 + 53, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/rotting_part.png"), w / 2 + 1, h / 2 + 53, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (RottingBarProc5Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/rotting_part.png"), w / 2 + 17, h / 2 + 53, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/rotting_part.png"), w / 2 + 17, h / 2 + 53, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (RottingBarProc6Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/rotting_part_end.png"), w / 2 + 33, h / 2 + 53, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/rotting_part_end.png"), w / 2 + 33, h / 2 + 53, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (GriefBarProc0Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/grief_bar.png"), w / 2 + -60, h / 2 + 64, 0.0f, 0.0f, 109, 12, 109, 12);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/grief_bar.png"), w / 2 + -60, h / 2 + 64, 0.0f, 0.0f, 109, 12, 109, 12);
         }
         if (GriefBarProcProcedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/grief_part.png"), w / 2 + -47, h / 2 + 62, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/grief_part.png"), w / 2 + -47, h / 2 + 62, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (GriefBarProc2Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/grief_part.png"), w / 2 + -31, h / 2 + 62, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/grief_part.png"), w / 2 + -31, h / 2 + 62, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (GriefBarProc3Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/grief_part.png"), w / 2 + -15, h / 2 + 62, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/grief_part.png"), w / 2 + -15, h / 2 + 62, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (GriefBarProc4Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/grief_part.png"), w / 2 + 1, h / 2 + 62, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/grief_part.png"), w / 2 + 1, h / 2 + 62, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (GriefBarProc5Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/grief_part.png"), w / 2 + 17, h / 2 + 62, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/grief_part.png"), w / 2 + 17, h / 2 + 62, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (GriefBarProc6Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/grief_part_end.png"), w / 2 + 33, h / 2 + 62, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/grief_part_end.png"), w / 2 + 33, h / 2 + 62, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (ManicBarProc1Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/manic_part.png"), w / 2 + -47, h / 2 + 44, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/manic_part.png"), w / 2 + -47, h / 2 + 44, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (ManicBarProc2Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/manic_part.png"), w / 2 + -31, h / 2 + 44, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/manic_part.png"), w / 2 + -31, h / 2 + 44, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (ManicBarProc3Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/manic_part.png"), w / 2 + -15, h / 2 + 44, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/manic_part.png"), w / 2 + -15, h / 2 + 44, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (ManicBarProc4Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/manic_part.png"), w / 2 + 1, h / 2 + 44, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/manic_part.png"), w / 2 + 1, h / 2 + 44, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (ManicBarProc5Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/manic_part.png"), w / 2 + 17, h / 2 + 44, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/manic_part.png"), w / 2 + 17, h / 2 + 44, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (ManicBarProc6Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/manic_part_end.png"), w / 2 + 33, h / 2 + 44, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/manic_part_end.png"), w / 2 + 33, h / 2 + 44, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc1Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/disgust_part.png"), w / 2 + -47, h / 2 + 26, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/disgust_part.png"), w / 2 + -47, h / 2 + 26, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc2Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/disgust_part.png"), w / 2 + -31, h / 2 + 26, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/disgust_part.png"), w / 2 + -31, h / 2 + 26, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc3Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/disgust_part.png"), w / 2 + -15, h / 2 + 26, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/disgust_part.png"), w / 2 + -15, h / 2 + 26, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc4Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/disgust_part.png"), w / 2 + 1, h / 2 + 26, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/disgust_part.png"), w / 2 + 1, h / 2 + 26, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc5Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/disgust_part.png"), w / 2 + 17, h / 2 + 26, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/disgust_part.png"), w / 2 + 17, h / 2 + 26, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc6Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/disgust_part_end.png"), w / 2 + 33, h / 2 + 26, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/disgust_part_end.png"), w / 2 + 33, h / 2 + 26, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc1Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/affection_part.png"), w / 2 + -47, h / 2 + 35, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/affection_part.png"), w / 2 + -47, h / 2 + 35, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc2Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/affection_part.png"), w / 2 + -31, h / 2 + 35, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/affection_part.png"), w / 2 + -31, h / 2 + 35, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc3Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/affection_part.png"), w / 2 + -15, h / 2 + 35, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/affection_part.png"), w / 2 + -15, h / 2 + 35, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc4Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/affection_part.png"), w / 2 + 1, h / 2 + 35, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/affection_part.png"), w / 2 + 1, h / 2 + 35, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc5Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/affection_part.png"), w / 2 + 17, h / 2 + 35, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/affection_part.png"), w / 2 + 17, h / 2 + 35, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc6Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/affection_part_end.png"), w / 2 + 33, h / 2 + 35, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/affection_part_end.png"), w / 2 + 33, h / 2 + 35, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc1Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/devotion_part.png"), w / 2 + -47, h / 2 + 17, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/devotion_part.png"), w / 2 + -47, h / 2 + 17, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc2Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/devotion_part.png"), w / 2 + -31, h / 2 + 17, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/devotion_part.png"), w / 2 + -31, h / 2 + 17, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc3Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/devotion_part.png"), w / 2 + -15, h / 2 + 17, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/devotion_part.png"), w / 2 + -15, h / 2 + 17, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc4Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/devotion_part.png"), w / 2 + 1, h / 2 + 17, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/devotion_part.png"), w / 2 + 1, h / 2 + 17, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc5Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/devotion_part.png"), w / 2 + 17, h / 2 + 17, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/devotion_part.png"), w / 2 + 17, h / 2 + 17, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc6Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/devotion_part_end.png"), w / 2 + 33, h / 2 + 17, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/devotion_part_end.png"), w / 2 + 33, h / 2 + 17, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc6Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/rooting_part_end.png"), w / 2 + 33, h / 2 + 8, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/rooting_part_end.png"), w / 2 + 33, h / 2 + 8, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc1Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/rooting_part.png"), w / 2 + -47, h / 2 + 8, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/rooting_part.png"), w / 2 + -47, h / 2 + 8, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc2Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/rooting_part.png"), w / 2 + -31, h / 2 + 8, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/rooting_part.png"), w / 2 + -31, h / 2 + 8, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc3Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/rooting_part.png"), w / 2 + -15, h / 2 + 8, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/rooting_part.png"), w / 2 + -15, h / 2 + 8, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc4Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/rooting_part.png"), w / 2 + 1, h / 2 + 8, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/rooting_part.png"), w / 2 + 1, h / 2 + 8, 0.0f, 0.0f, 16, 16, 16, 16);
         }
         if (DevotionBarProc5Procedure.execute((Entity)entity)) {
-            event.getGuiGraphics().blit(ResourceLocation.parse("saphyra_reborn:textures/screens/rooting_part.png"), w / 2 + 17, h / 2 + 8, 0.0f, 0.0f, 16, 16, 16, 16);
+            event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, Identifier.parse("saphyra_reborn:textures/screens/rooting_part.png"), w / 2 + 17, h / 2 + 8, 0.0f, 0.0f, 16, 16, 16, 16);
         }
-        RenderSystem.depthMask((boolean)true);
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.enableDepthTest();
-        RenderSystem.disableBlend();
-        RenderSystem.setShaderColor((float)1.0f, (float)1.0f, (float)1.0f, (float)1.0f);
     }
 }
 

@@ -10,16 +10,16 @@
  */
 package com.hp.saphyrareborn.init;
 
+import net.neoforged.api.distmarker.Dist;
 import com.hp.saphyrareborn.client.model.Modelgrassvisage;
 import com.hp.saphyrareborn.client.model.Modelmirrorbladeprojectile;
 import com.hp.saphyrareborn.client.model.Modelsaphyrashat;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.common.EventBusSubscriber;
 
-@EventBusSubscriber(bus=EventBusSubscriber.Bus.MOD, value={Dist.CLIENT})
+@EventBusSubscriber(value={Dist.CLIENT})
 public class MokelsBossfightSaphyraModModels {
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {

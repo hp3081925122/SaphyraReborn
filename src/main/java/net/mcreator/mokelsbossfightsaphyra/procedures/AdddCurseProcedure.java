@@ -3,7 +3,7 @@
  * 
  * Could not load the following classes:
  *  net.minecraft.core.BlockPos
- *  net.minecraft.resources.ResourceLocation
+ *  net.minecraft.resources.Identifier
  *  net.minecraft.sounds.SoundEvent
  *  net.minecraft.sounds.SoundSource
  *  net.minecraft.world.entity.Entity
@@ -17,7 +17,7 @@ package com.hp.saphyrareborn.procedures;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModItems;
 import com.hp.saphyrareborn.network.MokelsBossfightSaphyraModVariables;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
@@ -41,9 +41,9 @@ public class AdddCurseProcedure {
                 if (world instanceof Level) {
                     Level _level1 = (Level)world;
                     if (!_level1.isClientSide()) {
-                        _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:rule_spell")), SoundSource.NEUTRAL, 1.0f, 1.0f);
+                        _level1.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(Identifier.parse("saphyra_reborn:rule_spell")).map(net.minecraft.core.Holder::value).orElseThrow(), SoundSource.NEUTRAL, 1.0f, 1.0f);
                     } else {
-                        _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:rule_spell")), SoundSource.NEUTRAL, 1.0f, 1.0f, false);
+                        _level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(Identifier.parse("saphyra_reborn:rule_spell")).map(net.minecraft.core.Holder::value).orElseThrow(), SoundSource.NEUTRAL, 1.0f, 1.0f, false);
                     }
                 }
             } else if (!entity.isShiftKeyDown()) {
@@ -55,9 +55,9 @@ public class AdddCurseProcedure {
                 if (world instanceof Level) {
                     Level _level2 = (Level)world;
                     if (!_level2.isClientSide()) {
-                        _level2.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:rule_spell")), SoundSource.NEUTRAL, 1.0f, 1.0f);
+                        _level2.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(Identifier.parse("saphyra_reborn:rule_spell")).map(net.minecraft.core.Holder::value).orElseThrow(), SoundSource.NEUTRAL, 1.0f, 1.0f);
                     } else {
-                        _level2.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:rule_spell")), SoundSource.NEUTRAL, 1.0f, 1.0f, false);
+                        _level2.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(Identifier.parse("saphyra_reborn:rule_spell")).map(net.minecraft.core.Holder::value).orElseThrow(), SoundSource.NEUTRAL, 1.0f, 1.0f, false);
                     }
                 }
             }

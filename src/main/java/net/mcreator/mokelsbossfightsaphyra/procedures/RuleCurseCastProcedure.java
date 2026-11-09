@@ -4,7 +4,7 @@ import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModMobEffects;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -45,13 +45,13 @@ public final class RuleCurseCastProcedure {
             switch (rule) {
                 case DESPAIR -> {
                     target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 160, 1), player);
-                    target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 160, 2), player);
+                    target.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 160, 2), player);
                     target.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 160, 0), player);
                     burst(level, target, ParticleTypes.SQUID_INK, 20);
                 }
                 case SOBBING -> {
                     target.hurt(level.damageSources().drown(), 6.0f);
-                    target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 1), player);
+                    target.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 100, 1), player);
                     burst(level, target, ParticleTypes.FALLING_WATER, 40);
                 }
                 case EXUDATION -> {
@@ -72,12 +72,12 @@ public final class RuleCurseCastProcedure {
             level.sendParticles(ParticleTypes.SQUID_INK, player.getX(), player.getY() + 1.0, player.getZ(), 60, radius / 3, 0.5, radius / 3, 0.02);
         }
 
-        SoundEvent sound = BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:rule_spell"));
+        SoundEvent sound = BuiltInRegistries.SOUND_EVENT.get(Identifier.parse("saphyra_reborn:rule_spell")).map(net.minecraft.core.Holder::value).orElseThrow();
         if (sound != null) {
             level.playSound(null, player.blockPosition(), sound, SoundSource.PLAYERS, 1.0f, 1.0f);
         }
         player.addEffect(new MobEffectInstance(MokelsBossfightSaphyraModMobEffects.COOLDOWN, 30, 1, false, false));
-        player.getCooldowns().addCooldown(stack.getItem(), ITEM_COOLDOWN);
+        player.getCooldowns().addCooldown(stack, ITEM_COOLDOWN);
         return true;
     }
 

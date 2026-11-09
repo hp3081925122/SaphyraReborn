@@ -4,7 +4,7 @@ import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModBlocks;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import snownee.jade.api.BlockAccessor;
@@ -25,7 +25,7 @@ import java.util.function.Supplier;
  */
 @WailaPlugin
 public class SaphyraJadePlugin implements IWailaPlugin {
-    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "right_click_hint");
+    public static final Identifier UID = Identifier.fromNamespaceAndPath("saphyra_reborn", "right_click_hint");
 
     @Override
     public void registerClient(IWailaClientRegistration registration) {
@@ -76,7 +76,7 @@ public class SaphyraJadePlugin implements IWailaPlugin {
         }
 
         @Override
-        public ResourceLocation getUid() {
+        public Identifier getUid() {
             return UID;
         }
     }

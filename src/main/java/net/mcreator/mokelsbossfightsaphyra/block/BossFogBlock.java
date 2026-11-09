@@ -34,7 +34,7 @@ import net.minecraft.world.level.pathfinder.PathType;
 public class BossFogBlock
 extends Block {
     public BossFogBlock() {
-        super(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.GLASS).strength(-1.0f, 3600000.0f).lightLevel(s -> 5).noCollission().jumpFactor(0.0f).pushReaction(PushReaction.IGNORE).hasPostProcess((bs, br, bp) -> true).emissiveRendering((bs, br, bp) -> true));
+        super(BlockBehaviour.Properties.of().setId(com.hp.saphyrareborn.init.RegistryIds.block).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.GLASS).strength(-1.0f, 3600000.0f).lightLevel(s -> 5).noCollision().jumpFactor(0.0f).pushReaction(PushReaction.IGNORE).emissiveRendering((bs, br, bp) -> true));
     }
 
     public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {
@@ -45,8 +45,8 @@ extends Block {
         return PathType.BLOCKED;
     }
 
-    public void entityInside(BlockState blockstate, Level world, BlockPos pos, Entity entity) {
-        super.entityInside(blockstate, world, pos, entity);
+    public void entityInside(BlockState blockstate, Level world, BlockPos pos, Entity entity, net.minecraft.world.entity.InsideBlockEffectApplier applier, boolean flag) {
+        super.entityInside(blockstate, world, pos, entity, applier, flag);
         BossFogEntityCollidesInTheBlockProcedure.execute(entity);
     }
 }

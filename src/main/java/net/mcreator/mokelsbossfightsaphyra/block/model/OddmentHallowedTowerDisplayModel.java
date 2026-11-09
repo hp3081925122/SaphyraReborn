@@ -2,27 +2,29 @@
  * Decompiled with CFR 0.152.
  * 
  * Could not load the following classes:
- *  net.minecraft.resources.ResourceLocation
- *  software.bernie.geckolib.model.GeoModel
+ *  net.minecraft.resources.Identifier
+ *  com.geckolib.model.GeoModel
  */
 package com.hp.saphyrareborn.block.model;
 
+import com.geckolib.renderer.base.GeoRenderState;
+
 import com.hp.saphyrareborn.block.display.OddmentHallowedTowerDisplayItem;
-import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib.model.GeoModel;
+import net.minecraft.resources.Identifier;
+import com.geckolib.model.GeoModel;
 
 public class OddmentHallowedTowerDisplayModel
 extends GeoModel<OddmentHallowedTowerDisplayItem> {
-    public ResourceLocation getAnimationResource(OddmentHallowedTowerDisplayItem animatable) {
-        return ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "animations/losthopestage2.animation.json");
+    public Identifier getAnimationResource(OddmentHallowedTowerDisplayItem animatable) {
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "animations/losthopestage2.animation.json");
     }
 
-    public ResourceLocation getModelResource(OddmentHallowedTowerDisplayItem animatable) {
-        return ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "geo/losthopestage2.geo.json");
+    public Identifier getModelResource(GeoRenderState state) {
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "geo/losthopestage2.geo.json");
     }
 
-    public ResourceLocation getTextureResource(OddmentHallowedTowerDisplayItem entity) {
-        return ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "textures/block/losthopetexture.png");
+    public Identifier getTextureResource(GeoRenderState state) {
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "textures/block/losthopetexture.png");
     }
 }
 

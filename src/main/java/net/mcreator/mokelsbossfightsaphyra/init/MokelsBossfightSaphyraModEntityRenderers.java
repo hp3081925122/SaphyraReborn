@@ -12,6 +12,7 @@
  */
 package com.hp.saphyrareborn.init;
 
+import net.neoforged.api.distmarker.Dist;
 import com.hp.saphyrareborn.client.renderer.GhostSpiritRenderer;
 import com.hp.saphyrareborn.client.renderer.GhostZombieRenderer;
 import com.hp.saphyrareborn.client.renderer.InfestedWitchRenderer;
@@ -37,13 +38,12 @@ import com.hp.saphyrareborn.client.renderer.WitchbossRenderer;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModEntities;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.entity.EntityType;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.common.EventBusSubscriber;
 
-@EventBusSubscriber(bus=EventBusSubscriber.Bus.MOD, value={Dist.CLIENT})
+@EventBusSubscriber(value={Dist.CLIENT})
 public class MokelsBossfightSaphyraModEntityRenderers {
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {

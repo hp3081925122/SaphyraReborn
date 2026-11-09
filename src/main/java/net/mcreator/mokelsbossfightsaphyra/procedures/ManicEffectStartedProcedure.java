@@ -15,7 +15,7 @@
  *  net.minecraft.core.particles.SimpleParticleType
  *  net.minecraft.network.Connection
  *  net.minecraft.network.chat.Component
- *  net.minecraft.resources.ResourceLocation
+ *  net.minecraft.resources.Identifier
  *  net.minecraft.server.level.ServerLevel
  *  net.minecraft.server.level.ServerPlayer
  *  net.minecraft.world.effect.MobEffect
@@ -31,25 +31,18 @@
  */
 package com.hp.saphyrareborn.procedures;
 
-import dev.kosmx.playerAnim.api.layered.IAnimation;
-import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
-import dev.kosmx.playerAnim.api.layered.ModifierLayer;
-import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
-import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
 import java.util.List;
 import com.hp.saphyrareborn.MokelsBossfightSaphyraMod;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModMobEffects;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModParticleTypes;
 import com.hp.saphyrareborn.procedures.AnimationsSetUpProcedure;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
@@ -78,20 +71,11 @@ public class ManicEffectStartedProcedure {
                     ServerPlayer _serverPlayer = (ServerPlayer)_ent;
                     return _serverPlayer.gameMode.getGameModeForPlayer() == GameType.SURVIVAL;
                 }
-                if (_ent.level().isClientSide() && _ent instanceof Player) {
-                    Player _player = (Player)_ent;
-                    return Minecraft.getInstance().getConnection().getPlayerInfo(_player.getGameProfile().getId()) != null && Minecraft.getInstance().getConnection().getPlayerInfo(_player.getGameProfile().getId()).getGameMode() == GameType.SURVIVAL;
-                }
                 return false;
             }
         }.checkGamemode(entity)) {
             ServerLevel _level1;
             LivingEntity _entity1;
-            AbstractClientPlayer player;
-            ModifierLayer animation;
-            if (world.isClientSide() && entity instanceof AbstractClientPlayer && (animation = (ModifierLayer)PlayerAnimationAccess.getPlayerAssociatedData((AbstractClientPlayer)(player = (AbstractClientPlayer)entity)).get(ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "player_animation"))) != null) {
-                animation.setAnimation((IAnimation)new KeyframeAnimationPlayer((dev.kosmx.playerAnim.core.data.KeyframeAnimation)PlayerAnimationRegistry.getAnimation(ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "manic"))));
-            }
             if (!world.isClientSide() && entity instanceof Player && world instanceof ServerLevel) {
                 List<Connection> connections;
                 ServerLevel srvLvl_ = (ServerLevel)world;
@@ -117,11 +101,11 @@ public class ManicEffectStartedProcedure {
             });
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
-                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @p times 20 20 20");
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level1, net.minecraft.server.permissions.LevelBasedPermissionSet.OWNER, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @p times 20 20 20");
             }
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
-                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @p title {\"translate\":\"text.saphyra_reborn.title.manic\",\"fallback\":\"Manic\",\"color\":\"yellow\"}");
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level1, net.minecraft.server.permissions.LevelBasedPermissionSet.OWNER, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @p title {\"translate\":\"text.saphyra_reborn.title.manic\",\"fallback\":\"Manic\",\"color\":\"yellow\"}");
             }
         }
     }

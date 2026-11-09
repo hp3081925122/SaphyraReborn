@@ -23,12 +23,12 @@ import net.minecraft.world.level.Level;
 public class PuppetOfYivaRemembranceItem
 extends Item {
     public PuppetOfYivaRemembranceItem() {
-        super(new Item.Properties().stacksTo(1).rarity(Rarity.COMMON));
+        super(new Item.Properties().setId(com.hp.saphyrareborn.init.RegistryIds.item).stacksTo(1).rarity(Rarity.COMMON));
     }
 
-    public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
-        super.appendHoverText(itemstack, context, list, flag);
-        list.add(Component.translatable("text.saphyra_reborn.hint.puppet_of_yiva_remembrance").withStyle(net.minecraft.ChatFormatting.DARK_AQUA));
+    public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, net.minecraft.world.item.component.TooltipDisplay display, java.util.function.Consumer<Component> list, TooltipFlag flag) {
+        super.appendHoverText(itemstack, context, display, list, flag);
+        list.accept(Component.translatable("text.saphyra_reborn.hint.puppet_of_yiva_remembrance").withStyle(net.minecraft.ChatFormatting.DARK_AQUA));
     }
 }
 

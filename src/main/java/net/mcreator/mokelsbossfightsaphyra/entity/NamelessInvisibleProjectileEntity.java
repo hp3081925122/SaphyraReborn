@@ -8,7 +8,7 @@
  *  net.minecraft.world.entity.Entity
  *  net.minecraft.world.entity.EntityType
  *  net.minecraft.world.entity.LivingEntity
- *  net.minecraft.world.entity.projectile.AbstractArrow
+ *  net.minecraft.world.entity.projectile.arrow.AbstractArrow
  *  net.minecraft.world.entity.projectile.ItemSupplier
  *  net.minecraft.world.item.ItemStack
  *  net.minecraft.world.level.ItemLike
@@ -17,7 +17,6 @@
  *  net.minecraft.world.level.block.Blocks
  *  net.minecraft.world.phys.BlockHitResult
  *  net.neoforged.api.distmarker.Dist
- *  net.neoforged.api.distmarker.OnlyIn
  *  net.neoforged.network.NetworkHooks
  *  net.neoforged.network.PlayMessages$SpawnEntity
  */
@@ -30,7 +29,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
@@ -38,10 +37,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
-@OnlyIn(value=Dist.CLIENT, _interface=ItemSupplier.class)
 public class NamelessInvisibleProjectileEntity
 extends AbstractArrow
 implements ItemSupplier {
@@ -80,7 +76,6 @@ implements ItemSupplier {
         this.setPos(entity.getX(), entity.getEyeY() - 0.1F, entity.getZ());
     }
 
-    @OnlyIn(value=Dist.CLIENT)
     public ItemStack getItem() {
         return PROJECTILE_ITEM;
     }
@@ -132,16 +127,16 @@ implements ItemSupplier {
     }
 
     @Override
-    public void addAdditionalSaveData(net.minecraft.nbt.CompoundTag tag) {
+    public void addAdditionalSaveData(net.minecraft.world.level.storage.ValueOutput tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("RotPoolAge", this.poolAge);
     }
 
     @Override
-    public void readAdditionalSaveData(net.minecraft.nbt.CompoundTag tag) {
+    public void readAdditionalSaveData(net.minecraft.world.level.storage.ValueInput tag) {
         super.readAdditionalSaveData(tag);
-        if (tag.contains("RotPoolAge")) {
-            this.poolAge = tag.getInt("RotPoolAge");
+        if (tag.keySet().contains("RotPoolAge")) {
+            this.poolAge = tag.getIntOr("RotPoolAge", 0);
         }
     }
 
@@ -150,7 +145,7 @@ implements ItemSupplier {
         if (this.level() instanceof net.minecraft.server.level.ServerLevel level) {
             if (this.poolAge >= 0) {
                 this.tickRotPool(level);
-            } else if (this.inGround) {
+            } else if (this.isInGround()) {
                 this.discard();
             }
         }

@@ -6,7 +6,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.item.component.Unbreakable;
 
 /**
  * Restores the 1.20.1 weapon stats lost in the port. Original MCreator swords used
@@ -29,9 +28,9 @@ public final class WeaponProperties {
                         new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, attackSpeed, AttributeModifier.Operation.ADD_VALUE),
                         EquipmentSlotGroup.MAINHAND)
                 .build();
-        return new Item.Properties()
+        return new Item.Properties().setId(com.hp.saphyrareborn.init.RegistryIds.item)
                 .attributes(modifiers)
-                .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
+                .component(DataComponents.UNBREAKABLE, net.minecraft.util.Unit.INSTANCE)
                 .fireResistant();
     }
 }

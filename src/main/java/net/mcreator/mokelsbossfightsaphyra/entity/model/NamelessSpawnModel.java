@@ -2,28 +2,38 @@
  * Decompiled with CFR 0.152.
  * 
  * Could not load the following classes:
- *  net.minecraft.resources.ResourceLocation
- *  software.bernie.geckolib.model.GeoModel
+ *  net.minecraft.resources.Identifier
+ *  com.geckolib.model.GeoModel
  */
 package com.hp.saphyrareborn.entity.model;
 
+import com.hp.saphyrareborn.client.GeckoHead;
+
+import com.geckolib.renderer.base.GeoRenderState;
+
 import com.hp.saphyrareborn.entity.NamelessSpawnEntity;
-import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib.model.GeoModel;
+import net.minecraft.resources.Identifier;
+import com.geckolib.model.GeoModel;
 
 public class NamelessSpawnModel
 extends GeoModel<NamelessSpawnEntity> {
-    public ResourceLocation getAnimationResource(NamelessSpawnEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "animations/knightboss.animation.json");
+    public Identifier getAnimationResource(NamelessSpawnEntity entity) {
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "animations/knightboss.animation.json");
     }
 
-    public ResourceLocation getModelResource(NamelessSpawnEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "geo/knightboss.geo.json");
+    public Identifier getModelResource(GeoRenderState state) {
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "geo/knightboss.geo.json");
     }
 
-    public ResourceLocation getTextureResource(NamelessSpawnEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "textures/entities/" + entity.getTexture() + ".png");
+    public Identifier getTextureResource(GeoRenderState state) {
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "textures/entities/" + state.getOrDefaultGeckolibData(GeckoHead.TEXTURE, "missing") + ".png");
     }
+
+    @Override
+    public void addAdditionalStateData(NamelessSpawnEntity animatable, Object relatedObject, GeoRenderState state) {
+        state.addGeckolibData(GeckoHead.TEXTURE, animatable.getTexture());
+    }
+
 }
 
 

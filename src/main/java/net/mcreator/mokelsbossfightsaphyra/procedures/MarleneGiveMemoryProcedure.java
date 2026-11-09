@@ -11,7 +11,7 @@
  *  net.minecraft.world.entity.Entity
  *  net.minecraft.world.entity.EntityType
  *  net.minecraft.world.entity.LivingEntity
- *  net.minecraft.world.entity.MobSpawnType
+ *  net.minecraft.world.entity.EntitySpawnReason
  *  net.minecraft.world.entity.item.ItemEntity
  *  net.minecraft.world.entity.player.Player
  *  net.minecraft.world.item.ItemStack
@@ -40,13 +40,12 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -73,7 +72,7 @@ public class MarleneGiveMemoryProcedure {
                 }
                 if (!(world instanceof ServerLevel)) continue;
                 ServerLevel _level1 = (ServerLevel)world;
-                Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.SAPHYRA_DIALOG_4.get()).spawn(_level1, BlockPos.containing((double)entityiterator.getX(), (double)entityiterator.getY(), (double)entityiterator.getZ()), MobSpawnType.MOB_SUMMONED);
+                Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.SAPHYRA_DIALOG_4.get()).spawn(_level1, BlockPos.containing((double)entityiterator.getX(), (double)entityiterator.getY(), (double)entityiterator.getZ()), EntitySpawnReason.MOB_SUMMONED);
                 if (entityToSpawn == null) continue;
                 entityToSpawn.setYRot(entityiterator.getYRot());
                 entityToSpawn.setYBodyRot(entityiterator.getYRot());

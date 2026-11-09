@@ -13,14 +13,13 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -74,9 +73,9 @@ public class WitchStaffShootProcedure {
                 if (world instanceof Level) {
                     Level _level = (Level)world;
                     if (!_level.isClientSide()) {
-                        _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:spellcast")), SoundSource.NEUTRAL, 1.0f, 0.6f);
+                        _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(Identifier.parse("saphyra_reborn:spellcast")).map(net.minecraft.core.Holder::value).orElseThrow(), SoundSource.NEUTRAL, 1.0f, 0.6f);
                     } else {
-                        _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:spellcast")), SoundSource.NEUTRAL, 1.0f, 0.6f, false);
+                        _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(Identifier.parse("saphyra_reborn:spellcast")).map(net.minecraft.core.Holder::value).orElseThrow(), SoundSource.NEUTRAL, 1.0f, 0.6f, false);
                     }
                 }
                 if (entity instanceof LivingEntity && !(_entity = (LivingEntity)entity).level().isClientSide()) {
@@ -91,7 +90,7 @@ public class WitchStaffShootProcedure {
                 }
                 if (entity instanceof Player) {
                     Player _player = (Player)entity;
-                    _player.getCooldowns().addCooldown((Item)MokelsBossfightSaphyraModItems.WITCH_STAFF.get(), 200);
+                    _player.getCooldowns().addCooldown(new ItemStack((net.minecraft.world.level.ItemLike)MokelsBossfightSaphyraModItems.WITCH_STAFF.get()), 200);
                 }
                 if (world instanceof ServerLevel _level) {
                     _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 40, 3.0, 0.5, 3.0, 0.05);
@@ -103,7 +102,7 @@ public class WitchStaffShootProcedure {
                 List<Entity> _entfound = world.getEntitiesOfClass(Entity.class, new AABB(_center, _center).inflate(6.5), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
                 for (Entity entityiterator : _entfound) {
                     if (!(entityiterator instanceof LivingEntity) || entityiterator instanceof Player || entityiterator instanceof TamableAnimal) continue;
-                    entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.PLAYER_ATTACK), entity), 20.0f);
+                    entityiterator.hurt(new DamageSource((Holder)world.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE).get(DamageTypes.PLAYER_ATTACK).orElseThrow(), entity), 20.0f);
                 }
                 break block25;
             }
@@ -120,9 +119,9 @@ public class WitchStaffShootProcedure {
                     if (world instanceof Level) {
                         Level _level = (Level)world;
                         if (!_level.isClientSide()) {
-                            _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:spellcast")), SoundSource.NEUTRAL, 0.75f, 1.0f);
+                            _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(Identifier.parse("saphyra_reborn:spellcast")).map(net.minecraft.core.Holder::value).orElseThrow(), SoundSource.NEUTRAL, 0.75f, 1.0f);
                         } else {
-                            _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:spellcast")), SoundSource.NEUTRAL, 0.75f, 1.0f, false);
+                            _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(Identifier.parse("saphyra_reborn:spellcast")).map(net.minecraft.core.Holder::value).orElseThrow(), SoundSource.NEUTRAL, 0.75f, 1.0f, false);
                         }
                     }
                     if (entity instanceof LivingEntity && !(_entity = (LivingEntity)entity).level().isClientSide()) {
@@ -137,7 +136,7 @@ public class WitchStaffShootProcedure {
                     }
                     if (entity instanceof Player) {
                         Player _player = (Player)entity;
-                        _player.getCooldowns().addCooldown((Item)MokelsBossfightSaphyraModItems.WITCH_STAFF.get(), 60);
+                        _player.getCooldowns().addCooldown(new ItemStack((net.minecraft.world.level.ItemLike)MokelsBossfightSaphyraModItems.WITCH_STAFF.get()), 60);
                     }
                     if (world instanceof ServerLevel _castLevel && entity instanceof Player _caster) {
                         com.hp.saphyrareborn.weapon.WeaponAbilities.staffCast(_castLevel, _caster);

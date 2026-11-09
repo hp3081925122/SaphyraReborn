@@ -8,7 +8,7 @@
  *  net.minecraft.world.entity.Entity
  *  net.minecraft.world.entity.EntityType
  *  net.minecraft.world.entity.LivingEntity
- *  net.minecraft.world.entity.projectile.AbstractArrow
+ *  net.minecraft.world.entity.projectile.arrow.AbstractArrow
  *  net.minecraft.world.entity.projectile.ItemSupplier
  *  net.minecraft.world.item.ItemStack
  *  net.minecraft.world.level.ItemLike
@@ -17,7 +17,6 @@
  *  net.minecraft.world.level.block.Blocks
  *  net.minecraft.world.phys.EntityHitResult
  *  net.neoforged.api.distmarker.Dist
- *  net.neoforged.api.distmarker.OnlyIn
  *  net.neoforged.network.NetworkHooks
  *  net.neoforged.network.PlayMessages$SpawnEntity
  */
@@ -32,7 +31,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
@@ -40,10 +39,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.EntityHitResult;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
-@OnlyIn(value=Dist.CLIENT, _interface=ItemSupplier.class)
 public class WitchBossProjectilefallEntity
 extends AbstractArrow
 implements ItemSupplier {
@@ -85,7 +81,6 @@ implements ItemSupplier {
         this.setPos(entity.getX(), entity.getEyeY() - 0.1F, entity.getZ());
     }
 
-    @OnlyIn(value=Dist.CLIENT)
     public ItemStack getItem() {
         return PROJECTILE_ITEM;
     }
@@ -107,7 +102,7 @@ implements ItemSupplier {
     public void tick() {
         super.tick();
         WitchbosswhileflyingfallingtaickProcedure.execute((LevelAccessor)this.level(), this.getX(), this.getY(), this.getZ());
-        if (this.inGround) {
+        if (this.isInGround()) {
             this.discard();
         }
     }

@@ -17,7 +17,7 @@ import java.util.Set;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -634,7 +634,7 @@ public final class MothCombat {
                 }
             }
             level.sendParticles(MokelsBossfightSaphyraModParticleTypes.GHOSTLY_FLAME_PARTICLE.get(), s.x, s.y + 0.3, s.z, 4, 0.4, 0.2, 0.4, 0.02);
-            level.playSound(null, s.x, s.y, s.z, BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.withDefaultNamespace("entity.lightning_bolt.impact")), SoundSource.HOSTILE, 0.6f, 1.6f);
+            level.playSound(null, s.x, s.y, s.z, BuiltInRegistries.SOUND_EVENT.get(Identifier.withDefaultNamespace("entity.lightning_bolt.impact")).map(net.minecraft.core.Holder::value).orElseThrow(), SoundSource.HOSTILE, 0.6f, 1.6f);
         }
     }
 
@@ -673,7 +673,7 @@ public final class MothCombat {
             MokelsBossfightSaphyraMod.LOGGER.info("[MothHitDebug] skill={} tick={} radius={} dist={} damage={}",
                     tag, this.skillTick, radius, String.format("%.2f", Math.sqrt(e.distanceToSqr(this.boss.getX(), e.getY(), this.boss.getZ()))), damage);
         }
-        e.hurt(source, damage);
+        e.hurtOrSimulate(source, damage);
         if (grief > 0.0 && e instanceof Player player) {
             addGrief(player, grief);
         }
@@ -698,7 +698,7 @@ public final class MothCombat {
 
     private void tickMusic(ServerLevel level, LivingEntity target) {
         CompoundTag data = this.boss.getPersistentData();
-        double music = data.getDouble("music");
+        double music = data.getDoubleOr("music", 0.0);
         if (target != null) {
             music += 1.0;
             data.putDouble("music", music);
@@ -715,7 +715,7 @@ public final class MothCombat {
     }
 
     private void sound(ServerLevel level, String id, SoundSource source, float volume, float pitch) {
-        SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse(id));
+        SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(Identifier.parse(id)).map(net.minecraft.core.Holder::value).orElseThrow();
         if (event != null) {
             level.playSound(null, this.boss.getX(), this.boss.getY(), this.boss.getZ(), event, source, volume, pitch);
         }
@@ -731,10 +731,10 @@ public final class MothCombat {
     }
 
     public void load(CompoundTag tag) {
-        this.timeline = tag.getInt("Timeline");
-        this.pendingPoint = tag.contains("Pending") ? tag.getInt("Pending") : -1;
-        this.phase2 = tag.getBoolean("Phase2");
-        this.phaseShiftTicks = tag.getInt("PhaseShift");
+        this.timeline = tag.getIntOr("Timeline", 0);
+        this.pendingPoint = tag.contains("Pending") ? tag.getIntOr("Pending", 0) : -1;
+        this.phase2 = tag.getBooleanOr("Phase2", false);
+        this.phaseShiftTicks = tag.getIntOr("PhaseShift", 0);
         this.skill = null;
         this.skillTick = 0;
         this.boss.setPhase2Visual(this.phase2 && this.phaseShiftTicks <= PHASE_SHIFT_TICKS - PHASE_BURST_TICK);

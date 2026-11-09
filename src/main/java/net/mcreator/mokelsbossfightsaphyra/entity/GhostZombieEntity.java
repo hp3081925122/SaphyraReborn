@@ -9,7 +9,7 @@
  *  net.minecraft.network.syncher.EntityDataSerializer
  *  net.minecraft.network.syncher.EntityDataSerializers
  *  net.minecraft.network.syncher.SynchedEntityData
- *  net.minecraft.resources.ResourceLocation
+ *  net.minecraft.resources.Identifier
  *  net.minecraft.server.level.ServerPlayer
  *  net.minecraft.sounds.SoundEvent
  *  net.minecraft.world.damagesource.DamageSource
@@ -37,20 +37,21 @@
  *  net.neoforged.network.NetworkHooks
  *  net.neoforged.network.PlayMessages$SpawnEntity
  *  net.neoforged.neoforge.registries.NeoForgeRegistries
- *  software.bernie.geckolib.animatable.GeoEntity
- *  software.bernie.geckolib.animatable.GeoAnimatable
- *  software.bernie.geckolib.animatable.instance.AnimatableInstanceCache
- *  software.bernie.geckolib.animation.AnimatableManager$ControllerRegistrar
- *  software.bernie.geckolib.animation.AnimationController
- *  software.bernie.geckolib.animation.AnimationController$State
- *  software.bernie.geckolib.animation.AnimationState
- *  software.bernie.geckolib.animation.RawAnimation
- *  software.bernie.geckolib.animation.PlayState
- *  software.bernie.geckolib.util.GeckoLibUtil
+ *  com.geckolib.animatable.GeoEntity
+ *  com.geckolib.animatable.GeoAnimatable
+ *  com.geckolib.animatable.instance.AnimatableInstanceCache
+ *  com.geckolib.animatable.manager.AnimatableManager$ControllerRegistrar
+ *  com.geckolib.animation.AnimationController
+ *  com.geckolib.animation.AnimationController$State
+ *  com.geckolib.animation.state.AnimationTest
+ *  com.geckolib.animation.RawAnimation
+ *  com.geckolib.animation.object.PlayState
+ *  com.geckolib.util.GeckoLibUtil
  */
 package com.hp.saphyrareborn.entity;
 
-import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModEntities;
+import com.hp.saphyrareborn.gecko.GeckoAnim;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.protocol.Packet;
@@ -59,7 +60,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -83,15 +84,15 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.GeoAnimatable;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.AnimationState;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.util.GeckoLibUtil;
+import com.geckolib.animatable.GeoEntity;
+import com.geckolib.animatable.GeoAnimatable;
+import com.geckolib.animatable.instance.AnimatableInstanceCache;
+import com.geckolib.animatable.manager.AnimatableManager;
+import com.geckolib.animation.AnimationController;
+import com.geckolib.animation.state.AnimationTest;
+import com.geckolib.animation.RawAnimation;
+import com.geckolib.animation.object.PlayState;
+import com.geckolib.util.GeckoLibUtil;
 
 public class GhostZombieEntity
 extends PathfinderMob
@@ -143,14 +144,14 @@ implements GeoEntity {
     }
 
     public SoundEvent getHurtSound(DamageSource ds) {
-        return (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.withDefaultNamespace("entity.generic.hurt"));
+        return BuiltInRegistries.SOUND_EVENT.get(Identifier.withDefaultNamespace("entity.generic.hurt")).map(net.minecraft.core.Holder::value).orElseThrow();
     }
 
     public SoundEvent getDeathSound() {
-        return (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.withDefaultNamespace("entity.generic.death"));
+        return BuiltInRegistries.SOUND_EVENT.get(Identifier.withDefaultNamespace("entity.generic.death")).map(net.minecraft.core.Holder::value).orElseThrow();
     }
 
-    public boolean hurt(DamageSource source, float amount) {
+    public boolean hurtServer(net.minecraft.server.level.ServerLevel serverLevel, DamageSource source, float amount) {
         if (source.is(DamageTypes.IN_FIRE)) {
             return false;
         }
@@ -169,18 +170,18 @@ implements GeoEntity {
         if (source.is(DamageTypes.EXPLOSION)) {
             return false;
         }
-        return super.hurt(source, amount);
+        return super.hurtServer(serverLevel, source, amount);
     }
 
-    public void addAdditionalSaveData(CompoundTag compound) {
+    public void addAdditionalSaveData(net.minecraft.world.level.storage.ValueOutput compound) {
         super.addAdditionalSaveData(compound);
         compound.putString("Texture", this.getTexture());
     }
 
-    public void readAdditionalSaveData(CompoundTag compound) {
+    public void readAdditionalSaveData(net.minecraft.world.level.storage.ValueInput compound) {
         super.readAdditionalSaveData(compound);
-        if (compound.contains("Texture")) {
-            this.setTexture(compound.getString("Texture"));
+        if (compound.keySet().contains("Texture")) {
+            this.setTexture(compound.getStringOr("Texture", ""));
         }
     }
 
@@ -216,9 +217,9 @@ implements GeoEntity {
         return builder;
     }
 
-    private PlayState movementPredicate(AnimationState event) {
+    private PlayState movementPredicate(AnimationTest event) {
         if (!this.isProcedureAnimating()) {
-            if (!(!event.isMoving() && event.getLimbSwingAmount() > -0.15f && event.getLimbSwingAmount() < 0.15f || this.isAggressive())) {
+            if (!(!event.isMoving() && GeckoAnim.limb(event) > -0.15f && GeckoAnim.limb(event) < 0.15f || this.isAggressive())) {
                 return event.setAndContinue(RawAnimation.begin().thenLoop("walk"));
             }
             if (this.isAggressive() && event.isMoving()) {
@@ -229,26 +230,26 @@ implements GeoEntity {
         return PlayState.STOP;
     }
 
-    private PlayState attackingPredicate(AnimationState event) {
+    private PlayState attackingPredicate(AnimationTest event) {
         double d1 = this.getX() - this.xo;
         double d0 = this.getZ() - this.zo;
         float velocity = (float)Math.sqrt(d1 * d1 + d0 * d0);
-        if (this.getAttackAnim(event.getPartialTick()) > 0.0f && !this.swinging) {
+        if (this.getAttackAnim(0.0f) > 0.0f && !this.swinging) {
             this.swinging = true;
             this.lastSwing = this.level().getGameTime();
         }
         if (this.swinging && this.lastSwing + 7L <= this.level().getGameTime()) {
             this.swinging = false;
         }
-        if (this.swinging && event.getController().getAnimationState() == AnimationController.State.STOPPED) {
-            event.getController().forceAnimationReset();
+        if (this.swinging && event.controller().hasAnimationFinished()) {
+            event.controller().reset();
             return event.setAndContinue(RawAnimation.begin().thenPlay("attack"));
         }
         return PlayState.CONTINUE;
     }
 
-    private PlayState procedurePredicate(AnimationState event) {
-        return event.getController().isPlayingTriggeredAnimation() && !this.isDeadOrDying() ? PlayState.CONTINUE : PlayState.STOP;
+    private PlayState procedurePredicate(AnimationTest event) {
+        return event.controller().isPlayingTriggeredAnimation() && !this.isDeadOrDying() ? PlayState.CONTINUE : PlayState.STOP;
     }
 
     private boolean isProcedureAnimating() {
@@ -258,7 +259,7 @@ implements GeoEntity {
     protected void tickDeath() {
         ++this.deathTime;
         if (this.deathTime == 20) {
-            this.dropExperience(this.getLastAttacker());
+            if (this.level() instanceof net.minecraft.server.level.ServerLevel _xpLevel) this.dropExperience(_xpLevel, this.getLastAttacker());
             this.remove(Entity.RemovalReason.KILLED);
         }
     }
@@ -272,9 +273,9 @@ implements GeoEntity {
     }
 
     public void registerControllers(AnimatableManager.ControllerRegistrar data) {
-        data.add(new AnimationController[]{new AnimationController((GeoAnimatable)this, "movement", 2, this::movementPredicate)});
-        data.add(new AnimationController[]{new AnimationController((GeoAnimatable)this, "attacking", 2, this::attackingPredicate)});
-        AnimationController<?> procedure = new AnimationController<>(this, "procedure", 2, this::procedurePredicate).receiveTriggeredAnimations();
+        data.add(new AnimationController[]{new AnimationController<>("movement", 2, this::movementPredicate)});
+        data.add(new AnimationController[]{new AnimationController<>("attacking", 2, this::attackingPredicate)});
+        AnimationController<?> procedure = new AnimationController<>("procedure", 2, this::procedurePredicate).receiveTriggeredAnimations();
         for (String name : TRIGGERABLE_ANIMATIONS) {
             procedure.triggerableAnim(name, RawAnimation.begin().thenPlay(name));
         }

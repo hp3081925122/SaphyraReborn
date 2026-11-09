@@ -2,45 +2,52 @@
  * Decompiled with CFR 0.152.
  * 
  * Could not load the following classes:
- *  net.minecraft.resources.ResourceLocation
- *  software.bernie.geckolib.constant.DataTickets
- *  software.bernie.geckolib.cache.object.GeoBone
- *  software.bernie.geckolib.animation.AnimationState
- *  software.bernie.geckolib.model.GeoModel
- *  software.bernie.geckolib.model.data.EntityModelData
+ *  net.minecraft.resources.Identifier
+ *  com.geckolib.constant.DataTickets
+ *  com.geckolib.cache.model.GeoBone
+ *  com.geckolib.animation.state.AnimationTest
+ *  com.geckolib.model.GeoModel
+ *  com.geckolib.animation.state.AnimationTest
  */
 package com.hp.saphyrareborn.entity.model;
 
+import net.minecraft.world.entity.LivingEntity;
+
+import com.hp.saphyrareborn.client.GeckoHead;
+
+import com.geckolib.renderer.base.GeoRenderState;
+
 import com.hp.saphyrareborn.entity.GhostSpiritEntity;
-import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib.constant.DataTickets;
-import software.bernie.geckolib.cache.object.GeoBone;
-import software.bernie.geckolib.animation.AnimationState;
-import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.model.data.EntityModelData;
+import net.minecraft.resources.Identifier;
+import com.geckolib.constant.DataTickets;
+import com.geckolib.cache.model.GeoBone;
+import com.geckolib.animation.state.AnimationTest;
+import com.geckolib.model.GeoModel;
 
 public class GhostSpiritModel
 extends GeoModel<GhostSpiritEntity> {
-    public ResourceLocation getAnimationResource(GhostSpiritEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "animations/ghostspirit.animation.json");
+    public Identifier getAnimationResource(GhostSpiritEntity entity) {
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "animations/ghostspirit.animation.json");
     }
 
-    public ResourceLocation getModelResource(GhostSpiritEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "geo/ghostspirit.geo.json");
+    public Identifier getModelResource(GeoRenderState state) {
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "geo/ghostspirit.geo.json");
     }
 
-    public ResourceLocation getTextureResource(GhostSpiritEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "textures/entities/" + entity.getTexture() + ".png");
+    public Identifier getTextureResource(GeoRenderState state) {
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "textures/entities/" + state.getOrDefaultGeckolibData(GeckoHead.TEXTURE, "missing") + ".png");
     }
 
-    public void setCustomAnimations(GhostSpiritEntity animatable, long instanceId, AnimationState animationState) {
-        GeoBone head = this.getAnimationProcessor().getBone("head");
-        if (head != null) {
-            EntityModelData entityData = (EntityModelData)animationState.getData(DataTickets.ENTITY_MODEL_DATA);
-            head.setRotX(entityData.headPitch() * ((float)Math.PI / 180));
-            head.setRotY(entityData.netHeadYaw() * ((float)Math.PI / 180));
+    
+
+    @Override
+    public void addAdditionalStateData(GhostSpiritEntity animatable, Object relatedObject, GeoRenderState state) {
+        state.addGeckolibData(GeckoHead.TEXTURE, animatable.getTexture());
+        if (animatable instanceof LivingEntity living) {
+            GeckoHead.capture(living, state);
         }
     }
+
 }
 
 

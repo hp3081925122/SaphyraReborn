@@ -10,7 +10,7 @@
  *  net.minecraft.world.item.Item
  *  net.minecraft.world.item.ItemStack
  *  net.minecraft.world.level.LevelAccessor
- *  software.bernie.geckolib.animatable.GeoItem
+ *  com.geckolib.animatable.GeoItem
  */
 package com.hp.saphyrareborn.procedures;
 
@@ -25,7 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.LevelAccessor;
-import software.bernie.geckolib.animatable.GeoItem;
+import com.geckolib.animatable.GeoItem;
 
 public class SaphyrasCapeChestplateTickEventProcedure {
     public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, ItemStack itemstack) {

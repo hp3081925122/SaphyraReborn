@@ -2,27 +2,29 @@
  * Decompiled with CFR 0.152.
  * 
  * Could not load the following classes:
- *  net.minecraft.resources.ResourceLocation
- *  software.bernie.geckolib.model.GeoModel
+ *  net.minecraft.resources.Identifier
+ *  com.geckolib.model.GeoModel
  */
 package com.hp.saphyrareborn.block.model;
 
+import com.geckolib.renderer.base.GeoRenderState;
+
 import com.hp.saphyrareborn.block.entity.SaphyraDoor3TileEntity;
-import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib.model.GeoModel;
+import net.minecraft.resources.Identifier;
+import com.geckolib.model.GeoModel;
 
 public class SaphyraDoor3BlockModel
 extends GeoModel<SaphyraDoor3TileEntity> {
-    public ResourceLocation getAnimationResource(SaphyraDoor3TileEntity animatable) {
-        return ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "animations/bossgateopen.animation.json");
+    public Identifier getAnimationResource(SaphyraDoor3TileEntity animatable) {
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "animations/bossgateopen.animation.json");
     }
 
-    public ResourceLocation getModelResource(SaphyraDoor3TileEntity animatable) {
-        return ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "geo/bossgateopen.geo.json");
+    public Identifier getModelResource(GeoRenderState state) {
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "geo/bossgateopen.geo.json");
     }
 
-    public ResourceLocation getTextureResource(SaphyraDoor3TileEntity animatable) {
-        return ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "textures/block/bossgatetexturesaphyra.png");
+    public Identifier getTextureResource(GeoRenderState state) {
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "textures/block/bossgatetexturesaphyra.png");
     }
 }
 

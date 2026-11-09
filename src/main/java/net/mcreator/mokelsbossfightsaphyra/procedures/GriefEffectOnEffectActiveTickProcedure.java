@@ -14,7 +14,6 @@
  */
 package com.hp.saphyrareborn.procedures;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -35,10 +34,6 @@ public class GriefEffectOnEffectActiveTickProcedure {
                 if (_ent instanceof ServerPlayer) {
                     ServerPlayer _serverPlayer = (ServerPlayer)_ent;
                     return _serverPlayer.gameMode.getGameModeForPlayer() == GameType.SURVIVAL;
-                }
-                if (_ent.level().isClientSide() && _ent instanceof Player) {
-                    Player _player = (Player)_ent;
-                    return Minecraft.getInstance().getConnection().getPlayerInfo(_player.getGameProfile().getId()) != null && Minecraft.getInstance().getConnection().getPlayerInfo(_player.getGameProfile().getId()).getGameMode() == GameType.SURVIVAL;
                 }
                 return false;
             }

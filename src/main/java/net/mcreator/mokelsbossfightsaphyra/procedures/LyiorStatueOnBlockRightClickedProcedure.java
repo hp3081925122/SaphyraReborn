@@ -6,7 +6,7 @@
  *  net.minecraft.commands.CommandSourceStack
  *  net.minecraft.core.BlockPos
  *  net.minecraft.network.chat.Component
- *  net.minecraft.resources.ResourceLocation
+ *  net.minecraft.resources.Identifier
  *  net.minecraft.server.level.ServerLevel
  *  net.minecraft.sounds.SoundEvent
  *  net.minecraft.sounds.SoundSource
@@ -27,7 +27,7 @@ import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -46,28 +46,28 @@ public class LyiorStatueOnBlockRightClickedProcedure {
         BlockPos _bp = BlockPos.containing((double)x, (double)y, (double)z);
         BlockState _bs = ((Block)MokelsBossfightSaphyraModBlocks.LYIOR_STATUE_AKTIVATED.get()).defaultBlockState();
         BlockState _bso = world.getBlockState(_bp);
-        for (Map.Entry entry : _bso.getValues().entrySet()) {
-            Property _property = _bs.getBlock().getStateDefinition().getProperty(((Property)entry.getKey()).getName());
-            if (_property == null || _bs.getValue(_property) == null) continue;
-            try {
-                _bs = (BlockState)_bs.setValue(_property, (Comparable)entry.getValue());
+        for (Property<?> _property : _bso.getProperties()) {
+                Property _target = _bs.getBlock().getStateDefinition().getProperty(_property.getName());
+                if (_target == null) continue;
+                try {
+                    _bs = (BlockState)_bs.setValue(_target, (Comparable)_bso.getValue(_property));
+                }
+                catch (Exception exception) {}
             }
-            catch (Exception exception) {}
-        }
         world.setBlock(_bp, _bs, 3);
         if (world instanceof ServerLevel) {
             _level1 = (ServerLevel)world;
-            _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @a times 20 40 20");
+            _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level1, net.minecraft.server.permissions.LevelBasedPermissionSet.OWNER, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @a times 20 40 20");
         }
         if (world instanceof ServerLevel) {
             _level1 = (ServerLevel)world;
-            _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @a title {\"translate\":\"text.saphyra_reborn.title.lost_spirit_marked\",\"fallback\":\"lost spirit marked\",\"color\":\"aqua\"}");
+            _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level1, net.minecraft.server.permissions.LevelBasedPermissionSet.OWNER, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @a title {\"translate\":\"text.saphyra_reborn.title.lost_spirit_marked\",\"fallback\":\"lost spirit marked\",\"color\":\"aqua\"}");
         }
         if (world instanceof Level _soundLevel) {
             if (!_soundLevel.isClientSide()) {
-                _soundLevel.playSound(null, BlockPos.containing((double)x, (double)y, (double)z), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:lyiorsoundstatue")), SoundSource.BLOCKS, 1.0f, 1.0f);
+                _soundLevel.playSound(null, BlockPos.containing((double)x, (double)y, (double)z), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(Identifier.parse("saphyra_reborn:lyiorsoundstatue")).map(net.minecraft.core.Holder::value).orElseThrow(), SoundSource.BLOCKS, 1.0f, 1.0f);
             } else {
-                _soundLevel.playLocalSound(x, y, z, (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:lyiorsoundstatue")), SoundSource.BLOCKS, 1.0f, 1.0f, false);
+                _soundLevel.playLocalSound(x, y, z, (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(Identifier.parse("saphyra_reborn:lyiorsoundstatue")).map(net.minecraft.core.Holder::value).orElseThrow(), SoundSource.BLOCKS, 1.0f, 1.0f, false);
             }
         }
     }

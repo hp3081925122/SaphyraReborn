@@ -1,5 +1,6 @@
 package com.hp.saphyrareborn.boss.witch.client;
 
+import net.neoforged.api.distmarker.Dist;
 import static com.hp.saphyrareborn.boss.client.BossVfxRender.clamp01;
 import static com.hp.saphyrareborn.boss.client.BossVfxRender.easeOut;
 import static com.hp.saphyrareborn.boss.client.BossVfxRender.rgba;
@@ -24,7 +25,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
@@ -64,7 +64,7 @@ public final class WitchVfxClient {
         while (it.hasNext()) {
             Fx fx = it.next();
             fx.follow(1.0f);
-            fx.tickParticles(level, level.random);
+            fx.tickParticles(level, level.getRandom());
             fx.age++;
             if (fx.age > fx.life) {
                 it.remove();
@@ -73,12 +73,12 @@ public final class WitchVfxClient {
     }
 
     @SubscribeEvent
-    public static void onRender(RenderLevelStageEvent event) {
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES || ACTIVE.isEmpty()) {
+    public static void onRender(RenderLevelStageEvent.AfterTranslucentParticles event) {
+        if (ACTIVE.isEmpty()) {
             return;
         }
-        Vec3 cam = event.getCamera().getPosition();
-        float partial = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        Vec3 cam = Minecraft.getInstance().gameRenderer.getMainCamera().position();
+        float partial = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
         PoseStack pose = event.getPoseStack();
         pose.pushPose();
         pose.translate(-cam.x, -cam.y, -cam.z);
@@ -227,7 +227,7 @@ public final class WitchVfxClient {
                             level.addParticle(ParticleTypes.END_ROD, this.x + this.fx * d + r.nextGaussian() * 0.2, this.y + 2.0 + r.nextGaussian() * 0.2, this.z + this.fz * d + r.nextGaussian() * 0.2, r.nextGaussian() * 0.03, 0.02, r.nextGaussian() * 0.03);
                         }
                         double tx = this.x + this.fx * this.size, tz = this.z + this.fz * this.size;
-                        level.addParticle(ParticleTypes.FLASH, tx, this.y + 2.0, tz, 0.0, 0.0, 0.0);
+                        level.addParticle(net.minecraft.core.particles.ColorParticleOption.create(ParticleTypes.FLASH, 0xFFFFFF), tx, this.y + 2.0, tz, 0.0, 0.0, 0.0);
                         BossVfxRender.addShake(this.x, this.y, this.z, 0.3f, 16.0);
                     }
                 }

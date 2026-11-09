@@ -13,7 +13,7 @@
  *  net.minecraft.client.model.geom.builders.LayerDefinition
  *  net.minecraft.client.model.geom.builders.MeshDefinition
  *  net.minecraft.client.model.geom.builders.PartDefinition
- *  net.minecraft.resources.ResourceLocation
+ *  net.minecraft.resources.Identifier
  *  net.minecraft.world.entity.Entity
  */
 package com.hp.saphyrareborn.client.model;
@@ -29,15 +29,15 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 
-public class Modelsaphyrashat<T extends Entity>
-extends EntityModel<T> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "modelsaphyrashat"), "main");
+public class Modelsaphyrashat extends EntityModel<net.minecraft.client.renderer.entity.state.EntityRenderState> {
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Identifier.fromNamespaceAndPath("saphyra_reborn", "modelsaphyrashat"), "main");
     public final ModelPart masterbody;
 
     public Modelsaphyrashat(ModelPart root) {
+        super(root);
         this.masterbody = root.getChild("masterbody");
     }
 
@@ -52,12 +52,10 @@ extends EntityModel<T> {
         return LayerDefinition.create((MeshDefinition)meshdefinition, (int)128, (int)128);
     }
 
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(net.minecraft.client.renderer.entity.state.EntityRenderState state) {
     }
 
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
-        this.masterbody.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
-    }
+    
 }
 
 

@@ -3,41 +3,39 @@
  * 
  * Could not load the following classes:
  *  net.minecraft.client.renderer.MultiBufferSource
- *  net.minecraft.client.renderer.RenderType
- *  net.minecraft.resources.ResourceLocation
- *  software.bernie.geckolib.cache.object.GeoBone
- *  software.bernie.geckolib.animatable.GeoAnimatable
- *  software.bernie.geckolib.model.GeoModel
- *  software.bernie.geckolib.renderer.GeoArmorRenderer
+ *  net.minecraft.client.renderer.rendertype.RenderType
+ *  net.minecraft.resources.Identifier
+ *  com.geckolib.cache.model.GeoBone
+ *  com.geckolib.animatable.GeoAnimatable
+ *  com.geckolib.model.GeoModel
+ *  com.geckolib.renderer.GeoArmorRenderer
  */
 package com.hp.saphyrareborn.client.renderer;
+
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+
+import com.geckolib.renderer.base.GeoRenderState;
+
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 
 import com.hp.saphyrareborn.item.SaphyrasCapeItem;
 import com.hp.saphyrareborn.item.model.SaphyrasCapeModel;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib.cache.object.GeoBone;
-import software.bernie.geckolib.animatable.GeoAnimatable;
-import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.renderer.GeoArmorRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.resources.Identifier;
+import com.geckolib.cache.model.GeoBone;
+import com.geckolib.animatable.GeoAnimatable;
+import com.geckolib.model.GeoModel;
+import com.geckolib.renderer.GeoArmorRenderer;
 
 public class SaphyrasCapeArmorRenderer
-extends GeoArmorRenderer<SaphyrasCapeItem> {
+extends GeoArmorRenderer<SaphyrasCapeItem, HumanoidRenderState> {
     public SaphyrasCapeArmorRenderer() {
-        super((GeoModel)new SaphyrasCapeModel());
-        this.head = new GeoBone(null, "armorHead", Boolean.valueOf(false), Double.valueOf(0.0), Boolean.valueOf(false), Boolean.valueOf(false));
-        this.body = new GeoBone(null, "armorBody", Boolean.valueOf(false), Double.valueOf(0.0), Boolean.valueOf(false), Boolean.valueOf(false));
-        this.rightArm = new GeoBone(null, "armorRightArm", Boolean.valueOf(false), Double.valueOf(0.0), Boolean.valueOf(false), Boolean.valueOf(false));
-        this.leftArm = new GeoBone(null, "armorLeftArm", Boolean.valueOf(false), Double.valueOf(0.0), Boolean.valueOf(false), Boolean.valueOf(false));
-        this.rightLeg = new GeoBone(null, "armorRightLeg", Boolean.valueOf(false), Double.valueOf(0.0), Boolean.valueOf(false), Boolean.valueOf(false));
-        this.leftLeg = new GeoBone(null, "armorLeftLeg", Boolean.valueOf(false), Double.valueOf(0.0), Boolean.valueOf(false), Boolean.valueOf(false));
-        this.rightBoot = new GeoBone(null, "armorRightBoot", Boolean.valueOf(false), Double.valueOf(0.0), Boolean.valueOf(false), Boolean.valueOf(false));
-        this.leftBoot = new GeoBone(null, "armorLeftBoot", Boolean.valueOf(false), Double.valueOf(0.0), Boolean.valueOf(false), Boolean.valueOf(false));
+        super(new SaphyrasCapeModel());
     }
 
-    public RenderType getRenderType(SaphyrasCapeItem animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
-        return RenderType.entityTranslucent((ResourceLocation)this.getTextureLocation(animatable));
+    public RenderType getRenderType(HumanoidRenderState state, Identifier texture) {
+        return RenderTypes.entityTranslucent(texture);
     }
 }
 

@@ -14,13 +14,13 @@ import java.util.UUID;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -30,7 +30,7 @@ import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -77,7 +77,7 @@ public final class WeaponAbilities {
     }
 
     private static void sound(ServerLevel level, Vec3 pos, String id, float volume, float pitch) {
-        SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse(id));
+        SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(Identifier.parse(id)).map(net.minecraft.core.Holder::value).orElseThrow();
         if (event != null) {
             level.playSound(null, pos.x, pos.y, pos.z, event, SoundSource.PLAYERS, volume, pitch);
         }
@@ -99,7 +99,7 @@ public final class WeaponAbilities {
             if (nx * nx + nz * nz > radius * radius) {
                 continue;
             }
-            if (e.hurt(source, damage)) {
+            if (e.hurtOrSimulate(source, damage)) {
                 count++;
                 if (knockback > 0.0) {
                     e.knockback(knockback, center.x - e.getX(), center.z - e.getZ());
@@ -115,22 +115,22 @@ public final class WeaponAbilities {
         return style == null ? WeaponStyle.KATANA_LIGHT : style;
     }
 
-    private static InteractionResultHolder<ItemStack> begin(Player player, InteractionHand hand) {
+    private static InteractionResult begin(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (hand != InteractionHand.MAIN_HAND || player.getCooldowns().isOnCooldown(stack.getItem())) {
-            return InteractionResultHolder.pass(stack);
+        if (hand != InteractionHand.MAIN_HAND || player.getCooldowns().isOnCooldown(stack)) {
+            return InteractionResult.PASS;
         }
         return null;
     }
 
-    public static InteractionResultHolder<ItemStack> iaiSlash(Level world, Player player, InteractionHand hand) {
-        InteractionResultHolder<ItemStack> blocked = begin(player, hand);
+    public static InteractionResult iaiSlash(Level world, Player player, InteractionHand hand) {
+        InteractionResult blocked = begin(player, hand);
         if (blocked != null) {
             return blocked;
         }
         ItemStack stack = player.getItemInHand(hand);
         if (!(world instanceof ServerLevel level)) {
-            return InteractionResultHolder.sidedSuccess(stack, true);
+            return (true ? net.minecraft.world.InteractionResult.SUCCESS : net.minecraft.world.InteractionResult.SUCCESS_SERVER);
         }
         Vec3 dir = flatLook(player);
         Vec3 start = player.position();
@@ -154,29 +154,29 @@ public final class WeaponAbilities {
             if (along < -0.5 || along > length + 1.0 || side > IAI_HALF_WIDTH) {
                 continue;
             }
-            if (e.hurt(source, damage)) {
+            if (e.hurtOrSimulate(source, damage)) {
                 hits++;
                 WeaponFx.send(level, WeaponFx.HIT, WeaponStyle.KATANA_HEAVY, e.position().add(0.0, e.getBbHeight() * 0.6, 0.0), player.getYRot(), 1.4f, 0);
             }
         }
         player.setDeltaMovement(dir.x * length * 0.32, 0.1, dir.z * length * 0.32);
         player.hurtMarked = true;
-        player.getCooldowns().addCooldown(stack.getItem(), IAI_COOLDOWN);
+        player.getCooldowns().addCooldown(stack, IAI_COOLDOWN);
         sound(level, start, "entity.player.attack.sweep", 1.2f, 0.7f);
         sound(level, start, "item.trident.riptide_1", 0.8f, 1.6f);
         WeaponFx.send(level, WeaponFx.DASH_SLASH, WeaponStyle.KATANA_HEAVY, start, player.getYRot(), (float) Math.max(1.0, length), 0);
         MokelsBossfightSaphyraMod.LOGGER.info("[WeaponDebug] iai player={} length={} hits={} damage={}", player.getName().getString(), length, hits, damage);
-        return InteractionResultHolder.sidedSuccess(stack, false);
+        return (false ? net.minecraft.world.InteractionResult.SUCCESS : net.minecraft.world.InteractionResult.SUCCESS_SERVER);
     }
 
-    public static InteractionResultHolder<ItemStack> mirrorThrow(Level world, Player player, InteractionHand hand) {
-        InteractionResultHolder<ItemStack> blocked = begin(player, hand);
+    public static InteractionResult mirrorThrow(Level world, Player player, InteractionHand hand) {
+        InteractionResult blocked = begin(player, hand);
         if (blocked != null) {
             return blocked;
         }
         ItemStack stack = player.getItemInHand(hand);
         if (!(world instanceof ServerLevel level)) {
-            return InteractionResultHolder.sidedSuccess(stack, true);
+            return (true ? net.minecraft.world.InteractionResult.SUCCESS : net.minecraft.world.InteractionResult.SUCCESS_SERVER);
         }
         float a = attack(player);
         for (float offset : new float[]{-8.0f, 8.0f}) {
@@ -189,20 +189,20 @@ public final class WeaponAbilities {
             blade.shootFromRotation(player, player.getXRot(), player.getYRot() + offset, 0.0f, 2.0f, 0.0f);
             level.addFreshEntity(blade);
         }
-        player.getCooldowns().addCooldown(stack.getItem(), MIRROR_COOLDOWN);
+        player.getCooldowns().addCooldown(stack, MIRROR_COOLDOWN);
         sound(level, player.position(), "entity.player.attack.sweep", 0.8f, 1.7f);
         sound(level, player.position(), "block.amethyst_block.chime", 1.2f, 1.4f);
-        return InteractionResultHolder.sidedSuccess(stack, false);
+        return (false ? net.minecraft.world.InteractionResult.SUCCESS : net.minecraft.world.InteractionResult.SUCCESS_SERVER);
     }
 
-    public static InteractionResultHolder<ItemStack> spiritRune(Level world, Player player, InteractionHand hand) {
-        InteractionResultHolder<ItemStack> blocked = begin(player, hand);
+    public static InteractionResult spiritRune(Level world, Player player, InteractionHand hand) {
+        InteractionResult blocked = begin(player, hand);
         if (blocked != null) {
             return blocked;
         }
         ItemStack stack = player.getItemInHand(hand);
         if (!(world instanceof ServerLevel level)) {
-            return InteractionResultHolder.sidedSuccess(stack, true);
+            return (true ? net.minecraft.world.InteractionResult.SUCCESS : net.minecraft.world.InteractionResult.SUCCESS_SERVER);
         }
         Vec3 eye = player.getEyePosition();
         Vec3 far = eye.add(player.getLookAngle().scale(RUNE_RANGE));
@@ -213,30 +213,30 @@ public final class WeaponAbilities {
         if (TASKS.size() < MAX_TASKS) {
             TASKS.add(new RuneTask(level.dimension(), player.getUUID(), pos, attack(player) * 2.0f, level.getServer().getTickCount() + RUNE_DELAY));
         }
-        player.getCooldowns().addCooldown(stack.getItem(), RUNE_COOLDOWN);
+        player.getCooldowns().addCooldown(stack, RUNE_COOLDOWN);
         sound(level, pos, "block.amethyst_block.resonate", 1.6f, 0.8f);
         sound(level, player.position(), "entity.evoker.prepare_attack", 1.0f, 1.4f);
         WeaponFx.send(level, WeaponFx.RUNE_CIRCLE, WeaponStyle.SPIRIT_RUNE_SWORD, pos, player.getYRot(), (float) RUNE_RADIUS, RUNE_DELAY);
-        return InteractionResultHolder.sidedSuccess(stack, false);
+        return (false ? net.minecraft.world.InteractionResult.SUCCESS : net.minecraft.world.InteractionResult.SUCCESS_SERVER);
     }
 
-    public static InteractionResultHolder<ItemStack> groundSlam(Level world, Player player, InteractionHand hand) {
-        InteractionResultHolder<ItemStack> blocked = begin(player, hand);
+    public static InteractionResult groundSlam(Level world, Player player, InteractionHand hand) {
+        InteractionResult blocked = begin(player, hand);
         if (blocked != null) {
             return blocked;
         }
         ItemStack stack = player.getItemInHand(hand);
         if (!(world instanceof ServerLevel level)) {
-            return InteractionResultHolder.sidedSuccess(stack, true);
+            return (true ? net.minecraft.world.InteractionResult.SUCCESS : net.minecraft.world.InteractionResult.SUCCESS_SERVER);
         }
         Vec3 center = player.position().add(flatLook(player).scale(1.2));
         int hits = hitCircle(level, player, center, SLAM_RADIUS, attack(player) * 1.2f, 0.6);
-        player.getCooldowns().addCooldown(stack.getItem(), SLAM_COOLDOWN);
+        player.getCooldowns().addCooldown(stack, SLAM_COOLDOWN);
         sound(level, center, "entity.generic.explode", 0.9f, 1.3f);
         sound(level, center, "entity.iron_golem.attack", 1.4f, 0.6f);
         WeaponFx.send(level, WeaponFx.GROUND_SLAM, WeaponStyle.NAMELESS, center, player.getYRot(), (float) SLAM_RADIUS, 0);
         MokelsBossfightSaphyraMod.LOGGER.info("[WeaponDebug] slam player={} hits={}", player.getName().getString(), hits);
-        return InteractionResultHolder.sidedSuccess(stack, false);
+        return (false ? net.minecraft.world.InteractionResult.SUCCESS : net.minecraft.world.InteractionResult.SUCCESS_SERVER);
     }
 
     public static void louringHit(LivingEntity target, LivingEntity attacker) {
@@ -311,18 +311,18 @@ public final class WeaponAbilities {
             }
             case SUNVEIL -> {
                 target.igniteForSeconds(4.0f);
-                boolean sunlit = level.isDay() && level.canSeeSky(player.blockPosition());
+                boolean sunlit = level.isBrightOutside() && level.canSeeSky(player.blockPosition());
                 if (sunlit) {
                     event.setAmount(event.getAmount() * 1.25f);
                 }
                 WeaponFx.send(level, WeaponFx.SUN_FLARE, style, at, 0.0f, sunlit ? 1.6f : 1.0f, sunlit ? 1 : 0);
             }
             case TEAR_AND_DROPLET -> {
-                if (level.getLevelData().isThundering()) {
+                if (level.isThundering()) {
                     event.setAmount(event.getAmount() * 2.5f);
                     sound(level, at, "entity.lightning_bolt.impact", 0.6f, 1.6f);
                     WeaponFx.send(level, WeaponFx.LIGHTNING, style, target.position(), 0.0f, Math.max(1.0f, target.getBbHeight()), 0);
-                } else if (level.getLevelData().isRaining()) {
+                } else if (level.isRaining()) {
                     event.setAmount(event.getAmount() * 1.75f);
                     sound(level, at, "entity.generic.splash", 0.6f, 1.4f);
                     WeaponFx.send(level, WeaponFx.RAIN_SPLASH, style, target.position(), 0.0f, Math.max(1.0f, target.getBbWidth() + 0.5f), 0);

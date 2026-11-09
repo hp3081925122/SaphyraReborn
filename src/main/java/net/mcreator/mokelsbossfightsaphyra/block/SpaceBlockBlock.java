@@ -25,7 +25,7 @@ import net.minecraft.world.level.material.PushReaction;
 public class SpaceBlockBlock
 extends Block {
     public SpaceBlockBlock() {
-        super(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.GLASS).strength(-1.0f, 3600000.0f).pushReaction(PushReaction.IGNORE));
+        super(BlockBehaviour.Properties.of().setId(com.hp.saphyrareborn.init.RegistryIds.block).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.GLASS).strength(-1.0f, 3600000.0f).pushReaction(PushReaction.IGNORE));
     }
 
     public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {

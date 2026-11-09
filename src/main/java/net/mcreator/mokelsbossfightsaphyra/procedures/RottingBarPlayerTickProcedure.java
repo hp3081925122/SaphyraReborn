@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 import com.hp.saphyrareborn.entity.NamelessEntity;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModMobEffects;
 import com.hp.saphyrareborn.network.MokelsBossfightSaphyraModVariables;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;

@@ -1,5 +1,6 @@
 package com.hp.saphyrareborn.boss.puppet.client;
 
+import net.neoforged.api.distmarker.Dist;
 import static com.hp.saphyrareborn.boss.client.BossVfxRender.clamp01;
 import static com.hp.saphyrareborn.boss.client.BossVfxRender.easeOut;
 import static com.hp.saphyrareborn.boss.client.BossVfxRender.rgba;
@@ -24,7 +25,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
@@ -64,7 +64,7 @@ public final class PuppetVfxClient {
         while (it.hasNext()) {
             Fx fx = it.next();
             fx.follow(1.0f);
-            fx.tickParticles(level, level.random);
+            fx.tickParticles(level, level.getRandom());
             fx.age++;
             if (fx.age > fx.life) {
                 it.remove();
@@ -73,12 +73,12 @@ public final class PuppetVfxClient {
     }
 
     @SubscribeEvent
-    public static void onRender(RenderLevelStageEvent event) {
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES || ACTIVE.isEmpty()) {
+    public static void onRender(RenderLevelStageEvent.AfterTranslucentParticles event) {
+        if (ACTIVE.isEmpty()) {
             return;
         }
-        Vec3 cam = event.getCamera().getPosition();
-        float partial = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        Vec3 cam = Minecraft.getInstance().gameRenderer.getMainCamera().position();
+        float partial = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
         PoseStack pose = event.getPoseStack();
         pose.pushPose();
         pose.translate(-cam.x, -cam.y, -cam.z);

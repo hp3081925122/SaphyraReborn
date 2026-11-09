@@ -14,7 +14,7 @@ import net.minecraft.world.item.Rarity;
 public class ShatteredBloodVailItem
 extends Item {
     public ShatteredBloodVailItem() {
-        super(new Item.Properties().stacksTo(1).rarity(Rarity.COMMON));
+        super(new Item.Properties().setId(com.hp.saphyrareborn.init.RegistryIds.item).stacksTo(1).rarity(Rarity.COMMON));
     }
 }
 

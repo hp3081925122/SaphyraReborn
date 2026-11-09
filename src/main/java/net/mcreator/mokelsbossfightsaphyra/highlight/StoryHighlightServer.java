@@ -73,10 +73,10 @@ public final class StoryHighlightServer {
         if (!(event.getEntity() instanceof ServerPlayer player) || player.tickCount % INTERVAL != 0) {
             return;
         }
-        ServerLevel level = player.serverLevel();
+        ServerLevel level = player.level();
         List<BlockPos> containers = new ArrayList<>();
         List<BlockPos> targets = new ArrayList<>();
-        int pcx = player.chunkPosition().x, pcz = player.chunkPosition().z;
+        int pcx = player.chunkPosition().x(), pcz = player.chunkPosition().z();
         for (int dx = -CHUNK_RADIUS; dx <= CHUNK_RADIUS; dx++) {
             for (int dz = -CHUNK_RADIUS; dz <= CHUNK_RADIUS; dz++) {
                 LevelChunk chunk = level.getChunkSource().getChunkNow(pcx + dx, pcz + dz);

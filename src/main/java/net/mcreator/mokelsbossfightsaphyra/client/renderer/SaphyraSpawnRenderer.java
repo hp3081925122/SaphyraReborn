@@ -5,16 +5,28 @@
  *  com.mojang.blaze3d.vertex.PoseStack
  *  com.mojang.blaze3d.vertex.VertexConsumer
  *  net.minecraft.client.renderer.MultiBufferSource
- *  net.minecraft.client.renderer.RenderType
+ *  net.minecraft.client.renderer.rendertype.RenderType
  *  net.minecraft.client.renderer.entity.EntityRendererProvider$Context
- *  net.minecraft.resources.ResourceLocation
+ *  net.minecraft.resources.Identifier
  *  net.minecraft.world.entity.Entity
- *  software.bernie.geckolib.cache.object.BakedGeoModel
- *  software.bernie.geckolib.model.GeoModel
- *  software.bernie.geckolib.renderer.GeoEntityRenderer
- *  software.bernie.geckolib.renderer.GeoRenderer
+ *  com.geckolib.cache.model.BakedGeoModel
+ *  com.geckolib.model.GeoModel
+ *  com.geckolib.renderer.GeoEntityRenderer
+ *  com.geckolib.renderer.base.GeoRenderer
  */
 package com.hp.saphyrareborn.client.renderer;
+
+import com.hp.saphyrareborn.client.GeckoHead;
+
+import com.geckolib.renderer.base.RenderPassInfo;
+
+import com.geckolib.renderer.base.BoneSnapshots;
+
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+
+import com.geckolib.renderer.base.GeoRenderState;
+
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -22,33 +34,34 @@ import com.hp.saphyrareborn.entity.SaphyraSpawnEntity;
 import com.hp.saphyrareborn.entity.layer.SaphyraSpawnLayer;
 import com.hp.saphyrareborn.entity.model.SaphyraSpawnModel;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
-import software.bernie.geckolib.renderer.GeoRenderer;
+import com.geckolib.cache.model.BakedGeoModel;
+import com.geckolib.model.GeoModel;
+import com.geckolib.renderer.GeoEntityRenderer;
+import com.geckolib.renderer.base.GeoRenderer;
 
 public class SaphyraSpawnRenderer
-extends GeoEntityRenderer<SaphyraSpawnEntity> {
+extends GeoEntityRenderer<SaphyraSpawnEntity, LivingEntityRenderState> {
     public SaphyraSpawnRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, (GeoModel)new SaphyraSpawnModel());
-        this.shadowRadius = 0.0f;
-        this.addRenderLayer(new SaphyraSpawnLayer((GeoRenderer<SaphyraSpawnEntity>)this));
+        this.withScale(1.0f);
+        this.withRenderLayer(SaphyraSpawnLayer::new);
     }
 
-    public RenderType getRenderType(SaphyraSpawnEntity animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
-        return RenderType.entityTranslucent((ResourceLocation)this.getTextureLocation(animatable));
+    public RenderType getRenderType(LivingEntityRenderState state, Identifier texture) {
+        return RenderTypes.entityTranslucent(texture);
     }
 
-    public void preRender(PoseStack poseStack, SaphyraSpawnEntity entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int color) {
-        float scale;
-        this.scaleHeight = scale = 1.0f;
-        this.scaleWidth = scale;
-        super.preRender(poseStack, entity, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, color);
+    
+
+    @Override
+    public void adjustModelBonesForRender(RenderPassInfo<LivingEntityRenderState> renderPassInfo, BoneSnapshots boneSnapshots) {
+        GeckoHead.apply(renderPassInfo, boneSnapshots);
     }
+
 }
 
 

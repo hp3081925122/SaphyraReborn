@@ -2,7 +2,7 @@ package com.hp.saphyrareborn.procedures;
 
 import javax.annotation.Nullable;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModItems;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -33,7 +33,7 @@ public class FlaskOfHealingItemInInventoryTickProcedure {
         }
         if (entity instanceof Player && (_playerHasItem = (Player)entity).getInventory().contains(new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.FLASK_OF_HEALING.get())) && entity instanceof ServerPlayer) {
             ServerPlayer _serverPlayer = (ServerPlayer)entity;
-            _serverPlayer.awardRecipesByKey(java.util.List.of(ResourceLocation.parse("saphyra_reborn:flaskofhealinglvl")));
+            _serverPlayer.awardRecipesByKey(java.util.List.of(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.RECIPE, Identifier.parse("saphyra_reborn:flaskofhealinglvl"))));
         }
     }
 }

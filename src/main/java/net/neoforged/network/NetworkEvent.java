@@ -1,7 +1,6 @@
 package net.neoforged.network;
 
 import net.minecraft.server.level.ServerPlayer;
-import java.util.function.Supplier;
 
 public final class NetworkEvent {
     private NetworkEvent() {

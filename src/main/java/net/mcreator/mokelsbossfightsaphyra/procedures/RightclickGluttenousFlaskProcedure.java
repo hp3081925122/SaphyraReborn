@@ -4,10 +4,9 @@ import javax.annotation.Nullable;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModItems;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModMobEffects;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -53,21 +52,21 @@ public class RightclickGluttenousFlaskProcedure {
             LivingEntity _entity;
             if (entity instanceof Player) {
                 Player _player = (Player)entity;
-                _player.getCooldowns().addCooldown((Item)MokelsBossfightSaphyraModItems.GLUTTONOUS_FLASK.get(), 400);
+                _player.getCooldowns().addCooldown(new ItemStack((net.minecraft.world.level.ItemLike)MokelsBossfightSaphyraModItems.GLUTTONOUS_FLASK.get()), 400);
             }
             if (world instanceof Level) {
                 Level _level = (Level)world;
                 if (!_level.isClientSide()) {
-                    _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:crimsonflasksound")), SoundSource.NEUTRAL, 0.75f, 1.0f);
+                    _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(Identifier.parse("saphyra_reborn:crimsonflasksound")).map(net.minecraft.core.Holder::value).orElseThrow(), SoundSource.NEUTRAL, 0.75f, 1.0f);
                 } else {
-                    _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:crimsonflasksound")), SoundSource.NEUTRAL, 0.75f, 1.0f, false);
+                    _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(Identifier.parse("saphyra_reborn:crimsonflasksound")).map(net.minecraft.core.Holder::value).orElseThrow(), SoundSource.NEUTRAL, 0.75f, 1.0f, false);
                 }
             }
             if (entity instanceof LivingEntity && !(_entity = (LivingEntity)entity).level().isClientSide()) {
                 _entity.addEffect(new MobEffectInstance(MokelsBossfightSaphyraModMobEffects.COOLDOWN, 20, 1, false, false));
             }
             if (entity instanceof LivingEntity && !(_entity = (LivingEntity)entity).level().isClientSide()) {
-                _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 1, false, false));
+                _entity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 20, 1, false, false));
             }
         }
     }

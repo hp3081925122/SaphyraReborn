@@ -16,7 +16,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -590,7 +590,7 @@ public final class PuppetCombat {
     }
 
     private DamageSource sourcelessDamage(ServerLevel level) {
-        return new DamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK));
+        return new DamageSource(level.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE).get(DamageTypes.MOB_ATTACK).orElseThrow());
     }
 
     private void meleeHit(ServerLevel level, double multiplier, double rotting) {
@@ -617,7 +617,7 @@ public final class PuppetCombat {
                 MokelsBossfightSaphyraMod.LOGGER.info("[PuppetHitDebug] skill={} tick={} radius={} dist={} damage={}",
                         tag, this.skillTick, radius, String.format("%.2f", Math.sqrt(e.distanceToSqr(center.x, e.getY(), center.z))), damage);
             }
-            e.hurt(source, damage);
+            e.hurtOrSimulate(source, damage);
             if (rotting > 0.0 && e instanceof Player player) {
                 MokelsBossfightSaphyraModVariables.PlayerVariables vars = MokelsBossfightSaphyraModVariables.getPlayerVariables(player);
                 vars.Rotting += rotting;
@@ -640,7 +640,7 @@ public final class PuppetCombat {
 
     private void tickMusic(ServerLevel level, LivingEntity target) {
         CompoundTag data = this.boss.getPersistentData();
-        double music = data.getDouble("music");
+        double music = data.getDoubleOr("music", 0.0);
         if (target != null) {
             music += 1.0;
             data.putDouble("music", music);
@@ -657,7 +657,7 @@ public final class PuppetCombat {
     }
 
     private void sound(ServerLevel level, String id, SoundSource source, float volume, float pitch) {
-        SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse(id));
+        SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(Identifier.parse(id)).map(net.minecraft.core.Holder::value).orElseThrow();
         if (event != null) {
             level.playSound(null, this.boss.getX(), this.boss.getY(), this.boss.getZ(), event, source, volume, pitch);
         }
@@ -673,10 +673,10 @@ public final class PuppetCombat {
     }
 
     public void load(CompoundTag tag) {
-        this.timeline = tag.getInt("Timeline");
-        this.pendingPoint = tag.contains("Pending") ? tag.getInt("Pending") : -1;
-        this.phase2 = tag.getBoolean("Phase2");
-        this.phaseShiftTicks = tag.getInt("PhaseShift");
+        this.timeline = tag.getIntOr("Timeline", 0);
+        this.pendingPoint = tag.contains("Pending") ? tag.getIntOr("Pending", 0) : -1;
+        this.phase2 = tag.getBooleanOr("Phase2", false);
+        this.phaseShiftTicks = tag.getIntOr("PhaseShift", 0);
         this.skill = null;
         this.skillTick = 0;
         this.chainSkill = null;

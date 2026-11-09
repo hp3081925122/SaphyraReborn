@@ -94,14 +94,14 @@ public class RightClickSaphyraDoorKeyProcedure {
                                                                             BlockPos _bp = BlockPos.containing((double)x, (double)y, (double)z);
                                                                             BlockState _bs = ((Block)MokelsBossfightSaphyraModBlocks.SAPHYRA_DOOR_2.get()).defaultBlockState();
                                                                             BlockState _bso = world.getBlockState(_bp);
-                                                                            for (Map.Entry entry : _bso.getValues().entrySet()) {
-                                                                                Property _property = _bs.getBlock().getStateDefinition().getProperty(((Property)entry.getKey()).getName());
-                                                                                if (_property == null || _bs.getValue(_property) == null) continue;
-                                                                                try {
-                                                                                    _bs = (BlockState)_bs.setValue(_property, (Comparable)entry.getValue());
-                                                                                }
-                                                                                catch (Exception exception) {}
-                                                                            }
+                                                                            for (Property<?> _property : _bso.getProperties()) {
+                Property _target = _bs.getBlock().getStateDefinition().getProperty(_property.getName());
+                if (_target == null) continue;
+                try {
+                    _bs = (BlockState)_bs.setValue(_target, (Comparable)_bso.getValue(_property));
+                }
+                catch (Exception exception) {}
+            }
                                                                             world.setBlock(_bp, _bs, 3);
                                                                             if (world.getBlockState(BlockPos.containing((double)x, (double)y, (double)z)).getBlock() == Blocks.BARRIER) {
                                                                                 world.destroyBlock(BlockPos.containing((double)x, (double)y, (double)z), false);

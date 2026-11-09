@@ -1,5 +1,8 @@
 package com.hp.saphyrareborn.weapon.client;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+
+import net.neoforged.api.distmarker.Dist;
 import static com.hp.saphyrareborn.boss.client.BossVfxRender.clamp01;
 import static com.hp.saphyrareborn.boss.client.BossVfxRender.easeOut;
 import static com.hp.saphyrareborn.boss.client.BossVfxRender.rgba;
@@ -19,19 +22,16 @@ import java.util.Map;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
@@ -43,20 +43,20 @@ public final class WeaponFxClient {
     private static final int MAX_EFFECTS = 128;
     private static final double SWING_RANGE_SQR = 64.0 * 64.0;
     private static final byte TRAIL = -1;
-    private static final ResourceLocation SPARK = tex("spark");
-    private static final ResourceLocation RUNE = tex("rune_circle");
-    private static final ResourceLocation BOLT = tex("bolt");
-    private static final ResourceLocation SPLASH = tex("splash");
-    private static final ResourceLocation SUN = tex("sun");
-    private static final ResourceLocation SLASH_MARK = tex("slash_mark");
-    private static final ResourceLocation IMPACT = tex("impact");
-    private static final ResourceLocation SHARD = tex("shard");
-    private static final ResourceLocation GLYPH = tex("glyph");
-    private static final ResourceLocation STAR = tex("star");
-    private static final ResourceLocation DROPLET = tex("droplet");
+    private static final Identifier SPARK = tex("spark");
+    private static final Identifier RUNE = tex("rune_circle");
+    private static final Identifier BOLT = tex("bolt");
+    private static final Identifier SPLASH = tex("splash");
+    private static final Identifier SUN = tex("sun");
+    private static final Identifier SLASH_MARK = tex("slash_mark");
+    private static final Identifier IMPACT = tex("impact");
+    private static final Identifier SHARD = tex("shard");
+    private static final Identifier GLYPH = tex("glyph");
+    private static final Identifier STAR = tex("star");
+    private static final Identifier DROPLET = tex("droplet");
     private static final Vec3 UP = new Vec3(0.0, 1.0, 0.0);
-    private static final DustParticleOptions ROT_DUST = new DustParticleOptions(new Vector3f(0.5f, 0.23f, 0.16f), 1.0f);
-    private static final DustParticleOptions NAMELESS_DUST = new DustParticleOptions(new Vector3f(0.6f, 0.08f, 0.06f), 1.1f);
+    private static final DustParticleOptions ROT_DUST = new DustParticleOptions(8403753, 1.0f);
+    private static final DustParticleOptions NAMELESS_DUST = new DustParticleOptions(10032143, 1.1f);
     private static final List<Fx> ACTIVE = new ArrayList<>();
     private static final Map<Integer, Integer> LAST_SWING = new HashMap<>();
     private static final Map<Integer, Integer> SWING_COUNT = new HashMap<>();
@@ -65,8 +65,8 @@ public final class WeaponFxClient {
     private WeaponFxClient() {
     }
 
-    private static ResourceLocation tex(String name) {
-        return ResourceLocation.fromNamespaceAndPath(MokelsBossfightSaphyraMod.MODID, "textures/vfx/" + name + ".png");
+    private static Identifier tex(String name) {
+        return Identifier.fromNamespaceAndPath(MokelsBossfightSaphyraMod.MODID, "textures/vfx/" + name + ".png");
     }
 
     @SubscribeEvent
@@ -98,7 +98,7 @@ public final class WeaponFxClient {
         Iterator<Fx> it = ACTIVE.iterator();
         while (it.hasNext()) {
             Fx fx = it.next();
-            fx.tickParticles(level, level.random);
+            fx.tickParticles(level, level.getRandom());
             fx.age++;
             if (fx.age > fx.life || fx.owner != null && fx.owner.isRemoved()) {
                 it.remove();
@@ -128,18 +128,18 @@ public final class WeaponFxClient {
     }
 
     @SubscribeEvent
-    public static void onRender(RenderLevelStageEvent event) {
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES || ACTIVE.isEmpty()) {
+    public static void onRender(RenderLevelStageEvent.AfterTranslucentParticles event) {
+        if (ACTIVE.isEmpty()) {
             return;
         }
-        Camera camera = event.getCamera();
-        Vec3 cam = camera.getPosition();
-        float partial = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+        Vec3 cam = camera.position();
+        float partial = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
         PoseStack pose = event.getPoseStack();
         pose.pushPose();
         pose.translate(-cam.x, -cam.y, -cam.z);
         MultiBufferSource.BufferSource buffers = Minecraft.getInstance().renderBuffers().bufferSource();
-        Canvas canvas = new Canvas(buffers, pose.last(), camera.getLeftVector(), camera.getUpVector());
+        Canvas canvas = new Canvas(buffers, pose.last(), new Vector3f(camera.leftVector()), new Vector3f(camera.upVector()));
         for (Fx fx : ACTIVE) {
             if (cam.distanceToSqr(fx.pos) < BossVfxRender.RENDER_RANGE_SQR) {
                 fx.render(canvas, fx.age + partial, partial);
@@ -163,15 +163,15 @@ public final class WeaponFxClient {
             return new Painter(this.buffers.getBuffer(BossVfxRender.GLOW), this.pose);
         }
 
-        Sprite sprite(ResourceLocation texture) {
-            return new Sprite(this.buffers.getBuffer(RenderType.entityTranslucentEmissive(texture)), this.pose);
+        Sprite sprite(Identifier texture) {
+            return new Sprite(this.buffers.getBuffer(RenderTypes.entityTranslucentEmissive(texture)), this.pose);
         }
     }
 
     private record Sprite(VertexConsumer vc, PoseStack.Pose pose) {
         void v(double[] p, float u, float v, float[] c) {
             this.vc.addVertex(this.pose, (float) p[0], (float) p[1], (float) p[2]).setColor(c[0], c[1], c[2], c[3]).setUv(u, v)
-                    .setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(this.pose, 0.0f, 1.0f, 0.0f);
+                    .setOverlay(OverlayTexture.NO_OVERLAY).setLight(15728880).setNormal(this.pose, 0.0f, 1.0f, 0.0f);
         }
 
         void quad(double[] p0, float u0, float v0, double[] p1, float u1, float v1, double[] p2, float u2, float v2, double[] p3, float u3, float v3, float[] c0, float[] c1) {
@@ -307,7 +307,7 @@ public final class WeaponFxClient {
                     for (int i = 0; i < 8; i++) {
                         level.addParticle(ParticleTypes.ELECTRIC_SPARK, x + r.nextGaussian() * 0.4, y + r.nextDouble() * this.size, z + r.nextGaussian() * 0.4, r.nextGaussian() * 0.1, 0.05, r.nextGaussian() * 0.1);
                     }
-                    level.addParticle(ParticleTypes.FLASH, x, y + this.size * 0.5, z, 0.0, 0.0, 0.0);
+                    level.addParticle(net.minecraft.core.particles.ColorParticleOption.create(ParticleTypes.FLASH, 0xFFFFFF), x, y + this.size * 0.5, z, 0.0, 0.0, 0.0);
                     BossVfxRender.addShake(x, y, z, 0.3f, 12.0);
                 }
                 case WeaponFx.SUN_FLARE -> {
@@ -316,7 +316,7 @@ public final class WeaponFxClient {
                     }
                 }
                 case WeaponFx.ROT_SPLASH -> {
-                    DustParticleOptions dust = new DustParticleOptions(new Vector3f(0.5f, 0.23f, 0.16f), 1.2f);
+                    DustParticleOptions dust = new DustParticleOptions(8403753, 1.2f);
                     for (int i = 0; i < (this.extra == 1 ? 10 : 5); i++) {
                         level.addParticle(dust, x + r.nextGaussian() * 0.4, y + 0.3 + r.nextDouble() * 1.2, z + r.nextGaussian() * 0.4, 0.0, -0.05, 0.0);
                     }

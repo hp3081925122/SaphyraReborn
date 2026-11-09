@@ -57,17 +57,8 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.minecraft.core.registries.Registries;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.minecraft.core.registries.Registries;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.minecraft.core.registries.Registries;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.minecraft.core.registries.Registries;
 
-@EventBusSubscriber(bus=EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber
 public class MokelsBossfightSaphyraModEntities {
     public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(Registries.ENTITY_TYPE, "saphyra_reborn");
     public static final DeferredHolder<EntityType<?>, EntityType<WitchbossEntity>> WITCHBOSS = MokelsBossfightSaphyraModEntities.register("witchboss", EntityType.Builder.of(WitchbossEntity::new, (MobCategory)MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).sized(0.6f, 1.8f));
@@ -101,7 +92,7 @@ public class MokelsBossfightSaphyraModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<SaphyraDialog4Entity>> SAPHYRA_DIALOG_4 = MokelsBossfightSaphyraModEntities.register("saphyra_dialog_4", EntityType.Builder.of(SaphyraDialog4Entity::new, (MobCategory)MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).sized(0.9f, 2.0f));
 
     private static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> register(String registryname, EntityType.Builder<T> entityTypeBuilder) {
-        return REGISTRY.register(registryname, () -> entityTypeBuilder.build(registryname));
+        return REGISTRY.register(registryname, () -> entityTypeBuilder.build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, net.minecraft.resources.Identifier.fromNamespaceAndPath("saphyra_reborn", registryname))));
     }
 
     @SubscribeEvent

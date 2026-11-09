@@ -6,11 +6,10 @@ import javax.annotation.Nullable;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModItems;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModMobEffects;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -59,7 +58,7 @@ public class VisionRuleActivateProcedure {
             LivingEntity _entity;
             if (entity instanceof Player) {
                 Player _player = (Player)entity;
-                _player.getCooldowns().addCooldown((Item)MokelsBossfightSaphyraModItems.RULE_OF_VISION.get(), 2400);
+                _player.getCooldowns().addCooldown(new ItemStack((net.minecraft.world.level.ItemLike)MokelsBossfightSaphyraModItems.RULE_OF_VISION.get()), 2400);
             }
             Vec3 _center = new Vec3(entity.getX(), entity.getY(), entity.getZ());
             List<Entity> _entfound = world.getEntitiesOfClass(Entity.class, new AABB(_center, _center).inflate(64.0), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
@@ -71,9 +70,9 @@ public class VisionRuleActivateProcedure {
             if (world instanceof Level) {
                 Level _level = (Level)world;
                 if (!_level.isClientSide()) {
-                    _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:rule_spell")), SoundSource.NEUTRAL, 1.0f, 1.0f);
+                    _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(Identifier.parse("saphyra_reborn:rule_spell")).map(net.minecraft.core.Holder::value).orElseThrow(), SoundSource.NEUTRAL, 1.0f, 1.0f);
                 } else {
-                    _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:rule_spell")), SoundSource.NEUTRAL, 1.0f, 1.0f, false);
+                    _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(Identifier.parse("saphyra_reborn:rule_spell")).map(net.minecraft.core.Holder::value).orElseThrow(), SoundSource.NEUTRAL, 1.0f, 1.0f, false);
                 }
             }
             if (entity instanceof LivingEntity && !(_entity = (LivingEntity)entity).level().isClientSide()) {

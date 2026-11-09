@@ -3,7 +3,6 @@ package com.hp.saphyrareborn.procedures;
 import javax.annotation.Nullable;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModItems;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModMobEffects;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -48,7 +47,7 @@ public class RuleOfThePlaguedrightclickedProcedure {
             LivingEntity _entity;
             if (entity instanceof Player) {
                 Player _player = (Player)entity;
-                _player.getCooldowns().addCooldown((Item)MokelsBossfightSaphyraModItems.RULE_OF_THE_P_LAGUED.get(), 100);
+                _player.getCooldowns().addCooldown(new ItemStack((net.minecraft.world.level.ItemLike)MokelsBossfightSaphyraModItems.RULE_OF_THE_P_LAGUED.get()), 100);
             }
             if (entity instanceof LivingEntity && !(_entity = (LivingEntity)entity).level().isClientSide()) {
                 _entity.addEffect(new MobEffectInstance(MokelsBossfightSaphyraModMobEffects.COOLDOWN, 40, 1, false, false));

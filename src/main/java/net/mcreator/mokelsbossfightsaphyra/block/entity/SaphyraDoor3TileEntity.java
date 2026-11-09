@@ -26,16 +26,16 @@
  *  net.neoforged.common.util.LazyOptional
  *  net.neoforged.neoforge.items.IItemHandler
  *  net.neoforged.neoforge.items.wrapper.SidedInvWrapper
- *  software.bernie.geckolib.animatable.GeoBlockEntity
- *  software.bernie.geckolib.animatable.GeoAnimatable
- *  software.bernie.geckolib.animatable.instance.AnimatableInstanceCache
- *  software.bernie.geckolib.animation.AnimatableManager$ControllerRegistrar
- *  software.bernie.geckolib.animation.AnimationController
- *  software.bernie.geckolib.animation.AnimationController$State
- *  software.bernie.geckolib.animation.AnimationState
- *  software.bernie.geckolib.animation.RawAnimation
- *  software.bernie.geckolib.animation.PlayState
- *  software.bernie.geckolib.util.GeckoLibUtil
+ *  com.geckolib.animatable.GeoBlockEntity
+ *  com.geckolib.animatable.GeoAnimatable
+ *  com.geckolib.animatable.instance.AnimatableInstanceCache
+ *  com.geckolib.animatable.manager.AnimatableManager$ControllerRegistrar
+ *  com.geckolib.animation.AnimationController
+ *  com.geckolib.animation.AnimationController$State
+ *  com.geckolib.animation.state.AnimationTest
+ *  com.geckolib.animation.RawAnimation
+ *  com.geckolib.animation.object.PlayState
+ *  com.geckolib.util.GeckoLibUtil
  */
 package com.hp.saphyrareborn.block.entity;
 
@@ -64,15 +64,15 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
-import software.bernie.geckolib.animatable.GeoBlockEntity;
-import software.bernie.geckolib.animatable.GeoAnimatable;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.AnimationState;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.util.GeckoLibUtil;
+import com.geckolib.animatable.GeoBlockEntity;
+import com.geckolib.animatable.GeoAnimatable;
+import com.geckolib.animatable.instance.AnimatableInstanceCache;
+import com.geckolib.animatable.manager.AnimatableManager;
+import com.geckolib.animation.AnimationController;
+import com.geckolib.animation.state.AnimationTest;
+import com.geckolib.animation.RawAnimation;
+import com.geckolib.animation.object.PlayState;
+import com.geckolib.util.GeckoLibUtil;
 
 public class SaphyraDoor3TileEntity
 extends RandomizableContainerBlockEntity
@@ -87,7 +87,7 @@ WorldlyContainer {
         super((BlockEntityType)MokelsBossfightSaphyraModBlockEntities.SAPHYRA_DOOR_3.get(), pos, state);
     }
 
-    private PlayState predicate(AnimationState event) {
+    private PlayState predicate(AnimationTest event) {
         String animationprocedure = "" + this.getBlockState().getValue((Property)SaphyraDoor3Block.ANIMATION);
         if (animationprocedure.equals("0")) {
             return event.setAndContinue(RawAnimation.begin().thenLoop(animationprocedure));
@@ -95,20 +95,20 @@ WorldlyContainer {
         return PlayState.STOP;
     }
 
-    private PlayState procedurePredicate(AnimationState event) {
+    private PlayState procedurePredicate(AnimationTest event) {
         String animationprocedure = "" + this.getBlockState().getValue((Property)SaphyraDoor3Block.ANIMATION);
-        if (!animationprocedure.equals("0") && event.getController().getAnimationState() == AnimationController.State.STOPPED || !animationprocedure.equals(this.prevAnim) && !animationprocedure.equals("0")) {
+        if (!animationprocedure.equals("0") && event.controller().hasAnimationFinished() || !animationprocedure.equals(this.prevAnim) && !animationprocedure.equals("0")) {
             if (!animationprocedure.equals(this.prevAnim)) {
-                event.getController().forceAnimationReset();
+                event.controller().reset();
             }
-            event.getController().setAnimation(RawAnimation.begin().thenPlay(animationprocedure));
-            if (event.getController().getAnimationState() == AnimationController.State.STOPPED) {
+            event.controller().setAnimation(RawAnimation.begin().thenPlay(animationprocedure));
+            if (event.controller().hasAnimationFinished()) {
                 Property property = this.getBlockState().getBlock().getStateDefinition().getProperty("animation");
                 if (property instanceof IntegerProperty) {
                     IntegerProperty _integerProp = (IntegerProperty)property;
                     this.level.setBlock(this.getBlockPos(), (BlockState)this.getBlockState().setValue((Property)_integerProp, (Comparable)Integer.valueOf(0)), 3);
                 }
-                event.getController().forceAnimationReset();
+                event.controller().reset();
             }
         } else if (animationprocedure.equals("0")) {
             this.prevAnim = "0";
@@ -119,26 +119,26 @@ WorldlyContainer {
     }
 
     public void registerControllers(AnimatableManager.ControllerRegistrar data) {
-        data.add(new AnimationController[]{new AnimationController((GeoAnimatable)this, "controller", 0, this::predicate)});
-        data.add(new AnimationController[]{new AnimationController((GeoAnimatable)this, "procedurecontroller", 0, this::procedurePredicate)});
+        data.add(new AnimationController[]{new AnimationController<>("controller", 0, this::predicate)});
+        data.add(new AnimationController[]{new AnimationController<>("procedurecontroller", 0, this::procedurePredicate)});
     }
 
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.cache;
     }
 
-    protected void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        super.loadAdditional(compound, provider);
+    protected void loadAdditional(net.minecraft.world.level.storage.ValueInput compound) {
+        super.loadAdditional(compound);
         if (!this.tryLoadLootTable(compound)) {
             this.stacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-            ContainerHelper.loadAllItems(compound, this.stacks, provider);
+            ContainerHelper.loadAllItems(compound, this.stacks);
         }
     }
 
-    protected void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        super.saveAdditional(compound, provider);
+    protected void saveAdditional(net.minecraft.world.level.storage.ValueOutput compound) {
+        super.saveAdditional(compound);
         if (!this.trySaveLootTable(compound)) {
-            ContainerHelper.saveAllItems(compound, this.stacks, provider);
+            ContainerHelper.saveAllItems(compound, this.stacks);
         }
     }
 

@@ -18,7 +18,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -28,7 +28,7 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -288,7 +288,7 @@ public final class WitchCombat {
             case AXE -> WitchVfx.send(level, WitchVfx.CHARGE, c, yaw, 2.5f, 26);
             case WAND -> WitchVfx.send(level, WitchVfx.CHARGE, c, yaw, 1.6f, WAND_FIRE);
             case JUMP -> {
-                this.boss.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 60, 1, false, false));
+                this.boss.addEffect(new MobEffectInstance(MobEffects.SPEED, 60, 1, false, false));
                 this.sound(level, "entity.evoker.prepare_attack", SoundSource.HOSTILE, 1.6f, 1.2f);
             }
             case SPIN -> WitchVfx.send(level, WitchVfx.CHARGE, c, yaw, 3.0f, SPIN_START);
@@ -425,7 +425,7 @@ public final class WitchCombat {
 
     private void summonMoonbeam(ServerLevel level) {
         BlockPos pos = BlockPos.containing(this.boss.getX(), this.boss.getY() + 4.0, this.boss.getZ());
-        MoonbeamEntity beam = MokelsBossfightSaphyraModEntities.MOONBEAM.get().spawn(level, pos, MobSpawnType.MOB_SUMMONED);
+        MoonbeamEntity beam = MokelsBossfightSaphyraModEntities.MOONBEAM.get().spawn(level, pos, EntitySpawnReason.MOB_SUMMONED);
         if (beam != null) {
             beam.setDeltaMovement(0.0, 0.0, 0.0);
             AttributeInstance attack = beam.getAttribute(Attributes.ATTACK_DAMAGE);
@@ -571,7 +571,7 @@ public final class WitchCombat {
     }
 
     private DamageSource sourcelessDamage(ServerLevel level) {
-        return new DamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK));
+        return new DamageSource(level.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE).get(DamageTypes.MOB_ATTACK).orElseThrow());
     }
 
     private void hitAround(ServerLevel level, DamageSource source, Vec3 center, double radius, double multiplier, double grief) {
@@ -595,7 +595,7 @@ public final class WitchCombat {
             MokelsBossfightSaphyraMod.LOGGER.info("[WitchHitDebug] skill={} tick={} radius={} dist={} damage={}",
                     tag, this.skillTick, radius, String.format("%.2f", Math.sqrt(e.distanceToSqr(this.boss.getX(), e.getY(), this.boss.getZ()))), damage);
         }
-        e.hurt(source, damage);
+        e.hurtOrSimulate(source, damage);
         if (grief > 0.0 && e instanceof Player player) {
             MokelsBossfightSaphyraModVariables.PlayerVariables vars = MokelsBossfightSaphyraModVariables.getPlayerVariables(player);
             vars.Grief += grief;
@@ -617,7 +617,7 @@ public final class WitchCombat {
 
     private void tickMusic(ServerLevel level, LivingEntity target) {
         CompoundTag data = this.boss.getPersistentData();
-        double music = data.getDouble("music");
+        double music = data.getDoubleOr("music", 0.0);
         if (target != null) {
             music += 1.0;
             data.putDouble("music", music);
@@ -634,7 +634,7 @@ public final class WitchCombat {
     }
 
     private void sound(ServerLevel level, String id, SoundSource source, float volume, float pitch) {
-        SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse(id));
+        SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(Identifier.parse(id)).map(net.minecraft.core.Holder::value).orElseThrow();
         if (event != null) {
             level.playSound(null, this.boss.getX(), this.boss.getY(), this.boss.getZ(), event, source, volume, pitch);
         }
@@ -650,10 +650,10 @@ public final class WitchCombat {
     }
 
     public void load(CompoundTag tag) {
-        this.timeline = tag.getInt("Timeline");
-        this.pendingPoint = tag.contains("Pending") ? tag.getInt("Pending") : -1;
-        this.phase2 = tag.getBoolean("Phase2");
-        this.phaseShiftTicks = tag.getInt("PhaseShift");
+        this.timeline = tag.getIntOr("Timeline", 0);
+        this.pendingPoint = tag.contains("Pending") ? tag.getIntOr("Pending", 0) : -1;
+        this.phase2 = tag.getBooleanOr("Phase2", false);
+        this.phaseShiftTicks = tag.getIntOr("PhaseShift", 0);
         this.skill = null;
         this.skillTick = 0;
         this.boss.setPhase2Visual(this.phase2 && this.phaseShiftTicks <= PHASE_SHIFT_TICKS - PHASE_BURST_TICK);

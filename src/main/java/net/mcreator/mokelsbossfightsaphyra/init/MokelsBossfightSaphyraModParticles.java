@@ -11,6 +11,7 @@
  */
 package com.hp.saphyrareborn.init;
 
+import net.neoforged.api.distmarker.Dist;
 import com.hp.saphyrareborn.client.particle.DisgustOmenParticleParticle;
 import com.hp.saphyrareborn.client.particle.GhostlyFlameParticleParticle;
 import com.hp.saphyrareborn.client.particle.GoldenParticleParticle;
@@ -21,13 +22,12 @@ import com.hp.saphyrareborn.client.particle.RedfireParticleParticle;
 import com.hp.saphyrareborn.client.particle.RedflameParticleParticle;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModParticleTypes;
 import net.minecraft.core.particles.ParticleType;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.common.EventBusSubscriber;
 
-@EventBusSubscriber(bus=EventBusSubscriber.Bus.MOD, value={Dist.CLIENT})
+@EventBusSubscriber(value={Dist.CLIENT})
 public class MokelsBossfightSaphyraModParticles {
     @SubscribeEvent
     public static void registerParticles(RegisterParticleProvidersEvent event) {

@@ -22,54 +22,20 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 
 public class SwordTearAndDropletItem
-extends SwordItem {
+extends Item {
     public SwordTearAndDropletItem() {
-        super(new Tier(){
-
-            public int getUses() {
-                return 0;
-            }
-
-            public float getSpeed() {
-                return 2.0f;
-            }
-
-            public float getAttackDamageBonus() {
-                return 1.0f;
-            }
-
-            public int getLevel() {
-                return 0;
-            }
-
-            public net.minecraft.tags.TagKey<net.minecraft.world.level.block.Block> getIncorrectBlocksForDrops() { return net.minecraft.tags.BlockTags.INCORRECT_FOR_WOODEN_TOOL; }
-
-            public int getEnchantmentValue() {
-                return 15;
-            }
-
-            public Ingredient getRepairIngredient() {
-                return Ingredient.EMPTY;
-            }
-        }, WeaponProperties.sword(1.0f, -2.4f));
+        super(WeaponProperties.sword(1.0f, -2.4f));
     }
 
-    public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
-        boolean retval = super.hurtEnemy(itemstack, entity, sourceentity);
-        return retval;
-    }
-
-    public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
-        super.appendHoverText(itemstack, context, list, flag);
-        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.19fa7ee0e5c3"));
+    public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, net.minecraft.world.item.component.TooltipDisplay display, java.util.function.Consumer<Component> list, TooltipFlag flag) {
+        super.appendHoverText(itemstack, context, display, list, flag);
+        list.accept((Component)Component.translatable("text.saphyra_reborn.hardcoded.19fa7ee0e5c3"));
     }
 }
 

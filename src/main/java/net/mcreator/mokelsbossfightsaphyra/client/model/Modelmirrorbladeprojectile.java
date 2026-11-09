@@ -13,7 +13,7 @@
  *  net.minecraft.client.model.geom.builders.LayerDefinition
  *  net.minecraft.client.model.geom.builders.MeshDefinition
  *  net.minecraft.client.model.geom.builders.PartDefinition
- *  net.minecraft.resources.ResourceLocation
+ *  net.minecraft.resources.Identifier
  *  net.minecraft.world.entity.Entity
  */
 package com.hp.saphyrareborn.client.model;
@@ -29,15 +29,15 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 
-public class Modelmirrorbladeprojectile<T extends Entity>
-extends EntityModel<T> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "modelmirrorbladeprojectile"), "main");
+public class Modelmirrorbladeprojectile extends EntityModel<net.minecraft.client.renderer.entity.state.EntityRenderState> {
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Identifier.fromNamespaceAndPath("saphyra_reborn", "modelmirrorbladeprojectile"), "main");
     public final ModelPart body;
 
     public Modelmirrorbladeprojectile(ModelPart root) {
+        super(root);
         this.body = root.getChild("body");
     }
 
@@ -48,12 +48,10 @@ extends EntityModel<T> {
         return LayerDefinition.create((MeshDefinition)meshdefinition, (int)64, (int)64);
     }
 
-    public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(net.minecraft.client.renderer.entity.state.EntityRenderState state) {
     }
 
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
-        this.body.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
-    }
+    
 }
 
 

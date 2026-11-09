@@ -1,5 +1,6 @@
 package com.hp.saphyrareborn.highlight;
 
+import net.neoforged.api.distmarker.Dist;
 import com.hp.saphyrareborn.MokelsBossfightSaphyraMod;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModBlocks;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModItems;
@@ -13,7 +14,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
@@ -80,7 +80,7 @@ public final class KeyLockHighlight {
         }
         timer = 0;
         List<BlockPos> found = new ArrayList<>();
-        int pcx = player.chunkPosition().x, pcz = player.chunkPosition().z;
+        int pcx = player.chunkPosition().x(), pcz = player.chunkPosition().z();
         for (int dx = -CHUNK_RADIUS; dx <= CHUNK_RADIUS; dx++) {
             for (int dz = -CHUNK_RADIUS; dz <= CHUNK_RADIUS; dz++) {
                 LevelChunk chunk = level.getChunkSource().getChunk(pcx + dx, pcz + dz, false);

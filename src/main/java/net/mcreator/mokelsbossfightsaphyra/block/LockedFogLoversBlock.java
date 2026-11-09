@@ -46,7 +46,7 @@ import net.minecraft.world.phys.BlockHitResult;
 public class LockedFogLoversBlock
 extends WallBlock {
     public LockedFogLoversBlock() {
-        super(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT).sound(SoundType.GLASS).strength(-1.0f, 3600000.0f).lightLevel(s -> 5).pushReaction(PushReaction.IGNORE).hasPostProcess((bs, br, bp) -> true).emissiveRendering((bs, br, bp) -> true).forceSolidOn());
+        super(BlockBehaviour.Properties.of().setId(com.hp.saphyrareborn.init.RegistryIds.block).instrument(NoteBlockInstrument.HAT).sound(SoundType.GLASS).strength(-1.0f, 3600000.0f).lightLevel(s -> 5).pushReaction(PushReaction.IGNORE).emissiveRendering((bs, br, bp) -> true).forceSolidOn());
     }
 
     public PathType getBlockPathType(BlockState state, BlockGetter world, BlockPos pos, Mob entity) {

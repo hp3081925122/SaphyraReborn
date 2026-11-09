@@ -6,7 +6,7 @@
  *  net.minecraft.commands.CommandSourceStack
  *  net.minecraft.core.BlockPos
  *  net.minecraft.network.chat.Component
- *  net.minecraft.resources.ResourceLocation
+ *  net.minecraft.resources.Identifier
  *  net.minecraft.server.level.ServerLevel
  *  net.minecraft.sounds.SoundEvent
  *  net.minecraft.sounds.SoundSource
@@ -25,7 +25,7 @@ import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -52,17 +52,17 @@ public class MothbossEntityDiesProcedure {
             }
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
-                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @a title {\"translate\":\"text.saphyra_reborn.title.emerged_victorious\",\"fallback\":\"EMERGED VICTORIOUS\",\"bold\":true,\"color\":\"#FFCF25\"}");
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level1, net.minecraft.server.permissions.LevelBasedPermissionSet.OWNER, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @a title {\"translate\":\"text.saphyra_reborn.title.emerged_victorious\",\"fallback\":\"EMERGED VICTORIOUS\",\"bold\":true,\"color\":\"#FFCF25\"}");
             }
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
-                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @a times 20 40 20");
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level1, net.minecraft.server.permissions.LevelBasedPermissionSet.OWNER, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @a times 20 40 20");
             }
             if (world instanceof Level _soundLevel) {
                 if (!_soundLevel.isClientSide()) {
-                    _soundLevel.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:bosskilled")), SoundSource.MASTER, 2.0f, 1.0f);
+                    _soundLevel.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(Identifier.parse("saphyra_reborn:bosskilled")).map(net.minecraft.core.Holder::value).orElseThrow(), SoundSource.MASTER, 2.0f, 1.0f);
                 } else {
-                    _soundLevel.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:bosskilled")), SoundSource.MASTER, 2.0f, 1.0f, false);
+                    _soundLevel.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(Identifier.parse("saphyra_reborn:bosskilled")).map(net.minecraft.core.Holder::value).orElseThrow(), SoundSource.MASTER, 2.0f, 1.0f, false);
                 }
             }
         });

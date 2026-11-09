@@ -1,8 +1,8 @@
 package com.hp.saphyrareborn.procedures;
 
 import javax.annotation.Nullable;
+import com.hp.saphyrareborn.client.ItemActivation;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModItems;
-import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
@@ -49,7 +49,7 @@ public class RightclickSinisterBagProcedure {
             ItemEntity entityToSpawn;
             ServerLevel _level;
             if (world.isClientSide()) {
-                Minecraft.getInstance().gameRenderer.displayItemActivation(new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.SINISTER_BAG.get()));
+                ItemActivation.show(new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.SINISTER_BAG.get()));
             }
             if (entity instanceof Player) {
                 Player _player = (Player)entity;

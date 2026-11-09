@@ -1,6 +1,6 @@
 package com.hp.saphyrareborn.boss;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -9,7 +9,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public final class BossCastLock {
-    private static final ResourceLocation LOCK_ID = ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "cast_lock");
+    private static final Identifier LOCK_ID = Identifier.fromNamespaceAndPath("saphyra_reborn", "cast_lock");
     private static final String LOCK_KEY = "SaphyraCastLockUntil";
     private static final String SHIELD_KEY = "SaphyraShieldUntil";
 
@@ -41,7 +41,7 @@ public final class BossCastLock {
     }
 
     public static boolean blocksDamage(LivingEntity entity, DamageSource source) {
-        return entity.level().getGameTime() < entity.getPersistentData().getLong(SHIELD_KEY)
+        return entity.level().getGameTime() < entity.getPersistentData().getLongOr(SHIELD_KEY, 0L)
                 && !source.is(DamageTypeTags.BYPASSES_EFFECTS)
                 && !source.is(DamageTypeTags.BYPASSES_RESISTANCE);
     }
@@ -50,12 +50,12 @@ public final class BossCastLock {
         if (entity.level().isClientSide()) {
             return;
         }
-        apply(entity, entity.level().getGameTime() < entity.getPersistentData().getLong(LOCK_KEY));
+        apply(entity, entity.level().getGameTime() < entity.getPersistentData().getLongOr(LOCK_KEY, 0L));
     }
 
     private static void extend(LivingEntity entity, String key, int ticks) {
         long until = entity.level().getGameTime() + ticks;
-        if (entity.getPersistentData().getLong(key) < until) {
+        if (entity.getPersistentData().getLongOr(key, 0L) < until) {
             entity.getPersistentData().putLong(key, until);
         }
     }

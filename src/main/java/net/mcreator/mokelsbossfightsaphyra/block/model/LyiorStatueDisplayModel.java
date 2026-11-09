@@ -2,27 +2,29 @@
  * Decompiled with CFR 0.152.
  * 
  * Could not load the following classes:
- *  net.minecraft.resources.ResourceLocation
- *  software.bernie.geckolib.model.GeoModel
+ *  net.minecraft.resources.Identifier
+ *  com.geckolib.model.GeoModel
  */
 package com.hp.saphyrareborn.block.model;
 
+import com.geckolib.renderer.base.GeoRenderState;
+
 import com.hp.saphyrareborn.block.display.LyiorStatueDisplayItem;
-import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib.model.GeoModel;
+import net.minecraft.resources.Identifier;
+import com.geckolib.model.GeoModel;
 
 public class LyiorStatueDisplayModel
 extends GeoModel<LyiorStatueDisplayItem> {
-    public ResourceLocation getAnimationResource(LyiorStatueDisplayItem animatable) {
-        return ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "animations/lyiorstatue.animation.json");
+    public Identifier getAnimationResource(LyiorStatueDisplayItem animatable) {
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "animations/lyiorstatue.animation.json");
     }
 
-    public ResourceLocation getModelResource(LyiorStatueDisplayItem animatable) {
-        return ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "geo/lyiorstatue.geo.json");
+    public Identifier getModelResource(GeoRenderState state) {
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "geo/lyiorstatue.geo.json");
     }
 
-    public ResourceLocation getTextureResource(LyiorStatueDisplayItem entity) {
-        return ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "textures/block/lyiorstatuetexture.png");
+    public Identifier getTextureResource(GeoRenderState state) {
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "textures/block/lyiorstatuetexture.png");
     }
 }
 

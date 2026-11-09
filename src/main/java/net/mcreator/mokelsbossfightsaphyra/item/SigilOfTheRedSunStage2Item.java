@@ -16,7 +16,7 @@ import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -28,19 +28,19 @@ import net.minecraft.world.level.Level;
 public class SigilOfTheRedSunStage2Item
 extends Item {
     public SigilOfTheRedSunStage2Item() {
-        super(new Item.Properties().stacksTo(1).rarity(Rarity.COMMON));
+        super(new Item.Properties().setId(com.hp.saphyrareborn.init.RegistryIds.item).stacksTo(1).rarity(Rarity.COMMON));
     }
 
-    public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
-        super.appendHoverText(itemstack, context, list, flag);
-        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.8c7a1e042576"));
+    public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, net.minecraft.world.item.component.TooltipDisplay display, java.util.function.Consumer<Component> list, TooltipFlag flag) {
+        super.appendHoverText(itemstack, context, display, list, flag);
+        list.accept((Component)Component.translatable("text.saphyra_reborn.hardcoded.8c7a1e042576"));
         SigilLocate.hint(list, SigilLocate.HALLOWED_TOWERS);
-        list.add((Component)Component.literal((String)""));
-        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.d38b85ee6dba"));
+        list.accept((Component)Component.literal((String)""));
+        list.accept((Component)Component.translatable("text.saphyra_reborn.hardcoded.d38b85ee6dba"));
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
         return SigilLocate.use(level, player, hand, SigilLocate.HALLOWED_TOWERS);
     }
 

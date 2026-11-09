@@ -1,5 +1,6 @@
 package com.hp.saphyrareborn.boss.nameless.client;
 
+import net.neoforged.api.distmarker.Dist;
 import com.hp.saphyrareborn.MokelsBossfightSaphyraMod;
 import com.hp.saphyrareborn.boss.client.BossVfxRender;
 import com.hp.saphyrareborn.boss.client.BossVfxRender.Painter;
@@ -24,7 +25,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
@@ -63,7 +63,7 @@ public final class NamelessVfxClient {
         Iterator<Fx> it = ACTIVE.iterator();
         while (it.hasNext()) {
             Fx fx = it.next();
-            fx.tickParticles(level, level.random);
+            fx.tickParticles(level, level.getRandom());
             fx.age++;
             if (fx.age > fx.life) {
                 it.remove();
@@ -72,12 +72,12 @@ public final class NamelessVfxClient {
     }
 
     @SubscribeEvent
-    public static void onRender(RenderLevelStageEvent event) {
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES || ACTIVE.isEmpty()) {
+    public static void onRender(RenderLevelStageEvent.AfterTranslucentParticles event) {
+        if (ACTIVE.isEmpty()) {
             return;
         }
-        Vec3 cam = event.getCamera().getPosition();
-        float partial = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        Vec3 cam = Minecraft.getInstance().gameRenderer.getMainCamera().position();
+        float partial = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
         PoseStack pose = event.getPoseStack();
         pose.pushPose();
         pose.translate(-cam.x, -cam.y, -cam.z);
@@ -219,14 +219,14 @@ public final class NamelessVfxClient {
                 case NamelessVfx.SHIELD_BREAK -> {
                     if (this.age == 0) {
                         double px = this.x + this.fx * 1.2, py = this.y + 1.6, pz = this.z + this.fz * 1.2;
-                        ItemParticleOption shard = new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.SHIELD));
+                        ItemParticleOption shard = new ItemParticleOption(ParticleTypes.ITEM, Items.SHIELD);
                         for (int i = 0; i < 12; i++) {
                             level.addParticle(shard, px, py, pz, r.nextGaussian() * 0.25, 0.15 + r.nextDouble() * 0.3, r.nextGaussian() * 0.25);
                         }
                         for (int i = 0; i < 8; i++) {
                             level.addParticle(ParticleTypes.CRIT, px, py, pz, r.nextGaussian() * 0.4, r.nextGaussian() * 0.4, r.nextGaussian() * 0.4);
                         }
-                        level.addParticle(ParticleTypes.FLASH, px, py, pz, 0.0, 0.0, 0.0);
+                        level.addParticle(net.minecraft.core.particles.ColorParticleOption.create(ParticleTypes.FLASH, 0xFFFFFF), px, py, pz, 0.0, 0.0, 0.0);
                         BossVfxRender.addShake(this.x, this.y, this.z, 0.6f, 16.0);
                     }
                 }
@@ -251,7 +251,7 @@ public final class NamelessVfxClient {
                             level.addParticle(redFlame(), this.x, this.y + 0.5 + r.nextDouble() * 2.5, this.z, Math.cos(a) * speed, r.nextGaussian() * 0.05, Math.sin(a) * speed);
                         }
                         BossVfxRender.debris(level, r, this.x, this.y, this.z, 20, 0.45);
-                        level.addParticle(ParticleTypes.FLASH, this.x, this.y + 1.5, this.z, 0.0, 0.0, 0.0);
+                        level.addParticle(net.minecraft.core.particles.ColorParticleOption.create(ParticleTypes.FLASH, 0xFFFFFF), this.x, this.y + 1.5, this.z, 0.0, 0.0, 0.0);
                         BossVfxRender.addShake(this.x, this.y, this.z, 1.2f, 32.0);
                     }
                 }

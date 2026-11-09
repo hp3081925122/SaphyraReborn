@@ -39,20 +39,21 @@
  *  net.minecraft.world.level.LevelAccessor
  *  net.neoforged.network.NetworkHooks
  *  net.neoforged.network.PlayMessages$SpawnEntity
- *  software.bernie.geckolib.animatable.GeoEntity
- *  software.bernie.geckolib.animatable.GeoAnimatable
- *  software.bernie.geckolib.animatable.instance.AnimatableInstanceCache
- *  software.bernie.geckolib.animation.AnimatableManager$ControllerRegistrar
- *  software.bernie.geckolib.animation.AnimationController
- *  software.bernie.geckolib.animation.AnimationController$State
- *  software.bernie.geckolib.animation.AnimationState
- *  software.bernie.geckolib.animation.RawAnimation
- *  software.bernie.geckolib.animation.PlayState
- *  software.bernie.geckolib.util.GeckoLibUtil
+ *  com.geckolib.animatable.GeoEntity
+ *  com.geckolib.animatable.GeoAnimatable
+ *  com.geckolib.animatable.instance.AnimatableInstanceCache
+ *  com.geckolib.animatable.manager.AnimatableManager$ControllerRegistrar
+ *  com.geckolib.animation.AnimationController
+ *  com.geckolib.animation.AnimationController$State
+ *  com.geckolib.animation.state.AnimationTest
+ *  com.geckolib.animation.RawAnimation
+ *  com.geckolib.animation.object.PlayState
+ *  com.geckolib.util.GeckoLibUtil
  */
 package com.hp.saphyrareborn.entity;
 
-import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModEntities;
+import com.hp.saphyrareborn.gecko.GeckoAnim;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -85,15 +86,15 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.GeoAnimatable;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.AnimationState;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.util.GeckoLibUtil;
+import com.geckolib.animatable.GeoEntity;
+import com.geckolib.animatable.GeoAnimatable;
+import com.geckolib.animatable.instance.AnimatableInstanceCache;
+import com.geckolib.animatable.manager.AnimatableManager;
+import com.geckolib.animation.AnimationController;
+import com.geckolib.animation.state.AnimationTest;
+import com.geckolib.animation.RawAnimation;
+import com.geckolib.animation.object.PlayState;
+import com.geckolib.util.GeckoLibUtil;
 
 public class PuppetOfYivaNemorEntity
 extends Monster
@@ -109,7 +110,7 @@ implements GeoEntity {
     private boolean swinging;
     private boolean lastloop;
     private long lastSwing;
-    private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.YELLOW, BossEvent.BossBarOverlay.NOTCHED_6);
+    private final ServerBossEvent bossInfo = new ServerBossEvent(this.getUUID(), this.getDisplayName(), BossEvent.BossBarColor.YELLOW, BossEvent.BossBarOverlay.NOTCHED_6);
 
     public PuppetOfYivaNemorEntity(EntityType<PuppetOfYivaNemorEntity> type, Level world) {
         super(type, world);
@@ -154,34 +155,32 @@ implements GeoEntity {
         return false;
     }
 
-    public boolean hurt(DamageSource source, float amount) {
+    public boolean hurtServer(net.minecraft.server.level.ServerLevel serverLevel, DamageSource source, float amount) {
         if (source.is(DamageTypes.FALL)) {
             return false;
         }
         if (!this.level().isClientSide() && this.combat.isInvulnerable() && !source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return false;
         }
-        return super.hurt(source, amount);
+        return super.hurtServer(serverLevel, source, amount);
     }
 
-    public void addAdditionalSaveData(CompoundTag compound) {
+    public void addAdditionalSaveData(net.minecraft.world.level.storage.ValueOutput compound) {
         super.addAdditionalSaveData(compound);
         compound.putString("Texture", this.getTexture());
         compound.putBoolean("Dataanimations", ((Boolean)this.entityData.get(DATA_animations)).booleanValue());
-        compound.put("PuppetCombat", this.combat.save());
+        compound.store("PuppetCombat", net.minecraft.nbt.CompoundTag.CODEC, this.combat.save());
     }
 
-    public void readAdditionalSaveData(CompoundTag compound) {
+    public void readAdditionalSaveData(net.minecraft.world.level.storage.ValueInput compound) {
         super.readAdditionalSaveData(compound);
-        if (compound.contains("Texture")) {
-            this.setTexture(compound.getString("Texture"));
+        if (compound.keySet().contains("Texture")) {
+            this.setTexture(compound.getStringOr("Texture", ""));
         }
-        if (compound.contains("Dataanimations")) {
-            this.entityData.set(DATA_animations,compound.getBoolean("Dataanimations"));
+        if (compound.keySet().contains("Dataanimations")) {
+            this.entityData.set(DATA_animations,compound.getBooleanOr("Dataanimations", false));
         }
-        if (compound.contains("PuppetCombat")) {
-            this.combat.load(compound.getCompound("PuppetCombat"));
-        }
+        compound.read("PuppetCombat", net.minecraft.nbt.CompoundTag.CODEC).ifPresent(this.combat::load);
     }
 
     @Override
@@ -190,7 +189,7 @@ implements GeoEntity {
     }
 
     @Override
-    public boolean doHurtTarget(Entity target) {
+    public boolean doHurtTarget(net.minecraft.server.level.ServerLevel serverLevel, Entity target) {
         return false;
     }
 
@@ -275,8 +274,8 @@ implements GeoEntity {
         this.bossInfo.removePlayer(player);
     }
 
-    public void customServerAiStep() {
-        super.customServerAiStep();
+    public void customServerAiStep(net.minecraft.server.level.ServerLevel serverLevel) {
+        super.customServerAiStep(serverLevel);
         this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
     }
 
@@ -294,12 +293,12 @@ implements GeoEntity {
         return builder;
     }
 
-    private PlayState movementPredicate(AnimationState event) {
+    private PlayState movementPredicate(AnimationTest event) {
         if (this.isDeadOrDying()) {
             return event.setAndContinue(RawAnimation.begin().thenPlay("death"));
         }
         if (!this.isProcedureAnimating()) {
-            if (event.isMoving() || !(event.getLimbSwingAmount() > -0.15f) || !(event.getLimbSwingAmount() < 0.15f)) {
+            if (event.isMoving() || !(GeckoAnim.limb(event) > -0.15f) || !(GeckoAnim.limb(event) < 0.15f)) {
                 return event.setAndContinue(RawAnimation.begin().thenLoop("walk"));
             }
             return event.setAndContinue(RawAnimation.begin().thenLoop("idle"));
@@ -307,8 +306,8 @@ implements GeoEntity {
         return PlayState.STOP;
     }
 
-    private PlayState procedurePredicate(AnimationState event) {
-        return event.getController().isPlayingTriggeredAnimation() && !this.isDeadOrDying() ? PlayState.CONTINUE : PlayState.STOP;
+    private PlayState procedurePredicate(AnimationTest event) {
+        return event.controller().isPlayingTriggeredAnimation() && !this.isDeadOrDying() ? PlayState.CONTINUE : PlayState.STOP;
     }
 
     private boolean isProcedureAnimating() {
@@ -327,7 +326,7 @@ implements GeoEntity {
                 level.addFreshEntity(drop);
                 com.hp.saphyrareborn.procedures.LinaraClockTowerProcedure.onPuppetDefeated(level, this);
             }
-            this.dropExperience(this.getLastAttacker());
+            if (this.level() instanceof net.minecraft.server.level.ServerLevel _xpLevel) this.dropExperience(_xpLevel, this.getLastAttacker());
             this.remove(Entity.RemovalReason.KILLED);
         }
     }
@@ -341,8 +340,8 @@ implements GeoEntity {
     }
 
     public void registerControllers(AnimatableManager.ControllerRegistrar data) {
-        data.add(new AnimationController[]{new AnimationController((GeoAnimatable)this, "movement", 2, this::movementPredicate)});
-        AnimationController<?> procedure = new AnimationController<>(this, "procedure", 2, this::procedurePredicate).receiveTriggeredAnimations();
+        data.add(new AnimationController[]{new AnimationController<>("movement", 2, this::movementPredicate)});
+        AnimationController<?> procedure = new AnimationController<>("procedure", 2, this::procedurePredicate).receiveTriggeredAnimations();
         for (String name : TRIGGERABLE_ANIMATIONS) {
             procedure.triggerableAnim(name, RawAnimation.begin().thenPlay(name));
         }

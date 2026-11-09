@@ -15,7 +15,7 @@
  *  net.minecraft.world.entity.EntityType
  *  net.minecraft.world.entity.LivingEntity
  *  net.minecraft.world.entity.Mob
- *  net.minecraft.world.entity.MobSpawnType
+ *  net.minecraft.world.entity.EntitySpawnReason
  *  net.minecraft.world.entity.player.Player
  *  net.minecraft.world.level.GameType
  *  net.minecraft.world.level.LevelAccessor
@@ -30,7 +30,6 @@ import com.hp.saphyrareborn.MokelsBossfightSaphyraMod;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModEntities;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModMobEffects;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModParticleTypes;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -43,7 +42,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.LevelAccessor;
@@ -63,9 +62,9 @@ public class SaphyraSpawnOnEntityTickUpdateProcedure {
             livingEntity = null;
         }
         if (livingEntity != null) {
-            entity.getPersistentData().putDouble("IA", entity.getPersistentData().getDouble("IA") + 1.0);
+            entity.getPersistentData().putDouble("IA", entity.getPersistentData().getDoubleOr("IA", 0.0) + 1.0);
         }
-        if (entity.getPersistentData().getDouble("IA") == 1.0) {
+        if (entity.getPersistentData().getDoubleOr("IA", 0.0) == 1.0) {
             MokelsBossfightSaphyraMod.queueServerWork(20, () -> {
                 if (entity.isAlive()) {
                     if (!world.isClientSide() && world.getServer() != null) {
@@ -114,7 +113,7 @@ public class SaphyraSpawnOnEntityTickUpdateProcedure {
                                     }
                                     if (world instanceof ServerLevel) {
                                         _level5 = (ServerLevel)world;
-                                        Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.WITCHBOSS.get()).spawn(_level5, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), MobSpawnType.MOB_SUMMONED);
+                                        Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.WITCHBOSS.get()).spawn(_level5, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), EntitySpawnReason.MOB_SUMMONED);
                                         if (entityToSpawn != null) {
                                             entityToSpawn.setYRot(entity.getYRot());
                                             entityToSpawn.setYBodyRot(entity.getYRot());
@@ -144,10 +143,6 @@ public class SaphyraSpawnOnEntityTickUpdateProcedure {
                     if (_ent instanceof ServerPlayer) {
                         ServerPlayer _serverPlayer = (ServerPlayer)_ent;
                         return _serverPlayer.gameMode.getGameModeForPlayer() == GameType.SURVIVAL;
-                    }
-                    if (_ent.level().isClientSide() && _ent instanceof Player) {
-                        Player _player = (Player)_ent;
-                        return Minecraft.getInstance().getConnection().getPlayerInfo(_player.getGameProfile().getId()) != null && Minecraft.getInstance().getConnection().getPlayerInfo(_player.getGameProfile().getId()).getGameMode() == GameType.SURVIVAL;
                     }
                     return false;
                 }

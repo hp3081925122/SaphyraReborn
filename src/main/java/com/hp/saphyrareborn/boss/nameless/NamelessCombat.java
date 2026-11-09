@@ -14,7 +14,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -587,7 +587,7 @@ public final class NamelessCombat {
                 com.hp.saphyrareborn.MokelsBossfightSaphyraMod.LOGGER.info("[NamelessHitDebug] skill={} tick={} radius={} edgeDist={} centerDist={} dy={} damage={}",
                         this.skill, this.skillTick, radius, String.format("%.2f", dist), String.format("%.2f", Math.sqrt(center.distanceToSqr(e.getX(), center.y, e.getZ()))), String.format("%.2f", e.getY() - center.y), damage);
             }
-            e.hurt(source, damage);
+            e.hurtOrSimulate(source, damage);
             if (e instanceof Player player) {
                 addRotting(player, rot);
             }
@@ -606,7 +606,7 @@ public final class NamelessCombat {
 
     private void tickMusic(ServerLevel level, LivingEntity target) {
         CompoundTag data = this.boss.getPersistentData();
-        double music = data.getDouble("music");
+        double music = data.getDoubleOr("music", 0.0);
         if (target != null) {
             music += 1.0;
             data.putDouble("music", music);
@@ -623,7 +623,7 @@ public final class NamelessCombat {
     }
 
     private void sound(ServerLevel level, String id, SoundSource source, float volume, float pitch) {
-        SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse(id));
+        SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(Identifier.parse(id)).map(net.minecraft.core.Holder::value).orElseThrow();
         if (event != null) {
             level.playSound(null, this.boss.getX(), this.boss.getY(), this.boss.getZ(), event, source, volume, pitch);
         }
@@ -657,18 +657,18 @@ public final class NamelessCombat {
     }
 
     public void load(CompoundTag tag) {
-        this.timeline = tag.getInt("Timeline");
-        this.skill = tag.contains("Skill") ? NamelessSkill.byName(tag.getString("Skill")) : null;
-        this.skillTick = tag.getInt("SkillTick");
-        this.repeats = tag.getInt("Repeats");
-        this.pendingPoint = tag.contains("Pending") ? tag.getInt("Pending") : -1;
-        this.phase2 = tag.getBoolean("Phase2");
-        this.phaseShiftTicks = tag.getInt("PhaseShift");
-        this.staggerTicks = tag.getInt("Stagger");
-        this.blockedDamage = tag.getFloat("Blocked");
-        this.rotDirX = tag.getDouble("RotX");
-        this.rotDirZ = tag.getDouble("RotZ");
-        this.rotSide = tag.getInt("RotSide");
+        this.timeline = tag.getIntOr("Timeline", 0);
+        this.skill = tag.contains("Skill") ? NamelessSkill.byName(tag.getStringOr("Skill", "")) : null;
+        this.skillTick = tag.getIntOr("SkillTick", 0);
+        this.repeats = tag.getIntOr("Repeats", 0);
+        this.pendingPoint = tag.contains("Pending") ? tag.getIntOr("Pending", 0) : -1;
+        this.phase2 = tag.getBooleanOr("Phase2", false);
+        this.phaseShiftTicks = tag.getIntOr("PhaseShift", 0);
+        this.staggerTicks = tag.getIntOr("Stagger", 0);
+        this.blockedDamage = tag.getFloatOr("Blocked", 0.0f);
+        this.rotDirX = tag.getDoubleOr("RotX", 0.0);
+        this.rotDirZ = tag.getDoubleOr("RotZ", 0.0);
+        this.rotSide = tag.getIntOr("RotSide", 0);
         this.boss.setPhase2Visual(this.phase2 && this.phaseShiftTicks <= PHASE_SHIFT_TICKS - PHASE_ROAR_TICK);
     }
 }

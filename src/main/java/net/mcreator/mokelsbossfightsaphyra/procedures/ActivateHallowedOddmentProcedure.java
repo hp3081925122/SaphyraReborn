@@ -11,7 +11,7 @@
  *  net.minecraft.world.entity.Entity
  *  net.minecraft.world.entity.EntityType
  *  net.minecraft.world.entity.LivingEntity
- *  net.minecraft.world.entity.MobSpawnType
+ *  net.minecraft.world.entity.EntitySpawnReason
  *  net.minecraft.world.entity.player.Player
  *  net.minecraft.world.item.ItemStack
  *  net.minecraft.world.level.ItemLike
@@ -34,7 +34,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
@@ -93,7 +93,7 @@ public class ActivateHallowedOddmentProcedure {
                 }
                 if (world instanceof ServerLevel) {
                     _level2 = (ServerLevel)world;
-                    Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.LINARA_HALLOWED_TOWER.get()).spawn(_level2, BlockPos.containing((double)x, (double)y, (double)z), MobSpawnType.MOB_SUMMONED);
+                    Entity entityToSpawn = ((EntityType)MokelsBossfightSaphyraModEntities.LINARA_HALLOWED_TOWER.get()).spawn(_level2, BlockPos.containing((double)x, (double)y, (double)z), EntitySpawnReason.MOB_SUMMONED);
                     if (entityToSpawn != null) {
                         entityToSpawn.setDeltaMovement(0.0, 0.0, 0.0);
                     }

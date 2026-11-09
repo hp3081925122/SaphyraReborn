@@ -5,7 +5,7 @@ import java.util.ArrayDeque;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -39,7 +39,7 @@ public record MothVfx(byte kind, double x, double y, double z, float yaw, float 
     private static final double SEND_RADIUS = 96.0;
     public static final ArrayDeque<MothVfx> INBOX = new ArrayDeque<>();
 
-    public static final Type<MothVfx> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(MokelsBossfightSaphyraMod.MODID, "moth_vfx"));
+    public static final Type<MothVfx> TYPE = new Type<>(Identifier.fromNamespaceAndPath(MokelsBossfightSaphyraMod.MODID, "moth_vfx"));
     public static final StreamCodec<FriendlyByteBuf, MothVfx> CODEC = StreamCodec.ofMember(MothVfx::write, MothVfx::read);
 
     private static MothVfx read(FriendlyByteBuf buf) {

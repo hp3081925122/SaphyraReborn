@@ -17,7 +17,6 @@
  */
 package com.hp.saphyrareborn.procedures;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
@@ -42,21 +41,17 @@ public class RotEffectEffectStartedappliedProcedure {
                     ServerPlayer _serverPlayer = (ServerPlayer)_ent;
                     return _serverPlayer.gameMode.getGameModeForPlayer() == GameType.SURVIVAL;
                 }
-                if (_ent.level().isClientSide() && _ent instanceof Player) {
-                    Player _player = (Player)_ent;
-                    return Minecraft.getInstance().getConnection().getPlayerInfo(_player.getGameProfile().getId()) != null && Minecraft.getInstance().getConnection().getPlayerInfo(_player.getGameProfile().getId()).getGameMode() == GameType.SURVIVAL;
-                }
                 return false;
             }
         }.checkGamemode(entity)) {
             ServerLevel _level1;
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
-                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @p times 20 20 20");
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level1, net.minecraft.server.permissions.LevelBasedPermissionSet.OWNER, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @p times 20 20 20");
             }
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
-                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level1, 4, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @p title {\"translate\":\"text.saphyra_reborn.title.rot\",\"fallback\":\"Rot\",\"color\":\"red\"}");
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level1, net.minecraft.server.permissions.LevelBasedPermissionSet.OWNER, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @p title {\"translate\":\"text.saphyra_reborn.title.rot\",\"fallback\":\"Rot\",\"color\":\"red\"}");
             }
         }
     }

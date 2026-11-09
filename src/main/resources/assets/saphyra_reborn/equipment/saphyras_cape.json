@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "saphyra_reborn:saphyras_cape"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "saphyra_reborn:saphyras_cape"
+      }
+    ]
+  }
+}

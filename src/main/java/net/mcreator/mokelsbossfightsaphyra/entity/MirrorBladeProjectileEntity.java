@@ -8,7 +8,7 @@
  *  net.minecraft.world.entity.Entity
  *  net.minecraft.world.entity.EntityType
  *  net.minecraft.world.entity.LivingEntity
- *  net.minecraft.world.entity.projectile.AbstractArrow
+ *  net.minecraft.world.entity.projectile.arrow.AbstractArrow
  *  net.minecraft.world.entity.projectile.ItemSupplier
  *  net.minecraft.world.item.ItemStack
  *  net.minecraft.world.level.ItemLike
@@ -18,7 +18,6 @@
  *  net.minecraft.world.phys.BlockHitResult
  *  net.minecraft.world.phys.EntityHitResult
  *  net.neoforged.api.distmarker.Dist
- *  net.neoforged.api.distmarker.OnlyIn
  *  net.neoforged.network.NetworkHooks
  *  net.neoforged.network.PlayMessages$SpawnEntity
  */
@@ -31,7 +30,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
@@ -40,10 +39,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
-@OnlyIn(value=Dist.CLIENT, _interface=ItemSupplier.class)
 public class MirrorBladeProjectileEntity
 extends AbstractArrow
 implements ItemSupplier {
@@ -64,7 +60,6 @@ implements ItemSupplier {
         this.setPos(entity.getX(), entity.getEyeY() - 0.1F, entity.getZ());
     }
 
-    @OnlyIn(value=Dist.CLIENT)
     public ItemStack getItem() {
         return PROJECTILE_ITEM;
     }
@@ -110,7 +105,7 @@ implements ItemSupplier {
         if (!(this.level() instanceof net.minecraft.server.level.ServerLevel level) || this.isRemoved()) {
             return;
         }
-        if (this.inGround) {
+        if (this.isInGround()) {
             this.discard();
             return;
         }
@@ -124,7 +119,7 @@ implements ItemSupplier {
             net.minecraft.world.damagesource.DamageSource source = player.damageSources().playerAttack(player);
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(BURST_RADIUS), e -> com.hp.saphyrareborn.weapon.WeaponAbilities.canHit(player, e))) {
                 if (e.distanceToSqr(this) <= BURST_RADIUS * BURST_RADIUS + e.getBbWidth()) {
-                    e.hurt(source, this.burstDamage);
+                    e.hurtOrSimulate(source, this.burstDamage);
                 }
             }
             level.playSound(null, this.getX(), this.getY(), this.getZ(), net.minecraft.sounds.SoundEvents.AMETHYST_BLOCK_BREAK, net.minecraft.sounds.SoundSource.PLAYERS, 1.2f, 1.5f);
@@ -134,17 +129,17 @@ implements ItemSupplier {
     }
 
     @Override
-    public void addAdditionalSaveData(net.minecraft.nbt.CompoundTag compound) {
+    public void addAdditionalSaveData(net.minecraft.world.level.storage.ValueOutput compound) {
         super.addAdditionalSaveData(compound);
         compound.putFloat("BurstDamage", this.burstDamage);
         compound.putInt("MirrorAge", this.mirrorAge);
     }
 
     @Override
-    public void readAdditionalSaveData(net.minecraft.nbt.CompoundTag compound) {
+    public void readAdditionalSaveData(net.minecraft.world.level.storage.ValueInput compound) {
         super.readAdditionalSaveData(compound);
-        this.burstDamage = compound.getFloat("BurstDamage");
-        this.mirrorAge = compound.getInt("MirrorAge");
+        this.burstDamage = compound.getFloatOr("BurstDamage", 0.0f);
+        this.mirrorAge = compound.getIntOr("MirrorAge", 0);
     }
 
     public static MirrorBladeProjectileEntity shoot(Level world, LivingEntity entity, RandomSource source) {

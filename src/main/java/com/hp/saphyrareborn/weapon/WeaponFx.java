@@ -5,7 +5,7 @@ import java.util.ArrayDeque;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -34,7 +34,7 @@ public record WeaponFx(byte kind, byte weapon, double x, double y, double z, flo
     private static final double SEND_RADIUS = 64.0;
     public static final ArrayDeque<WeaponFx> INBOX = new ArrayDeque<>();
 
-    public static final Type<WeaponFx> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(MokelsBossfightSaphyraMod.MODID, "weapon_fx"));
+    public static final Type<WeaponFx> TYPE = new Type<>(Identifier.fromNamespaceAndPath(MokelsBossfightSaphyraMod.MODID, "weapon_fx"));
     public static final StreamCodec<FriendlyByteBuf, WeaponFx> CODEC = StreamCodec.ofMember(WeaponFx::write, WeaponFx::read);
 
     private static WeaponFx read(FriendlyByteBuf buf) {

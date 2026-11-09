@@ -10,7 +10,7 @@ import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -34,7 +34,7 @@ public final class LinaraClockTowerProcedure {
         double x = puppet.getX(), y = puppet.getY(), z = puppet.getZ();
         MokelsBossfightSaphyraMod.queueServerWork(60, () -> {
             level.sendParticles(MokelsBossfightSaphyraModParticleTypes.PURPLE_FLAME_PARTICLE.get(), x, y, z, 250, 0.2, 1.2, 0.2, 0.1);
-            MokelsBossfightSaphyraModEntities.LINARA_CLOCK_TOWER.get().spawn(level, BlockPos.containing(x, y, z), MobSpawnType.MOB_SUMMONED);
+            MokelsBossfightSaphyraModEntities.LINARA_CLOCK_TOWER.get().spawn(level, BlockPos.containing(x, y, z), EntitySpawnReason.MOB_SUMMONED);
         });
     }
 

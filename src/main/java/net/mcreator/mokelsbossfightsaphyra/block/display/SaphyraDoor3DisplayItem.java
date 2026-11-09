@@ -7,32 +7,31 @@
  *  net.minecraft.world.item.Item$Properties
  *  net.minecraft.world.level.block.Block
  *  net.neoforged.neoforge.client.extensions.common.IClientItemExtensions
- *  software.bernie.geckolib.animatable.GeoItem
- *  software.bernie.geckolib.animatable.GeoAnimatable
- *  software.bernie.geckolib.animatable.instance.AnimatableInstanceCache
- *  software.bernie.geckolib.animation.AnimatableManager$ControllerRegistrar
- *  software.bernie.geckolib.animation.AnimationController
- *  software.bernie.geckolib.animation.AnimationState
- *  software.bernie.geckolib.animation.PlayState
- *  software.bernie.geckolib.util.GeckoLibUtil
+ *  com.geckolib.animatable.GeoItem
+ *  com.geckolib.animatable.GeoAnimatable
+ *  com.geckolib.animatable.instance.AnimatableInstanceCache
+ *  com.geckolib.animatable.manager.AnimatableManager$ControllerRegistrar
+ *  com.geckolib.animation.AnimationController
+ *  com.geckolib.animation.state.AnimationTest
+ *  com.geckolib.animation.object.PlayState
+ *  com.geckolib.util.GeckoLibUtil
  */
 package com.hp.saphyrareborn.block.display;
 
 import java.util.function.Consumer;
 import com.hp.saphyrareborn.block.renderer.SaphyraDoor3DisplayItemRenderer;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.GeoAnimatable;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.AnimationState;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.util.GeckoLibUtil;
+import com.geckolib.animatable.GeoItem;
+import com.geckolib.animatable.GeoAnimatable;
+import com.geckolib.animatable.instance.AnimatableInstanceCache;
+import com.geckolib.animatable.manager.AnimatableManager;
+import com.geckolib.animation.AnimationController;
+import com.geckolib.animation.state.AnimationTest;
+import com.geckolib.animation.object.PlayState;
+import com.geckolib.util.GeckoLibUtil;
 
 public class SaphyraDoor3DisplayItem
 extends BlockItem
@@ -43,28 +42,35 @@ implements GeoItem {
         super(block, settings);
     }
 
-    private PlayState predicate(AnimationState event) {
+    private PlayState predicate(AnimationTest event) {
         return PlayState.CONTINUE;
     }
 
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        super.initializeClient(consumer);
-        consumer.accept(new IClientItemExtensions(){
-            private final BlockEntityWithoutLevelRenderer renderer = new SaphyraDoor3DisplayItemRenderer();
-
-            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                return this.renderer;
-            }
-        });
-    }
+    
 
     public void registerControllers(AnimatableManager.ControllerRegistrar data) {
-        data.add(new AnimationController[]{new AnimationController((GeoAnimatable)this, "controller", 0, this::predicate)});
+        data.add(new AnimationController[]{new AnimationController<>("controller", 0, this::predicate)});
     }
 
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.cache;
     }
+
+    @Override
+    public void createGeoRenderer(java.util.function.Consumer<com.geckolib.animatable.client.GeoRenderProvider> consumer) {
+        consumer.accept(new com.geckolib.animatable.client.GeoRenderProvider() {
+            private com.geckolib.renderer.GeoItemRenderer<?> renderer;
+
+            @Override
+            public com.geckolib.renderer.GeoItemRenderer<?> getGeoItemRenderer() {
+                if (this.renderer == null) {
+                    this.renderer = new SaphyraDoor3DisplayItemRenderer();
+                }
+                return this.renderer;
+            }
+        });
+    }
+
 }
 
 

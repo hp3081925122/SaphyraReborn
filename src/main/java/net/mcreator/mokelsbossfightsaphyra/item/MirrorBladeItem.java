@@ -58,29 +58,11 @@ extends SwordItem {
 
     public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, context, list, flag);
-        list.add((Component)Component.literal((String)""));
+        list.add(net.minecraft.network.chat.Component.translatable("text.saphyra_reborn.weapon.mirror_blade").withStyle(net.minecraft.ChatFormatting.GOLD));
+    }
+
+    @Override
+    public net.minecraft.world.InteractionResultHolder<net.minecraft.world.item.ItemStack> use(net.minecraft.world.level.Level world, net.minecraft.world.entity.player.Player player, net.minecraft.world.InteractionHand hand) {
+        return com.hp.saphyrareborn.weapon.WeaponAbilities.mirrorThrow(world, player, hand);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

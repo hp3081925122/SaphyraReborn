@@ -419,5 +419,12 @@
   "text.saphyra_reborn.title.burden_lifted": "Burden Lifted",
   "text.saphyra_reborn.title.rot": "Rot",
   "tooltip.saphyra_reborn.key_opens": "Opens: %s",
-  "tooltip.saphyra_reborn.key_highlight": "Highlights its lock through walls while held"
+  "tooltip.saphyra_reborn.key_highlight": "Highlights its lock through walls while held",
+  "text.saphyra_reborn.weapon.katana_heavy": "Right-click - Iai: dash up to 6 blocks, slashing enemies in the path for 150% attack damage (8s cooldown)",
+  "text.saphyra_reborn.weapon.katana_light": "Passive - Triple Cut: every 3rd hit within 2s becomes a cross slash dealing +50% damage",
+  "text.saphyra_reborn.weapon.katana_pool_of_rot": "Passive - Rot Pool: hits wither the target for 3s; while you are Rotting, +40% damage and Wither II",
+  "text.saphyra_reborn.weapon.mirror_blade": "Right-click - Mirror Throw: throw two mirror blades dealing 100% attack damage; they shatter after 1s for 60% in a 3-block radius (4s cooldown)",
+  "text.saphyra_reborn.weapon.spirit_rune_sword": "Right-click - Spirit Rune: open a rune circle where you aim (up to 16 blocks) that bursts after 0.75s for 200% attack damage in a 4-block radius (12s cooldown)",
+  "text.saphyra_reborn.weapon.sunveil": "Passive - Blazing Sun: hits set the target on fire for 4s; +25% damage in daylight under open sky",
+  "text.saphyra_reborn.weapon.nameless": "Right-click - Quake: slam the ground for 120% attack damage with knockback in a 3.5-block radius ahead (6s cooldown)"
 }

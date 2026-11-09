@@ -74,9 +74,9 @@ public class WitchStaffShootProcedure {
                 if (world instanceof Level) {
                     Level _level = (Level)world;
                     if (!_level.isClientSide()) {
-                        _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getZ(), (double)entity.getY()), (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:spellcast")), SoundSource.NEUTRAL, 1.0f, 0.6f);
+                        _level.playSound(null, BlockPos.containing((double)entity.getX(), (double)entity.getY(), (double)entity.getZ()), (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:spellcast")), SoundSource.NEUTRAL, 1.0f, 0.6f);
                     } else {
-                        _level.playLocalSound(entity.getX(), entity.getZ(), entity.getY(), (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:spellcast")), SoundSource.NEUTRAL, 1.0f, 0.6f, false);
+                        _level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("saphyra_reborn:spellcast")), SoundSource.NEUTRAL, 1.0f, 0.6f, false);
                     }
                 }
                 if (entity instanceof LivingEntity && !(_entity = (LivingEntity)entity).level().isClientSide()) {
@@ -93,16 +93,17 @@ public class WitchStaffShootProcedure {
                     Player _player = (Player)entity;
                     _player.getCooldowns().addCooldown((Item)MokelsBossfightSaphyraModItems.WITCH_STAFF.get(), 200);
                 }
-                for (int index0 = 0; index0 < 3; ++index0) {
-                    if (!(world instanceof ServerLevel)) continue;
-                    ServerLevel _level = (ServerLevel)world;
-                    _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 100, 3.0, 0.5, 3.0, 0.05);
+                if (world instanceof ServerLevel _level) {
+                    _level.sendParticles((ParticleOptions)((SimpleParticleType)MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get()), entity.getX(), entity.getY(), entity.getZ(), 40, 3.0, 0.5, 3.0, 0.05);
+                    if (entity instanceof Player _caster) {
+                        com.hp.saphyrareborn.weapon.WeaponAbilities.staffNova(_level, _caster);
+                    }
                 }
                 Vec3 _center = new Vec3(entity.getX(), entity.getY(), entity.getZ());
                 List<Entity> _entfound = world.getEntitiesOfClass(Entity.class, new AABB(_center, _center).inflate(6.5), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
                 for (Entity entityiterator : _entfound) {
                     if (!(entityiterator instanceof LivingEntity) || entityiterator instanceof Player || entityiterator instanceof TamableAnimal) continue;
-                    entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.PLAYER_ATTACK), entity), 30.0f);
+                    entityiterator.hurt(new DamageSource((Holder)world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.PLAYER_ATTACK), entity), 20.0f);
                 }
                 break block25;
             }
@@ -137,6 +138,9 @@ public class WitchStaffShootProcedure {
                     if (entity instanceof Player) {
                         Player _player = (Player)entity;
                         _player.getCooldowns().addCooldown((Item)MokelsBossfightSaphyraModItems.WITCH_STAFF.get(), 60);
+                    }
+                    if (world instanceof ServerLevel _castLevel && entity instanceof Player _caster) {
+                        com.hp.saphyrareborn.weapon.WeaponAbilities.staffCast(_castLevel, _caster);
                     }
                     for (int index1 = 0; index1 < 4; ++index1) {
                         Entity _shootFrom = entity;

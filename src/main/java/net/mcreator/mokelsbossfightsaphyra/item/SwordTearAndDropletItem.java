@@ -17,7 +17,6 @@
 package com.hp.saphyrareborn.item;
 
 import java.util.List;
-import com.hp.saphyrareborn.procedures.SwordTearAndDropletEntitySwingsItemProcedure;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -65,7 +64,6 @@ extends SwordItem {
 
     public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
         boolean retval = super.hurtEnemy(itemstack, entity, sourceentity);
-        SwordTearAndDropletEntitySwingsItemProcedure.execute((LevelAccessor)entity.level(), (Entity)entity, (Entity)sourceentity);
         return retval;
     }
 

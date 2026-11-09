@@ -46,27 +46,10 @@ extends SwordItem {
             }
         }, WeaponProperties.sword(3.0f, -2.4f));
     }
+
+    @Override
+    public void appendHoverText(net.minecraft.world.item.ItemStack itemstack, net.minecraft.world.item.Item.TooltipContext context, java.util.List<net.minecraft.network.chat.Component> list, net.minecraft.world.item.TooltipFlag flag) {
+        super.appendHoverText(itemstack, context, list, flag);
+        list.add(net.minecraft.network.chat.Component.translatable("text.saphyra_reborn.weapon.sunveil").withStyle(net.minecraft.ChatFormatting.GOLD));
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

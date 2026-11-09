@@ -419,5 +419,12 @@
   "text.saphyra_reborn.title.burden_lifted": "重负已解",
   "text.saphyra_reborn.title.rot": "腐烂",
   "tooltip.saphyra_reborn.key_opens": "可打开：%s",
-  "tooltip.saphyra_reborn.key_highlight": "手持时会透过墙体高亮对应的门"
+  "tooltip.saphyra_reborn.key_highlight": "手持时会透过墙体高亮对应的门",
+  "text.saphyra_reborn.weapon.katana_heavy": "右键·居合：向前突进最多 6 格，斩击路径上的敌人，造成 150% 攻击伤害（冷却 8 秒）",
+  "text.saphyra_reborn.weapon.katana_light": "被动·三连：2 秒内连续第 3 次命中触发十字斩，伤害 +50%",
+  "text.saphyra_reborn.weapon.katana_pool_of_rot": "被动·腐池：命中使目标凋零 3 秒；身受腐烂时伤害 +40%，凋零提升为 II 级",
+  "text.saphyra_reborn.weapon.mirror_blade": "右键·镜返：掷出两把镜刃，各造成 100% 攻击伤害；1 秒后炸裂，对半径 3 格造成 60% 攻击伤害（冷却 4 秒）",
+  "text.saphyra_reborn.weapon.spirit_rune_sword": "右键·灵魂符文：在准星处（最远 16 格）展开符文阵，0.75 秒后爆发，对半径 4 格造成 200% 攻击伤害（冷却 12 秒）",
+  "text.saphyra_reborn.weapon.sunveil": "被动·烈阳：命中点燃目标 4 秒；白天露天时伤害 +25%",
+  "text.saphyra_reborn.weapon.nameless": "右键·震地：重剑砸地，对前方半径 3.5 格造成 120% 攻击伤害并击退（冷却 6 秒）"
 }

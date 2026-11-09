@@ -58,29 +58,12 @@ extends SwordItem {
 
     public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, context, list, flag);
+        list.add(net.minecraft.network.chat.Component.translatable("text.saphyra_reborn.weapon.nameless").withStyle(net.minecraft.ChatFormatting.GOLD));
         list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.2f73f6ca82ad"));
     }
+
+    @Override
+    public net.minecraft.world.InteractionResultHolder<net.minecraft.world.item.ItemStack> use(net.minecraft.world.level.Level world, net.minecraft.world.entity.player.Player player, net.minecraft.world.InteractionHand hand) {
+        return com.hp.saphyrareborn.weapon.WeaponAbilities.groundSlam(world, player, hand);
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -17,7 +17,6 @@
 package com.hp.saphyrareborn.item;
 
 import java.util.List;
-import com.hp.saphyrareborn.procedures.LouringClaymoreLivingEntityIsHitWithToolProcedure;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -65,7 +64,7 @@ extends SwordItem {
 
     public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
         boolean retval = super.hurtEnemy(itemstack, entity, sourceentity);
-        LouringClaymoreLivingEntityIsHitWithToolProcedure.execute((LevelAccessor)entity.level(), (Entity)entity, (Entity)sourceentity);
+        com.hp.saphyrareborn.weapon.WeaponAbilities.louringHit(entity, sourceentity);
         return retval;
     }
 

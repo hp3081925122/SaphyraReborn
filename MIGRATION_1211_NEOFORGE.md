@@ -164,3 +164,23 @@
 - 二阶段：`attackthird` 做成炎狱双斩，attacksecond 派生十字炎刑；新增 `phaseshift` 动画。配置在 `bosses.puppet_mechanics`。
 - 特效：新增 S2C 包 `puppet_vfx` 和 `PuppetVfxClient`，红焰粒子从每处 100 个降到 24 个，用几何火柱补足。
 - 动画：攻击动画追加收招，加了双剑、小臂、头部的次级运动。脚本在 `D:/AI临时文件/Saphyra重生/puppet_rework/scripts/puppet_anims.py`。
+
+## 武器能力与攻击特效（2026年11月09日）
+
+详见 `docs/WEAPON_REWORK.md`。
+
+- 新增 `weapon/WeaponStyle`、`WeaponAbilities`、`WeaponFx`（S2C 包 `weapon_fx`）和 `client/WeaponFxClient`。
+- 10 把武器挥砍时都有专属的像素刀光（`textures/vfx/trail_*.png`），由客户端检测挥砍生成，不走网络。
+- 新能力：
+  - 重型太刀：居合
+  - 轻型太刀：三连
+  - 腐烂之池：腐池
+  - 镜刃：镜返（启用原本从未发射过的镜刃投射物）
+  - 安瑟尔之刃：灵魂符文
+  - 日幕：烈阳
+  - 厚重巨剑：震地
+- 修复：
+  - 泪滴与水珠、阴霾巨剑的附加伤害被无敌帧吞掉的问题。
+  - 苍蓝法杖音效坐标 y/z 写反。
+  - 镜刃投射物每 tick 往全局队列塞闭包的问题。
+- 苍蓝法杖潜行技能伤害 30 → 20，与说明文字一致（用户决定）。

@@ -25,9 +25,6 @@
 package com.hp.saphyrareborn.entity;
 
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModEntities;
-import com.hp.saphyrareborn.procedures.MirrorBladeProjectileProjectileHitsBlockProcedure;
-import com.hp.saphyrareborn.procedures.MirrorBladeProjectileWhileProjectileFlyingTickProcedure;
-import com.hp.saphyrareborn.procedures.WitchBossProjectileProjectileHitsLivingEntityProcedure;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.util.RandomSource;
@@ -81,22 +78,73 @@ implements ItemSupplier {
         entity.setArrowCount(entity.getArrowCount() - 1);
     }
 
+    private static final int BURST_AGE = 20;
+    private static final double BURST_RADIUS = 3.0;
+    private float burstDamage;
+    private int mirrorAge;
+
+    public void setBurstDamage(float damage) {
+        this.burstDamage = damage;
+    }
+
+    @Override
     public void onHitEntity(EntityHitResult entityHitResult) {
         super.onHitEntity(entityHitResult);
-        WitchBossProjectileProjectileHitsLivingEntityProcedure.execute((LevelAccessor)this.level(), (Entity)this);
-    }
-
-    public void onHitBlock(BlockHitResult blockHitResult) {
-        super.onHitBlock(blockHitResult);
-        MirrorBladeProjectileProjectileHitsBlockProcedure.execute((Entity)this);
-    }
-
-    public void tick() {
-        super.tick();
-        MirrorBladeProjectileWhileProjectileFlyingTickProcedure.execute((LevelAccessor)this.level(), this.getX(), this.getY(), this.getZ(), (Entity)this);
-        if (this.inGround) {
+        if (!this.level().isClientSide()) {
             this.discard();
         }
+    }
+
+    @Override
+    public void onHitBlock(BlockHitResult blockHitResult) {
+        super.onHitBlock(blockHitResult);
+        if (!this.level().isClientSide()) {
+            this.discard();
+        }
+    }
+
+    @Override
+    public void tick() {
+        this.setNoGravity(true);
+        super.tick();
+        if (!(this.level() instanceof net.minecraft.server.level.ServerLevel level) || this.isRemoved()) {
+            return;
+        }
+        if (this.inGround) {
+            this.discard();
+            return;
+        }
+        if (this.mirrorAge % 2 == 0) {
+            level.sendParticles(com.hp.saphyrareborn.init.MokelsBossfightSaphyraModParticleTypes.GOLDEN_PARTICLE.get(), this.getX(), this.getY(), this.getZ(), 1, 0.05, 0.05, 0.05, 0.02);
+        }
+        if (++this.mirrorAge < BURST_AGE) {
+            return;
+        }
+        if (this.getOwner() instanceof net.minecraft.world.entity.player.Player player && this.burstDamage > 0.0f) {
+            net.minecraft.world.damagesource.DamageSource source = player.damageSources().playerAttack(player);
+            for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(BURST_RADIUS), e -> com.hp.saphyrareborn.weapon.WeaponAbilities.canHit(player, e))) {
+                if (e.distanceToSqr(this) <= BURST_RADIUS * BURST_RADIUS + e.getBbWidth()) {
+                    e.hurt(source, this.burstDamage);
+                }
+            }
+            level.playSound(null, this.getX(), this.getY(), this.getZ(), net.minecraft.sounds.SoundEvents.AMETHYST_BLOCK_BREAK, net.minecraft.sounds.SoundSource.PLAYERS, 1.2f, 1.5f);
+            com.hp.saphyrareborn.weapon.WeaponFx.send(level, com.hp.saphyrareborn.weapon.WeaponFx.MIRROR_BURST, com.hp.saphyrareborn.weapon.WeaponStyle.MIRROR_BLADE, this.position(), this.getYRot(), (float) BURST_RADIUS, 0);
+        }
+        this.discard();
+    }
+
+    @Override
+    public void addAdditionalSaveData(net.minecraft.nbt.CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putFloat("BurstDamage", this.burstDamage);
+        compound.putInt("MirrorAge", this.mirrorAge);
+    }
+
+    @Override
+    public void readAdditionalSaveData(net.minecraft.nbt.CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.burstDamage = compound.getFloat("BurstDamage");
+        this.mirrorAge = compound.getInt("MirrorAge");
     }
 
     public static MirrorBladeProjectileEntity shoot(Level world, LivingEntity entity, RandomSource source) {

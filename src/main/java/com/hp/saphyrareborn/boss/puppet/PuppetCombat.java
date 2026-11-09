@@ -29,13 +29,15 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public final class PuppetCombat {
-    private static final int[] POINTS = {20, 240};
-    private static final int RESET = 300;
+    // Attack cadence: was {20, 240} / 300 with a 60-tick chain gap counted from skill start, leaving idle time between moves.
+    private static final int[] POINTS = {20, 150};
+    private static final int RESET = 210;
     private static final int[] THEME_TICKS = {20, 320, 620, 920, 1220, 1520, 1820};
     private static final int MUSIC_RESET = 1900;
     private static final int PHASE_SHIFT_TICKS = 60;
     private static final int PHASE_BURST_TICK = 30;
-    private static final int CHAIN_GAP = 60;
+    /** Pause between chained follow-ups, counted from the end of the previous skill. */
+    private static final int CHAIN_GAP = 8;
     private static final double MELEE_OFFSET = 3.0;
     private static final double MELEE_RADIUS = 4.0;
     private static final double[] FLAME_DISTANCES = {5.0, 12.0, 19.0};
@@ -128,7 +130,8 @@ public final class PuppetCombat {
                 this.timeline = 0;
             }
         }
-        if (this.chainLeft > 0 && !stunned && --this.chainTimer <= 0) {
+        // only count down once the current skill has finished, so a follow-up never cuts the previous animation short
+        if (this.chainLeft > 0 && !stunned && this.skill == null && --this.chainTimer <= 0) {
             this.chainLeft--;
             this.chainTimer = this.scaled(CHAIN_GAP);
             this.start(level, this.chainSkill);

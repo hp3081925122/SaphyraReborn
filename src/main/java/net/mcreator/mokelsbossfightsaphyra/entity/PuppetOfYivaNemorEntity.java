@@ -311,7 +311,7 @@ implements GeoEntity {
         return event.getController().isPlayingTriggeredAnimation() && !this.isDeadOrDying() ? PlayState.CONTINUE : PlayState.STOP;
     }
 
-    private boolean isProcedureAnimating() {
+    public boolean isProcedureAnimating() {
         return this.procedureController != null && this.procedureController.isPlayingTriggeredAnimation();
     }
 

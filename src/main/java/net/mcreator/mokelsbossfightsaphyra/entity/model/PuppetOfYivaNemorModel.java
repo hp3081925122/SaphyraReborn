@@ -34,6 +34,9 @@ extends GeoModel<PuppetOfYivaNemorEntity> {
     }
 
     public void setCustomAnimations(PuppetOfYivaNemorEntity animatable, long instanceId, AnimationState animationState) {
+        if (animatable.isDeadOrDying() || animatable.isProcedureAnimating()) {
+            return;
+        }
         GeoBone head = this.getAnimationProcessor().getBone("Head");
         if (head != null) {
             EntityModelData entityData = (EntityModelData)animationState.getData(DataTickets.ENTITY_MODEL_DATA);

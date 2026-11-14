@@ -34,8 +34,14 @@ extends GeoModel<WitchbossEntity> {
     }
 
     public void setCustomAnimations(WitchbossEntity animatable, long instanceId, AnimationState animationState) {
+        if (animatable.isDeadOrDying()) {
+            return;
+        }
         GeoBone head = this.getAnimationProcessor().getBone("head");
         if (head != null) {
+            if (animatable.isProcedureAnimating() && (head.getRotX() != 0.0f || head.getRotY() != 0.0f || head.getRotZ() != 0.0f)) {
+                return;
+            }
             EntityModelData entityData = (EntityModelData)animationState.getData(DataTickets.ENTITY_MODEL_DATA);
             head.setRotX(entityData.headPitch() * ((float)Math.PI / 180));
             head.setRotY(entityData.netHeadYaw() * ((float)Math.PI / 180));

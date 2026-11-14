@@ -1,0 +1,29 @@
+{
+  "startedUtc": "2026-11-14T10:28:54.506931+00:00",
+  "sha256": "a57a80036191732c87582d339bef3835f09d179f46cb7ad76e0c81fd38afb123",
+  "metadata": {
+    "changelog": "# 1.3\n\n- Fixed Boss head-tracking overriding authored `Head` / `head` animation keyframes during skills and phase transitions across all four bosses (restoring Puppet of Yiva Nemor's full head animations and Saphyra / Ivory Devil / Nameless pose animations), and prevented dead or dying Boss corpses from twisting their necks toward the player.\n- Fixed multi-turn (`>= 360°`) Euler rotation unwind / violent reverse-spin glitches at the end of Boss skill animations:\n  - **Ivory Devil (`TWIRL`)**: Fixed the `swordhand` rotation typo (`10080° -> 2545.36°` reverse spin) and extended `TWIRL` duration (`80 -> 83` ticks) so the `4.1667s` animation finishes cleanly without truncation.\n  - **Puppet of Yiva Nemor (`THIRD`)**: Normalized multi-turn arm rotations at the end of `attackthird` so `LeftArm` and `RightArm` no longer snap backwards by a full turn when returning to `idle`.\n  - **Saphyra (`CLAW` & `SPIN`)**: Normalized `magicarm` and `masterbody` multi-turn rotations so transitioning back to `idle` no longer triggers rapid reverse unwinding.\n\n## License & source\n\nLicensed under the Academic Free License v3.0, the same license as the original work.\nSource: https://github.com/hp3081925122/SaphyraReborn\n\n---\n\n# 1.3\n\n- 修复四大 Boss 技能与转阶段期间头部朝向追踪覆盖动画关键帧的问题（完整恢复伊瓦·内莫尔的傀儡全部头部动作，以及萨菲拉、象牙恶魔、无名的姿态头部动画），并修复 Boss 倒地死亡后尸体仍随玩家扭头的异常。\n- 修复多圈旋转（`>= 360°`）技能动画在收招切回待机时反向疯转回绕的缺陷：\n  - **象牙恶魔（`TWIRL` 旋斩）**：修正 `swordhand` 骨骼关键帧笔误导致的 21 圈反向高速倒转，并将技能时长由 `80` tick 补齐至 `83` tick，消除 `4.1667s` 动画末尾被提前截断的问题。\n  - **伊瓦·内莫尔的傀儡（`THIRD` 连击）**：对 `attackthird` 双臂多圈旋转收尾做同角度归零换算，消除切回 `idle` 时双臂倒转一整圈的问题。\n  - **萨菲拉（`CLAW` 与 `SPIN`）**：对 `magicarm` 与 `masterbody` 的多圈旋转终点做归零换算，消除技能结束切回待机时的反向回绕抽搐。\n\n## 许可与源码\n\n许可与原作相同，为 Academic Free License v3.0。\n源码：https://github.com/hp3081925122/SaphyraReborn\n",
+    "changelogType": "markdown",
+    "displayName": "1.21.1-NeoForge-Saphyra Reborn-1.3",
+    "releaseType": "release",
+    "gameVersions": [
+      11779,
+      10150,
+      9638,
+      9639,
+      11135
+    ],
+    "relations": {
+      "projects": [
+        {
+          "slug": "geckolib",
+          "type": "requiredDependency"
+        },
+        {
+          "slug": "jade",
+          "type": "optionalDependency"
+        }
+      ]
+    }
+  }
+}

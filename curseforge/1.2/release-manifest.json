@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "minecraft": "26.1.2",
+      "artifact": "E:\\模组\\发cf的模组\\AAA生物\\Saphyra重生\\2612-neoforge-SaphyraReborn\\build\\libs\\saphyra_reborn-26.1.2-neoforge-1.2.jar",
+      "sha256": "b47fbf51762502ec85f760051cc2a679f6a1ad42470756b816694533b8b7cc1d",
+      "metadata": {
+        "changelog": "# 1.2\n\n- Reworked Boss visual effects across all four bosses (Saphyra, Ivory Devil, Nameless, and Puppet of Yiva Nemor) to custom Minecraft-style pixel-art textures (`boss_*.png`) with fullbright emissive batching.\n- Upgraded Boss skill patterns and finishers:\n  - **Saphyra**: Crescent blade waves, radial 8-way moon lances with dedicated arcane beam strips, and enhanced aerial/ground combo finishers.\n  - **Ivory Devil**: Storm wave arcs, converging lightning strikes, luminous pixel-art wings, and hexagonal ward barriers.\n  - **Nameless**: Crimson blade waves, erupting rot pillars, shield counter-bursts, and heavy ground-fissure slams.\n  - **Puppet of Yiva Nemor**: Cross and radial inferno waves, puppet string tethers, flame pillar eruptions, and overdrive combos.\n\n## Credits\n\n- Original mod, art, models, sounds, story and characters: **Mokel** – [The Shattered Goddess (Mokel's Bossfight) - Saphyra](https://www.curseforge.com/minecraft/mc-mods/the-shattered-goddess-mokels-bossfight-saphyra).\n- This port keeps the original assets and story. If you enjoy it, please support the original author.\n\n## License & source\n\nLicensed under the Academic Free License v3.0, the same license as the original work.\nSource: https://github.com/hp3081925122/SaphyraReborn\n\n---\n\n# 1.2\n\n- 将四大 Boss（萨菲拉、象牙恶魔、无名、伊瓦·内莫尔的傀儡）的技能特效重做为自定义 Minecraft 像素画材质（`boss_*.png`）与发光批量渲染。\n- 优化并升级四大 Boss 的技能连段与终结技表现：\n  - **萨菲拉**：新增月牙剑波、带独立奥术流光条带的 8 向月枪，以及强化空地连段演出。\n  - **象牙恶魔**：新增风暴弧波、收束落雷/升雷、像素流光蛾翼与六边形护盾法阵。\n  - **无名**：新增猩红剑波、腐化光柱喷发、举盾格挡反击爆发与重砸地裂纹。\n  - **伊瓦·内莫尔的傀儡**：新增十字/多向烈焰波、傀儡提线锁链、烈焰火柱与过载连招。\n\n## 鸣谢\n\n- 原模组、美术、模型、音效、剧情与角色归 **Mokel**：[The Shattered Goddess (Mokel's Bossfight) - Saphyra](https://www.curseforge.com/minecraft/mc-mods/the-shattered-goddess-mokels-bossfight-saphyra)。\n- 本移植保留原作资源与剧情。如果喜欢，请支持原作者。\n\n## 许可与源码\n\n许可与原作相同，为 Academic Free License v3.0。\n源码：https://github.com/hp3081925122/SaphyraReborn\n",
+        "changelogType": "markdown",
+        "displayName": "26.1.2-NeoForge-Saphyra Reborn-1.2",
+        "releaseType": "release",
+        "gameVersions": [
+          16082,
+          10150,
+          9638,
+          9639,
+          14454
+        ],
+        "relations": {
+          "projects": [
+            {
+              "slug": "geckolib",
+              "type": "requiredDependency"
+            },
+            {
+              "slug": "jade",
+              "type": "optionalDependency"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

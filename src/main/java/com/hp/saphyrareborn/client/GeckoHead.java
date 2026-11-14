@@ -6,6 +6,7 @@ import com.geckolib.constant.dataticket.DataTicket;
 import com.geckolib.renderer.base.BoneSnapshots;
 import com.geckolib.renderer.base.GeoRenderState;
 import com.geckolib.renderer.base.RenderPassInfo;
+import com.hp.saphyrareborn.entity.PuppetOfYivaNemorEntity;
 import java.util.function.Consumer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,6 +20,12 @@ public final class GeckoHead {
     }
 
     public static void capture(LivingEntity entity, GeoRenderState state) {
+        if (entity.isDeadOrDying()) {
+            return;
+        }
+        if (entity instanceof PuppetOfYivaNemorEntity puppet && puppet.isProcedureAnimating()) {
+            return;
+        }
         state.addGeckolibData(PITCH, entity.getXRot());
         state.addGeckolibData(YAW, Mth.wrapDegrees(entity.getYHeadRot() - entity.yBodyRot));
     }
@@ -30,6 +37,9 @@ public final class GeckoHead {
             return;
         }
         Consumer<BoneSnapshot> rotate = bone -> {
+            if (bone.hasRotation()) {
+                return;
+            }
             bone.setRotX(pitch);
             bone.setRotY(yaw);
         };

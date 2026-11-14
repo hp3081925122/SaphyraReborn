@@ -332,7 +332,7 @@ implements GeoEntity {
         return com.hp.saphyrareborn.gecko.GeckoAnim.procedure(event, this.isDeadOrDying());
     }
 
-    private boolean isProcedureAnimating() {
+    public boolean isProcedureAnimating() {
         return com.hp.saphyrareborn.gecko.GeckoAnim.procedureActive(this.procedureController);
     }
 

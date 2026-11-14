@@ -7,6 +7,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -27,6 +28,8 @@ public record NamelessVfx(byte kind, double x, double y, double z, float yaw, fl
     public static final byte PHASE_SHIFT = 9;
     public static final byte SHIELD_RAISE = 10;
     public static final byte ROT_POOL = 11;
+    public static final byte WAVE = 12;
+    public static final byte SHIELD_COUNTER = 13;
 
     public static final int SLASH_LEFT = 0;
     public static final int SLASH_RIGHT = 1;
@@ -37,6 +40,20 @@ public record NamelessVfx(byte kind, double x, double y, double z, float yaw, fl
 
     public static final Type<NamelessVfx> TYPE = new Type<>(Identifier.fromNamespaceAndPath(MokelsBossfightSaphyraMod.MODID, "nameless_vfx"));
     public static final StreamCodec<FriendlyByteBuf, NamelessVfx> CODEC = StreamCodec.ofMember(NamelessVfx::write, NamelessVfx::read);
+
+    public static int ring(int ticks, double innerRadius) {
+        int t = Mth.clamp(ticks, 1, 255);
+        int inner = Mth.clamp((int) Math.round(innerRadius * 10.0), 0, 400);
+        return t | (inner << 8);
+    }
+
+    public static int ringTicks(int extra) {
+        return Math.max(2, extra & 0xFF);
+    }
+
+    public static double ringInner(int extra) {
+        return Math.max(0, extra >>> 8) * 0.1;
+    }
 
     private static NamelessVfx read(FriendlyByteBuf buf) {
         return new NamelessVfx(buf.readByte(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readFloat(), buf.readFloat(), buf.readVarInt());

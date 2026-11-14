@@ -30,6 +30,7 @@ public record MothVfx(byte kind, double x, double y, double z, float yaw, float 
     public static final byte WARD = 12;
     public static final byte TWIRL = 13;
     public static final byte WINGS = 14;
+    public static final byte STORM_WAVE = 15;
 
     public static final int SLASH_LEFT = 0;
     public static final int SLASH_RIGHT = 1;
@@ -41,6 +42,18 @@ public record MothVfx(byte kind, double x, double y, double z, float yaw, float 
 
     public static final Type<MothVfx> TYPE = new Type<>(Identifier.fromNamespaceAndPath(MokelsBossfightSaphyraMod.MODID, "moth_vfx"));
     public static final StreamCodec<FriendlyByteBuf, MothVfx> CODEC = StreamCodec.ofMember(MothVfx::write, MothVfx::read);
+
+    public static int ring(int ticks, double innerRadius) {
+        return Math.max(0, Math.min(255, ticks)) | (Math.max(0, (int) Math.round(innerRadius * 10.0)) << 8);
+    }
+
+    public static int ringTicks(int packed) {
+        return Math.max(0, packed) & 255;
+    }
+
+    public static double ringInner(int packed) {
+        return (Math.max(0, packed) >> 8) / 10.0;
+    }
 
     private static MothVfx read(FriendlyByteBuf buf) {
         return new MothVfx(buf.readByte(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readFloat(), buf.readFloat(), buf.readVarInt());

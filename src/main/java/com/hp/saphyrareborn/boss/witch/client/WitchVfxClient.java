@@ -18,6 +18,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
@@ -102,19 +103,19 @@ public final class WitchVfxClient {
     }
 
     private static float[] moon(float a) {
-        return rgba(0.96f, 0.98f, 1.0f, a);
+        return rgba(0.94f, 0.96f, 1.0f, a);
     }
 
     private static float[] violet(float a) {
-        return rgba(0.66f, 0.36f, 1.0f, a);
+        return rgba(0.70f, 0.42f, 1.0f, a);
     }
 
     private static float[] deep(float a) {
-        return rgba(0.30f, 0.10f, 0.62f, a);
+        return rgba(0.32f, 0.10f, 0.58f, a);
     }
 
     private static float[] soul(float a) {
-        return rgba(0.40f, 0.95f, 0.94f, a);
+        return rgba(0.45f, 0.96f, 0.92f, a);
     }
 
     private static final class Fx {
@@ -161,18 +162,17 @@ public final class WitchVfxClient {
             boolean follows = this.kind == WitchVfx.WHIRL || this.kind == WitchVfx.CHARGE;
             this.anchor = follows ? nearestWitch(level, this.ox, this.oy, this.oz) : null;
             this.life = switch (this.kind) {
-                case WitchVfx.SLASH -> this.extra == WitchVfx.SLASH_SPIN ? 11 : 9;
+                case WitchVfx.SLASH -> this.extra == WitchVfx.SLASH_SPIN ? 10 : 8;
                 case WitchVfx.CLAW -> 9;
                 case WitchVfx.SHOCKWAVE -> Math.max(2, this.extra) + 8;
-                case WitchVfx.TELEGRAPH_RING -> Math.max(2, this.extra) + 3;
-                case WitchVfx.TELEGRAPH_LINE -> Math.max(2, this.extra) + 2;
+                case WitchVfx.TELEGRAPH_RING, WitchVfx.TELEGRAPH_LINE -> Math.max(2, this.extra) + 4;
                 case WitchVfx.MOON_SIGIL -> Math.max(4, this.extra) + 6;
-                case WitchVfx.MOON_LANCE -> 12;
+                case WitchVfx.MOON_LANCE -> 13;
                 case WitchVfx.CHARGE -> Math.max(2, this.extra) + 3;
                 case WitchVfx.PHASE_SHIFT -> 54;
                 case WitchVfx.DASH_TRAIL -> 10;
                 case WitchVfx.WHIRL -> Math.max(4, this.extra);
-                case WitchVfx.FLAME_BURST -> 15;
+                case WitchVfx.FLAME_BURST -> 16;
                 case WitchVfx.CRESCENT -> Math.max(6, this.extra);
                 default -> 0;
             };
@@ -245,11 +245,13 @@ public final class WitchVfxClient {
                 }
                 case WitchVfx.MOON_LANCE -> {
                     if (this.age == 0) {
-                        for (int i = 0; i < 10; i++) {
-                            double d = 1.0 + r.nextDouble() * (this.size - 1.0);
-                            level.addParticle(ParticleTypes.END_ROD, this.x + this.fx * d + r.nextGaussian() * 0.16, this.y + 1.45 + r.nextGaussian() * 0.16, this.z + this.fz * d + r.nextGaussian() * 0.16, r.nextGaussian() * 0.03, 0.02, r.nextGaussian() * 0.03);
+                        for (int i = 0; i < 12; i++) {
+                            double d = r.nextDouble() * this.size;
+                            level.addParticle(ParticleTypes.END_ROD, this.x + this.fx * d + r.nextGaussian() * 0.2, this.y + 1.9 + r.nextGaussian() * 0.2, this.z + this.fz * d + r.nextGaussian() * 0.2, r.nextGaussian() * 0.03, 0.02, r.nextGaussian() * 0.03);
                         }
-                        BossVfxRender.addShake(this.x, this.y, this.z, 0.30f, 16.0);
+                        double tx = this.x + this.fx * this.size, tz = this.z + this.fz * this.size;
+                        level.addParticle(ColorParticleOption.create(ParticleTypes.FLASH, 0xFFFFFF), tx, this.y + 1.9, tz, 0.0, 0.0, 0.0);
+                        BossVfxRender.addShake(this.x, this.y, this.z, 0.32f, 16.0);
                     }
                 }
                 case WitchVfx.CHARGE -> {
@@ -291,7 +293,7 @@ public final class WitchVfxClient {
                 }
                 case WitchVfx.FLAME_BURST -> {
                     if (this.age == 0) {
-                        int n = (int) Math.min(14, 4 + this.size);
+                        int n = (int) Math.min(16, 4 + this.size);
                         for (int i = 0; i < n; i++) {
                             double a = r.nextDouble() * Math.PI * 2.0;
                             double d = this.size * (0.4 + 0.6 * r.nextDouble());
@@ -327,50 +329,50 @@ public final class WitchVfxClient {
 
         private void renderSlash(TexBatch b, float t) {
             boolean spin = this.extra == WitchVfx.SLASH_SPIN;
-            float fade = 1.0f - clamp01((t - (spin ? 3.5f : 2.5f)) / 5.5f);
+            float reveal = easeOut(t / (spin ? 3.8f : 2.8f));
+            float fade = 1.0f - clamp01((t - (spin ? 3.8f : 2.8f)) / 5.0f);
             if (fade <= 0.0f) {
                 return;
             }
             if (spin) {
                 for (int k = 0; k < 2; k++) {
-                    double base = k * Math.PI + t * 0.34;
-                    b.slashSwing(BossVfxRender.SLASH_HEAVY, this.x, this.y, this.z, Math.cos(base), Math.sin(base),
-                            this.size * 0.64, this.size * 0.98, -Math.PI * 0.72, Math.PI * 0.72,
-                            t, 3.2f, 5.0f, false, 0.14, 1.15 + k * 0.18, 20, moon(0.96f * fade), violet(0.55f * fade));
+                    double base = k * Math.PI + t * 0.28;
+                    b.slashArc(BossVfxRender.SLASH_HEAVY, this.x, this.y, this.z, Math.cos(base), Math.sin(base),
+                            this.size * 0.48, this.size * 0.98, -Math.PI * 0.65, Math.PI * 0.65 * reveal,
+                            false, 0.18, 1.15 + k * 0.2, 18, moon(0.95f * fade), violet(0.75f * fade));
                 }
-                b.flat(BossVfxRender.MOON_SIGIL, this.x, this.y + 0.06, this.z, this.size * 0.86, -t * 0.09, soul(0.55f * fade));
+                b.flat(BossVfxRender.MOON_SIGIL, this.x, this.y + 0.06, this.z, this.size * 0.92, -t * 0.09, soul(0.65f * fade));
                 return;
             }
             boolean overhead = this.extra == WitchVfx.SLASH_OVERHEAD;
             double dir = this.extra == WitchVfx.SLASH_RIGHT ? -1.0 : 1.0;
-            double from = overhead ? Math.toRadians(-42.0) : Math.toRadians(-96.0) * dir;
-            double to = overhead ? Math.toRadians(116.0) : Math.toRadians(92.0) * dir;
-            b.slashSwing(BossVfxRender.SLASH_HEAVY, this.x, this.y, this.z, this.fx, this.fz,
-                    this.size * 0.60, this.size * 0.98, from, to, t, 2.3f, 4.8f,
-                    overhead, 0.50 * dir, overhead ? 0.48 : 1.38, 20,
-                    moon(0.98f * fade), violet(0.55f * fade));
-            b.slashSwing(BossVfxRender.SLASH_HEAVY, this.x, this.y, this.z, this.fx, this.fz,
-                    this.size * 0.76, this.size * 1.04, from, to, t - 0.35f, 2.3f, 4.4f,
-                    overhead, 0.50 * dir, overhead ? 0.52 : 1.42, 16,
-                    soul(0.82f * fade), deep(0.32f * fade));
+            double from = overhead ? Math.toRadians(-40.0) : Math.toRadians(-92.0) * dir;
+            double to = overhead ? Math.toRadians(115.0) : Math.toRadians(92.0) * dir;
+            double end = from + (to - from) * reveal;
+            b.slashArc(BossVfxRender.SLASH_HEAVY, this.x, this.y, this.z, this.fx, this.fz,
+                    this.size * 0.45, this.size * 0.98, from, end, overhead, 0.52 * dir, overhead ? 0.5 : 1.38, 18,
+                    moon(0.95f * fade), violet(0.78f * fade));
+            b.slashArc(BossVfxRender.SLASH_HEAVY, this.x, this.y, this.z, this.fx, this.fz,
+                    this.size * 0.72, this.size * 1.06, from + (end - from) * 0.25, end, overhead, 0.52 * dir, overhead ? 0.5 : 1.38, 12,
+                    soul(0.82f * fade), deep(0.3f * fade));
         }
 
         private void renderClaw(TexBatch b, float t) {
-            float fade = 1.0f - clamp01((t - 2.3f) / 5.5f);
+            float reveal = easeOut(t / 2.5f);
+            float fade = 1.0f - clamp01((t - 2.5f) / 6.0f);
             if (fade <= 0.0f) {
                 return;
             }
             double dir = this.extra == 1 ? -1.0 : 1.0;
-            double from = Math.toRadians(-78.0) * dir;
-            double to = Math.toRadians(78.0) * dir;
-            b.slashSwing(BossVfxRender.SLASH_CLAW, this.x, this.y, this.z, this.fx, this.fz,
-                    this.size * 0.56, this.size * 0.98, from, to, t, 2.1f, 4.8f,
-                    false, -0.58 * dir, 1.44, 18,
-                    moon(0.98f * fade), violet(0.65f * fade));
-            b.slashSwing(BossVfxRender.SLASH_CLAW, this.x, this.y, this.z, this.fx, this.fz,
-                    this.size * 0.66, this.size * 1.03, from, to, t - 0.3f, 2.1f, 4.4f,
-                    false, -0.44 * dir, 1.18, 16,
-                    soul(0.80f * fade), deep(0.35f * fade));
+            double from = Math.toRadians(-76.0) * dir;
+            double to = Math.toRadians(76.0) * dir;
+            double end = from + (to - from) * reveal;
+            b.slashArc(BossVfxRender.SLASH_CLAW, this.x, this.y, this.z, this.fx, this.fz,
+                    this.size * 0.42, this.size * 0.98, from, end, false, -0.62 * dir, 1.45, 16,
+                    moon(0.96f * fade), violet(0.8f * fade));
+            b.slashArc(BossVfxRender.SLASH_CLAW, this.x, this.y, this.z, this.fx, this.fz,
+                    this.size * 0.52, this.size * 1.04, from, end, false, -0.45 * dir, 1.15, 14,
+                    soul(0.82f * fade), deep(0.45f * fade));
         }
 
         private void renderCrescent(TexBatch b, float t) {
@@ -383,35 +385,34 @@ public final class WitchVfxClient {
             double dist = CRESCENT_SPEED * t;
             double wx = this.ox + this.fx * dist;
             double wz = this.oz + this.fz * dist;
-            b.crescentWave(wx, this.oy + 1.32, wz, this.fx, this.fz, 0.20 * Mth.sin(t * 0.5f),
-                    1.15, Math.min(2.2, this.size * 0.88), violet(0.88f * a), moon(0.98f * a));
-            b.billboardFrameV(BossVfxRender.STAR, wx + this.fx * 0.25, this.oy + 1.32, wz + this.fz * 0.25,
-                    0.48, t * 0.28, (int) (t * 0.6f), 4, soul(0.85f * a));
-            double trailLen = Math.min(dist, 3.6);
+            b.crescentWave(wx, this.oy + 1.35, wz, this.fx, this.fz, 0.22 * Mth.sin(t * 0.5f),
+                    1.25, this.size * 0.95, violet(0.9f * a), moon(0.96f * a));
+            b.billboardFrameV(BossVfxRender.STAR, wx - this.fx * 0.6, this.oy + 1.35, wz - this.fz * 0.6,
+                    0.55, t * 0.25, (int) (t * 0.5f), 4, soul(0.85f * a));
+            double trailLen = Math.min(dist, 4.2);
             if (trailLen > 0.4) {
                 b.tiledGroundLine(BossVfxRender.TELEGRAPH_STRIP, wx - this.fx * trailLen, this.oy + 0.05, wz - this.fz * trailLen,
-                        this.fx, this.fz, trailLen, 0.48, 2.0, t * 0.75f, deep(0.35f * a), soul(0.62f * a));
+                        this.fx, this.fz, trailLen, 0.78, 2.2, t * 0.75f, deep(0.45f * a), soul(0.75f * a));
             }
         }
 
         private void renderShockwave(TexBatch b, float t) {
             int ticks = Math.max(2, this.extra);
             float prog = easeOut(t / ticks);
-            float fade = 1.0f - clamp01((t - ticks) / 7.5f);
+            float fade = 1.0f - clamp01((t - ticks) / 8.0f);
             if (fade <= 0.0f) {
                 return;
             }
             double startR = this.innerRadius;
             double r = startR + (this.size - startR) * prog;
-            double bandW = Math.max(0.65, (this.size - startR) * 0.18);
-            b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.065, this.z, Math.max(startR, r - bandW), r + 0.18,
-                    0.0, Math.PI * 2.0, 2.4, moon(0.92f * fade), violet(0.68f * fade));
-            double wallH = (0.92 * (1.0 - prog * 0.55) + 0.22) * fade;
-            b.crownWall(BossVfxRender.CROWN_WALL, this.x, this.y, this.y + wallH, this.z, Math.max(0.3, r), 0.0, Math.PI * 2.0, 2.6,
-                    soul(0.58f * fade), violet(0.52f * fade));
+            double bandW = Math.max(0.8, (this.size - startR) * 0.22);
+            b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.065, this.z, Math.max(startR, r - bandW), r + 0.2,
+                    0.0, Math.PI * 2.0, 2.6, moon(0.92f * fade), violet(0.82f * fade));
+            double wallH = (1.4 * (1.0 - prog * 0.5) + 0.35) * fade;
+            b.crownWall(BossVfxRender.CROWN_WALL, this.x, this.y, this.y + wallH, this.z, r, 0.0, Math.PI * 2.0, 2.8,
+                    soul(0.85f * fade), violet(0.9f * fade));
             if (startR <= 0.1) {
-                b.flat(BossVfxRender.MOON_SIGIL, this.x, this.y + 0.05, this.z, Math.min(this.size * 0.85, r + 0.4), this.yawRad + t * 0.04, violet(0.55f * fade));
-                b.flat(BossVfxRender.SHOCKWAVE_RING, this.x, this.y + 0.072, this.z, Math.max(0.4, r), -t * 0.06, soul(0.75f * fade));
+                b.flat(BossVfxRender.MOON_SIGIL, this.x, this.y + 0.05, this.z, Math.min(this.size * 0.9, r + 0.5), this.yawRad + t * 0.04, violet(0.68f * fade));
             }
         }
 
@@ -422,41 +423,41 @@ public final class WitchVfxClient {
             double rIn = this.innerRadius;
             if (t <= dur) {
                 float prog = clamp01(t / dur);
-                b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.07, this.z, Math.max(rIn, rOut - 0.45), rOut, 0.0, Math.PI * 2.0, 2.4,
-                        moon(0.86f * pulse), violet(0.68f * pulse));
+                b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.07, this.z, Math.max(rIn, rOut - 0.55), rOut, 0.0, Math.PI * 2.0, 2.6,
+                        moon(0.88f * pulse), violet(0.85f * pulse));
                 if (rIn > 0.1) {
-                    b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.07, this.z, rIn, Math.min(rOut, rIn + 0.42), 0.0, Math.PI * 2.0, 2.2,
-                            soul(0.78f * pulse), violet(0.65f * pulse));
+                    b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.07, this.z, rIn, Math.min(rOut, rIn + 0.48), 0.0, Math.PI * 2.0, 2.3,
+                            soul(0.82f * pulse), violet(0.8f * pulse));
                     double fill = rIn + (rOut - rIn) * prog;
-                    b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.058, this.z, Math.max(rIn, fill - 0.65), fill, 0.0, Math.PI * 2.0, 2.6,
-                            soul(0.68f), deep(0.28f));
+                    b.ringBand(BossVfxRender.TELEGRAPH_STRIP, this.x, this.y + 0.055, this.z, Math.max(rIn, fill - 0.85), fill, 0.0, Math.PI * 2.0, 3.0,
+                            soul(0.75f), violet(0.35f));
                 } else {
-                    b.flat(BossVfxRender.MOON_SIGIL, this.x, this.y + 0.05, this.z, rOut * 0.96, t * 0.04, violet(0.38f + 0.30f * prog));
+                    b.flat(BossVfxRender.MOON_SIGIL, this.x, this.y + 0.05, this.z, rOut, t * 0.04, violet(0.42f + 0.35f * prog));
                     double sweep = Math.max(0.4, rOut * prog);
-                    b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.065, this.z, Math.max(0.0, sweep - 0.52), sweep, 0.0, Math.PI * 2.0, 2.2,
-                            moon(0.80f), soul(0.36f));
+                    b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.065, this.z, Math.max(0.0, sweep - 0.65), sweep, 0.0, Math.PI * 2.0, 2.4,
+                            moon(0.82f), soul(0.4f));
                 }
             } else {
-                float flash = 1.0f - clamp01((t - dur) / 3.0f);
-                b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.075, this.z, Math.max(rIn, rOut - 0.6), rOut, 0.0, Math.PI * 2.0, 2.6,
-                        moon(0.85f * flash), soul(0.55f * flash));
+                float flash = 1.0f - clamp01((t - dur) / 4.0f);
+                b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.075, this.z, rIn, rOut, 0.0, Math.PI * 2.0, 2.8,
+                        moon(0.92f * flash), soul(0.75f * flash));
             }
         }
 
         private void renderTelegraphLine(TexBatch b, float t) {
             int dur = Math.max(2, this.extra);
-            float a = t <= dur ? 0.64f + 0.22f * Mth.sin(t * 1.1f) : 0.72f * (1.0f - clamp01((t - dur) / 2.0f));
-            if (a <= 0.01f) {
+            float a = t <= dur ? 0.68f + 0.24f * Mth.sin(t * 1.1f) : 0.85f * (1.0f - clamp01((t - dur) / 4.0f));
+            if (a <= 0.0f) {
                 return;
             }
-            float prog = clamp01(t / dur);
-            b.tiledGroundLine(BossVfxRender.TELEGRAPH_STRIP, this.x + this.fx * 0.7, this.y + 0.065, this.z + this.fz * 0.7,
-                    this.fx, this.fz, Math.max(0.5, this.size - 0.7), 0.52, 2.4, t * 0.85f, deep(0.42f * a), violet(0.68f * a));
-            double fill = Math.max(0.4, (this.size - 0.7) * prog);
-            b.tiledGroundLine(BossVfxRender.TELEGRAPH_STRIP, this.x + this.fx * 0.7, this.y + 0.074, this.z + this.fz * 0.7,
-                    this.fx, this.fz, fill, 0.24, 1.8, t * 1.15f, soul(0.75f * a), moon(0.92f * a));
-            b.billboardFrameV(BossVfxRender.STAR, this.x + this.fx * (0.7 + fill), this.y + 0.26, this.z + this.fz * (0.7 + fill),
-                    0.34, t * 0.3, (int) (t * 0.7f), 4, moon(0.88f * a));
+            b.tiledGroundLine(BossVfxRender.TELEGRAPH_STRIP, this.x, this.y + 0.07, this.z,
+                    this.fx, this.fz, this.size, 0.95, 2.6, t * 0.8f, violet(0.72f * a), moon(0.95f * a));
+            int stars = Math.max(3, Math.round(this.size / 5.0f));
+            for (int i = 1; i <= stars; i++) {
+                double d = this.size * i / (stars + 0.5);
+                b.flat(BossVfxRender.MOON_SIGIL, this.x + this.fx * d, this.y + 0.08, this.z + this.fz * d,
+                        0.95, -t * 0.08 + i, soul(0.78f * a));
+            }
         }
 
         private void renderSigil(TexBatch b, float t) {
@@ -467,81 +468,80 @@ public final class WitchVfxClient {
                 return;
             }
             double r = this.size * (0.65 + 0.35 * in);
-            b.flat(BossVfxRender.MOON_SIGIL, this.x, this.y, this.z, r, t * 0.07, moon(0.90f * a));
-            b.flat(BossVfxRender.RUNE_CIRCLE, this.x, this.y + 0.015, this.z, r * 0.70, -t * 0.09, soul(0.74f * a));
-            b.crownWall(BossVfxRender.CROWN_WALL, this.x, this.y - 0.75 * a, this.y, this.z, r * 0.66, 0.0, Math.PI * 2.0, 2.0,
-                    moon(0.48f * a), violet(0.28f * a));
+            b.flat(BossVfxRender.MOON_SIGIL, this.x, this.y, this.z, r, t * 0.07, moon(0.92f * a));
+            b.flat(BossVfxRender.RUNE_CIRCLE, this.x, this.y + 0.015, this.z, r * 0.72, -t * 0.09, soul(0.78f * a));
+            b.crownWall(BossVfxRender.CROWN_WALL, this.x, this.y - 1.1 * a, this.y, this.z, r * 0.68, 0.0, Math.PI * 2.0, 2.0,
+                    moon(0.65f * a), violet(0.35f * a));
         }
 
         private void renderLance(TexBatch b, float t) {
-            float reveal = easeOut(t / 1.8f);
-            float fade = 1.0f - clamp01((t - 2.0f) / 9.5f);
+            float reveal = easeOut(t / 2.0f);
+            float fade = 1.0f - clamp01((t - 2.0f) / 10.0f);
             if (fade <= 0.0f) {
                 return;
             }
-            double startOff = 0.85;
-            double len = Math.max(0.8, this.size * reveal);
-            double sy = this.y + 1.42;
-            double sx0 = this.x + this.fx * startOff, sz0 = this.z + this.fz * startOff;
+            double len = this.size * reveal;
+            double sy = this.y + 1.9;
             double ex = this.x + this.fx * len, ez = this.z + this.fz * len;
-            double pulseW = 1.0 + 0.18 * Mth.sin(t * 1.4f);
-            b.beam(BossVfxRender.BEAM_STRIP, sx0, sy, sz0, ex, sy, ez, 0.90 * fade * pulseW, 2.6,
-                    violet(0.78f * fade), soul(0.62f * fade));
-            b.beam(BossVfxRender.BEAM_STRIP, sx0, sy, sz0, ex, sy, ez, 0.42 * fade * pulseW, 2.0,
-                    moon(0.98f * fade), soul(0.92f * fade));
-            b.beam(BossVfxRender.LIGHTNING_STRIP, sx0, sy, sz0, ex, sy, ez, 0.54 * fade, 2.8,
-                    soul(0.84f * fade), moon(0.76f * fade));
-            b.tiledGroundLine(BossVfxRender.TELEGRAPH_STRIP, sx0, this.y + 0.055, sz0, this.fx, this.fz,
-                    Math.max(0.4, len - startOff), 0.36 * fade, 2.2, t * 1.2f, deep(0.32f * fade), soul(0.56f * fade));
-            b.billboardFrameV(BossVfxRender.STAR, sx0, sy, sz0, 0.68 * fade, t * 0.35, (int) (t * 0.8f), 4, moon(0.95f * fade));
-            if (reveal >= 0.95f) {
-                double ir = 0.65 + 1.65 * easeOut((t - 1.8f) / 4.5f);
-                b.flat(BossVfxRender.SHOCKWAVE_RING, ex, this.y + 0.07, ez, ir, t * 0.12, soul(0.78f * fade));
-                b.billboardFrameV(BossVfxRender.IMPACT, ex, sy, ez, 0.85 * fade, t * 0.25, (int) (t * 0.6f), 4, moon(0.90f * fade));
+            double width = 1.25 + 0.45 * (1.0 - fade);
+            b.tiledStrip3D(BossVfxRender.BEAM_STRIP, this.x, sy, this.z, ex, sy, ez, width * 1.45, 3.0,
+                    violet(0.85f * fade), soul(0.75f * fade));
+            b.tiledStrip3D(BossVfxRender.LIGHTNING_STRIP, this.x, sy, this.z, ex, sy, ez, width * 0.9, 2.4,
+                    moon(0.98f * fade), soul(0.9f * fade));
+            double mx = this.x + this.fx * 0.9, mz = this.z + this.fz * 0.9;
+            double sx = this.fz, sz = -this.fx;
+            double mr = 1.35 * fade;
+            b.quad(BossVfxRender.MOON_SIGIL,
+                    mx - sx * mr, sy + mr, mz - sz * mr, 0.0f, 0.0f, moon(0.95f * fade),
+                    mx + sx * mr, sy + mr, mz + sz * mr, 1.0f, 0.0f, moon(0.95f * fade),
+                    mx + sx * mr, sy - mr, mz + sz * mr, 1.0f, 1.0f, soul(0.85f * fade),
+                    mx - sx * mr, sy - mr, mz - sz * mr, 0.0f, 1.0f, soul(0.85f * fade));
+            if (reveal >= 0.98f) {
+                double ir = 0.8 + 2.4 * easeOut((t - 2.0f) / 5.0f);
+                b.flat(BossVfxRender.SHOCKWAVE_RING, ex, this.y + 0.07, ez, ir, t * 0.1, moon(0.85f * fade));
             }
         }
 
         private void renderCharge(TexBatch b, float t, double radius, int dur) {
             float prog = clamp01(t / dur);
             if (t <= dur) {
-                double r = radius * (1.30 - 0.60 * prog);
-                b.flat(BossVfxRender.MOON_SIGIL, this.x, this.y + 0.06, this.z, r, t * 0.08, violet(0.42f + 0.42f * prog));
-                b.pillar(this.x, this.y, this.z, 0.44 + 0.34 * prog, 3.2 * prog + 0.5, t * 0.14, violet(0.55f * prog), moon(0.82f * prog));
+                double r = radius * (1.35 - 0.65 * prog);
+                b.flat(BossVfxRender.MOON_SIGIL, this.x, this.y + 0.06, this.z, r, t * 0.08, violet(0.45f + 0.45f * prog));
+                b.pillar(this.x, this.y, this.z, 0.5 + 0.4 * prog, 3.6 * prog + 0.6, t * 0.14, violet(0.65f * prog), moon(0.85f * prog));
                 for (int i = 0; i < 4; i++) {
                     double a = -t * 0.16 + i * (Math.PI * 0.5);
                     double gr = r * 0.85;
-                    b.billboardFrameV(BossVfxRender.STAR, this.x + Math.cos(a) * gr, this.y + 1.0 + 1.2 * prog, this.z + Math.sin(a) * gr,
-                            0.36, t * 0.2, i + (int) (t * 0.3f), 4, soul(0.88f * prog));
+                    b.billboardFrameV(BossVfxRender.STAR, this.x + Math.cos(a) * gr, this.y + 1.0 + 1.3 * prog, this.z + Math.sin(a) * gr,
+                            0.38, t * 0.2, i + (int) (t * 0.3f), 4, soul(0.88f * prog));
                 }
             } else {
                 float fade = 1.0f - clamp01((t - dur) / 3.0f);
-                b.flat(BossVfxRender.SHOCKWAVE_RING, this.x, this.y + 0.07, this.z, radius * 1.05, this.yawRad, moon(0.82f * fade));
+                b.flat(BossVfxRender.SHOCKWAVE_RING, this.x, this.y + 0.07, this.z, radius * 1.1, this.yawRad, moon(0.85f * fade));
             }
         }
 
         private void renderPhaseShift(TexBatch b, float t) {
             if (t < 30.0f) {
-                this.renderCharge(b, t, 5.0, 30);
-                double r2 = 7.4 * (1.0 - t / 30.0f) + 0.8;
-                b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.08, this.z, Math.max(0.2, r2 - 0.5), r2, 0.0, Math.PI * 2.0, 2.4,
-                        soul(0.82f), violet(0.68f));
+                this.renderCharge(b, t, 5.2, 30);
+                double r2 = 7.8 * (1.0 - t / 30.0f) + 0.8;
+                b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.08, this.z, Math.max(0.2, r2 - 0.6), r2, 0.0, Math.PI * 2.0, 2.5,
+                        soul(0.85f), violet(0.8f));
                 return;
             }
             float local = t - 30.0f;
             float fade = 1.0f - clamp01(local / 22.0f);
-            double r = this.size * 2.5 * easeOut(local / 10.0f);
-            b.pillar(this.x, this.y, this.z, 1.85 * fade, 14.0 * easeOut(local / 4.0f), local * 0.15, violet(0.82f * fade), moon(0.95f * fade));
-            b.crownWall(BossVfxRender.CROWN_WALL, this.x, this.y, this.y + 1.55 * fade, this.z, Math.max(0.4, r), 0.0, Math.PI * 2.0, 3.0,
-                    soul(0.65f * fade), violet(0.58f * fade));
-            b.flat(BossVfxRender.SHOCKWAVE_RING, this.x, this.y + 0.07, this.z, Math.max(0.5, r), local * 0.06, moon(0.88f * fade));
-            double haloR = 2.8 * easeOut(local / 6.0f);
-            double hx = this.x - this.fx * 0.7, hy = this.y + 3.2, hz = this.z - this.fz * 0.7;
+            double r = this.size * 2.6 * easeOut(local / 10.0f);
+            b.pillar(this.x, this.y, this.z, 2.2, 15.0 * easeOut(local / 4.0f), local * 0.15, violet(0.9f * fade), moon(0.95f * fade));
+            b.crownWall(BossVfxRender.CROWN_WALL, this.x, this.y, this.y + 2.4 * fade, this.z, r, 0.0, Math.PI * 2.0, 3.2,
+                    soul(0.9f * fade), violet(0.92f * fade));
+            double haloR = 3.2 * easeOut(local / 6.0f);
+            double hx = this.x - this.fx * 0.8, hy = this.y + 3.5, hz = this.z - this.fz * 0.8;
             double sx = this.fz, sz = -this.fx;
             b.quad(BossVfxRender.MOON_SIGIL,
-                    hx - sx * haloR, hy + haloR, hz - sz * haloR, 0.0f, 0.0f, moon(0.92f * fade),
-                    hx + sx * haloR, hy + haloR, hz + sz * haloR, 1.0f, 0.0f, moon(0.92f * fade),
-                    hx + sx * haloR, hy - haloR, hz + sz * haloR, 1.0f, 1.0f, soul(0.82f * fade),
-                    hx - sx * haloR, hy - haloR, hz - sz * haloR, 0.0f, 1.0f, soul(0.82f * fade));
+                    hx - sx * haloR, hy + haloR, hz - sz * haloR, 0.0f, 0.0f, moon(0.96f * fade),
+                    hx + sx * haloR, hy + haloR, hz + sz * haloR, 1.0f, 0.0f, moon(0.96f * fade),
+                    hx + sx * haloR, hy - haloR, hz + sz * haloR, 1.0f, 1.0f, soul(0.88f * fade),
+                    hx - sx * haloR, hy - haloR, hz - sz * haloR, 0.0f, 1.0f, soul(0.88f * fade));
         }
 
         private void renderDash(TexBatch b, float t) {
@@ -550,12 +550,10 @@ public final class WitchVfxClient {
                 return;
             }
             b.tiledGroundLine(BossVfxRender.TELEGRAPH_STRIP, this.ox, this.oy + 0.07, this.oz,
-                    this.fx, this.fz, this.size, 0.55, 2.2, t * 0.9f, deep(0.45f * fade), soul(0.75f * fade));
+                    this.fx, this.fz, this.size, 0.8, 2.4, t * 0.9f, violet(0.65f * fade), moon(0.9f * fade));
             double ex = this.ox + this.fx * this.size, ez = this.oz + this.fz * this.size;
-            b.beam(BossVfxRender.BEAM_STRIP, this.ox, this.oy + 1.25, this.oz, ex, this.oy + 1.25, ez,
-                    0.62 * fade, 2.4, violet(0.65f * fade), moon(0.92f * fade));
-            b.beam(BossVfxRender.LIGHTNING_STRIP, this.ox, this.oy + 1.25, this.oz, ex, this.oy + 1.25, ez,
-                    0.38 * fade, 2.2, soul(0.72f * fade), moon(0.85f * fade));
+            b.tiledStrip3D(BossVfxRender.SLASH_HEAVY, this.ox, this.oy + 1.35, this.oz, ex, this.oy + 1.35, ez,
+                    1.1 * fade, 3.0, deep(0.35f * fade), soul(0.85f * fade));
         }
 
         private void renderWhirl(TexBatch b, float t) {
@@ -570,30 +568,30 @@ public final class WitchVfxClient {
             for (int i = 0; i < 3; i++) {
                 double ang = spin + i * (Math.PI * 2.0 / 3.0);
                 b.slashArc(BossVfxRender.SLASH_HEAVY, this.x, this.y, this.z, Math.cos(ang), Math.sin(ang),
-                        rad * 0.64, rad * 1.02, -0.78, 0.78, false, 0.20, 1.05 + (i % 2) * 0.45, 12,
-                        moon(0.92f * a), violet(0.58f * a));
+                        rad * 0.55, rad * 1.02, -0.75, 0.75, false, 0.22, 1.05 + (i % 2) * 0.55, 10,
+                        moon(0.9f * a), violet(0.75f * a));
             }
-            b.flat(BossVfxRender.MOON_SIGIL, this.x, this.y + 0.06, this.z, rad * 0.92, spin * 0.35, soul(0.58f * a));
-            b.crownWall(BossVfxRender.CROWN_WALL, this.x, this.y + 0.05, this.y + 1.25, this.z, rad * 0.88, 0.0, Math.PI * 2.0, 2.6,
-                    soul(0.45f * a), violet(0.48f * a));
+            b.flat(BossVfxRender.MOON_SIGIL, this.x, this.y + 0.06, this.z, rad * 0.95, spin * 0.35, soul(0.65f * a));
+            b.crownWall(BossVfxRender.CROWN_WALL, this.x, this.y + 0.05, this.y + 1.85, this.z, rad * 0.88, 0.0, Math.PI * 2.0, 2.8,
+                    soul(0.55f * a), violet(0.65f * a));
         }
 
         private void renderFlameBurst(TexBatch b, float t) {
-            float fade = 1.0f - clamp01((t - 3.5f) / 11.0f);
+            float fade = 1.0f - clamp01((t - 4.0f) / 12.0f);
             if (fade <= 0.0f) {
                 return;
             }
             RandomSource r = RandomSource.create(this.seed);
-            int n = (int) Math.min(9, 4 + this.size * 0.6);
-            float grow = easeOut(t / 4.0f);
+            int n = (int) Math.min(14, 5 + this.size * 0.9);
+            float grow = easeOut(t / 4.5f);
             for (int i = 0; i < n; i++) {
                 double ang = Math.PI * 2.0 * i / n + r.nextDouble() * 0.35;
-                double d = this.size * (0.38 + 0.58 * r.nextDouble()) * (0.65 + 0.35 * grow);
+                double d = this.size * (0.35 + 0.65 * r.nextDouble()) * (0.6 + 0.4 * grow);
                 double bx = this.x + Math.cos(ang) * d, bz = this.z + Math.sin(ang) * d;
-                double h = (1.4 + r.nextDouble() * 1.9) * grow * (0.55 + 0.45 * fade);
-                b.pillar(bx, this.y, bz, 0.44 * (0.7 + 0.3 * fade), h, ang + t * 0.12, soul(0.75f * fade), moon(0.92f * fade));
+                double h = (1.6 + r.nextDouble() * 2.4) * grow * (0.55 + 0.45 * fade);
+                b.pillar(bx, this.y, bz, 0.58, h, ang + t * 0.12, soul(0.85f * fade), moon(0.92f * fade));
             }
-            b.flat(BossVfxRender.SCORCH_CRACKS, this.x, this.y + 0.045, this.z, this.size * 0.82 * grow, this.yawRad, violet(0.58f * fade));
+            b.flat(BossVfxRender.SCORCH_CRACKS, this.x, this.y + 0.045, this.z, this.size * 0.85 * grow, this.yawRad, violet(0.65f * fade));
         }
     }
 }

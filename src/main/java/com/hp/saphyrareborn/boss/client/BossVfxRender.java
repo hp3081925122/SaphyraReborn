@@ -46,6 +46,7 @@ public final class BossVfxRender {
             .createRenderSetup());
     public static final double RENDER_RANGE_SQR = 128.0 * 128.0;
 
+    public static final Identifier BEAM_STRIP = vfxTex("boss_beam_strip");
     public static final Identifier SLASH_HEAVY = vfxTex("boss_slash_heavy");
     public static final Identifier SLASH_CLAW = vfxTex("boss_slash_claw");
     public static final Identifier CRESCENT_WAVE = vfxTex("boss_crescent_wave");
@@ -74,6 +75,7 @@ public final class BossVfxRender {
 
     private static float shake;
     private static ClientLevel lastLevel;
+    private static boolean loggedBatchReady;
 
     private BossVfxRender() {
     }
@@ -188,6 +190,10 @@ public final class BossVfxRender {
         }
 
         public void flush(MultiBufferSource.BufferSource buffers, PoseStack.Pose pose) {
+            if (!loggedBatchReady && !this.quads.isEmpty()) {
+                loggedBatchReady = true;
+                MokelsBossfightSaphyraMod.LOGGER.debug("[BossVfxDebug] Flushing textured boss VFX batch (activeTextures={})", this.quads.size());
+            }
             for (Map.Entry<Identifier, List<TexQuad>> entry : this.quads.entrySet()) {
                 List<TexQuad> list = entry.getValue();
                 if (list.isEmpty()) {
@@ -273,8 +279,8 @@ public final class BossVfxRender {
             }
             double midR = Math.max(0.5, (rIn + rOut) * 0.5);
             double arcLen = Math.abs(span) * midR;
-            int tiles = Math.max(4, (int) Math.ceil(arcLen / Math.max(0.6, tileArcLen)));
-            int subPerTile = Math.max(1, (int) Math.ceil(Math.abs(span) / tiles / (Math.PI / 16.0)));
+            int tiles = Math.max(6, (int) Math.ceil(arcLen / Math.max(0.6, tileArcLen)));
+            int subPerTile = Math.max(2, (int) Math.ceil(Math.abs(span) / tiles / (Math.PI / 24.0)));
             for (int t = 0; t < tiles; t++) {
                 double ta0 = fromAngle + span * t / tiles;
                 double ta1 = fromAngle + span * (t + 1) / tiles;
@@ -304,8 +310,8 @@ public final class BossVfxRender {
                 return;
             }
             double arcLen = Math.abs(span) * r;
-            int tiles = Math.max(4, (int) Math.ceil(arcLen / Math.max(0.8, tileArcLen)));
-            int subPerTile = Math.max(1, (int) Math.ceil(Math.abs(span) / tiles / (Math.PI / 14.0)));
+            int tiles = Math.max(6, (int) Math.ceil(arcLen / Math.max(0.8, tileArcLen)));
+            int subPerTile = Math.max(2, (int) Math.ceil(Math.abs(span) / tiles / (Math.PI / 24.0)));
             for (int t = 0; t < tiles; t++) {
                 double ta0 = fromAngle + span * t / tiles;
                 double ta1 = fromAngle + span * (t + 1) / tiles;
@@ -325,6 +331,19 @@ public final class BossVfxRender {
             }
         }
 
+        public void slashSwing(Identifier tex, double cx, double cy, double cz, double fx, double fz,
+                               double rIn, double rOut, double fromRad, double toRad,
+                               float t, float revealTicks, float fadeTicks,
+                               boolean vertical, double tiltY, double heightOffset, int segs,
+                               float[] tipColor, float[] tailColor) {
+            if (t < 0.0f) {
+                return;
+            }
+            double head = fromRad + (toRad - fromRad) * easeOut(t / Math.max(0.5f, revealTicks));
+            double tail = fromRad + (toRad - fromRad) * clamp01((t - revealTicks * 0.45f) / Math.max(0.5f, fadeTicks + revealTicks * 0.55f)) * 0.85;
+            this.slashArc(tex, cx, cy, cz, fx, fz, rIn, rOut, tail, head, vertical, tiltY, heightOffset, segs, tipColor, tailColor);
+        }
+
         public void slashArc(Identifier tex, double cx, double cy, double cz, double fx, double fz,
                              double rIn, double rOut, double fromRad, double toRad,
                              boolean vertical, double tiltY, double heightOffset, int segs,
@@ -339,10 +358,14 @@ public final class BossVfxRender {
                 double a1 = fromRad + (toRad - fromRad) * u1;
                 float[] c0 = lerpColor(tailColor, tipColor, u0);
                 float[] c1 = lerpColor(tailColor, tipColor, u1);
+                double w0 = 0.35 + 0.65 * Math.sin(Math.min(1.0, u0 * 1.15) * Math.PI * 0.82);
+                double w1 = 0.35 + 0.65 * Math.sin(Math.min(1.0, u1 * 1.15) * Math.PI * 0.82);
+                double curIn0 = rOut - (rOut - rIn) * w0;
+                double curIn1 = rOut - (rOut - rIn) * w1;
                 double[] o0 = slashPoint(cx, cy, cz, fx, fz, a0, rOut, vertical, tiltY, heightOffset);
                 double[] o1 = slashPoint(cx, cy, cz, fx, fz, a1, rOut, vertical, tiltY, heightOffset);
-                double[] i0 = slashPoint(cx, cy, cz, fx, fz, a0, rIn, vertical, tiltY, heightOffset);
-                double[] i1 = slashPoint(cx, cy, cz, fx, fz, a1, rIn, vertical, tiltY, heightOffset);
+                double[] i0 = slashPoint(cx, cy, cz, fx, fz, a0, curIn0, vertical, tiltY, heightOffset);
+                double[] i1 = slashPoint(cx, cy, cz, fx, fz, a1, curIn1, vertical, tiltY, heightOffset);
                 this.quad(tex,
                         o0[0], o0[1], o0[2], u0, 0.0f, c0,
                         o1[0], o1[1], o1[2], u1, 0.0f, c1,
@@ -372,8 +395,8 @@ public final class BossVfxRender {
             double ax = sx * sin, ay = cos, az = sz * sin;
             double bx = sx * cos, by = -sin, bz = sz * cos;
             emitCrescentPlane(CRESCENT_WAVE, cx, cy, cz, fx, fz, ax, ay, az, halfForward, halfSpan, mainColor);
-            emitCrescentPlane(CRESCENT_WAVE, cx, cy, cz, fx, fz, ax, ay, az, halfForward * 0.78, halfSpan * 0.72, coreColor);
-            emitCrescentPlane(SLASH_HEAVY, cx, cy, cz, fx, fz, bx, by, bz, halfForward * 0.85, halfSpan * 0.28, coreColor);
+            emitCrescentPlane(CRESCENT_WAVE, cx + fx * (halfForward * 0.08), cy, cz + fz * (halfForward * 0.08), fx, fz, ax, ay, az, halfForward * 0.72, halfSpan * 0.68, coreColor);
+            emitCrescentPlane(SLASH_HEAVY, cx, cy, cz, fx, fz, bx, by, bz, halfForward * 0.75, halfSpan * 0.22, coreColor);
         }
 
         private void emitCrescentPlane(Identifier tex, double cx, double cy, double cz, double fx, double fz,
@@ -392,8 +415,8 @@ public final class BossVfxRender {
             if (radius <= 0.02 || height <= 0.02) {
                 return;
             }
-            for (int k = 0; k < 2; k++) {
-                double a = rotRad + k * (Math.PI * 0.5);
+            for (int k = 0; k < 3; k++) {
+                double a = rotRad + k * (Math.PI / 3.0);
                 double dx = Math.cos(a) * radius, dz = Math.sin(a) * radius;
                 this.quad(PILLAR_STRIP,
                         cx - dx, y0 + height, cz - dz, 0.0f, 0.0f, mainColor,
@@ -401,7 +424,7 @@ public final class BossVfxRender {
                         cx + dx, y0, cz + dz, 1.0f, 1.0f, mainColor,
                         cx - dx, y0, cz - dz, 0.0f, 1.0f, mainColor);
             }
-            double cr = radius * 0.62;
+            double cr = radius * 0.56;
             double ch = height * 0.92;
             for (int k = 0; k < 2; k++) {
                 double a = rotRad + Math.PI * 0.25 + k * (Math.PI * 0.5);
@@ -427,8 +450,8 @@ public final class BossVfxRender {
                 double d0 = i * step;
                 double d1 = Math.min(length, (i + 1) * step);
                 float u1 = (float) Math.min(1.0, (d1 - d0) / step);
-                float wave0 = 0.5f + 0.5f * Mth.sin((float) (d0 * 0.45 - pulsePhase));
-                float wave1 = 0.5f + 0.5f * Mth.sin((float) (d1 * 0.45 - pulsePhase));
+                float wave0 = 0.5f + 0.5f * Mth.sin((float) (d0 * 0.55 - pulsePhase));
+                float wave1 = 0.5f + 0.5f * Mth.sin((float) (d1 * 0.55 - pulsePhase));
                 float[] c0 = lerpColor(baseColor, highlightColor, wave0);
                 float[] c1 = lerpColor(baseColor, highlightColor, wave1);
                 double ax = x0 + fx * d0, az = z0 + fz * d0;
@@ -441,9 +464,21 @@ public final class BossVfxRender {
             }
         }
 
+        public void beam(Identifier tex, double x0, double y0, double z0,
+                         double x1, double y1, double z1, double width, double tileLen,
+                         float[] startColor, float[] endColor) {
+            this.strip3DInternal(tex, x0, y0, z0, x1, y1, z1, width, tileLen, true, startColor, endColor);
+        }
+
         public void tiledStrip3D(Identifier tex, double x0, double y0, double z0,
                                  double x1, double y1, double z1, double width, double tileLen,
                                  float[] startColor, float[] endColor) {
+            this.strip3DInternal(tex, x0, y0, z0, x1, y1, z1, width, tileLen, false, startColor, endColor);
+        }
+
+        private void strip3DInternal(Identifier tex, double x0, double y0, double z0,
+                                     double x1, double y1, double z1, double width, double tileLen, boolean taperEnds,
+                                     float[] startColor, float[] endColor) {
             double dx = x1 - x0, dy = y1 - y0, dz = z1 - z0;
             double len = Math.sqrt(dx * dx + dy * dy + dz * dz);
             if (len < 1.0E-3 || width <= 0.005) {
@@ -477,21 +512,33 @@ public final class BossVfxRender {
                 float f0 = (float) (d0 / len);
                 float f1 = (float) (d1 / len);
                 float v1 = (float) Math.min(1.0, (d1 - d0) / step);
+                double w0 = hw * (taperEnds ? beamEnvelope(f0) : 1.0);
+                double w1 = hw * (taperEnds ? beamEnvelope(f1) : 1.0);
                 float[] c0 = lerpColor(startColor, endColor, f0);
                 float[] c1 = lerpColor(startColor, endColor, f1);
                 double ax = x0 + nx * d0, ay = y0 + ny * d0, az = z0 + nz * d0;
                 double bx = x0 + nx * d1, by = y0 + ny * d1, bz = z0 + nz * d1;
                 this.quad(tex,
-                        ax - sx * hw, ay - sy * hw, az - sz * hw, 0.0f, 0.0f, c0,
-                        ax + sx * hw, ay + sy * hw, az + sz * hw, 1.0f, 0.0f, c0,
-                        bx + sx * hw, by + sy * hw, bz + sz * hw, 1.0f, v1, c1,
-                        bx - sx * hw, by - sy * hw, bz - sz * hw, 0.0f, v1, c1);
+                        ax - sx * w0, ay - sy * w0, az - sz * w0, 0.0f, 0.0f, c0,
+                        ax + sx * w0, ay + sy * w0, az + sz * w0, 1.0f, 0.0f, c0,
+                        bx + sx * w1, by + sy * w1, bz + sz * w1, 1.0f, v1, c1,
+                        bx - sx * w1, by - sy * w1, bz - sz * w1, 0.0f, v1, c1);
                 this.quad(tex,
-                        ax - ux * hw, ay - uy * hw, az - uz * hw, 0.0f, 0.0f, c0,
-                        ax + ux * hw, ay + uy * hw, az + uz * hw, 1.0f, 0.0f, c0,
-                        bx + ux * hw, by + uy * hw, bz + uz * hw, 1.0f, v1, c1,
-                        bx - ux * hw, by - uy * hw, bz - uz * hw, 0.0f, v1, c1);
+                        ax - ux * w0, ay - uy * w0, az - uz * w0, 0.0f, 0.0f, c0,
+                        ax + ux * w0, ay + uy * w0, az + uz * w0, 1.0f, 0.0f, c0,
+                        bx + ux * w1, by + uy * w1, bz + uz * w1, 1.0f, v1, c1,
+                        bx - ux * w1, by - uy * w1, bz - uz * w1, 0.0f, v1, c1);
             }
+        }
+
+        private static double beamEnvelope(float f) {
+            if (f < 0.06f) {
+                return 0.45 + 0.55 * (f / 0.06f);
+            }
+            if (f > 0.86f) {
+                return Math.max(0.08, 1.0 - 0.92 * ((f - 0.86f) / 0.14f));
+            }
+            return 1.0;
         }
 
         public void mothWings(double cx, double cy, double cz, double fx, double fz,

@@ -27,11 +27,11 @@ import com.geckolib.model.GeoModel;
 public class MarleneHumanFormModel
 extends GeoModel<MarleneHumanFormEntity> {
     public Identifier getAnimationResource(MarleneHumanFormEntity entity) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "animations/marlenehuman.animation.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "marlenehuman");
     }
 
     public Identifier getModelResource(GeoRenderState state) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "geo/marlenehuman.geo.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "marlenehuman");
     }
 
     public Identifier getTextureResource(GeoRenderState state) {

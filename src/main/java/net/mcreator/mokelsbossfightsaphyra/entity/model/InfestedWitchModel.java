@@ -18,11 +18,11 @@ import com.geckolib.model.GeoModel;
 public class InfestedWitchModel
 extends GeoModel<InfestedWitchEntity> {
     public Identifier getAnimationResource(InfestedWitchEntity entity) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "animations/scream.animation.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "scream");
     }
 
     public Identifier getModelResource(GeoRenderState state) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "geo/scream.geo.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "scream");
     }
 
     public Identifier getTextureResource(GeoRenderState state) {

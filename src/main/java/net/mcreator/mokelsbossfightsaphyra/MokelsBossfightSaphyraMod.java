@@ -27,9 +27,6 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import net.neoforged.fml.LogicalSide;
 import net.neoforged.fml.util.thread.EffectiveSide;
-import net.neoforged.network.NetworkEvent;
-import net.neoforged.network.NetworkRegistry;
-import net.neoforged.network.simple.SimpleChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,8 +34,6 @@ import org.apache.logging.log4j.Logger;
 public final class MokelsBossfightSaphyraMod {
     public static final String MODID = "saphyra_reborn";
     public static final Logger LOGGER = LogManager.getLogger(MokelsBossfightSaphyraMod.class);
-    public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(null, () -> "1", "1"::equals, "1"::equals);
-    private static int messageID;
     private static final Collection<AbstractMap.SimpleEntry<Runnable, Integer>> WORK_QUEUE = new ConcurrentLinkedQueue<>();
 
     public MokelsBossfightSaphyraMod(IEventBus modBus, ModContainer container) {
@@ -53,10 +48,6 @@ public final class MokelsBossfightSaphyraMod {
         MokelsBossfightSaphyraModMobEffects.REGISTRY.register(modBus);
         MokelsBossfightSaphyraModParticleTypes.REGISTRY.register(modBus);
         container.registerConfig(ModConfig.Type.COMMON, com.hp.saphyrareborn.boss.BossConfig.SPEC);
-    }
-
-    public static <T> void addNetworkMessage(Class<T> type, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder, BiConsumer<T, Supplier<NetworkEvent.Context>> handler) {
-        PACKET_HANDLER.registerMessage(messageID++, type, encoder, decoder, handler);
     }
 
     public static void queueServerWork(int ticks, Runnable action) {

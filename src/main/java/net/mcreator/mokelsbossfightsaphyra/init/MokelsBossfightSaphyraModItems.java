@@ -205,11 +205,11 @@ public class MokelsBossfightSaphyraModItems {
     public static final DeferredHolder<Item, Item> SAPHYRA_KEY = item("saphyra_key", () -> new SaphyraKeyItem());
 
     private static DeferredHolder<Item, Item> block(DeferredHolder<Block, Block> block) {
-        return item(block.getId().getPath(), () -> new BlockItem((Block)block.get(), new Item.Properties().setId(com.hp.saphyrareborn.init.RegistryIds.item)));
+        return item(block.getId().getPath(), () -> new BlockItem((Block)block.get(), new Item.Properties().setId(com.hp.saphyrareborn.init.RegistryIds.item).useBlockDescriptionPrefix()));
     }
 
     private static DeferredHolder<Item, Item> doubleBlock(DeferredHolder<Block, Block> block) {
-        return item(block.getId().getPath(), () -> new DoubleHighBlockItem((Block)block.get(), new Item.Properties().setId(com.hp.saphyrareborn.init.RegistryIds.item)));
+        return item(block.getId().getPath(), () -> new DoubleHighBlockItem((Block)block.get(), new Item.Properties().setId(com.hp.saphyrareborn.init.RegistryIds.item).useBlockDescriptionPrefix()));
     }
 
     private static <I extends Item> DeferredHolder<Item, I> item(String name, java.util.function.Supplier<I> factory) {

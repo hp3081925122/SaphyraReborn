@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "minecraft": "26.1.2",
+      "artifact": "E:\\模组\\发cf的模组\\AAA生物\\Saphyra重生\\2612-neoforge-SaphyraReborn\\build\\libs\\saphyra_reborn-26.1.2-neoforge-1.1.jar",
+      "sha256": "4fcd7e7ad87c64cd23b91a2e7506cba751c77ae55f5765669e62971ad14a1f65",
+      "metadata": {
+        "changelog": "# 1.1\n\nFirst release for Minecraft 26.1.2 NeoForge. It carries the 1.21.1 rework: story structures, bosses, weapons and the Simplified Chinese translation.\n\n- The Ivory Devil's rendered wings now show on both sides. The glow effect no longer culls back faces, so the mirrored wing stays visible.\n\n## Credits\n\n- Original mod, art, models, sounds, story and characters: **Mokel** – [The Shattered Goddess (Mokel's Bossfight) - Saphyra](https://www.curseforge.com/minecraft/mc-mods/the-shattered-goddess-mokels-bossfight-saphyra).\n- This port keeps the original assets and story. If you enjoy it, please support the original author.\n\n## License & source\n\nLicensed under the Academic Free License v3.0, the same license as the original work.\nSource: https://github.com/hp3081925122/SaphyraReborn\n\n---\n\n# 1.1\n\nMinecraft 26.1.2 NeoForge 的第一个版本。内容沿用 1.21.1 的重做：剧情建筑、Boss、武器和简体中文翻译。\n\n- 象牙恶魔的渲染翅膀现在两侧都会画出来。发光特效不再剔除背面，镜像的那一侧翅膀可以看见。\n\n## 鸣谢\n\n- 原模组、美术、模型、音效、剧情与角色归 **Mokel**：[The Shattered Goddess (Mokel's Bossfight) - Saphyra](https://www.curseforge.com/minecraft/mc-mods/the-shattered-goddess-mokels-bossfight-saphyra)。\n- 本移植保留原作资源与剧情。如果喜欢，请支持原作者。\n\n## 许可与源码\n\n许可与原作相同，为 Academic Free License v3.0。\n源码：https://github.com/hp3081925122/SaphyraReborn\n\n",
+        "changelogType": "markdown",
+        "displayName": "26.1.2-NeoForge-Saphyra Reborn-1.1",
+        "releaseType": "release",
+        "gameVersions": [
+          16082,
+          10150,
+          9638,
+          9639,
+          14454
+        ],
+        "relations": {
+          "projects": [
+            {
+              "slug": "geckolib",
+              "type": "requiredDependency"
+            },
+            {
+              "slug": "jade",
+              "type": "optionalDependency"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

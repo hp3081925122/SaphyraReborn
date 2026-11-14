@@ -18,11 +18,11 @@ import com.geckolib.model.GeoModel;
 public class NamelessSpawnModel
 extends GeoModel<NamelessSpawnEntity> {
     public Identifier getAnimationResource(NamelessSpawnEntity entity) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "animations/knightboss.animation.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "knightboss");
     }
 
     public Identifier getModelResource(GeoRenderState state) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "geo/knightboss.geo.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "knightboss");
     }
 
     public Identifier getTextureResource(GeoRenderState state) {

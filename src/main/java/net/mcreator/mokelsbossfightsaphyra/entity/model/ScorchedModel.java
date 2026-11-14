@@ -27,11 +27,11 @@ import com.geckolib.model.GeoModel;
 public class ScorchedModel
 extends GeoModel<ScorchedEntity> {
     public Identifier getAnimationResource(ScorchedEntity entity) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "animations/scorched.animation.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "scorched");
     }
 
     public Identifier getModelResource(GeoRenderState state) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "geo/scorched.geo.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "scorched");
     }
 
     public Identifier getTextureResource(GeoRenderState state) {

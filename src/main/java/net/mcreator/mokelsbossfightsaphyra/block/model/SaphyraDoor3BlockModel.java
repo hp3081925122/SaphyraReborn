@@ -16,11 +16,11 @@ import com.geckolib.model.GeoModel;
 public class SaphyraDoor3BlockModel
 extends GeoModel<SaphyraDoor3TileEntity> {
     public Identifier getAnimationResource(SaphyraDoor3TileEntity animatable) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "animations/bossgateopen.animation.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "bossgateopen");
     }
 
     public Identifier getModelResource(GeoRenderState state) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "geo/bossgateopen.geo.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "bossgateopen");
     }
 
     public Identifier getTextureResource(GeoRenderState state) {

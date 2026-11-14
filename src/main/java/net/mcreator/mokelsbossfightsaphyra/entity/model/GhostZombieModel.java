@@ -27,11 +27,11 @@ import com.geckolib.model.GeoModel;
 public class GhostZombieModel
 extends GeoModel<GhostZombieEntity> {
     public Identifier getAnimationResource(GhostZombieEntity entity) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "animations/sulfurzombie.animation.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "sulfurzombie");
     }
 
     public Identifier getModelResource(GeoRenderState state) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "geo/sulfurzombie.geo.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "sulfurzombie");
     }
 
     public Identifier getTextureResource(GeoRenderState state) {

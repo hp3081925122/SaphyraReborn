@@ -27,11 +27,11 @@ import com.geckolib.model.GeoModel;
 public class LinaraModel
 extends GeoModel<LinaraEntity> {
     public Identifier getAnimationResource(LinaraEntity entity) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "animations/marne.animation.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "marne");
     }
 
     public Identifier getModelResource(GeoRenderState state) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "geo/marne.geo.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "marne");
     }
 
     public Identifier getTextureResource(GeoRenderState state) {

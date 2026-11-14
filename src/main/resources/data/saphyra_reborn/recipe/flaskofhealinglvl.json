@@ -7,21 +7,11 @@
     " e "
   ],
   "key": {
-    "a": {
-      "item": "minecraft:nether_star"
-    },
-    "b": {
-      "item": "minecraft:skeleton_skull"
-    },
-    "c": {
-      "item": "saphyra_reborn:flask_of_healing"
-    },
-    "d": {
-      "item": "minecraft:experience_bottle"
-    },
-    "e": {
-      "item": "minecraft:dragon_breath"
-    }
+    "a": "minecraft:nether_star",
+    "b": "minecraft:skeleton_skull",
+    "c": "saphyra_reborn:flask_of_healing",
+    "d": "minecraft:experience_bottle",
+    "e": "minecraft:dragon_breath"
   },
   "result": {
     "id": "saphyra_reborn:flask_of_healinglvltwo",

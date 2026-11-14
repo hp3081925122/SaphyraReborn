@@ -27,11 +27,11 @@ import com.geckolib.model.GeoModel;
 public class PuppetOfYivaNemorModel
 extends GeoModel<PuppetOfYivaNemorEntity> {
     public Identifier getAnimationResource(PuppetOfYivaNemorEntity entity) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "animations/puppet.animation.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "puppet");
     }
 
     public Identifier getModelResource(GeoRenderState state) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "geo/puppet.geo.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "puppet");
     }
 
     public Identifier getTextureResource(GeoRenderState state) {

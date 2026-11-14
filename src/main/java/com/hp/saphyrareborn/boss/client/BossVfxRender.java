@@ -2,12 +2,17 @@ package com.hp.saphyrareborn.boss.client;
 
 import net.neoforged.api.distmarker.Dist;
 import com.hp.saphyrareborn.MokelsBossfightSaphyraMod;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.rendertype.OutputTarget;
+import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.resources.Identifier;
+import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -23,12 +28,25 @@ import net.neoforged.neoforge.client.event.ViewportEvent;
 
 @EventBusSubscriber(modid = MokelsBossfightSaphyraMod.MODID, value = Dist.CLIENT)
 public final class BossVfxRender {
-    public static final RenderType GLOW = RenderTypes.lightning();
+    public static final RenderPipeline GLOW_PIPELINE = RenderPipelines.LIGHTNING.toBuilder()
+            .withLocation(Identifier.fromNamespaceAndPath(MokelsBossfightSaphyraMod.MODID, "pipeline/boss_glow"))
+            .withCull(false)
+            .build();
+    public static final RenderType GLOW = RenderType.create("saphyra_boss_glow", RenderSetup.builder(GLOW_PIPELINE)
+            .setOutputTarget(OutputTarget.WEATHER_TARGET)
+            .sortOnUpload()
+            .createRenderSetup());
     public static final double RENDER_RANGE_SQR = 128.0 * 128.0;
     private static float shake;
     private static ClientLevel lastLevel;
 
     private BossVfxRender() {
+    }
+
+    @SubscribeEvent
+    public static void registerPipelines(RegisterRenderPipelinesEvent event) {
+        event.registerPipeline(GLOW_PIPELINE);
+        MokelsBossfightSaphyraMod.LOGGER.info("[MothWingDebug] boss glow pipeline registered cull={}", GLOW_PIPELINE.isCull());
     }
 
     @SubscribeEvent

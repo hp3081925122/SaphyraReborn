@@ -27,11 +27,11 @@ import com.geckolib.model.GeoModel;
 public class PutridRoseModel
 extends GeoModel<PutridRoseEntity> {
     public Identifier getAnimationResource(PutridRoseEntity entity) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "animations/putridrose.animation.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "putridrose");
     }
 
     public Identifier getModelResource(GeoRenderState state) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "geo/putridrose.geo.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "putridrose");
     }
 
     public Identifier getTextureResource(GeoRenderState state) {

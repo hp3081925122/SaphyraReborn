@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 import com.hp.saphyrareborn.MokelsBossfightSaphyraMod;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModItems;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModMobEffects;
-import com.hp.saphyrareborn.procedures.AnimationsSetUpProcedure;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.Connection;
@@ -24,7 +23,6 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.network.NetworkDirection;
 
 @EventBusSubscriber
 public class RuleOfWisdomrightclickedProcedure {
@@ -64,16 +62,8 @@ public class RuleOfWisdomrightclickedProcedure {
                 Player _player = (Player)entity;
                 _player.getCooldowns().addCooldown(new ItemStack((net.minecraft.world.level.ItemLike)MokelsBossfightSaphyraModItems.RULE_OF_HATERED.get()), 2400);
             }
-            if (!world.isClientSide() && entity instanceof Player && world instanceof ServerLevel) {
-                List<Connection> connections;
-                ServerLevel srvLvl_ = (ServerLevel)world;
-                List list = connections = srvLvl_.getServer().getConnection().getConnections();
-                synchronized (list) {
-                    for (Connection connection : connections) {
-                        if (connection.isConnecting() || !connection.isConnected()) continue;
-                        MokelsBossfightSaphyraMod.PACKET_HANDLER.sendTo((Object)new AnimationsSetUpProcedure.MokelsBossfightSaphyraModAnimationMessage((Component)Component.literal((String)"wisdom"), entity.getId(), true), connection, NetworkDirection.PLAY_TO_CLIENT);
-                    }
-                }
+            if (entity instanceof Player) {
+                com.hp.saphyrareborn.network.PlayerAnimationPayload.send(entity, "wisdom");
             }
             if (entity instanceof LivingEntity && !(_entity = (LivingEntity)entity).level().isClientSide()) {
                 _entity.addEffect(new MobEffectInstance(MokelsBossfightSaphyraModMobEffects.COOLDOWN, 80, 1, false, false));

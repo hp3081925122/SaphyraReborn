@@ -27,11 +27,11 @@ import com.geckolib.model.GeoModel;
 public class WitchbossModel
 extends GeoModel<WitchbossEntity> {
     public Identifier getAnimationResource(WitchbossEntity entity) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "animations/witchboss.animation.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "witchboss");
     }
 
     public Identifier getModelResource(GeoRenderState state) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "geo/witchboss.geo.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "witchboss");
     }
 
     public Identifier getTextureResource(GeoRenderState state) {

@@ -18,11 +18,11 @@ import com.geckolib.model.GeoModel;
 public class MoonbeamModel
 extends GeoModel<MoonbeamEntity> {
     public Identifier getAnimationResource(MoonbeamEntity entity) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "animations/moonbeam.animation.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "moonbeam");
     }
 
     public Identifier getModelResource(GeoRenderState state) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "geo/moonbeam.geo.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "moonbeam");
     }
 
     public Identifier getTextureResource(GeoRenderState state) {

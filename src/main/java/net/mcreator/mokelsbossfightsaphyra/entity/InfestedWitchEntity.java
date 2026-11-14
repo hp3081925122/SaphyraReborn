@@ -185,11 +185,11 @@ implements GeoEntity {
     }
 
     private PlayState procedurePredicate(AnimationTest event) {
-        return event.controller().isPlayingTriggeredAnimation() && !this.isDeadOrDying() ? PlayState.CONTINUE : PlayState.STOP;
+        return com.hp.saphyrareborn.gecko.GeckoAnim.procedure(event, this.isDeadOrDying());
     }
 
     private boolean isProcedureAnimating() {
-        return this.procedureController != null && this.procedureController.isPlayingTriggeredAnimation();
+        return com.hp.saphyrareborn.gecko.GeckoAnim.procedureActive(this.procedureController);
     }
 
     protected void tickDeath() {

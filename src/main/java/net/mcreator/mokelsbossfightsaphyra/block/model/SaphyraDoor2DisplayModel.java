@@ -16,11 +16,11 @@ import com.geckolib.model.GeoModel;
 public class SaphyraDoor2DisplayModel
 extends GeoModel<SaphyraDoor2DisplayItem> {
     public Identifier getAnimationResource(SaphyraDoor2DisplayItem animatable) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "animations/bossgate.animation.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "bossgate");
     }
 
     public Identifier getModelResource(GeoRenderState state) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "geo/bossgate.geo.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "bossgate");
     }
 
     public Identifier getTextureResource(GeoRenderState state) {

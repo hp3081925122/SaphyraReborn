@@ -1,6 +1,9 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "saphyra_reborn:item/oddment_stage_2"
+    "type": "minecraft:special",
+    "base": "saphyra_reborn:item/oddment_stage_2",
+    "model": {
+      "type": "geckolib:geckolib"
+    }
   }
 }

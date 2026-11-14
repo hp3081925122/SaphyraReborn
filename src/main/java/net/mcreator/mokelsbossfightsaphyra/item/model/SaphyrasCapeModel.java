@@ -16,11 +16,11 @@ import com.geckolib.model.GeoModel;
 public class SaphyrasCapeModel
 extends GeoModel<SaphyrasCapeItem> {
     public Identifier getAnimationResource(SaphyrasCapeItem object) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "animations/capesaphyraanimated.animation.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "capesaphyraanimated");
     }
 
     public Identifier getModelResource(GeoRenderState state) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "geo/capesaphyraanimated.geo.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "capesaphyraanimated");
     }
 
     public Identifier getTextureResource(GeoRenderState state) {

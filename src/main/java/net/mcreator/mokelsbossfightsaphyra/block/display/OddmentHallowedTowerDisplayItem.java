@@ -39,7 +39,7 @@ implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache((GeoAnimatable)this);
 
     public OddmentHallowedTowerDisplayItem(Block block, Item.Properties settings) {
-        super(block, settings);
+        super(block, settings.useBlockDescriptionPrefix());
     }
 
     private PlayState predicate(AnimationTest event) {

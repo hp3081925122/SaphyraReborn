@@ -27,11 +27,11 @@ import com.geckolib.model.GeoModel;
 public class SaphyraDialog3Model
 extends GeoModel<SaphyraDialog3Entity> {
     public Identifier getAnimationResource(SaphyraDialog3Entity entity) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "animations/saphyrasitting.animation.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "saphyrasitting");
     }
 
     public Identifier getModelResource(GeoRenderState state) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "geo/saphyrasitting.geo.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "saphyrasitting");
     }
 
     public Identifier getTextureResource(GeoRenderState state) {

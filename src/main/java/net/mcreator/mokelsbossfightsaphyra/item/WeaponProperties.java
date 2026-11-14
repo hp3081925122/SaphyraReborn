@@ -31,6 +31,8 @@ public final class WeaponProperties {
         return new Item.Properties().setId(com.hp.saphyrareborn.init.RegistryIds.item)
                 .attributes(modifiers)
                 .component(DataComponents.UNBREAKABLE, net.minecraft.util.Unit.INSTANCE)
+                .stacksTo(1)
+                .enchantable(15)
                 .fireResistant();
     }
 }

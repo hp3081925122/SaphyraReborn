@@ -2,11 +2,6 @@
  * Decompiled with CFR 0.152.
  * 
  * Could not load the following classes:
- *  dev.kosmx.playerAnim.api.layered.IAnimation
- *  dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer
- *  dev.kosmx.playerAnim.api.layered.ModifierLayer
- *  dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess
- *  dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry
  *  net.minecraft.client.Minecraft
  *  net.minecraft.client.player.AbstractClientPlayer
  *  net.minecraft.commands.CommandSource
@@ -27,7 +22,6 @@
  *  net.minecraft.world.level.LevelAccessor
  *  net.minecraft.world.phys.Vec2
  *  net.minecraft.world.phys.Vec3
- *  net.neoforged.network.NetworkDirection
  */
 package com.hp.saphyrareborn.procedures;
 
@@ -35,7 +29,6 @@ import java.util.List;
 import com.hp.saphyrareborn.MokelsBossfightSaphyraMod;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModMobEffects;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModParticleTypes;
-import com.hp.saphyrareborn.procedures.AnimationsSetUpProcedure;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.particles.ParticleOptions;
@@ -54,7 +47,6 @@ import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.network.NetworkDirection;
 
 public class ManicEffectStartedProcedure {
     /*
@@ -76,16 +68,8 @@ public class ManicEffectStartedProcedure {
         }.checkGamemode(entity)) {
             ServerLevel _level1;
             LivingEntity _entity1;
-            if (!world.isClientSide() && entity instanceof Player && world instanceof ServerLevel) {
-                List<Connection> connections;
-                ServerLevel srvLvl_ = (ServerLevel)world;
-                List list = connections = srvLvl_.getServer().getConnection().getConnections();
-                synchronized (list) {
-                    for (Connection connection : connections) {
-                        if (connection.isConnecting() || !connection.isConnected()) continue;
-                        MokelsBossfightSaphyraMod.PACKET_HANDLER.sendTo((Object)new AnimationsSetUpProcedure.MokelsBossfightSaphyraModAnimationMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.3dc8a52d4388"), entity.getId(), true), connection, NetworkDirection.PLAY_TO_CLIENT);
-                    }
-                }
+            if (entity instanceof Player) {
+                com.hp.saphyrareborn.network.PlayerAnimationPayload.send(entity, "manic");
             }
             if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
                 _entity1.addEffect(new MobEffectInstance(MokelsBossfightSaphyraModMobEffects.STAY_STILL, 80, 1, false, false));

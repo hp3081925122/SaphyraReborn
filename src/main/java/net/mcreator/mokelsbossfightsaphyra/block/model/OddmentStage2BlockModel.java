@@ -16,11 +16,11 @@ import com.geckolib.model.GeoModel;
 public class OddmentStage2BlockModel
 extends GeoModel<OddmentStage2TileEntity> {
     public Identifier getAnimationResource(OddmentStage2TileEntity animatable) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "animations/losthopestage2.animation.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "losthopestage2");
     }
 
     public Identifier getModelResource(GeoRenderState state) {
-        return Identifier.fromNamespaceAndPath("saphyra_reborn", "geo/losthopestage2.geo.json");
+        return Identifier.fromNamespaceAndPath("saphyra_reborn", "losthopestage2");
     }
 
     public Identifier getTextureResource(GeoRenderState state) {

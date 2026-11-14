@@ -104,23 +104,23 @@ public final class NamelessVfxClient {
     }
 
     private static float[] core(float a) {
-        return rgba(1.0f, 0.56f, 0.28f, a);
+        return rgba(1.0f, 0.55f, 0.28f, a);
     }
 
     private static float[] crimson(float a) {
-        return rgba(0.92f, 0.10f, 0.14f, a);
+        return rgba(0.92f, 0.08f, 0.12f, a);
     }
 
     private static float[] bloodDark(float a) {
-        return rgba(0.55f, 0.04f, 0.08f, a);
+        return rgba(0.55f, 0.03f, 0.06f, a);
     }
 
     private static float[] gold(float a) {
-        return rgba(1.0f, 0.80f, 0.36f, a);
+        return rgba(1.0f, 0.78f, 0.34f, a);
     }
 
     private static float[] hotWhite(float a) {
-        return rgba(1.0f, 0.95f, 0.86f, a);
+        return rgba(1.0f, 0.94f, 0.84f, a);
     }
 
     private static final class Fx {
@@ -156,9 +156,9 @@ public final class NamelessVfxClient {
             this.fx = -Math.sin(this.yawRad);
             this.fz = Math.cos(this.yawRad);
             this.life = switch (this.kind) {
-                case NamelessVfx.SLASH -> 9;
+                case NamelessVfx.SLASH -> 8;
                 case NamelessVfx.SLAM -> Math.max(2, this.extra) + 8;
-                case NamelessVfx.TELEGRAPH_RING, NamelessVfx.TELEGRAPH_LINE -> Math.max(2, this.extra) + 3;
+                case NamelessVfx.TELEGRAPH_RING, NamelessVfx.TELEGRAPH_LINE -> Math.max(2, this.extra) + 4;
                 case NamelessVfx.ROT_PILLAR -> this.extra + 15;
                 case NamelessVfx.ROAR -> 20;
                 case NamelessVfx.SHIELD_SPARK -> 6;
@@ -314,7 +314,7 @@ public final class NamelessVfxClient {
                 case NamelessVfx.SLAM -> this.renderSlam(b, t);
                 case NamelessVfx.TELEGRAPH_RING -> this.renderTelegraphRing(b, t);
                 case NamelessVfx.TELEGRAPH_LINE -> this.renderTelegraphLine(b, t);
-                case NamelessVfx.ROT_PILLAR -> this.renderPillar(b, t - this.extra, this.size * 0.58, 5.2, 1.0f);
+                case NamelessVfx.ROT_PILLAR -> this.renderPillar(b, t - this.extra, this.size * 0.65, 5.4, 1.0f);
                 case NamelessVfx.ROAR -> this.renderRoar(b, t);
                 case NamelessVfx.SHIELD_SPARK -> this.renderShieldSpark(b, t);
                 case NamelessVfx.SHIELD_RAISE -> this.renderBarrier(b, t);
@@ -329,25 +329,27 @@ public final class NamelessVfxClient {
         }
 
         private void renderSlash(TexBatch b, float t) {
-            float fade = 1.0f - clamp01((t - 2.6f) / 5.4f);
+            float reveal = easeOut(t / 2.8f);
+            float fade = 1.0f - clamp01((t - 2.8f) / 5.2f);
             if (fade <= 0.0f) {
                 return;
             }
             boolean overhead = this.extra == NamelessVfx.SLASH_OVERHEAD;
             double dir = this.extra == NamelessVfx.SLASH_RIGHT ? -1.0 : 1.0;
-            double from = overhead ? Math.toRadians(-40.0) : Math.toRadians(-94.0) * dir;
-            double to = overhead ? Math.toRadians(115.0) : Math.toRadians(94.0) * dir;
-            double outer = this.size * 0.98;
-            double inner = this.size * 0.58;
-            b.slashSwing(BossVfxRender.SLASH_HEAVY, this.x, this.y, this.z, this.fx, this.fz,
-                    inner, outer, from, to, t, 2.4f, 5.0f, overhead, 0.52 * dir, overhead ? 0.48 : 1.36, 20,
-                    hotWhite(0.96f * fade), crimson(0.68f * fade));
-            b.slashSwing(BossVfxRender.SLASH_HEAVY, this.x, this.y, this.z, this.fx, this.fz,
-                    outer * 0.76, outer * 1.06, from, to, t - 0.35f, 2.4f, 4.5f, overhead, 0.52 * dir, overhead ? 0.52 : 1.40, 16,
-                    gold(0.86f * fade), crimson(0.28f * fade));
+            double from = overhead ? Math.toRadians(-40.0) : Math.toRadians(-92.0) * dir;
+            double to = overhead ? Math.toRadians(115.0) : Math.toRadians(92.0) * dir;
+            double end = from + (to - from) * reveal;
+            double outer = this.size * 0.96;
+            double inner = this.size * 0.42;
+            b.slashArc(BossVfxRender.SLASH_HEAVY, this.x, this.y, this.z, this.fx, this.fz,
+                    inner, outer, from, end, overhead, 0.55 * dir, overhead ? 0.5 : 1.35, 18,
+                    hotWhite(0.95f * fade), crimson(0.78f * fade));
+            b.slashArc(BossVfxRender.SLASH_HEAVY, this.x, this.y, this.z, this.fx, this.fz,
+                    outer * 0.72, outer * 1.08, from + (end - from) * 0.2, end, overhead, 0.55 * dir, overhead ? 0.5 : 1.35, 12,
+                    gold(0.85f * fade), crimson(0.25f * fade));
             if (overhead && t < 6.0f) {
                 b.flat(BossVfxRender.SCORCH_CRACKS, this.x + this.fx * (this.size * 0.62), this.y + 0.05, this.z + this.fz * (this.size * 0.62),
-                        1.7 * easeOut(t / 2.5f), this.yawRad, core(0.72f * fade));
+                        1.8 * easeOut(t / 2.5f), this.yawRad, core(0.75f * fade));
             }
         }
 
@@ -361,12 +363,12 @@ public final class NamelessVfxClient {
             double dist = WAVE_SPEED * t;
             double wx = this.x + this.fx * dist;
             double wz = this.z + this.fz * dist;
-            b.crescentWave(wx, this.y + 1.32, wz, this.fx, this.fz, 0.14 * Mth.sin(t * 0.45f),
-                    1.20, Math.min(2.3, this.size * 0.88), crimson(0.90f * a), hotWhite(0.96f * a));
-            double trailLen = Math.min(dist, 3.8);
+            b.crescentWave(wx, this.y + 1.35, wz, this.fx, this.fz, 0.14 * Mth.sin(t * 0.45f),
+                    1.35, this.size * 0.95, crimson(0.92f * a), hotWhite(0.95f * a));
+            double trailLen = Math.min(dist, 4.5);
             if (trailLen > 0.4) {
                 b.tiledGroundLine(BossVfxRender.TELEGRAPH_STRIP, wx - this.fx * trailLen, this.y + 0.05, wz - this.fz * trailLen,
-                        this.fx, this.fz, trailLen, 0.54, 2.0, t * 0.7f, bloodDark(0.42f * a), core(0.75f * a));
+                        this.fx, this.fz, trailLen, 0.85, 2.2, t * 0.7f, bloodDark(0.45f * a), core(0.8f * a));
             }
         }
 
@@ -379,16 +381,16 @@ public final class NamelessVfxClient {
             }
             double startR = this.innerRadius;
             double r = startR + (this.size - startR) * prog;
-            double bandW = Math.max(0.68, (this.size - startR) * 0.20);
+            double bandW = Math.max(0.8, (this.size - startR) * 0.24);
             double bandIn = Math.max(startR, r - bandW);
-            b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.06, this.z, bandIn, r + 0.18, 0.0, Math.PI * 2.0, 2.4,
-                    hotWhite(0.92f * fade), crimson(0.72f * fade));
-            double wallH = (0.95 * (1.0 - prog * 0.55) + 0.24) * fade;
-            b.crownWall(BossVfxRender.CROWN_WALL, this.x, this.y, this.y + wallH, this.z, Math.max(0.3, r), 0.0, Math.PI * 2.0, 2.6,
-                    gold(0.62f * fade), crimson(0.58f * fade));
+            b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.06, this.z, bandIn, r + 0.2, 0.0, Math.PI * 2.0, 2.6,
+                    hotWhite(0.92f * fade), crimson(0.82f * fade));
+            double wallH = (1.35 * (1.0 - prog * 0.55) + 0.35) * fade;
+            b.crownWall(BossVfxRender.CROWN_WALL, this.x, this.y, this.y + wallH, this.z, r, 0.0, Math.PI * 2.0, 2.8,
+                    gold(0.85f * fade), crimson(0.92f * fade));
             if (startR <= 0.1) {
-                b.flat(BossVfxRender.SCORCH_CRACKS, this.x, this.y + 0.04, this.z, Math.min(this.size * 0.86, r + 0.5), this.yawRad, core(0.72f * fade));
-                b.flat(BossVfxRender.SHOCKWAVE_RING, this.x, this.y + 0.07, this.z, Math.max(0.4, r), this.yawRad + t * 0.06, crimson(0.68f * fade));
+                b.flat(BossVfxRender.SCORCH_CRACKS, this.x, this.y + 0.04, this.z, Math.min(this.size * 0.88, r + 0.6), this.yawRad, core(0.75f * fade));
+                b.flat(BossVfxRender.SHOCKWAVE_RING, this.x, this.y + 0.07, this.z, r, this.yawRad + t * 0.06, crimson(0.65f * fade));
             }
         }
 
@@ -399,42 +401,42 @@ public final class NamelessVfxClient {
             double rIn = this.innerRadius;
             if (t <= dur) {
                 float prog = clamp01(t / dur);
-                b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.07, this.z, Math.max(rIn, rOut - 0.46), rOut, 0.0, Math.PI * 2.0, 2.4,
-                        gold(0.84f * pulse), crimson(0.72f * pulse));
+                b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.07, this.z, Math.max(rIn, rOut - 0.55), rOut, 0.0, Math.PI * 2.0, 2.5,
+                        gold(0.85f * pulse), crimson(0.85f * pulse));
                 if (rIn > 0.1) {
-                    b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.07, this.z, rIn, Math.min(rOut, rIn + 0.42), 0.0, Math.PI * 2.0, 2.2,
-                            crimson(0.72f * pulse), gold(0.68f * pulse));
+                    b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.07, this.z, rIn, Math.min(rOut, rIn + 0.45), 0.0, Math.PI * 2.0, 2.2,
+                            crimson(0.75f * pulse), gold(0.75f * pulse));
                     double fill = rIn + (rOut - rIn) * prog;
-                    b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.058, this.z, Math.max(rIn, fill - 0.65), fill, 0.0, Math.PI * 2.0, 2.6,
-                            core(0.68f), crimson(0.28f));
+                    b.ringBand(BossVfxRender.TELEGRAPH_STRIP, this.x, this.y + 0.055, this.z, Math.max(rIn, fill - 0.8), fill, 0.0, Math.PI * 2.0, 3.0,
+                            core(0.75f), crimson(0.3f));
                 } else {
-                    b.flat(BossVfxRender.SIGIL_RING, this.x, this.y + 0.05, this.z, rOut * 0.96, t * 0.035, crimson(0.40f + 0.28f * prog));
+                    b.flat(BossVfxRender.SIGIL_RING, this.x, this.y + 0.05, this.z, rOut, t * 0.035, crimson(0.45f + 0.3f * prog));
                     double sweep = Math.max(0.4, rOut * prog);
-                    b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.065, this.z, Math.max(0.0, sweep - 0.54), sweep, 0.0, Math.PI * 2.0, 2.2,
-                            hotWhite(0.76f), crimson(0.34f));
+                    b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.065, this.z, Math.max(0.0, sweep - 0.65), sweep, 0.0, Math.PI * 2.0, 2.4,
+                            hotWhite(0.75f), crimson(0.35f));
                 }
             } else {
-                float flash = 1.0f - clamp01((t - dur) / 3.0f);
-                b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.075, this.z, Math.max(rIn, rOut - 0.6), rOut, 0.0, Math.PI * 2.0, 2.6,
-                        hotWhite(0.86f * flash), core(0.60f * flash));
+                float flash = 1.0f - clamp01((t - dur) / 4.0f);
+                b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.075, this.z, rIn, rOut, 0.0, Math.PI * 2.0, 2.8,
+                        hotWhite(0.9f * flash), core(0.7f * flash));
             }
         }
 
         private void renderTelegraphLine(TexBatch b, float t) {
             int dur = Math.max(2, this.extra);
-            float a = t <= dur ? 0.65f + 0.22f * Mth.sin(t * 0.9f) : 0.78f * (1.0f - clamp01((t - dur) / 3.0f));
+            float a = t <= dur ? 0.65f + 0.25f * Mth.sin(t * 0.9f) : 0.85f * (1.0f - clamp01((t - dur) / 4.0f));
             if (a <= 0.0f) {
                 return;
             }
             b.tiledGroundLine(BossVfxRender.TELEGRAPH_STRIP, this.x + this.fx * 0.8, this.y + 0.065, this.z + this.fz * 0.8,
-                    this.fx, this.fz, this.size, 0.62, 2.4, t * 0.65f, crimson(0.62f * a), gold(0.90f * a));
-            int nodes = Math.max(3, Math.round(this.size / 4.8f));
+                    this.fx, this.fz, this.size, 1.05, 2.6, t * 0.65f, crimson(0.72f * a), gold(0.95f * a));
+            int nodes = Math.max(3, Math.round(this.size / 4.5f));
             float prog = clamp01(t / dur);
             for (int i = 1; i <= nodes; i++) {
                 double d = this.size * i / nodes;
                 double cx = this.x + this.fx * d;
                 double cz = this.z + this.fz * d;
-                b.flat(BossVfxRender.SIGIL_RING, cx, this.y + 0.075, cz, 0.88 + 0.36 * prog, t * 0.08 + i, core(0.72f * a));
+                b.flat(BossVfxRender.SIGIL_RING, cx, this.y + 0.075, cz, 1.05 + 0.45 * prog, t * 0.08 + i, core(0.78f * a));
             }
         }
 
@@ -448,12 +450,11 @@ public final class NamelessVfxClient {
                 return;
             }
             double h = height * rise;
-            b.pillar(this.x, this.y, this.z, radius, h, local * 0.14, crimson(0.86f * fade), hotWhite(0.95f * fade));
-            b.beam(BossVfxRender.BEAM_STRIP, this.x, this.y, this.z, this.x, this.y + h * 1.06, this.z, radius * 0.65, 2.2, gold(0.85f * fade), hotWhite(0.95f * fade));
-            b.flat(BossVfxRender.SCORCH_CRACKS, this.x, this.y + 0.045, this.z, radius * 1.5, this.yawRad, core(0.75f * fade));
-            double ring = radius * (0.9 + 1.4 * easeOut(local / 4.5f));
-            b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.065, this.z, ring * 0.68, ring, 0.0, Math.PI * 2.0, 2.0,
-                    gold(0.78f * fade), crimson(0.55f * fade));
+            b.pillar(this.x, this.y, this.z, radius, h, local * 0.14, crimson(0.92f * fade), hotWhite(0.95f * fade));
+            b.flat(BossVfxRender.SCORCH_CRACKS, this.x, this.y + 0.045, this.z, radius * 1.55, this.yawRad, core(0.8f * fade));
+            double ring = radius * (0.9 + 1.5 * easeOut(local / 4.5f));
+            b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.065, this.z, ring * 0.65, ring, 0.0, Math.PI * 2.0, 2.0,
+                    gold(0.8f * fade), crimson(0.6f * fade));
         }
 
         private void renderRoar(TexBatch b, float t) {
@@ -465,13 +466,13 @@ public final class NamelessVfxClient {
                 float prog = easeOut(local / 11.0f);
                 float fade = 1.0f - clamp01(local / 11.0f);
                 double r = Math.max(0.8, this.size * prog);
-                double cy = this.y + 0.22 + wave * 0.55;
-                b.crownWall(BossVfxRender.CROWN_WALL, this.x, cy, cy + 1.35, this.z, r, 0.0, Math.PI * 2.0, 2.8,
-                        wave == 1 ? gold(0.65f * fade) : core(0.62f * fade), crimson(0.58f * fade));
+                double cy = this.y + 0.25 + wave * 0.65;
+                b.crownWall(BossVfxRender.CROWN_WALL, this.x, cy, cy + 2.0, this.z, r, 0.0, Math.PI * 2.0, 3.0,
+                        wave == 1 ? gold(0.88f * fade) : core(0.85f * fade), crimson(0.88f * fade));
             }
             float fade = 1.0f - clamp01(t / 15.0f);
             double r = this.size * easeOut(t / 8.0f);
-            b.flat(BossVfxRender.SHOCKWAVE_RING, this.x, this.y + 0.06, this.z, r, t * 0.05, crimson(0.78f * fade));
+            b.flat(BossVfxRender.SHOCKWAVE_RING, this.x, this.y + 0.06, this.z, r, t * 0.05, crimson(0.8f * fade));
         }
 
         private void renderShieldSpark(TexBatch b, float t) {
@@ -480,9 +481,9 @@ public final class NamelessVfxClient {
                 return;
             }
             double cx = this.x + this.fx * 1.38, cy = this.y + 1.68, cz = this.z + this.fz * 1.38;
-            double r = (0.72 + 0.42 * this.size) * (0.65 + 0.45 * easeOut(t / 2.0f));
+            double r = (0.75 + 0.45 * this.size) * (0.65 + 0.45 * easeOut(t / 2.0f));
             b.billboardFrameV(BossVfxRender.IMPACT, cx, cy, cz, r, t * 0.35, (int) (t * 0.8f), 4, hotWhite(0.95f * fade));
-            b.billboard(BossVfxRender.SHIELD_HEX, cx, cy, cz, r * 0.82, r * 0.82, 0.0, gold(0.84f * fade));
+            b.billboard(BossVfxRender.SHIELD_HEX, cx, cy, cz, r * 0.85, r * 0.85, 0.0, gold(0.85f * fade));
         }
 
         private void renderBarrier(TexBatch b, float t) {
@@ -494,16 +495,16 @@ public final class NamelessVfxClient {
             }
             double face = this.faceAngle();
             double sx = this.fz, sz = -this.fx;
-            double cx = this.x + this.fx * 1.42, cy = this.y + 1.55, cz = this.z + this.fz * 1.42;
-            double hw = 1.25, hh = 1.25;
+            double cx = this.x + this.fx * 1.45, cy = this.y + 1.55, cz = this.z + this.fz * 1.45;
+            double hw = 1.35, hh = 1.35;
             b.quad(BossVfxRender.SHIELD_HEX,
-                    cx - sx * hw, cy + hh, cz - sz * hw, 0.0f, 0.0f, gold(0.86f * a),
-                    cx + sx * hw, cy + hh, cz + sz * hw, 1.0f, 0.0f, gold(0.86f * a),
-                    cx + sx * hw, cy - hh, cz + sz * hw, 1.0f, 1.0f, core(0.88f * a),
-                    cx - sx * hw, cy - hh, cz - sz * hw, 0.0f, 1.0f, core(0.88f * a));
-            double span = Math.toRadians(64.0);
-            b.crownWall(BossVfxRender.CROWN_WALL, this.x, this.y + 0.05, this.y + 0.78, this.z, 1.72, face - span, face + span, 2.0,
-                    gold(0.55f * a), crimson(0.58f * a));
+                    cx - sx * hw, cy + hh, cz - sz * hw, 0.0f, 0.0f, gold(0.88f * a),
+                    cx + sx * hw, cy + hh, cz + sz * hw, 1.0f, 0.0f, gold(0.88f * a),
+                    cx + sx * hw, cy - hh, cz + sz * hw, 1.0f, 1.0f, core(0.92f * a),
+                    cx - sx * hw, cy - hh, cz - sz * hw, 0.0f, 1.0f, core(0.92f * a));
+            double span = Math.toRadians(68.0);
+            b.crownWall(BossVfxRender.CROWN_WALL, this.x, this.y + 0.05, this.y + 0.95, this.z, 1.75, face - span, face + span, 2.0,
+                    gold(0.75f * a), crimson(0.85f * a));
         }
 
         private void renderShieldBreak(TexBatch b, float t) {
@@ -512,19 +513,19 @@ public final class NamelessVfxClient {
                 return;
             }
             double cx = this.x + this.fx * 1.35, cy = this.y + 1.65, cz = this.z + this.fz * 1.35;
-            b.billboardFrameV(BossVfxRender.IMPACT, cx, cy, cz, 1.7 * easeOut(t / 4.0f), 0.2, (int) (t * 0.5f), 4, hotWhite(0.90f * fade));
+            b.billboardFrameV(BossVfxRender.IMPACT, cx, cy, cz, 1.8 * easeOut(t / 4.0f), 0.2, (int) (t * 0.5f), 4, hotWhite(0.9f * fade));
             double sx = this.fz, sz = -this.fx;
-            double spread = 2.5 * easeOut(t / 10.0f);
+            double spread = 2.6 * easeOut(t / 10.0f);
             for (int i = 0; i < 8; i++) {
                 double ang = Math.PI * 2.0 * i / 8.0 + 0.35;
                 double ox = (sx * Math.cos(ang) + this.fx * 0.35) * spread;
                 double oy = Math.sin(ang) * spread - 0.04 * t * t;
                 double oz = (sz * Math.cos(ang) + this.fz * 0.35) * spread;
-                b.billboard(BossVfxRender.SHARD, cx + ox, cy + oy, cz + oz, 0.40, 0.40, ang + t * 0.35, gold(0.92f * fade));
+                b.billboard(BossVfxRender.SHARD, cx + ox, cy + oy, cz + oz, 0.42, 0.42, ang + t * 0.35, gold(0.92f * fade));
             }
-            double r = 1.4 + 2.3 * easeOut(t / 8.0f);
-            b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.06, this.z, r * 0.70, r, 0.0, Math.PI * 2.0, 2.2,
-                    gold(0.84f * fade), crimson(0.68f * fade));
+            double r = 1.5 + 2.4 * easeOut(t / 8.0f);
+            b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.06, this.z, r * 0.68, r, 0.0, Math.PI * 2.0, 2.2,
+                    gold(0.85f * fade), crimson(0.75f * fade));
         }
 
         private void renderShieldCounter(TexBatch b, float t) {
@@ -535,46 +536,46 @@ public final class NamelessVfxClient {
                 return;
             }
             double r = this.size * prog;
-            b.flat(BossVfxRender.SIGIL_RING, this.x, this.y + 0.06, this.z, r, -t * 0.08, gold(0.84f * fade));
-            b.crownWall(BossVfxRender.CROWN_WALL, this.x, this.y, this.y + 1.35 * (1.0 - prog * 0.4), this.z, Math.max(0.3, r), 0.0, Math.PI * 2.0, 2.6,
-                    hotWhite(0.68f * fade), gold(0.58f * fade));
+            b.flat(BossVfxRender.SIGIL_RING, this.x, this.y + 0.06, this.z, r, -t * 0.08, gold(0.88f * fade));
+            b.crownWall(BossVfxRender.CROWN_WALL, this.x, this.y, this.y + 2.1 * (1.0 - prog * 0.4), this.z, r, 0.0, Math.PI * 2.0, 2.8,
+                    hotWhite(0.92f * fade), gold(0.9f * fade));
             double cx = this.x + this.fx * 1.4, cy = this.y + 1.6, cz = this.z + this.fz * 1.4;
-            b.billboard(BossVfxRender.SHIELD_HEX, cx, cy, cz, 1.35 + 0.8 * prog, 1.35 + 0.8 * prog, t * 0.12, hotWhite(0.84f * fade));
+            b.billboard(BossVfxRender.SHIELD_HEX, cx, cy, cz, 1.5 + prog, 1.5 + prog, t * 0.12, hotWhite(0.85f * fade));
         }
 
         private void renderCharge(TexBatch b, float t, double radius, int dur) {
             float prog = clamp01(t / dur);
             if (t <= dur) {
-                double r = radius * (1.30 - 0.60 * prog);
-                b.flat(BossVfxRender.SIGIL_RING, this.x, this.y + 0.06, this.z, r, t * 0.08, crimson(0.42f + 0.42f * prog));
-                b.pillar(this.x, this.y, this.z, 0.48 + 0.36 * prog, 3.2 * prog + 0.5, -t * 0.12, crimson(0.56f * prog), gold(0.76f * prog));
+                double r = radius * (1.35 - 0.65 * prog);
+                b.flat(BossVfxRender.SIGIL_RING, this.x, this.y + 0.06, this.z, r, t * 0.08, crimson(0.45f + 0.45f * prog));
+                b.pillar(this.x, this.y, this.z, 0.55 + 0.45 * prog, 3.4 * prog + 0.6, -t * 0.12, crimson(0.6f * prog), gold(0.75f * prog));
                 for (int i = 0; i < 4; i++) {
                     double a = t * 0.18 + i * (Math.PI * 0.5);
                     double gr = r * 0.85;
                     b.billboardFrameU(BossVfxRender.GLYPH, this.x + Math.cos(a) * gr, this.y + 0.9 + 1.2 * prog, this.z + Math.sin(a) * gr,
-                            0.36, 0.0, i + (int) (t * 0.25f), 4, gold(0.85f * prog));
+                            0.38, 0.0, i + (int) (t * 0.25f), 4, gold(0.85f * prog));
                 }
             } else {
                 float fade = 1.0f - clamp01((t - dur) / 4.0f);
-                b.flat(BossVfxRender.SHOCKWAVE_RING, this.x, this.y + 0.07, this.z, radius * 1.05, this.yawRad, hotWhite(0.84f * fade));
+                b.flat(BossVfxRender.SHOCKWAVE_RING, this.x, this.y + 0.07, this.z, radius * 1.1, this.yawRad, hotWhite(0.85f * fade));
             }
         }
 
         private void renderPhaseShift(TexBatch b, float t) {
             if (t < 30.0f) {
-                this.renderCharge(b, t, 5.0, 30);
-                double r2 = 7.0 * (1.0 - t / 30.0f) + 0.8;
-                b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.08, this.z, Math.max(0.2, r2 - 0.5), r2, 0.0, Math.PI * 2.0, 2.4,
-                        gold(0.82f), crimson(0.68f));
+                this.renderCharge(b, t, 5.2, 30);
+                double r2 = 7.2 * (1.0 - t / 30.0f) + 0.8;
+                b.ringBand(BossVfxRender.RING_BAND, this.x, this.y + 0.08, this.z, Math.max(0.2, r2 - 0.6), r2, 0.0, Math.PI * 2.0, 2.4,
+                        gold(0.85f), crimson(0.8f));
                 return;
             }
             float local = t - 30.0f;
-            this.renderPillar(b, local, 1.85, 13.0, 1.15f);
+            this.renderPillar(b, local, 2.1, 13.5, 1.25f);
             float fade = 1.0f - clamp01(local / 20.0f);
-            double r = this.size * 2.35 * easeOut(local / 11.0f);
-            b.crownWall(BossVfxRender.CROWN_WALL, this.x, this.y, this.y + 1.55 * fade, this.z, Math.max(0.4, r), 0.0, Math.PI * 2.0, 3.0,
-                    gold(0.65f * fade), crimson(0.62f * fade));
-            b.flat(BossVfxRender.SIGIL_RING, this.x, this.y + 0.055, this.z, Math.min(8.2, r), local * 0.06, core(0.78f * fade));
+            double r = this.size * 2.4 * easeOut(local / 11.0f);
+            b.crownWall(BossVfxRender.CROWN_WALL, this.x, this.y, this.y + 2.4 * fade, this.z, r, 0.0, Math.PI * 2.0, 3.2,
+                    gold(0.9f * fade), crimson(0.95f * fade));
+            b.flat(BossVfxRender.SIGIL_RING, this.x, this.y + 0.055, this.z, Math.min(8.5, r), local * 0.06, core(0.85f * fade));
         }
 
         private void renderPool(TexBatch b, float t) {
@@ -585,10 +586,10 @@ public final class NamelessVfxClient {
                 return;
             }
             float pulse = 0.8f + 0.2f * Mth.sin(t * 0.45f);
-            b.flat(BossVfxRender.SCORCH_CRACKS, this.x, this.y + 0.05, this.z, 2.65, this.yawRad, crimson(0.72f * a * pulse));
-            b.flat(BossVfxRender.SIGIL_RING, this.x, this.y + 0.06, this.z, 2.75, t * 0.03, core(0.58f * a * pulse));
-            b.crownWall(BossVfxRender.CROWN_WALL, this.x, this.y, this.y + 0.62 * pulse, this.z, 2.52, 0.0, Math.PI * 2.0, 2.4,
-                    core(0.42f * a), crimson(0.52f * a));
+            b.flat(BossVfxRender.SCORCH_CRACKS, this.x, this.y + 0.05, this.z, 2.7, this.yawRad, crimson(0.75f * a * pulse));
+            b.flat(BossVfxRender.SIGIL_RING, this.x, this.y + 0.06, this.z, 2.85, t * 0.03, core(0.65f * a * pulse));
+            b.crownWall(BossVfxRender.CROWN_WALL, this.x, this.y, this.y + 0.85 * pulse, this.z, 2.55, 0.0, Math.PI * 2.0, 2.4,
+                    core(0.55f * a), crimson(0.75f * a));
         }
     }
 }

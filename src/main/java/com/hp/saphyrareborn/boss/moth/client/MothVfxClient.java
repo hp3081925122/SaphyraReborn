@@ -1,6 +1,5 @@
 package com.hp.saphyrareborn.boss.moth.client;
 
-import static com.hp.saphyrareborn.boss.client.BossVfxRender.BEAM_STRIP;
 import static com.hp.saphyrareborn.boss.client.BossVfxRender.BOLT;
 import static com.hp.saphyrareborn.boss.client.BossVfxRender.CROWN_WALL;
 import static com.hp.saphyrareborn.boss.client.BossVfxRender.GLYPH;
@@ -15,6 +14,7 @@ import static com.hp.saphyrareborn.boss.client.BossVfxRender.SHOCKWAVE_RING;
 import static com.hp.saphyrareborn.boss.client.BossVfxRender.SIGIL_RING;
 import static com.hp.saphyrareborn.boss.client.BossVfxRender.SLASH_CLAW;
 import static com.hp.saphyrareborn.boss.client.BossVfxRender.SLASH_HEAVY;
+import static com.hp.saphyrareborn.boss.client.BossVfxRender.SLASH_MARK;
 import static com.hp.saphyrareborn.boss.client.BossVfxRender.STAR;
 import static com.hp.saphyrareborn.boss.client.BossVfxRender.TELEGRAPH_STRIP;
 import static com.hp.saphyrareborn.boss.client.BossVfxRender.clamp01;
@@ -119,19 +119,19 @@ public final class MothVfxClient {
     }
 
     private static float[] ivory(float a) {
-        return rgba(1.0f, 0.97f, 0.88f, a);
+        return rgba(1.0f, 0.96f, 0.85f, a);
     }
 
     private static float[] ghost(float a) {
-        return rgba(0.42f, 0.76f, 1.0f, a);
+        return rgba(0.42f, 0.72f, 1.0f, a);
     }
 
     private static float[] deep(float a) {
-        return rgba(0.14f, 0.28f, 0.84f, a);
+        return rgba(0.14f, 0.26f, 0.82f, a);
     }
 
     private static float[] boltColor(float a) {
-        return rgba(0.88f, 0.96f, 1.0f, a);
+        return rgba(0.88f, 0.95f, 1.0f, a);
     }
 
     private static final class Fx {
@@ -178,10 +178,10 @@ public final class MothVfxClient {
             boolean follows = this.kind == MothVfx.WARD || this.kind == MothVfx.TWIRL || this.kind == MothVfx.WINGS || this.kind == MothVfx.CHARGE;
             this.anchor = follows ? nearestMoth(level, this.ox, this.oy, this.oz) : null;
             this.life = switch (this.kind) {
-                case MothVfx.SLASH -> this.extra == MothVfx.SLASH_SPIN ? 11 : 9;
+                case MothVfx.SLASH -> this.extra == MothVfx.SLASH_SPIN ? 10 : 8;
                 case MothVfx.SHOCKWAVE -> Math.max(2, this.extra) + 8;
-                case MothVfx.TELEGRAPH_RING -> Math.max(2, this.extra) + 3;
-                case MothVfx.TELEGRAPH_LINE -> Math.max(2, this.extra) + 3;
+                case MothVfx.TELEGRAPH_RING -> Math.max(2, this.extra) + 4;
+                case MothVfx.TELEGRAPH_LINE -> Math.max(2, this.extra) + 5;
                 case MothVfx.BOLT_FALL, MothVfx.BOLT_RISE -> Math.max(2, this.extra) + 9;
                 case MothVfx.LIGHTNING -> 9;
                 case MothVfx.LEVITATE, MothVfx.WARD, MothVfx.TWIRL, MothVfx.WINGS -> Math.max(4, this.extra);
@@ -377,25 +377,28 @@ public final class MothVfxClient {
 
         private void renderSlash(TexBatch b, float t) {
             boolean spin = this.extra == MothVfx.SLASH_SPIN;
-            float fade = 1.0f - clamp01((t - (spin ? 3.5f : 2.6f)) / 5.2f);
+            float reveal = easeOut(t / (spin ? 3.5f : 2.8f));
+            float fade = 1.0f - clamp01((t - (spin ? 3.8f : 3.0f)) / 5.0f);
             if (fade <= 0.0f) {
                 return;
             }
-            double outer = this.size * 0.98;
-            double inner = this.size * (spin ? 0.64 : 0.58);
+            double outer = this.size * 0.96;
+            double inner = this.size * (spin ? 0.56 : 0.48);
             if (spin) {
                 double from = this.faceAngle();
-                b.slashSwing(SLASH_HEAVY, this.x, this.y, this.z, 1.0, 0.0, inner, outer, from, from + Math.PI * 2.0, t, 3.4f, 5.0f, false, 0.0, 1.15, 32, ivory(fade), ghost(0.42f * fade));
-                b.slashSwing(SLASH_CLAW, this.x, this.y, this.z, 1.0, 0.0, inner * 1.08, outer * 1.04, from + 0.3, from + 0.3 + Math.PI * 2.0, t, 3.4f, 4.6f, false, 0.14, 1.32, 28, boltColor(0.85f * fade), deep(0.28f * fade));
-                b.flat(SIGIL_RING, this.x, this.y + 0.08, this.z, outer * 0.86, t * 0.22, ghost(0.50f * fade));
+                double end = from + Math.PI * 2.0 * reveal;
+                b.slashArc(SLASH_HEAVY, this.x, this.y, this.z, 1.0, 0.0, inner, outer, from, end, false, 0.0, 1.15, 32, ivory(fade), ghost(0.35f * fade));
+                b.slashArc(SLASH_CLAW, this.x, this.y, this.z, 1.0, 0.0, inner * 1.1, outer * 1.05, from + 0.3, end + 0.3, false, 0.15, 1.35, 28, boltColor(0.85f * fade), deep(0.25f * fade));
+                b.flat(SIGIL_RING, this.x, this.y + 0.08, this.z, outer * 0.88, t * 0.22, ghost(0.55f * fade));
                 return;
             }
             boolean overhead = this.extra == MothVfx.SLASH_OVERHEAD;
             double dir = this.extra == MothVfx.SLASH_RIGHT ? -1.0 : 1.0;
             double from = overhead ? Math.toRadians(-40.0) : Math.toRadians(-95.0) * dir;
             double to = overhead ? Math.toRadians(112.0) : Math.toRadians(95.0) * dir;
-            b.slashSwing(SLASH_HEAVY, this.x, this.y, this.z, this.fx, this.fz, inner, outer, from, to, t, 2.4f, 4.8f, overhead, 0.50 * dir, overhead ? 0.46 : 1.4, 22, ivory(fade), ghost(0.38f * fade));
-            b.slashSwing(SLASH_CLAW, this.x, this.y, this.z, this.fx, this.fz, inner * 1.12, outer * 1.04, from, to, t - 0.3f, 2.4f, 4.4f, overhead, 0.50 * dir, overhead ? 0.52 : 1.48, 20, boltColor(0.82f * fade), deep(0.24f * fade));
+            double end = from + (to - from) * reveal;
+            b.slashArc(SLASH_HEAVY, this.x, this.y, this.z, this.fx, this.fz, inner, outer, from, end, overhead, 0.52 * dir, overhead ? 0.45 : 1.4, 22, ivory(fade), ghost(0.3f * fade));
+            b.slashArc(SLASH_CLAW, this.x, this.y, this.z, this.fx, this.fz, inner * 1.12, outer * 1.04, from, end, overhead, 0.52 * dir, overhead ? 0.5 : 1.48, 20, boltColor(0.8f * fade), deep(0.2f * fade));
         }
 
         private void renderStormWave(TexBatch b, float t) {
@@ -408,17 +411,17 @@ public final class MothVfxClient {
             double wx = this.ox + this.fx * dist;
             double wz = this.oz + this.fz * dist;
             double cy = this.oy + 1.25;
-            double halfSpan = Math.min(2.3, Math.max(1.4, this.size * 0.88));
-            double halfForward = Math.min(1.4, Math.max(0.95, this.size * 0.58));
+            double halfSpan = Math.max(1.6, this.size * 1.05);
+            double halfForward = Math.max(1.1, this.size * 0.68);
             double roll = Math.sin(t * 0.45) * 0.22;
-            b.crescentWave(wx, cy, wz, this.fx, this.fz, roll, halfForward, halfSpan, ghost(0.90f * fade), ivory(fade));
-            double wakeLen = Math.min(dist, 3.8);
+            b.crescentWave(wx, cy, wz, this.fx, this.fz, roll, halfForward, halfSpan, ghost(0.92f * fade), ivory(fade));
+            double wakeLen = Math.min(dist, 4.5);
             if (wakeLen > 0.25) {
                 b.tiledGroundLine(TELEGRAPH_STRIP, wx - this.fx * wakeLen, this.oy + 0.06, wz - this.fz * wakeLen, this.fx, this.fz,
-                        wakeLen, 0.46, 1.8, t * 0.85f, deep(0.32f * fade), boltColor(0.65f * fade));
+                        wakeLen, this.size * 0.55, 1.8, t * 0.85f, deep(0.35f * fade), boltColor(0.75f * fade));
             }
-            b.billboardFrameV(STAR, wx + this.fx * 0.30, cy, wz + this.fz * 0.30, 0.48, t * 0.35, (int) (t * 0.7f), 4, ivory(0.88f * fade));
-            b.billboardFrameV(BOLT, wx - this.fx * 0.40, cy, wz - this.fz * 0.40, 0.56, t * 0.2, (int) (t * 2.0f), 4, boltColor(0.75f * fade));
+            b.billboard(STAR, wx + this.fx * 0.35, cy, wz + this.fz * 0.35, 0.55, 0.55, t * 0.35, ivory(0.85f * fade));
+            b.billboardFrameV(BOLT, wx - this.fx * 0.45, cy, wz - this.fz * 0.45, 0.65, t * 0.2, (int) (t * 2.0f), 4, boltColor(0.75f * fade));
         }
 
         private void renderShockwave(TexBatch b, float t) {
@@ -429,17 +432,17 @@ public final class MothVfxClient {
                 return;
             }
             double rOut = this.innerRadius + (this.size - this.innerRadius) * prog;
-            double bandW = Math.max(0.55, (this.size - this.innerRadius) * 0.18);
+            double bandW = Math.max(0.55, (this.size - this.innerRadius) * 0.22);
             double rIn = Math.max(this.innerRadius, rOut - bandW);
             if (this.innerRadius <= 0.1) {
-                b.flat(SHOCKWAVE_RING, this.x, this.y + 0.06, this.z, rOut, t * 0.08, ghost(0.84f * fade));
-                b.flat(SCORCH_CRACKS, this.x, this.y + 0.04, this.z, this.size * 0.76, (this.seed & 7) * 0.8, boltColor(0.50f * fade));
+                b.flat(SHOCKWAVE_RING, this.x, this.y + 0.06, this.z, rOut, t * 0.08, ghost(0.88f * fade));
+                b.flat(SCORCH_CRACKS, this.x, this.y + 0.04, this.z, this.size * 0.78, (this.seed & 7) * 0.8, boltColor(0.55f * fade));
             } else {
-                b.ringBand(RING_BAND, this.x, this.y + 0.065, this.z, this.innerRadius, rOut, 0.0, Math.PI * 2.0, 2.2, ghost(0.52f * fade), deep(0.28f * fade));
+                b.ringBand(RING_BAND, this.x, this.y + 0.065, this.z, this.innerRadius, rOut, 0.0, Math.PI * 2.0, 2.2, ghost(0.55f * fade), deep(0.3f * fade));
             }
-            b.ringBand(RING_BAND, this.x, this.y + 0.075, this.z, rIn, rOut + 0.20, 0.0, Math.PI * 2.0, 2.2, ivory(0.90f * fade), ghost(0.52f * fade));
-            double wallH = (0.95 * (1.0 - prog) + 0.22) * fade;
-            b.crownWall(CROWN_WALL, this.x, this.y, this.y + wallH, this.z, Math.max(0.3, rOut), 0.0, Math.PI * 2.0, 2.4, ivory(0.55f * fade), ghost(0.45f * fade));
+            b.ringBand(RING_BAND, this.x, this.y + 0.075, this.z, rIn, rOut + 0.25, 0.0, Math.PI * 2.0, 2.0, ivory(0.92f * fade), ghost(0.5f * fade));
+            double wallH = (1.35 * (1.0 - prog) + 0.3) * fade;
+            b.crownWall(CROWN_WALL, this.x, this.y, this.y + wallH, this.z, Math.max(0.3, rOut), 0.0, Math.PI * 2.0, 2.2, ivory(0.75f * fade), ghost(0.65f * fade));
         }
 
         private void renderTelegraphRing(TexBatch b, float t) {
@@ -448,36 +451,37 @@ public final class MothVfxClient {
             if (t <= dur) {
                 float k = clamp01(t / dur);
                 if (this.innerRadius <= 0.1) {
-                    b.flat(SIGIL_RING, this.x, this.y + 0.065, this.z, this.size, t * 0.04, ghost(0.68f * pulse));
-                    b.flat(MOON_SIGIL, this.x, this.y + 0.055, this.z, this.size * k, -t * 0.06, ivory(0.48f + 0.30f * k));
-                    b.ringBand(RING_BAND, this.x, this.y + 0.075, this.z, Math.max(0.0, this.size - 0.35), this.size, 0.0, Math.PI * 2.0, 2.2, ivory(0.85f * pulse), ghost(0.52f * pulse));
+                    b.flat(SIGIL_RING, this.x, this.y + 0.065, this.z, this.size, t * 0.04, ghost(0.78f * pulse));
+                    b.flat(MOON_SIGIL, this.x, this.y + 0.055, this.z, this.size * k, -t * 0.06, ivory(0.52f + 0.32f * k));
+                    b.ringBand(RING_BAND, this.x, this.y + 0.075, this.z, Math.max(0.0, this.size - 0.35), this.size, 0.0, Math.PI * 2.0, 2.0, ivory(0.85f * pulse), ghost(0.55f * pulse));
                 } else {
                     double sweep = this.innerRadius + (this.size - this.innerRadius) * k;
-                    b.ringBand(RING_BAND, this.x, this.y + 0.06, this.z, Math.max(this.innerRadius, sweep - 0.65), sweep, 0.0, Math.PI * 2.0, 2.4, ghost(0.55f * pulse), deep(0.30f * pulse));
-                    b.ringBand(RING_BAND, this.x, this.y + 0.075, this.z, this.innerRadius, this.innerRadius + 0.32, 0.0, Math.PI * 2.0, 2.0, ivory(0.86f * pulse), ghost(0.58f * pulse));
-                    b.ringBand(RING_BAND, this.x, this.y + 0.075, this.z, Math.max(this.innerRadius, this.size - 0.35), this.size, 0.0, Math.PI * 2.0, 2.2, ivory(0.86f * pulse), ghost(0.58f * pulse));
+                    b.ringBand(RING_BAND, this.x, this.y + 0.06, this.z, this.innerRadius, sweep, 0.0, Math.PI * 2.0, 2.4, ghost(0.55f * pulse), deep(0.35f * pulse));
+                    b.ringBand(RING_BAND, this.x, this.y + 0.075, this.z, this.innerRadius, this.innerRadius + 0.32, 0.0, Math.PI * 2.0, 1.8, ivory(0.9f * pulse), ghost(0.65f * pulse));
+                    b.ringBand(RING_BAND, this.x, this.y + 0.075, this.z, Math.max(this.innerRadius, this.size - 0.35), this.size, 0.0, Math.PI * 2.0, 2.2, ivory(0.9f * pulse), ghost(0.65f * pulse));
+                    b.crownWall(CROWN_WALL, this.x, this.y, this.y + 0.55, this.z, this.innerRadius, 0.0, Math.PI * 2.0, 2.0, ivory(0.5f * pulse), deep(0.3f * pulse));
                 }
             } else {
-                float flash = 1.0f - clamp01((t - dur) / 3.0f);
+                float flash = 1.0f - clamp01((t - dur) / 4.0f);
                 if (this.innerRadius <= 0.1) {
-                    b.flat(SHOCKWAVE_RING, this.x, this.y + 0.08, this.z, this.size, 0.0, ivory(0.82f * flash));
+                    b.flat(SHOCKWAVE_RING, this.x, this.y + 0.08, this.z, this.size, 0.0, ivory(0.85f * flash));
                 } else {
-                    b.ringBand(RING_BAND, this.x, this.y + 0.08, this.z, Math.max(this.innerRadius, this.size - 0.6), this.size, 0.0, Math.PI * 2.0, 2.4, ivory(0.82f * flash), ghost(0.55f * flash));
+                    b.ringBand(RING_BAND, this.x, this.y + 0.08, this.z, this.innerRadius, this.size, 0.0, Math.PI * 2.0, 2.2, ivory(0.85f * flash), ghost(0.65f * flash));
                 }
             }
         }
 
         private void renderTelegraphLine(TexBatch b, float t) {
             int dur = Math.max(2, this.extra);
-            float alpha = t <= dur ? 0.65f + 0.22f * Mth.sin(t * 1.15f) : 0.72f * (1.0f - clamp01((t - dur) / 3.0f));
+            float alpha = t <= dur ? 0.65f + 0.25f * Mth.sin(t * 1.15f) : 0.75f * (1.0f - clamp01((t - dur) / 5.0f));
             if (alpha <= 0.01f) {
                 return;
             }
             double len = this.size + 1.0;
-            b.tiledGroundLine(TELEGRAPH_STRIP, this.x, this.y + 0.07, this.z, this.fx, this.fz, len, 0.56, 2.2, t * 0.7f, ghost(0.55f * alpha), ivory(0.90f * alpha));
-            b.flat(RUNE_CIRCLE, this.x, this.y + 0.08, this.z, 0.95, t * 0.12, ivory(0.75f * alpha));
+            b.tiledGroundLine(TELEGRAPH_STRIP, this.x, this.y + 0.07, this.z, this.fx, this.fz, len, 0.85, 2.0, t * 0.6f, ghost(0.65f * alpha), ivory(alpha));
+            b.flat(RUNE_CIRCLE, this.x, this.y + 0.08, this.z, 1.1, t * 0.12, ivory(0.8f * alpha));
             double fill = len * clamp01(t / dur);
-            b.billboard(SHARD, this.x + this.fx * fill, this.y + 0.32, this.z + this.fz * fill, 0.38, 0.38, t * 0.25, boltColor(0.88f * alpha));
+            b.billboard(SHARD, this.x + this.fx * fill, this.y + 0.35, this.z + this.fz * fill, 0.45, 0.45, t * 0.25, boltColor(0.9f * alpha));
         }
 
         private void renderBolt(TexBatch b, float t, boolean falling) {
@@ -486,12 +490,12 @@ public final class MothVfxClient {
             if (t < dur) {
                 float k = clamp01(t / dur);
                 double sealR = Math.max(1.1, this.size);
-                b.flat(SIGIL_RING, this.x, this.y + 0.065, this.z, sealR, t * 0.12, ghost(0.52f + 0.34f * k));
-                b.flat(MOON_SIGIL, this.x, this.y + 0.075, this.z, sealR * (0.45 + 0.55 * k), -t * 0.16, ivory(0.58f + 0.34f * k));
+                b.flat(SIGIL_RING, this.x, this.y + 0.065, this.z, sealR, t * 0.12, ghost(0.55f + 0.35f * k));
+                b.flat(MOON_SIGIL, this.x, this.y + 0.075, this.z, sealR * (0.45 + 0.55 * k), -t * 0.16, ivory(0.6f + 0.35f * k));
                 double tip = falling ? this.y + height * (1.0 - k) : this.y + height * k;
-                double tail = falling ? tip + 3.0 : Math.max(this.y, tip - 3.0);
-                b.beam(BEAM_STRIP, this.x, tail, this.z, this.x, tip, this.z, 0.48, 2.0, ghost(0.72f), boltColor(0.95f));
-                b.billboardFrameV(STAR, this.x, tip, this.z, 0.52, t * 0.4, (int) (t * 0.8f), 4, ivory(0.95f));
+                double tail = falling ? tip + 3.2 : Math.max(this.y, tip - 3.2);
+                b.tiledStrip3D(LIGHTNING_STRIP, this.x, tail, this.z, this.x, tip, this.z, 0.65, 2.2, ghost(0.75f), boltColor(0.95f));
+                b.billboard(STAR, this.x, tip, this.z, 0.55, 0.55, t * 0.4, ivory(0.95f));
                 return;
             }
             float local = t - dur;
@@ -500,45 +504,45 @@ public final class MothVfxClient {
                 return;
             }
             double colH = falling ? 9.5 : this.size;
-            b.pillar(this.x, this.y, this.z, Math.max(0.58, this.size * 0.44) * (0.65 + 0.35 * fade), colH * (0.7 + 0.3 * fade), t * 0.18, ghost(0.74f * fade), boltColor(fade));
-            this.jaggedBolt(b, this.x, this.y, this.z, colH, 0.56 * fade, fade, 6);
-            double ringR = Math.max(1.2, this.size) * (0.85 + 0.72 * easeOut(local / 4.5f));
+            b.pillar(this.x, this.y, this.z, Math.max(0.75, this.size * 0.52) * (0.65 + 0.35 * fade), colH * (0.7 + 0.3 * fade), t * 0.18, ghost(0.8f * fade), boltColor(fade));
+            this.jaggedBolt(b, this.x, this.y, this.z, colH, 0.75 * fade, fade, 6);
+            double ringR = Math.max(1.2, this.size) * (0.85 + 0.75 * easeOut(local / 4.5f));
             b.flat(SHOCKWAVE_RING, this.x, this.y + 0.08, this.z, ringR, local * 0.1, ivory(0.88f * fade));
-            b.billboardFrameV(STAR, this.x, this.y + 0.55, this.z, 0.78 * fade, local * 0.3, (int) (local * 0.7f), 4, boltColor(fade));
+            b.billboard(STAR, this.x, this.y + 0.6, this.z, 0.9 * fade, 0.9 * fade, local * 0.3, boltColor(fade));
         }
 
         private void renderLightning(TexBatch b, float t) {
-            float flicker = ((int) t % 2 == 0) ? 1.0f : 0.66f;
+            float flicker = ((int) t % 2 == 0) ? 1.0f : 0.62f;
             float fade = (1.0f - clamp01(t / 9.0f)) * flicker;
             if (fade <= 0.0f) {
                 return;
             }
             double h = Math.max(5.0, this.size);
-            this.jaggedBolt(b, this.x, this.y, this.z, h, 0.74, fade, 8);
-            b.pillar(this.x, this.y, this.z, Math.min(1.6, 0.52 + this.size * 0.05) * fade, Math.min(7.5, h * 0.62), t * 0.2, ghost(0.68f * fade), ivory(0.95f * fade));
-            double ring = 1.3 + this.size * 0.18 * easeOut(t / 4.5f);
-            b.flat(SHOCKWAVE_RING, this.x, this.y + 0.075, this.z, ring, t * 0.08, ivory(0.88f * fade));
-            b.flat(SCORCH_CRACKS, this.x, this.y + 0.045, this.z, ring * 0.84, (this.seed & 7) * 0.7, boltColor(0.60f * fade));
-            b.billboardFrameV(STAR, this.x, this.y + 0.85, this.z, 1.05 * fade, t * 0.25, (int) (t * 0.7f), 4, boltColor(fade));
+            this.jaggedBolt(b, this.x, this.y, this.z, h, 1.05, fade, 8);
+            b.pillar(this.x, this.y, this.z, Math.min(2.2, 0.65 + this.size * 0.06) * fade, Math.min(8.0, h * 0.65), t * 0.2, ghost(0.72f * fade), ivory(0.95f * fade));
+            double ring = 1.4 + this.size * 0.18 * easeOut(t / 4.5f);
+            b.flat(SHOCKWAVE_RING, this.x, this.y + 0.075, this.z, ring, t * 0.08, ivory(0.9f * fade));
+            b.flat(SCORCH_CRACKS, this.x, this.y + 0.045, this.z, ring * 0.85, (this.seed & 7) * 0.7, boltColor(0.65f * fade));
+            b.billboard(STAR, this.x, this.y + 0.9, this.z, 1.25 * fade, 1.25 * fade, t * 0.25, boltColor(fade));
         }
 
         private void jaggedBolt(TexBatch b, double gx, double gy, double gz, double height, double width, float fade, int segs) {
             RandomSource r = RandomSource.create(this.seed);
             double top = gy + height;
-            double px = gx + (r.nextDouble() - 0.5) * 1.2;
+            double px = gx + (r.nextDouble() - 0.5) * 1.4;
             double py = top;
-            double pz = gz + (r.nextDouble() - 0.5) * 1.2;
+            double pz = gz + (r.nextDouble() - 0.5) * 1.4;
             for (int i = 1; i <= segs; i++) {
                 double k = (double) i / segs;
-                double jitter = (1.0 - k) * Math.min(1.5, height * 0.09);
+                double jitter = (1.0 - k) * Math.min(1.8, height * 0.11);
                 double nx = i == segs ? gx : gx + (r.nextDouble() - 0.5) * 2.0 * jitter;
                 double nz = i == segs ? gz : gz + (r.nextDouble() - 0.5) * 2.0 * jitter;
                 double ny = top - height * k;
-                b.tiledStrip3D(LIGHTNING_STRIP, px, py, pz, nx, ny, nz, width, 2.2, boltColor(fade), ivory(0.95f * fade));
+                b.tiledStrip3D(LIGHTNING_STRIP, px, py, pz, nx, ny, nz, width, 2.4, boltColor(fade), ivory(0.92f * fade));
                 if (i == segs / 2 || i == segs - 2) {
-                    double bx = nx + (r.nextDouble() - 0.5) * 2.4;
-                    double bz = nz + (r.nextDouble() - 0.5) * 2.4;
-                    b.beam(LIGHTNING_STRIP, nx, ny, nz, bx, ny - height * 0.18, bz, width * 0.52, 1.8, ghost(0.78f * fade), boltColor(0.32f * fade));
+                    double bx = nx + (r.nextDouble() - 0.5) * 2.8;
+                    double bz = nz + (r.nextDouble() - 0.5) * 2.8;
+                    b.tiledStrip3D(LIGHTNING_STRIP, nx, ny, nz, bx, ny - height * 0.18, bz, width * 0.55, 1.8, ghost(0.8f * fade), boltColor(0.35f * fade));
                 }
                 px = nx;
                 py = ny;
@@ -553,37 +557,37 @@ public final class MothVfxClient {
             }
             for (int i = 0; i < 3; i++) {
                 float local = (t + i * 6.0f) % 18.0f;
-                double ry = this.y + local / 18.0f * 2.8;
-                float a = (1.0f - local / 18.0f) * 0.75f * fade;
-                double rad = this.size * (1.02 - local / 38.0f);
+                double ry = this.y + local / 18.0f * 3.0;
+                float a = (1.0f - local / 18.0f) * 0.8f * fade;
+                double rad = this.size * (1.05 - local / 36.0f);
                 b.flat(SIGIL_RING, this.x, ry, this.z, rad, t * 0.1 + i, ivory(a));
             }
-            b.crownWall(CROWN_WALL, this.x, this.y, this.y + 1.8, this.z, this.size * 0.90, 0.0, Math.PI * 2.0, 2.2, ivory(0.38f * fade), ghost(0.28f * fade));
+            b.crownWall(CROWN_WALL, this.x, this.y, this.y + 3.0, this.z, this.size * 0.92, 0.0, Math.PI * 2.0, 2.0, ivory(0.45f * fade), ghost(0.35f * fade));
         }
 
         private void renderCharge(TexBatch b, float t, double radius, int dur) {
             float prog = clamp01(t / dur);
             if (t <= dur) {
-                double r = radius * 1.30 * (1.0 - prog) + 0.45;
-                float a = 0.35f + 0.58f * prog;
+                double r = radius * 1.35 * (1.0 - prog) + 0.45;
+                float a = 0.35f + 0.6f * prog;
                 b.flat(SIGIL_RING, this.x, this.y + 0.07, this.z, r, t * 0.08, ghost(a));
-                b.flat(RUNE_CIRCLE, this.x, this.y + 0.08, this.z, radius * 0.70, -t * 0.1, ivory(a));
-                b.pillar(this.x, this.y, this.z, 0.46 + 0.32 * prog, 2.8 * prog + 0.4, t * 0.14, ghost(0.52f * prog), ivory(0.82f * prog));
+                b.flat(RUNE_CIRCLE, this.x, this.y + 0.08, this.z, radius * 0.72, -t * 0.1, ivory(a));
+                b.crownWall(CROWN_WALL, this.x, this.y, this.y + 2.8 * prog + 0.4, this.z, 0.55 + 0.35 * prog, 0.0, Math.PI * 2.0, 1.8, ivory(0.65f * prog), ghost(0.45f * prog));
                 for (int i = 0; i < 4; i++) {
                     double ang = t * 0.14 + i * Math.PI * 0.5;
-                    b.billboardFrameU(GLYPH, this.x + Math.cos(ang) * r * 0.85, this.y + 1.2 + 0.3 * Math.sin(t * 0.25 + i), this.z + Math.sin(ang) * r * 0.85, 0.36, 0.0, i + (int) (t * 0.25f), 4, ivory(0.85f * a));
+                    b.billboardFrameU(GLYPH, this.x + Math.cos(ang) * r * 0.85, this.y + 1.2 + 0.3 * Math.sin(t * 0.25 + i), this.z + Math.sin(ang) * r * 0.85, 0.38, 0.0, i + (int) (t * 0.25f), 8, ivory(0.85f * a));
                 }
             } else {
                 float fade = 1.0f - clamp01((t - dur) / 3.0f);
-                b.flat(SHOCKWAVE_RING, this.x, this.y + 0.08, this.z, radius * 0.95, 0.0, ivory(0.80f * fade));
+                b.flat(SHOCKWAVE_RING, this.x, this.y + 0.08, this.z, radius * 0.95, 0.0, ivory(0.8f * fade));
             }
         }
 
         private void renderPhaseShift(TexBatch b, float t) {
             if (t < 30.0f) {
                 this.renderCharge(b, t, 5.0, 30);
-                double r2 = 7.8 * (1.0 - t / 30.0f) + 0.8;
-                b.flat(MOON_SIGIL, this.x, this.y + 0.06, this.z, r2, -t * 0.06, ghost(0.65f));
+                double r2 = 8.0 * (1.0 - t / 30.0f) + 0.8;
+                b.flat(MOON_SIGIL, this.x, this.y + 0.06, this.z, r2, -t * 0.06, ghost(0.7f));
                 return;
             }
             float local = t - 30.0f;
@@ -591,12 +595,12 @@ public final class MothVfxClient {
             if (fade <= 0.0f) {
                 return;
             }
-            double r = this.size * 2.5 * easeOut(local / 10.0f);
-            b.flat(SHOCKWAVE_RING, this.x, this.y + 0.07, this.z, r, local * 0.05, ivory(0.90f * fade));
-            b.crownWall(CROWN_WALL, this.x, this.y, this.y + 1.55 * fade + 0.2, this.z, Math.max(0.5, r), 0.0, Math.PI * 2.0, 2.8, ivory(0.62f * fade), ghost(0.50f * fade));
-            double rise = 14.5 * easeOut(local / 4.0f);
-            b.pillar(this.x, this.y, this.z, 1.85 * fade, rise, local * 0.16, ghost(0.80f * fade), ivory(fade));
-            this.jaggedBolt(b, this.x, this.y, this.z, rise, 0.78 * fade, fade, 7);
+            double r = this.size * 2.6 * easeOut(local / 10.0f);
+            b.flat(SHOCKWAVE_RING, this.x, this.y + 0.07, this.z, r, local * 0.05, ivory(0.9f * fade));
+            b.crownWall(CROWN_WALL, this.x, this.y, this.y + 2.4 * fade + 0.3, this.z, Math.max(0.5, r), 0.0, Math.PI * 2.0, 2.5, ivory(0.8f * fade), ghost(0.65f * fade));
+            double rise = 15.0 * easeOut(local / 4.0f);
+            b.pillar(this.x, this.y, this.z, 2.2 * fade, rise, local * 0.16, ghost(0.85f * fade), ivory(fade));
+            this.jaggedBolt(b, this.x, this.y, this.z, rise, 1.15 * fade, fade, 7);
         }
 
         private void renderBlink(TexBatch b, float t) {
@@ -607,11 +611,11 @@ public final class MothVfxClient {
                 return;
             }
             double scale = arrive ? 0.65 + 0.65 * easeOut(t / 3.0f) : 1.05 - 0.65 * k;
-            double h = 3.2 * (arrive ? 1.0 : 1.0 + 0.3 * k);
-            b.beam(BEAM_STRIP, this.x, this.y, this.z, this.x, this.y + h, this.z, 0.68 * scale, 2.0, ghost(0.78f * fade), ivory(fade));
-            b.billboardFrameV(STAR, this.x, this.y + h * 0.5, this.z, 0.92 * scale, t * 0.25, (int) (t * 0.7f), 4, ivory(0.95f * fade));
-            double r = 0.7 + 2.1 * easeOut(t / 5.0f);
-            b.flat(SHOCKWAVE_RING, this.x, this.y + 0.07, this.z, r, t * 0.12, ghost(0.78f * fade));
+            double h = 3.4 * (arrive ? 1.0 : 1.0 + 0.3 * k);
+            b.tiledStrip3D(LIGHTNING_STRIP, this.x, this.y, this.z, this.x, this.y + h, this.z, 0.9 * scale, 2.0, ghost(0.8f * fade), ivory(fade));
+            b.billboard(STAR, this.x, this.y + h * 0.5, this.z, 1.1 * scale, 1.6 * scale, t * 0.2, ivory(0.95f * fade));
+            double r = 0.7 + 2.3 * easeOut(t / 5.0f);
+            b.flat(SHOCKWAVE_RING, this.x, this.y + 0.07, this.z, r, t * 0.12, ghost(0.8f * fade));
         }
 
         private void renderDash(TexBatch b, float t) {
@@ -622,9 +626,9 @@ public final class MothVfxClient {
             double len = this.size;
             double ex = this.ox + this.fx * len;
             double ez = this.oz + this.fz * len;
-            b.tiledGroundLine(TELEGRAPH_STRIP, this.ox, this.oy + 0.07, this.oz, this.fx, this.fz, len, 0.50, 2.0, t * 0.8f, deep(0.42f * fade), ghost(0.75f * fade));
-            b.beam(BEAM_STRIP, this.ox, this.oy + 1.15, this.oz, ex, this.oy + 1.15, ez, 0.56 * fade, 2.2, ghost(0.68f * fade), ivory(0.92f * fade));
-            b.beam(LIGHTNING_STRIP, this.ox, this.oy + 1.65, this.oz, ex, this.oy + 1.65, ez, 0.38 * fade, 2.2, deep(0.42f * fade), boltColor(0.84f * fade));
+            b.tiledGroundLine(TELEGRAPH_STRIP, this.ox, this.oy + 0.07, this.oz, this.fx, this.fz, len, 0.65, 2.0, t * 0.8f, deep(0.45f * fade), ghost(0.8f * fade));
+            b.tiledStrip3D(LIGHTNING_STRIP, this.ox, this.oy + 1.1, this.oz, ex, this.oy + 1.1, ez, 0.55 * fade, 2.2, ghost(0.65f * fade), ivory(0.9f * fade));
+            b.tiledStrip3D(SLASH_MARK, this.ox, this.oy + 2.0, this.oz, ex, this.oy + 2.0, ez, 0.45 * fade, 2.4, deep(0.45f * fade), boltColor(0.8f * fade));
         }
 
         private void renderWard(TexBatch b, float t) {
@@ -641,12 +645,12 @@ public final class MothVfxClient {
                 double cx = this.x + Math.cos(ang) * rad;
                 double cz = this.z + Math.sin(ang) * rad;
                 double cy = this.y + 1.55 + 0.18 * Math.sin(t * 0.3 + i);
-                b.billboard(SHIELD_HEX, cx, cy, cz, 0.68, 0.84, 0.0, ghost(0.82f * a));
-                b.billboardFrameV(STAR, cx, cy, cz, 0.28, t * 0.2 + i, i + (int) (t * 0.4f), 4, ivory(0.90f * a));
+                b.billboard(SHIELD_HEX, cx, cy, cz, 0.72, 0.92, 0.0, ghost(0.82f * a));
+                b.billboard(STAR, cx, cy, cz, 0.32, 0.32, t * 0.2 + i, ivory(0.9f * a));
             }
-            b.flat(SIGIL_RING, this.x, this.y + 0.07, this.z, rad * 1.02, spin, ghost(0.68f * a));
-            b.flat(RUNE_CIRCLE, this.x, this.y + 0.08, this.z, rad * 0.64, -spin * 1.3, ivory(0.60f * a));
-            b.crownWall(CROWN_WALL, this.x, this.y + 0.08, this.y + 1.55, this.z, rad, 0.0, Math.PI * 2.0, 2.4, ivory(0.36f * a), ghost(0.28f * a));
+            b.flat(SIGIL_RING, this.x, this.y + 0.07, this.z, rad * 1.05, spin, ghost(0.75f * a));
+            b.flat(RUNE_CIRCLE, this.x, this.y + 0.08, this.z, rad * 0.65, -spin * 1.3, ivory(0.65f * a));
+            b.crownWall(CROWN_WALL, this.x, this.y + 0.08, this.y + 2.6, this.z, rad, 0.0, Math.PI * 2.0, 2.2, ivory(0.42f * a), ghost(0.32f * a));
         }
 
         private double twirlRadius(float t) {
@@ -664,9 +668,9 @@ public final class MothVfxClient {
             double spin = t * 0.72;
             for (int i = 0; i < 3; i++) {
                 double from = spin + i * Math.PI * 2.0 / 3.0;
-                b.slashArc(SLASH_HEAVY, this.x, this.y, this.z, 1.0, 0.0, rad * 0.66, rad, from, from + 1.25, false, 0.0, 1.05, 12, ivory(0.92f * a), ghost(0.45f * a));
+                b.slashArc(SLASH_HEAVY, this.x, this.y, this.z, 1.0, 0.0, rad * 0.58, rad, from, from + 1.25, false, 0.0, 1.05, 10, ivory(0.9f * a), ghost(0.45f * a));
             }
-            b.flat(SIGIL_RING, this.x, this.y + 0.07, this.z, rad * 0.96, -spin * 0.4, ghost(0.58f * a));
+            b.flat(SIGIL_RING, this.x, this.y + 0.07, this.z, rad, -spin * 0.4, ghost(0.65f * a));
         }
 
         private void renderWings(TexBatch b, float t) {
@@ -680,11 +684,11 @@ public final class MothVfxClient {
             double height = span * 0.92;
             double flap = 0.28 + 0.26 * Math.sin(t * 0.36);
             double cy = this.y + 2.35;
-            b.mothWings(this.x, cy, this.z, this.fx, this.fz, span, height, flap, ghost(0.86f * a), ivory(0.96f * a));
-            b.mothWings(this.x, cy + 0.05, this.z, this.fx, this.fz, span * 0.74, height * 0.74, flap * 0.85, boltColor(0.72f * a), ivory(a));
-            double bx = this.x - this.fx * 0.62;
-            double bz = this.z - this.fz * 0.62;
-            b.billboardFrameV(STAR, bx, cy + 0.22, bz, 0.52 * in, t * 0.18, (int) (t * 0.5f), 4, ivory(0.90f * a));
+            b.mothWings(this.x, cy, this.z, this.fx, this.fz, span, height, flap, ghost(0.88f * a), ivory(0.96f * a));
+            b.mothWings(this.x, cy + 0.05, this.z, this.fx, this.fz, span * 0.76, height * 0.76, flap * 0.85, boltColor(0.75f * a), ivory(a));
+            double bx = this.x - this.fx * 0.65;
+            double bz = this.z - this.fz * 0.65;
+            b.billboard(STAR, bx, cy + 0.25, bz, 0.65 * in, 0.65 * in, t * 0.18, ivory(0.9f * a));
         }
     }
 }

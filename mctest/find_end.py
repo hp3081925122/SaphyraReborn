@@ -1,0 +1,20 @@
+print(command("execute as @e[type=saphyra_reborn:linara_clock_tower] run say linara_here"))
+print(js(
+    "var Level = Java.loadClass('net.minecraft.world.level.Level');"
+    "var sl = server.getLevel(Level.OVERWORLD);"
+    "var AABB = Java.loadClass('net.minecraft.world.phys.AABB');"
+    "var box = new AABB(-200, -80, -200, 200, 40, 200);"
+    "var list = sl.getEntities(null, box);"
+    "var text = 'count ' + list.size() + '\\n';"
+    "var it = list.iterator();"
+    "var n = 0;"
+    "while (it.hasNext() && n < 30) {"
+    "  var e = it.next();"
+    "  var type = String(e.getType().builtInRegistryHolder().key().location());"
+    "  if (type.indexOf('linara') >= 0 || type.indexOf('item') >= 0 || type.indexOf('puppet') >= 0) {"
+    "    text += type + ' ' + e.getX() + ' ' + e.getY() + ' ' + e.getZ() + '\\n';"
+    "    n++;"
+    "  }"
+    "}"
+    "text"
+))

@@ -1,16 +1,10 @@
 package com.hp.saphyrareborn.procedures;
 
-import dev.kosmx.playerAnim.api.layered.IAnimation;
-import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
-import dev.kosmx.playerAnim.api.layered.ModifierLayer;
-import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
-import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
 import java.util.List;
 import javax.annotation.Nullable;
 import com.hp.saphyrareborn.MokelsBossfightSaphyraMod;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModItems;
 import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModMobEffects;
-import com.hp.saphyrareborn.procedures.AnimationsSetUpProcedure;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -32,7 +26,6 @@ import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.minecraft.network.Connection;
-import net.neoforged.network.NetworkDirection;
 
 @EventBusSubscriber
 public class RuleOfWisdomrightclickedProcedure {
@@ -68,25 +61,12 @@ public class RuleOfWisdomrightclickedProcedure {
         }
         if (object == itemStack.getItem()) {
             LivingEntity _entity;
-            AbstractClientPlayer player;
-            ModifierLayer animation;
             if (entity instanceof Player) {
                 Player _player = (Player)entity;
                 _player.getCooldowns().addCooldown((Item)MokelsBossfightSaphyraModItems.RULE_OF_HATERED.get(), 2400);
             }
-            if (world.isClientSide() && entity instanceof AbstractClientPlayer && (animation = (ModifierLayer)PlayerAnimationAccess.getPlayerAssociatedData((AbstractClientPlayer)(player = (AbstractClientPlayer)entity)).get(ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "player_animation"))) != null) {
-                animation.setAnimation((IAnimation)new KeyframeAnimationPlayer((dev.kosmx.playerAnim.core.data.KeyframeAnimation)PlayerAnimationRegistry.getAnimation((ResourceLocation)ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "wisdom"))));
-            }
-            if (!world.isClientSide() && entity instanceof Player && world instanceof ServerLevel) {
-                List<Connection> connections;
-                ServerLevel srvLvl_ = (ServerLevel)world;
-                List list = connections = srvLvl_.getServer().getConnection().getConnections();
-                synchronized (list) {
-                    for (Connection connection : connections) {
-                        if (connection.isConnecting() || !connection.isConnected()) continue;
-                        MokelsBossfightSaphyraMod.PACKET_HANDLER.sendTo((Object)new AnimationsSetUpProcedure.MokelsBossfightSaphyraModAnimationMessage((Component)Component.literal((String)"wisdom"), entity.getId(), true), connection, NetworkDirection.PLAY_TO_CLIENT);
-                    }
-                }
+            if (entity instanceof Player) {
+                com.hp.saphyrareborn.network.PlayerAnimationPayload.send(entity, "wisdom");
             }
             if (entity instanceof LivingEntity && !(_entity = (LivingEntity)entity).level().isClientSide()) {
                 _entity.addEffect(new MobEffectInstance(MokelsBossfightSaphyraModMobEffects.COOLDOWN, 80, 1, false, false));

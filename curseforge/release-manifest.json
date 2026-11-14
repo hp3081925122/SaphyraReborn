@@ -1,0 +1,37 @@
+{
+  "files": [
+    {
+      "minecraft": "1.21.1",
+      "artifact": "E:\\模组\\发cf的模组\\AAA生物\\Saphyra重生\\1211-neoforge-SaphyraReborn\\build\\libs\\saphyra_reborn-1.21.1-neoforge-0.1.0.jar",
+      "sha256": "246e697988072a55ba45a5aecff1ce9b8c03508e6bd00c68ff445ff3b8065849",
+      "metadata": {
+      "changelog": "",
+      "changelogType": "text",
+      "displayName": "1.21.1-NeoForge-Saphyra Reborn-0.1.0",
+        "releaseType": "release",
+        "gameVersions": [
+          11779,
+          10150,
+          9638,
+          9639
+        ],
+        "relations": {
+          "projects": [
+            {
+              "slug": "geckolib",
+              "type": "requiredDependency"
+            },
+            {
+              "slug": "playeranimator",
+              "type": "requiredDependency"
+            },
+            {
+              "slug": "jade",
+              "type": "optionalDependency"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

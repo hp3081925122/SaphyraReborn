@@ -1,0 +1,399 @@
+// Saphyra Reborn：CurseForge 创建项目页自动填表脚本（由 build_fill_js.py 生成）
+// 用法：作者后台界面切换为英文，打开「Create A Project」页面，按 F12 打开控制台，粘贴本脚本回车
+// 脚本逐步填写并自动点 Next、确认头像裁剪框；有字段未填上时停在当前步骤；不会点击最终的创建按钮
+(async () => {
+  const DATA = {"name": "Saphyra Reborn", "summary": "Unofficial 1.21.1 NeoForge port of Mokel's The Shattered Goddess (Saphyra): story structures, keys and fog locks, reworked boss fights, Chinese translation and many port fixes.", "license": "Academic Free License", "dropdowns": [["Class", "Mods"], ["Main category", "Adventure and RPG"], ["Additional categories", "Mobs"], ["Additional categories", "Armor, Tools, and Weapons"], ["Additional categories", "Structures"]], "distribution": "Allow distribution to 3rd party", "allowComments": true, "description": "# Saphyra Reborn\n\n**An unofficial 1.21.1 NeoForge port of [The Shattered Goddess (Mokel's Bossfight) - Saphyra](https://www.curseforge.com/minecraft/mc-mods/the-shattered-goddess-mokels-bossfight-saphyra) by Mokel.**\nThis port is not made, endorsed or supported by Mokel. Please do not report issues of this port to the original author.\n\nSaphyra Reborn brings Mokel's story-driven boss adventure to Minecraft 1.21.1 NeoForge: four story structures, NPCs, keys and fog locks, three main bosses and an extra side boss.\n\n## What this port adds\n\n- Full port from 1.20.1 Forge to 1.21.1 NeoForge, with many mapping bugs fixed (unhittable bosses, floating mobs, missing animations, broken block interactions, effects that never ticked).\n- Full Simplified Chinese translation; hardcoded texts moved into language files.\n- Reworked boss fights with second phases, clearer telegraphs and hit timing that matches the animations.\n- Weapon stats restored, new weapon abilities and hit effects.\n- Quality-of-life: highlights for story chests and the next story block (visible through walls), the lock of a held key is highlighted, key tooltips show which door they open, optional Jade hints.\n- Side quest for the Puppet of Yiva using content the original left unfinished.\n\n## Requirements\n\n- NeoForge for Minecraft 1.21.1\n- GeckoLib\n- Player Animator\n- Optional: Jade\n\n## Walkthrough\n\nUse `/locate structure saphyra_reborn:<id>` if you cannot find a building: `fractured_clock_tower`, `the_three_hallowed_towers`, `church_of_the_oath_pus`, `observatory`.\n\n1. **Start**: every player receives a **Sigil of the Red Sun** on first join.\n2. **Fractured Clock Tower**: right-click the oddment on top with the sigil. Linara appears and gives you the **Hallowed Key (Worship)** and an **Invitation**.\n3. **Three Hallowed Towers**: open the Worship fog, give the invitation to Saphyra and receive the **Pus Key (Hatred)**.\n4. **Church of the Oath Pus**: collect the Steps and Dagger keys from chests and open their fogs. Behind the Dagger fog you find the **Manic Eye** and **The First God**. Take the **Sinister Key**, open the Hatred fog, then open the **Blood Boss Door** with the Sinister Key.\n5. **Lyior Statue**: activate it, then right-click it with the broken sigil to get the **Sigil of the Red Sun (Stage 2)**.\n6. **Boss 1 – Nameless Gatekeeper**: walk into the hall in Survival mode to awaken it. It drops **Remembrance: Nameless Gatekeeper**.\n7. **Back to the towers**: show the remembrance to Saphyra to get the Chain keys, open the Chain fog and give Marlene **The First God**, then the remembrance. You get the **Sinister Bag** and the **Sword Gate Key**.\n8. **Tower oddment**: use the Stage 2 sigil on the oddment, get the **Pus Key (Lovers)** from Linara and give her the **Manic Eye** (starts the side quest).\n9. **Boss 2 – Saphyra → Ivory Devil**: open the Azure Boss Door at the Observatory with the Sword Gate Key. Defeat Saphyra, then the Ivory Devil, and take **Remembrance: Saphyra** to Marlene for the **Bottomless Bag**.\n\n**Side quest – Puppet of Yiva**: after you give Linara the Manic Eye she hands you the **Sigil of the Red Sun (Stage 3)**. Use it inside the Fractured Clock Tower to summon the Puppet of Yiva, then bring its remembrance to Linara in the tower for her reward.\n\nBoss stats and second-phase settings can be changed in the config.\n\n## Credits\n\n- Original mod, art, models, sounds, story and characters: **Mokel** – [The Shattered Goddess (Mokel's Bossfight) - Saphyra](https://www.curseforge.com/minecraft/mc-mods/the-shattered-goddess-mokels-bossfight-saphyra).\n- The original was created with MCreator.\n- This port keeps the original assets and story; it only ports, fixes and extends them. If you enjoy it, please support the original author.\n\n## License & source\n\nLicensed under the **Academic Free License v3.0**, the same license as the original work. Modifications are listed in `NOTICE.md`.\nSource: [github.com/hp3081925122/SaphyraReborn](https://github.com/hp3081925122/SaphyraReborn)\n\n---\n\n# Saphyra 重生\n\n**本模组是 Mokel 的 [The Shattered Goddess (Mokel's Bossfight) - Saphyra](https://www.curseforge.com/minecraft/mc-mods/the-shattered-goddess-mokels-bossfight-saphyra) 的非官方 1.21.1 NeoForge 移植版。**\n模组内容归原作者 Mokel 所有，本人只负责移植与维护；原作者没有参与本移植，也没有为它背书。移植版的问题请不要反馈给原作者。\n\nSaphyra 重生把 Mokel 的剧情 Boss 冒险带到了 Minecraft 1.21.1 NeoForge：四座剧情建筑、NPC、钥匙与锁雾、三个主线 Boss，外加一个支线 Boss。\n\n## 本移植的改动\n\n- 从 1.20.1 Forge 完整迁移到 1.21.1 NeoForge，修复了大量映射错误（Boss 打不到、生物悬空、动画不播放、方块无法交互、效果从不生效等）。\n- 完整简体中文翻译，硬编码文本全部移进语言文件。\n- 重做 Boss 战：加入二阶段，预警更清楚，伤害判定与动画对齐。\n- 恢复武器属性，新增武器能力与命中特效。\n- 便利功能：剧情箱子和下一个剧情方块会高亮（可透墙看到），手持钥匙时高亮对应的门，钥匙提示会写明能打开哪扇门，可选 Jade 提示。\n- 用原作未完成的内容做了伊瓦的傀儡支线。\n\n## 前置\n\n- NeoForge（Minecraft 1.21.1）\n- GeckoLib\n- Player Animator\n- 可选：Jade\n\n## 流程\n\n找不到建筑时可以用 `/locate structure saphyra_reborn:<ID>`：`fractured_clock_tower`、`the_three_hallowed_towers`、`church_of_the_oath_pus`、`observatory`。\n\n1. **开局**：每个玩家第一次进入世界时获得 **赤日印记**。\n2. **破碎钟楼**：手持印记右键楼顶的奇物，莉娜拉出现，给你 **圣塔印记钥匙（崇拜）** 和 **邀请函**。\n3. **三座圣塔**：打开崇拜雾，把邀请函交给萨菲拉，获得 **脓疱印记钥匙（憎恨）**。\n4. **脓誓教堂**：从箱子里拿阶梯、匕首钥匙并打开对应的雾，匕首雾后有 **狂乱之眼** 和 **《人造神之传说》**。拿到 **邪异之门钥匙**，打开憎恨雾，再用邪异之门钥匙打开 **鲜血首领之门**。\n5. **莱奥雕像**：激活雕像，再用破损的赤日印记右键它，得到 **赤日印记（第二阶段）**。\n6. **Boss 一：无名守门人**：以生存模式走进大厅唤醒它，掉落 **记忆：无名守门人**。\n7. **回圣塔**：把记忆给萨菲拉看，拿到锁链钥匙打开锁链雾；先把《人造神之传说》、再把记忆交给玛琳，获得 **邪异袋** 和 **剑之门钥匙**。\n8. **圣塔奇物**：用第二阶段印记右键奇物，从莉娜拉处获得 **脓疱印记钥匙（爱恋）**，并把 **狂乱之眼** 交给她（开启支线）。\n9. **Boss 二：萨菲拉 → 象牙恶魔**：用剑之门钥匙打开观星台的苍蓝首领之门，先后击败萨菲拉和象牙恶魔，把 **记忆：萨菲拉** 交给玛琳，获得 **无底袋**。\n\n**支线：伊瓦的傀儡**：把狂乱之眼交给莉娜拉后，她会给你 **赤日印记（第三阶段）**。在破碎钟楼内使用它召唤伊瓦的傀儡，击败后把它的记忆交给钟楼里的莉娜拉领取奖励。\n\nBoss 数值和二阶段参数可以在配置文件中修改。\n\n## 鸣谢\n\n- 原模组、美术、模型、音效、剧情与角色：**Mokel**，[The Shattered Goddess (Mokel's Bossfight) - Saphyra](https://www.curseforge.com/minecraft/mc-mods/the-shattered-goddess-mokels-bossfight-saphyra)。\n- 原模组使用 MCreator 制作。\n- 本移植沿用原作的资源与剧情，只做移植、修复和扩展。喜欢的话请支持原作者。\n\n## 许可与源码\n\n采用 **Academic Free License v3.0**，与原作相同的许可。修改内容见 `NOTICE.md`。\n源码：[github.com/hp3081925122/SaphyraReborn](https://github.com/hp3081925122/SaphyraReborn)\n", "iconBase64": "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"};
+  const report = [];
+
+  // 判断元素是否可见
+  const visible = (el) => !!el && el.getClientRects().length > 0 && getComputedStyle(el).visibility !== 'hidden';
+
+  // 收集字段的描述文本（label、aria、placeholder、name、所在容器标题）
+  const describe = (el) => {
+    const parts = [el.name, el.id, el.placeholder, el.getAttribute('aria-label')];
+    if (el.id) {
+      const label = document.querySelector(`label[for="${CSS.escape(el.id)}"]`);
+      if (label) parts.push(label.textContent);
+    }
+    const wrapLabel = el.closest('label');
+    if (wrapLabel) parts.push(wrapLabel.textContent);
+    let node = el.parentElement;
+    for (let i = 0; i < 4 && node; i++, node = node.parentElement) {
+      const title = node.querySelector('label, h1, h2, h3, h4, legend, .label, [class*="label"], [class*="title"]');
+      if (title && !title.contains(el)) {
+        parts.push(title.textContent);
+        break;
+      }
+    }
+    return parts.filter(Boolean).join(' ').toLowerCase();
+  };
+
+  // 按关键词查找字段
+  const findField = (keys, excludes, selector) => {
+    const list = [...document.querySelectorAll(selector)].filter(visible);
+    return list.find((el) => {
+      const text = describe(el);
+      return keys.some((k) => text.includes(k)) && !excludes.some((k) => text.includes(k));
+    });
+  };
+
+  // 以 React/Vue 可识别的方式写入输入框
+  const setValue = (el, value) => {
+    const proto = el.tagName === 'TEXTAREA' ? HTMLTextAreaElement.prototype : el.tagName === 'SELECT' ? HTMLSelectElement.prototype : HTMLInputElement.prototype;
+    Object.getOwnPropertyDescriptor(proto, 'value').set.call(el, value);
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+    el.dispatchEvent(new Event('blur', { bubbles: true }));
+  };
+
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  const mark = (field, ok, detail) => report.push({ 字段: field, 结果: ok ? '已填写' : '未找到，需手动', 说明: detail || '' });
+
+  // 简易 Markdown 转 HTML（用于富文本编辑器）
+  const mdToHtml = (md) => {
+    const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const inline = (s) => esc(s)
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+    const lines = md.split(/\r?\n/);
+    const out = [];
+    let i = 0;
+    while (i < lines.length) {
+      const line = lines[i];
+      if (/^\s*$/.test(line)) { i++; continue; }
+      const h = line.match(/^(#{1,6})\s+(.*)$/);
+      if (h) { out.push(`<h${h[1].length}>${inline(h[2])}</h${h[1].length}>`); i++; continue; }
+      if (/^---+\s*$/.test(line)) { out.push('<hr>'); i++; continue; }
+      if (/^>/.test(line)) {
+        const quote = [];
+        while (i < lines.length && /^>/.test(lines[i])) { quote.push(lines[i].replace(/^>\s?/, '')); i++; }
+        out.push('<blockquote>' + quote.filter((q) => q.trim()).map((q) => `<p>${inline(q)}</p>`).join('') + '</blockquote>');
+        continue;
+      }
+      if (/^\|/.test(line)) {
+        const rows = [];
+        while (i < lines.length && /^\|/.test(lines[i])) { rows.push(lines[i]); i++; }
+        const cells = (r) => r.replace(/^\||\|$/g, '').split('|').map((c) => inline(c.trim()));
+        const head = cells(rows[0]);
+        const body = rows.slice(2).map(cells);
+        out.push('<table><thead><tr>' + head.map((c) => `<th>${c}</th>`).join('') + '</tr></thead><tbody>' +
+          body.map((r) => '<tr>' + r.map((c) => `<td>${c}</td>`).join('') + '</tr>').join('') + '</tbody></table>');
+        continue;
+      }
+      if (/^\s*[*-]\s+/.test(line)) {
+        const items = [];
+        while (i < lines.length && /^\s*[*-]\s+/.test(lines[i])) { items.push(lines[i].replace(/^\s*[*-]\s+/, '')); i++; }
+        out.push('<ul>' + items.map((t) => `<li>${inline(t)}</li>`).join('') + '</ul>');
+        continue;
+      }
+      const para = [];
+      while (i < lines.length && !/^\s*$/.test(lines[i]) && !/^(#{1,6}\s|\||\s*[*-]\s|---|>)/.test(lines[i])) { para.push(lines[i]); i++; }
+      out.push(`<p>${inline(para.join(' '))}</p>`);
+    }
+    return out.join('\n');
+  };
+
+  // 6. 下拉框：按标签找到下方最近的下拉触发器，点开后选择选项
+  const fireClick = (el) => {
+    for (const type of ['pointerdown', 'mousedown', 'pointerup', 'mouseup', 'click']) {
+      el.dispatchEvent(new MouseEvent(type, { bubbles: true, cancelable: true, view: window }));
+    }
+  };
+  const findLabel = (text) => [...document.querySelectorAll('label, span, div, p, h3, h4, legend')].filter(visible)
+    .find((el) => norm(el.textContent) === norm(text) || norm(el.textContent) === norm(text) + ' ?');
+  const findTrigger = (label) => {
+    const lr = label.getBoundingClientRect();
+    const candidates = [...document.querySelectorAll('select, [role="combobox"], [aria-haspopup], button, div, input')].filter(visible)
+      .filter((el) => !el.contains(label) && !label.contains(el))
+      .map((el) => ({ el, r: el.getBoundingClientRect() }))
+      .filter(({ r }) => r.top >= lr.bottom - 2 && r.top - lr.bottom < 90 && r.height >= 28 && r.height <= 70 && r.width >= 120 && r.left < lr.left + 60 && r.right > lr.left)
+      .sort((a, b) => (a.r.top - b.r.top) || (a.r.width * a.r.height - b.r.width * b.r.height));
+    return candidates.length ? candidates[0].el : null;
+  };
+  const findOption = (text, exclude) => [...document.querySelectorAll('[role="option"], li, label, span, div, button')].filter(visible)
+    .filter((el) => !exclude.contains(el) && el.children.length <= 3 && norm(el.textContent) === norm(text))
+    .sort((a, b) => a.getBoundingClientRect().height - b.getBoundingClientRect().height)[0];
+  // 统一大小写、空白和弯引号，便于匹配 Tinker's 这类选项
+  const norm = (t) => (t || '').replace(/[‘’ʼ]/g, "'").replace(/[*\s]+/g, ' ').trim().toLowerCase();
+  // 优先找标签下方最近的 [role="combobox"]（2026-10-26 Waystone Horizons 实测可用）
+  // 先沿祖先向上找只含一个下拉框的字段容器（License 步骤标签与下拉框之间隔着一段说明文字）
+  const findCombo = (label) => {
+    let scope = label.parentElement;
+    for (let depth = 0; scope && depth < 6; depth++, scope = scope.parentElement) {
+      const combos = [...scope.querySelectorAll('[role="combobox"]')].filter(visible);
+      if (combos.length === 1) return combos[0];
+      if (combos.length > 1) break;
+    }
+    const lr = label.getBoundingClientRect();
+    return [...document.querySelectorAll('[role="combobox"]')].filter(visible)
+      .map((el) => ({ el, r: el.getBoundingClientRect() }))
+      .filter(({ r }) => r.top >= lr.top && r.top - lr.bottom < 260 && r.right > lr.left - 10 && r.left < lr.left + 60)
+      .sort((a, b) => a.r.top - b.r.top)[0]?.el || null;
+  };
+  const comboText = (el) => norm(el.value || el.innerText || el.textContent);
+  const waitOption = async (text, timeout = 3000, loose = false) => {
+    const end = Date.now() + timeout;
+    while (Date.now() < end) {
+      const option = [...document.querySelectorAll('[role="option"]')].filter(visible).find((el) => norm(el.innerText || el.textContent) === norm(text) || (loose && norm(el.innerText || el.textContent).includes(norm(text))));
+      if (option) return option;
+      await sleep(150);
+    }
+    return null;
+  };
+  const pickCombo = async (labelText, optionText, combo, loose = false) => {
+    const container = combo.closest('[class*="select"], [class*="Select"], [class*="dropdown"], [class*="Dropdown"]') || combo.parentElement;
+    if (comboText(combo) === norm(optionText) || (container?.innerText || '').split('\n').some((t) => norm(t) === norm(optionText))) {
+      mark(labelText, true, `${optionText}（已选）`);
+      return true;
+    }
+    // MUI Select 只在 mousedown（button=0）时展开，click() 不会触发；Autocomplete 输入框也响应 mousedown
+    const press = (el, type, extra = {}) => el.dispatchEvent(new MouseEvent(type, { bubbles: true, cancelable: true, view: window, button: 0, ...extra }));
+    const key = (el, k) => el.dispatchEvent(new KeyboardEvent('keydown', { key: k, code: k, bubbles: true, cancelable: true }));
+    combo.focus();
+    press(combo, 'mousedown');
+    await sleep(400);
+    // Autocomplete 只输入撇号前的前缀过滤，避免直引号与弯引号不一致导致过滤为空
+    const query = optionText.split(/['’]/)[0].trim();
+    if (combo.tagName === 'INPUT' && !combo.readOnly) {
+      setValue(combo, query);
+      await sleep(500);
+    }
+    let option = await waitOption(optionText, 3000, loose);
+    if (!option) {
+      combo.focus();
+      key(combo, 'ArrowDown');
+      option = await waitOption(optionText, 1500, loose);
+    }
+    if (!option && combo.tagName === 'INPUT') {
+      setValue(combo, '');
+      press(combo, 'mousedown');
+      key(combo, 'ArrowDown');
+      option = await waitOption(optionText, 1500, loose);
+    }
+    if (!option) {
+      const seen = [...document.querySelectorAll('[role="option"]')].filter(visible).map((el) => (el.innerText || el.textContent).trim()).slice(0, 12);
+      mark(labelText, false, `没找到选项 ${optionText}；可见选项：${seen.join(' / ') || '无'}；控件：${combo.tagName}.${String(combo.className).split(' ').slice(0, 3).join('.')}`);
+      key(document.activeElement || document.body, 'Escape');
+      return true;
+    }
+    option.scrollIntoView({ block: 'nearest' });
+    option.click();
+    await sleep(600);
+    // 多选菜单点完不会自动收起，用 Esc 关闭，避免挡住后面的下拉框
+    const list = option.closest('[role="listbox"]');
+    if (list && visible(list)) {
+      key(combo, 'Escape');
+      key(list, 'Escape');
+      await sleep(300);
+    }
+    mark(labelText, true, optionText);
+    return true;
+  };
+  const pickDropdown = async (labelText, optionText, loose = false) => {
+    const label = findLabel(labelText);
+    if (!label) { mark(labelText, false, '当前步骤没有该字段'); return; }
+    const combo = findCombo(label);
+    if (combo && await pickCombo(labelText, optionText, combo, loose)) return;
+    const trigger = findTrigger(label);
+    if (!trigger) { mark(labelText, false, '未找到下拉框'); return; }
+    if (trigger.tagName === 'SELECT') {
+      const option = [...trigger.options].find((o) => norm(o.text) === norm(optionText));
+      if (option) { setValue(trigger, option.value); mark(labelText, true, optionText); } else mark(labelText, false, `没有选项 ${optionText}`);
+      return;
+    }
+    if (norm(trigger.textContent) === norm(optionText)) { mark(labelText, true, `${optionText}（已选）`); return; }
+    fireClick(trigger);
+    trigger.focus && trigger.focus();
+    await sleep(600);
+    const option = findOption(optionText, label);
+    if (option) {
+      fireClick(option);
+      mark(labelText, true, optionText);
+      await sleep(800);
+      document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      await sleep(200);
+    } else {
+      mark(labelText, false, `下拉框已点开但没找到选项 ${optionText}`);
+      fireClick(trigger);
+    }
+  };
+
+  // 按向导步骤决定要填的字段；未知步骤全部尝试
+  const STEP_FIELDS = {
+    general: ['name', 'summary', 'dropdowns', 'comments', 'icon'],
+    description: ['description'],
+    license: ['license'],
+  };
+  const stepOf = () => (location.hash.match(/create\/([a-z-]+)/i) || [])[1] || 'unknown';
+  const buttonByText = (re) => [...document.querySelectorAll('button')].filter(visible).find((b) => re.test(norm(b.innerText || b.textContent)) && !b.disabled);
+
+  // 头像裁剪框：等待对话框出现后点确认按钮（图标已是正方形，默认裁剪即整张图）
+  const confirmCrop = async () => {
+    let dialog = null;
+    for (let i = 0; i < 40 && !dialog; i++) {
+      dialog = [...document.querySelectorAll('[role="dialog"], .MuiDialog-root, .MuiModal-root')].filter(visible)
+        .find((el) => el.querySelector('img, canvas') && !el.closest('.MuiDrawer-root'));
+      if (!dialog) await sleep(150);
+    }
+    if (!dialog) return '没有弹出裁剪框';
+    await sleep(500);
+    const buttons = [...dialog.querySelectorAll('button')].filter(visible).filter((b) => !b.disabled);
+    const ok = buttons.find((b) => /^(save|apply|crop|confirm|done|ok|upload|set|use|submit)\b/.test(norm(b.innerText || b.textContent)));
+    if (!ok) return `裁剪框里没找到确认按钮（按钮：${buttons.map((b) => (b.innerText || '').trim()).join(' / ') || '无'}）`;
+    ok.click();
+    for (let i = 0; i < 40 && dialog.isConnected && visible(dialog); i++) await sleep(150);
+    return dialog.isConnected && visible(dialog) ? `已点击 ${ok.innerText.trim()}，但裁剪框没有关闭` : '';
+  };
+
+  for (let round = 0; round < 5; round++) {
+    report.length = 0;
+    const step = stepOf();
+    const want = (field) => !STEP_FIELDS[step] || STEP_FIELDS[step].includes(field);
+    let nameField = null;
+    let alreadyFilled = false;
+    let summaryField = null;
+    let blocked = '';
+
+    // 1. 项目名称
+    if (want('name')) {
+      nameField = findField(['project name', 'name'], ['slug', 'summary', 'search', 'user'], 'input[type="text"], input:not([type])');
+      alreadyFilled = !!nameField && nameField.value === DATA.name;
+      if (nameField) { setValue(nameField, DATA.name); mark('项目名称', true, DATA.name); } else mark('项目名称', false);
+    }
+
+    // 2. 简介
+    if (want('summary')) {
+      summaryField = findField(['summary', 'short description'], ['search'], 'textarea, input[type="text"], input:not([type])');
+      if (summaryField) { setValue(summaryField, DATA.summary); mark('简介 Summary', true); } else mark('简介 Summary', false);
+    }
+
+    // 3. 下拉框
+    if (want('dropdowns')) {
+      for (const [labelText, optionText] of DATA.dropdowns) {
+        await pickDropdown(labelText, optionText);
+      }
+    }
+
+    // 4. 允许评论复选框
+    if (want('comments') && DATA.allowComments !== false) {
+      const box = [...document.querySelectorAll('input[type="checkbox"], [role="checkbox"]')]
+        .find((el) => /allow comments/i.test(el.closest('label')?.innerText || el.parentElement?.innerText || el.parentElement?.parentElement?.innerText || el.getAttribute('aria-label') || ''));
+      const textNode = [...document.querySelectorAll('label, span, p, div')].filter(visible).find((el) => norm(el.textContent) === 'allow comments');
+      const checked = (el) => el && (el.checked === true || el.getAttribute('aria-checked') === 'true');
+      if (box || textNode) {
+        if (!checked(box)) {
+          (box && visible(box) ? box : (box?.closest('label') || textNode)).click();
+          await sleep(300);
+        }
+        mark('Allow Comments', !box || checked(box), box ? (checked(box) ? '已勾选' : '点击后仍未勾选，请手动勾选') : '已点击文字，请确认是否勾上');
+      } else mark('Allow Comments', false, '当前步骤没有该选项');
+    }
+
+    // 5. 项目图标：写入文件输入框后自动确认裁剪框（名称已是本项目时视为已上传过）
+    if (want('icon')) {
+      const fileInput = [...document.querySelectorAll('input[type="file"]')].find((f) => !f.accept || /image|png/i.test(f.accept));
+      if (fileInput && alreadyFilled) {
+        mark('项目图标', true, '已上传过，跳过');
+      } else if (fileInput) {
+        const bytes = Uint8Array.from(atob(DATA.iconBase64), (c) => c.charCodeAt(0));
+        const file = new File([bytes], 'cf-project-icon.png', { type: 'image/png' });
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        fileInput.files = dt.files;
+        fileInput.dispatchEvent(new Event('input', { bubbles: true }));
+        fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+        const cropError = await confirmCrop();
+        if (cropError && cropError !== '没有弹出裁剪框') {
+          mark('项目图标', false, cropError);
+          blocked = '请手动处理头像裁剪框后再运行脚本';
+        } else mark('项目图标', true, cropError || '已上传并确认裁剪');
+      } else mark('项目图标', false, '请手动上传 curseforge/icon.png');
+    }
+
+    // 6. 描述：先切到 Markdown（若页面提供），优先 Markdown 文本框，否则写入富文本编辑器
+    if (want('description')) {
+      await sleep(800);
+      let markdownMode = false;
+      const formatSelect = [...document.querySelectorAll('select')].filter(visible).find((s) => [...s.options].some((o) => /markdown/i.test(o.text)));
+      if (formatSelect) {
+        const option = [...formatSelect.options].find((o) => /markdown/i.test(o.text));
+        setValue(formatSelect, option.value);
+        markdownMode = true;
+        await sleep(500);
+      } else {
+        const toggle = [...document.querySelectorAll('button, label, [role="tab"], [role="radio"], input[type="radio"]')].filter(visible)
+          .find((el) => /^\s*markdown\s*$/i.test(el.textContent || el.value || ''));
+        if (toggle) { toggle.click(); markdownMode = true; await sleep(500); }
+      }
+      const descField = findField(['description'], ['summary', 'search'], 'textarea');
+      const plainTextareas = [...document.querySelectorAll('textarea')].filter(visible).filter((t) => t !== summaryField);
+      const targetTextarea = descField || (markdownMode || step === 'description' ? plainTextareas[0] : null);
+      if (targetTextarea) {
+        setValue(targetTextarea, DATA.description);
+        mark('描述', true, 'Markdown 文本框');
+      } else {
+        let editor = [...document.querySelectorAll('[contenteditable="true"], .ProseMirror, .ql-editor')].filter(visible)[0];
+        if (!editor) {
+          const frame = [...document.querySelectorAll('iframe')].find((f) => { try { return f.contentDocument && f.contentDocument.body && f.contentDocument.body.isContentEditable; } catch (e) { return false; } });
+          if (frame) editor = frame.contentDocument.body;
+        }
+        if (editor) {
+          editor.focus();
+          const doc = editor.ownerDocument;
+          const sel = doc.getSelection();
+          const range = doc.createRange();
+          range.selectNodeContents(editor);
+          sel.removeAllRanges();
+          sel.addRange(range);
+          const html = mdToHtml(DATA.description);
+          if (!doc.execCommand('insertHTML', false, html)) editor.innerHTML = html;
+          editor.dispatchEvent(new Event('input', { bubbles: true }));
+          mark('描述', true, '富文本编辑器（请检查表格排版）');
+        } else mark('描述', false, '没找到描述编辑器，请手动粘贴 description.md');
+      }
+    }
+
+    // 7. 许可证：原生下拉框或 MUI 下拉框，选项文本包含目标即可（如 MIT License）
+    if (want('license') && DATA.license) {
+      const licenseText = DATA.license.toLowerCase();
+      const licenseSelect = [...document.querySelectorAll('select')].filter(visible).find((s) => [...s.options].some((o) => o.text.toLowerCase().includes(licenseText)));
+      if (licenseSelect) {
+        const option = [...licenseSelect.options].find((o) => o.text.toLowerCase().includes(licenseText));
+        setValue(licenseSelect, option.value);
+        mark('许可证', true, option.text);
+      } else {
+        await pickDropdown(findLabel('Project License') ? 'Project License' : 'License', DATA.license, true);
+      }
+    }
+
+    // 8. 第三方分发：默认允许
+    if (want('license') && DATA.distribution) {
+      await pickDropdown('Project distribution', DATA.distribution);
+    }
+
+    console.log(`%c步骤 ${step}`, 'font-weight:bold');
+    console.table(report);
+    const failed = report.filter((r) => r.结果 !== '已填写');
+    if (blocked || failed.length) {
+      console.log(`%c${blocked || '有字段未填上，已停在当前步骤；处理后可再次运行脚本'}`, 'color:#c92a2a;font-weight:bold');
+      break;
+    }
+    // 9. 只点 Next，不点创建按钮；进入下一步后继续填写
+    const next = buttonByText(/^next$/);
+    if (!next) {
+      console.log('%c已到最后一步：请核对全部内容，确认无误后手动点击创建按钮。', 'color:#2b8a3e;font-weight:bold');
+      break;
+    }
+    const before = location.hash;
+    await sleep(400);
+    next.click();
+    let moved = false;
+    for (let i = 0; i < 60 && !moved; i++) { await sleep(150); moved = location.hash !== before; }
+    if (!moved) {
+      console.log('%c点击 Next 后页面没有前进，可能有必填项未通过校验，请查看页面提示。', 'color:#c92a2a;font-weight:bold');
+      break;
+    }
+    await sleep(1200);
+  }
+})();

@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.hp.saphyrareborn.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "PlayerModelMixin",
+    "PlayerRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

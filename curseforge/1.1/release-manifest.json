@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "minecraft": "1.21.1",
+      "artifact": "E:\\模组\\发cf的模组\\AAA生物\\Saphyra重生\\1211-neoforge-SaphyraReborn\\build\\libs\\saphyra_reborn-1.21.1-neoforge-1.1.jar",
+      "sha256": "d6b49bf205cdd01c8665d7bb7ff40981cabcef483ff7e315ddee8d2cc0577733",
+      "metadata": {
+        "changelog": "# 1.1\n\nMinecraft 1.21.1 NeoForge release. The version number is now 1.1 so it matches the 26.1.2 port. Gameplay is the same as the previous 0.1.0 build.\n\n## Credits\n\n- Original mod, art, models, sounds, story and characters: **Mokel** – [The Shattered Goddess (Mokel's Bossfight) - Saphyra](https://www.curseforge.com/minecraft/mc-mods/the-shattered-goddess-mokels-bossfight-saphyra).\n- This port keeps the original assets and story. If you enjoy it, please support the original author.\n\n## License & source\n\nLicensed under the Academic Free License v3.0, the same license as the original work.\nSource: https://github.com/hp3081925122/SaphyraReborn\n\n---\n\n# 1.1\n\nMinecraft 1.21.1 NeoForge 版本。版本号改为 1.1，与 26.1.2 移植对齐。玩法与上一版 0.1.0 相同。\n\n## 鸣谢\n\n- 原模组、美术、模型、音效、剧情与角色归 **Mokel**：[The Shattered Goddess (Mokel's Bossfight) - Saphyra](https://www.curseforge.com/minecraft/mc-mods/the-shattered-goddess-mokels-bossfight-saphyra)。\n- 本移植保留原作资源与剧情。如果喜欢，请支持原作者。\n\n## 许可与源码\n\n许可与原作相同，为 Academic Free License v3.0。\n源码：https://github.com/hp3081925122/SaphyraReborn\n\n",
+        "changelogType": "markdown",
+        "displayName": "1.21.1-NeoForge-Saphyra Reborn-1.1",
+        "releaseType": "release",
+        "gameVersions": [
+          11779,
+          10150,
+          9638,
+          9639,
+          11135
+        ],
+        "relations": {
+          "projects": [
+            {
+              "slug": "geckolib",
+              "type": "requiredDependency"
+            },
+            {
+              "slug": "jade",
+              "type": "optionalDependency"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

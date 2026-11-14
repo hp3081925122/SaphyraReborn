@@ -58,7 +58,6 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 dependencies {
     implementation "net.neoforged:neoforge:${project.neo_version}"
     implementation "software.bernie.geckolib:geckolib-neoforge-${project.minecraft_version}:4.8.4"
-    implementation 'curse.maven:playeranimator-658587:7389814'
     implementation "curse.maven:jei-238222:8792638"
     implementation "curse.maven:just-enough-characters-250702:8117474"
     implementation "curse.maven:jade-324717:8591319"

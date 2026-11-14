@@ -1,0 +1,32 @@
+{
+  "startedUtc": "2026-11-09T12:55:19.181023+00:00",
+  "sha256": "246e697988072a55ba45a5aecff1ce9b8c03508e6bd00c68ff445ff3b8065849",
+  "metadata": {
+    "changelog": "",
+    "changelogType": "text",
+    "displayName": "1.21.1-NeoForge-Saphyra Reborn-0.1.0",
+    "releaseType": "release",
+    "gameVersions": [
+      11779,
+      10150,
+      9638,
+      9639
+    ],
+    "relations": {
+      "projects": [
+        {
+          "slug": "geckolib",
+          "type": "requiredDependency"
+        },
+        {
+          "slug": "playeranimator",
+          "type": "requiredDependency"
+        },
+        {
+          "slug": "jade",
+          "type": "optionalDependency"
+        }
+      ]
+    }
+  }
+}

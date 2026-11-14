@@ -1,0 +1,16 @@
+{
+  "name": "Saphyra Reborn",
+  "summary": "Unofficial 1.21.1 NeoForge port of Mokel's The Shattered Goddess (Saphyra): story structures, keys and fog locks, reworked boss fights, Chinese translation and many port fixes.",
+  "license": "Academic Free License",
+  "distribution": "Allow distribution to 3rd party",
+  "allowComments": true,
+  "dropdowns": [
+    ["Class", "Mods"],
+    ["Main category", "Adventure and RPG"],
+    ["Additional categories", "Mobs"],
+    ["Additional categories", "Armor, Tools, and Weapons"],
+    ["Additional categories", "Structures"]
+  ],
+  "description": "description.md",
+  "icon": "cf-project-icon.png"
+}

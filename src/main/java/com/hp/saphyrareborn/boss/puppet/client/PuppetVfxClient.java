@@ -399,9 +399,20 @@ public final class PuppetVfxClient {
                 double ang = Math.PI * 2.0 * i / tongues + r.nextDouble() * 0.5;
                 double d = this.size * (0.55 + 0.35 * r.nextDouble());
                 double bx = this.x + Math.cos(ang) * d, bz = this.z + Math.sin(ang) * d;
-                double th = h * (0.3 + 0.3 * r.nextDouble());
-                double sway = Math.sin(t * 0.8 + i) * 0.3;
-                p.beam(bx, this.y, bz, bx + Math.cos(ang) * sway, this.y + th, bz + Math.sin(ang) * sway, 0.45, flame(0.7f * fade), ember(0.0f));
+                double phase = r.nextDouble() * Math.PI * 2.0;
+                // Staggered rise; height flickers like a flame instead of the whole tongue swinging.
+                float grow = easeOut(clamp01((t - i * 0.4f) / 2.5f));
+                double flicker = 0.85 + 0.15 * Math.sin(t * 1.7 + phase);
+                double th = h * (0.3 + 0.3 * r.nextDouble()) * grow * flicker;
+                if (th < 0.05) {
+                    continue;
+                }
+                // Fixed outward lean, with the tip curling slightly further out.
+                double lean = th * 0.18;
+                double mx = bx + Math.cos(ang) * lean * 0.35, mz = bz + Math.sin(ang) * lean * 0.35;
+                double tx = bx + Math.cos(ang) * lean, tz = bz + Math.sin(ang) * lean;
+                p.beam(bx, this.y, bz, mx, this.y + th * 0.55, mz, 0.45, flame(0.7f * fade), flame(0.55f * fade));
+                p.beam(mx, this.y + th * 0.55, mz, tx, this.y + th, tz, 0.32, flame(0.55f * fade), ember(0.0f));
             }
             double ring = this.size * (0.6 + 0.4 * easeOut(t / 4.0f));
             p.annulus(this.x, this.y + 0.08, this.z, ring * 0.82, ring, 32, ember(0.0f), core(0.75f * fade));

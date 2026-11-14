@@ -25,6 +25,8 @@ public record PuppetVfx(byte kind, double x, double y, double z, float yaw, floa
     public static final byte DASH_TRAIL = 7;
     public static final byte EMBER_BURST = 8;
     public static final byte SCORCH = 9;
+    public static final byte STRINGS = 10;
+    public static final byte INFERNO_WAVE = 11;
 
     public static final int SLASH_LEFT = 0;
     public static final int SLASH_RIGHT = 1;
@@ -33,7 +35,15 @@ public record PuppetVfx(byte kind, double x, double y, double z, float yaw, floa
     public static final int SLASH_DOUBLE = 4;
 
     public static int line(int ticks, double halfWidth) {
-        return Math.max(0, Math.min(255, ticks)) | (int) Math.round(halfWidth * 10.0) << 8;
+        return Math.max(0, Math.min(255, ticks)) | (Math.max(0, (int) Math.round(halfWidth * 10.0)) << 8);
+    }
+
+    public static int lineTicks(int packed) {
+        return Math.max(0, packed) & 255;
+    }
+
+    public static double lineWidth(int packed) {
+        return (Math.max(0, packed) >> 8) / 10.0;
     }
 
     private static final double SEND_RADIUS = 96.0;

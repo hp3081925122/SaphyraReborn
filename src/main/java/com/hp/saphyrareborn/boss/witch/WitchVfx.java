@@ -7,6 +7,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -27,6 +28,7 @@ public record WitchVfx(byte kind, double x, double y, double z, float yaw, float
     public static final byte DASH_TRAIL = 9;
     public static final byte WHIRL = 10;
     public static final byte FLAME_BURST = 11;
+    public static final byte CRESCENT = 12;
 
     public static final int SLASH_LEFT = 0;
     public static final int SLASH_RIGHT = 1;
@@ -38,6 +40,20 @@ public record WitchVfx(byte kind, double x, double y, double z, float yaw, float
 
     public static final Type<WitchVfx> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(MokelsBossfightSaphyraMod.MODID, "witch_vfx"));
     public static final StreamCodec<FriendlyByteBuf, WitchVfx> CODEC = StreamCodec.ofMember(WitchVfx::write, WitchVfx::read);
+
+    public static int ring(int ticks, double innerRadius) {
+        int t = Mth.clamp(ticks, 1, 255);
+        int inner = Mth.clamp((int) Math.round(innerRadius * 10.0), 0, 400);
+        return t | (inner << 8);
+    }
+
+    public static int ringTicks(int extra) {
+        return Math.max(2, extra & 0xFF);
+    }
+
+    public static double ringInner(int extra) {
+        return Math.max(0, extra >>> 8) * 0.1;
+    }
 
     private static WitchVfx read(FriendlyByteBuf buf) {
         return new WitchVfx(buf.readByte(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readFloat(), buf.readFloat(), buf.readVarInt());

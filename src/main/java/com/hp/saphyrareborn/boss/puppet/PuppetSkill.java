@@ -6,7 +6,7 @@ public enum PuppetSkill {
     FOURTH("attackfourth", 45, 46),
     FIFTH("attackfifth", 50, 50),
     THIRD("attackthird", 78, 78),
-    CROSS("attacksecond", 50, 50);
+    CROSS("attacksecond", 54, 54);
 
     public final String animation;
     public final int lockTicks;

@@ -1,0 +1,29 @@
+{
+  "startedUtc": "2026-11-19T11:57:32.916358+00:00",
+  "sha256": "b1bcf9521f7eb1dc68c8e5890c4472bebd1a5843c9d8af8b3d2ea53ed30e7fe9",
+  "metadata": {
+    "changelog": "# 1.3-beta\n\n- Initial Minecraft 1.20.1 Forge release of **Saphyra Reborn** (ported with full feature parity from `1.3`):\n  - Reworked combat AI, phase transitions, and custom pixel-art emissive visual effects across all four bosses (**Saphyra**, **Ivory Devil**, **Nameless**, and **Puppet of Yiva Nemor**).\n  - Includes all `1.3` Boss head-tracking and multi-turn rotation animation fixes.\n  - Added active and passive weapon abilities with custom slash/rune/burst VFX across mod weapons.\n  - Added see-through story container, target block, and key-lock highlights, plus optional **Jade** right-click item hints.\n  - Built-in player keyframe animation runtime (no external Player Animator dependency required) and configurable Boss stats/mechanics via `saphyra_reborn-common.toml`.\n\n## License & source\n\nLicensed under the Academic Free License v3.0, the same license as the original work.\nSource: https://github.com/hp3081925122/SaphyraReborn\n\n---\n\n# 1.3-beta\n\n- **Saphyra Reborn** 首个 Minecraft 1.20.1 Forge 测试版（与 `1.3` 完整特性同步）：\n  - 完整包含四大 Boss（**萨菲拉**、**象牙恶魔**、**无名**、**伊瓦·内莫尔的傀儡**）的重做战斗 AI、二阶段机制与自定义像素画发光技能特效。\n  - 包含 `1.3` 全部 Boss 头部动画追踪与多圈旋转回绕修复。\n  - 包含专属武器的主动/被动技能与刀光、符文法阵发光特效。\n  - 包含剧情容器、目标交互方块与钥匙门锁透视高亮提示，以及可选 **Jade** 右键物品联动提示。\n  - 内置玩家关键帧动画运行时（无需额外安装 Player Animator 前置），支持通过 `saphyra_reborn-common.toml` 自定义 Boss 属性与阶段参数。\n\n## 许可与源码\n\n许可与原作相同，为 Academic Free License v3.0。\n源码：https://github.com/hp3081925122/SaphyraReborn\n",
+    "changelogType": "markdown",
+    "displayName": "1.20.1-Forge-Saphyra Reborn-1.3-beta",
+    "releaseType": "release",
+    "gameVersions": [
+      9990,
+      7498,
+      9638,
+      9639,
+      8326
+    ],
+    "relations": {
+      "projects": [
+        {
+          "slug": "geckolib",
+          "type": "requiredDependency"
+        },
+        {
+          "slug": "jade",
+          "type": "optionalDependency"
+        }
+      ]
+    }
+  }
+}

@@ -1,34 +1,34 @@
 package com.hp.saphyrareborn.boss;
 
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 public final class BossConfig {
-    public static final ModConfigSpec SPEC;
+    public static final ForgeConfigSpec SPEC;
     public static final Entry WITCHBOSS;
     public static final Entry MOTHBOSS;
     public static final Entry NAMELESS;
     public static final Entry PUPPET;
     public static final Entry PUTRID_ROSE;
-    public static final ModConfigSpec.BooleanValue NAMELESS_PHASE2_ENABLED;
-    public static final ModConfigSpec.DoubleValue NAMELESS_PHASE2_RATIO;
-    public static final ModConfigSpec.DoubleValue NAMELESS_PHASE2_CADENCE;
-    public static final ModConfigSpec.DoubleValue NAMELESS_SHIELD_BREAK_RATIO;
-    public static final ModConfigSpec.IntValue NAMELESS_STAGGER_TICKS;
-    public static final ModConfigSpec.BooleanValue MOTH_PHASE2_ENABLED;
-    public static final ModConfigSpec.DoubleValue MOTH_PHASE2_RATIO;
-    public static final ModConfigSpec.DoubleValue MOTH_PHASE2_CADENCE;
-    public static final ModConfigSpec.DoubleValue MOTH_PHASE2_NEW_SKILL_CHANCE;
-    public static final ModConfigSpec.BooleanValue WITCH_PHASE2_ENABLED;
-    public static final ModConfigSpec.DoubleValue WITCH_PHASE2_RATIO;
-    public static final ModConfigSpec.DoubleValue WITCH_PHASE2_CADENCE;
-    public static final ModConfigSpec.DoubleValue WITCH_PHASE2_NEW_SKILL_CHANCE;
-    public static final ModConfigSpec.BooleanValue PUPPET_PHASE2_ENABLED;
-    public static final ModConfigSpec.DoubleValue PUPPET_PHASE2_RATIO;
-    public static final ModConfigSpec.DoubleValue PUPPET_PHASE2_CADENCE;
-    public static final ModConfigSpec.DoubleValue PUPPET_PHASE2_NEW_SKILL_CHANCE;
+    public static final ForgeConfigSpec.BooleanValue NAMELESS_PHASE2_ENABLED;
+    public static final ForgeConfigSpec.DoubleValue NAMELESS_PHASE2_RATIO;
+    public static final ForgeConfigSpec.DoubleValue NAMELESS_PHASE2_CADENCE;
+    public static final ForgeConfigSpec.DoubleValue NAMELESS_SHIELD_BREAK_RATIO;
+    public static final ForgeConfigSpec.IntValue NAMELESS_STAGGER_TICKS;
+    public static final ForgeConfigSpec.BooleanValue MOTH_PHASE2_ENABLED;
+    public static final ForgeConfigSpec.DoubleValue MOTH_PHASE2_RATIO;
+    public static final ForgeConfigSpec.DoubleValue MOTH_PHASE2_CADENCE;
+    public static final ForgeConfigSpec.DoubleValue MOTH_PHASE2_NEW_SKILL_CHANCE;
+    public static final ForgeConfigSpec.BooleanValue WITCH_PHASE2_ENABLED;
+    public static final ForgeConfigSpec.DoubleValue WITCH_PHASE2_RATIO;
+    public static final ForgeConfigSpec.DoubleValue WITCH_PHASE2_CADENCE;
+    public static final ForgeConfigSpec.DoubleValue WITCH_PHASE2_NEW_SKILL_CHANCE;
+    public static final ForgeConfigSpec.BooleanValue PUPPET_PHASE2_ENABLED;
+    public static final ForgeConfigSpec.DoubleValue PUPPET_PHASE2_RATIO;
+    public static final ForgeConfigSpec.DoubleValue PUPPET_PHASE2_CADENCE;
+    public static final ForgeConfigSpec.DoubleValue PUPPET_PHASE2_NEW_SKILL_CHANCE;
 
     static {
-        ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
+        ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
         builder.comment("Boss 属性，只在 Boss 首次进入世界时写入一次，之后指令、KubeJS 或增益做的调整不会被覆盖。",
                 "技能伤害 = attack_damage × 技能倍率。").push("bosses");
         WITCHBOSS = new Entry(builder, "witchboss", 600.0, 14.0, 0.0);
@@ -69,11 +69,11 @@ public final class BossConfig {
     }
 
     public static final class Entry {
-        public final ModConfigSpec.DoubleValue maxHealth;
-        public final ModConfigSpec.DoubleValue attackDamage;
-        public final ModConfigSpec.DoubleValue armor;
+        public final ForgeConfigSpec.DoubleValue maxHealth;
+        public final ForgeConfigSpec.DoubleValue attackDamage;
+        public final ForgeConfigSpec.DoubleValue armor;
 
-        Entry(ModConfigSpec.Builder builder, String name, double health, double attack, double armor) {
+        Entry(ForgeConfigSpec.Builder builder, String name, double health, double attack, double armor) {
             builder.push(name);
             this.maxHealth = builder.defineInRange("max_health", health, 1.0, 1.0E6);
             this.attackDamage = builder.defineInRange("attack_damage", attack, 0.0, 1.0E5);

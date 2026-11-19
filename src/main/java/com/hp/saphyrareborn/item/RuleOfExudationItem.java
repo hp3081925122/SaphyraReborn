@@ -1,0 +1,38 @@
+package com.hp.saphyrareborn.item;
+
+import java.util.List;
+import com.hp.saphyrareborn.procedures.RuleCurseCastProcedure;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+
+public class RuleOfExudationItem
+extends Item {
+    public RuleOfExudationItem() {
+        super(new Item.Properties().stacksTo(1).rarity(Rarity.COMMON));
+    }
+
+    public void appendHoverText(ItemStack itemstack, @javax.annotation.Nullable net.minecraft.world.level.Level context, List<Component> list, TooltipFlag flag) {
+        super.appendHoverText(itemstack, context, list, flag);
+        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.60b373718198"));
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (hand != InteractionHand.MAIN_HAND) {
+            return InteractionResultHolder.pass(stack);
+        }
+        if (level instanceof ServerLevel serverLevel) {
+            RuleCurseCastProcedure.cast(serverLevel, player, stack, RuleCurseCastProcedure.Rule.EXUDATION);
+        }
+        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+    }
+}

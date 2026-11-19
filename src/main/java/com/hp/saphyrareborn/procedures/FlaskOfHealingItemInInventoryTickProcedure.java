@@ -1,0 +1,42 @@
+package com.hp.saphyrareborn.procedures;
+
+import javax.annotation.Nullable;
+import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModItems;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+
+@Mod.EventBusSubscriber
+public class FlaskOfHealingItemInInventoryTickProcedure {
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) {
+            return;
+        }
+        {
+            FlaskOfHealingItemInInventoryTickProcedure.execute((Event)event, (Entity)event.player);
+        }
+    }
+
+    public static void execute(Entity entity) {
+        FlaskOfHealingItemInInventoryTickProcedure.execute(null, entity);
+    }
+
+    private static void execute(@Nullable Event event, Entity entity) {
+        Player _playerHasItem;
+        if (entity == null) {
+            return;
+        }
+        if (entity instanceof Player && (_playerHasItem = (Player)entity).getInventory().contains(new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.FLASK_OF_HEALING.get())) && entity instanceof ServerPlayer) {
+            ServerPlayer _serverPlayer = (ServerPlayer)entity;
+            _serverPlayer.awardRecipesByKey(new ResourceLocation[]{new ResourceLocation("saphyra_reborn:flaskofhealinglvl")});
+        }
+    }
+}

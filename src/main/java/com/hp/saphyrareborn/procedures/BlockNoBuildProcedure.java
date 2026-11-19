@@ -1,0 +1,19 @@
+package com.hp.saphyrareborn.procedures;
+
+import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModMobEffects;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+
+public class BlockNoBuildProcedure {
+    public static void execute(Entity entity) {
+        LivingEntity _entity1;
+        if (entity == null) {
+            return;
+        }
+        if (entity instanceof LivingEntity && !(_entity1 = (LivingEntity)entity).level().isClientSide()) {
+            _entity1.addEffect(new MobEffectInstance(MokelsBossfightSaphyraModMobEffects.NO_BUILD.get(), 60, 1, false, false));
+        }
+    }
+}

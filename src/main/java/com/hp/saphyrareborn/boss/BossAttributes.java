@@ -5,17 +5,16 @@ import com.hp.saphyrareborn.entity.NamelessEntity;
 import com.hp.saphyrareborn.entity.PuppetOfYivaNemorEntity;
 import com.hp.saphyrareborn.entity.PutridRoseEntity;
 import com.hp.saphyrareborn.entity.WitchbossEntity;
-import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 
-@EventBusSubscriber(modid = "saphyra_reborn")
+@Mod.EventBusSubscriber(modid = "saphyra_reborn")
 public final class BossAttributes {
     public static final double SKILL_BASE_DAMAGE = 14.0;
     private static final String APPLIED_KEY = "SaphyraConfigApplied";
@@ -68,7 +67,7 @@ public final class BossAttributes {
         return null;
     }
 
-    private static void setBase(LivingEntity entity, Holder<Attribute> attribute, double value) {
+    private static void setBase(LivingEntity entity, Attribute attribute, double value) {
         AttributeInstance instance = entity.getAttribute(attribute);
         if (instance != null && Double.isFinite(value)) {
             instance.setBaseValue(value);

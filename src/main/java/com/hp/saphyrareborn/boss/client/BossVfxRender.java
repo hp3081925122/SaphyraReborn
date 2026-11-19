@@ -25,23 +25,33 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.client.event.ViewportEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.client.event.ViewportEvent;
 import org.joml.Vector3f;
 
-@EventBusSubscriber(modid = MokelsBossfightSaphyraMod.MODID, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = MokelsBossfightSaphyraMod.MODID, value = Dist.CLIENT)
 public final class BossVfxRender {
-    public static final RenderType GLOW = RenderType.create("saphyra_boss_glow", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 8192, false, true,
-            RenderType.CompositeState.builder()
-                    .setShaderState(RenderStateShard.RENDERTYPE_LIGHTNING_SHADER)
-                    .setTransparencyState(RenderStateShard.LIGHTNING_TRANSPARENCY)
-                    .setCullState(RenderStateShard.NO_CULL)
-                    .setWriteMaskState(RenderStateShard.COLOR_WRITE)
-                    .setLayeringState(RenderStateShard.VIEW_OFFSET_Z_LAYERING)
-                    .createCompositeState(false));
+    public static final RenderType GLOW = GlowRenderState.createGlow();
+
+    private static final class GlowRenderState extends RenderStateShard {
+        private GlowRenderState() {
+            super("saphyra_boss_glow_state", () -> {}, () -> {});
+        }
+
+        static RenderType createGlow() {
+            return RenderType.create("saphyra_boss_glow", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 8192, false, true,
+                    RenderType.CompositeState.builder()
+                            .setShaderState(RENDERTYPE_LIGHTNING_SHADER)
+                            .setTransparencyState(LIGHTNING_TRANSPARENCY)
+                            .setCullState(NO_CULL)
+                            .setWriteMaskState(COLOR_WRITE)
+                            .setLayeringState(VIEW_OFFSET_Z_LAYERING)
+                            .createCompositeState(false));
+        }
+    }
     public static final double RENDER_RANGE_SQR = 128.0 * 128.0;
 
     public static final ResourceLocation BEAM_STRIP = vfxTex("boss_beam_strip");
@@ -78,11 +88,14 @@ public final class BossVfxRender {
     }
 
     public static ResourceLocation vfxTex(String name) {
-        return ResourceLocation.fromNamespaceAndPath(MokelsBossfightSaphyraMod.MODID, "textures/vfx/" + name + ".png");
+        return new ResourceLocation(MokelsBossfightSaphyraMod.MODID, "textures/vfx/" + name + ".png");
     }
 
     @SubscribeEvent
-    public static void onClientTick(ClientTickEvent.Post event) {
+    public static void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) {
+            return;
+        }
         Minecraft mc = Minecraft.getInstance();
         if (mc.level != lastLevel) {
             shake = 0.0f;
@@ -205,8 +218,8 @@ public final class BossVfxRender {
         }
 
         private static void emit(VertexConsumer vc, PoseStack.Pose pose, float x, float y, float z, float u, float v, float r, float g, float b, float a) {
-            vc.addVertex(pose, x, y, z).setColor(r, g, b, a).setUv(u, v)
-                    .setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0.0f, 1.0f, 0.0f);
+            vc.vertex(pose.pose(), x, y, z).color(r, g, b, a).uv(u, v)
+                    .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(pose.normal(), 0.0f, 1.0f, 0.0f).endVertex();
         }
 
         public void flat(ResourceLocation tex, double cx, double y, double cz, double half, double angle, float[] c) {
@@ -537,7 +550,7 @@ public final class BossVfxRender {
         }
 
         public void v(double x, double y, double z, float[] c) {
-            this.vc.addVertex(this.pose, (float) x, (float) y, (float) z).setColor(c[0], c[1], c[2], c[3]);
+            this.vc.vertex(this.pose.pose(), (float) x, (float) y, (float) z).color(c[0], c[1], c[2], c[3]).endVertex();
         }
 
         public void annulus(double cx, double y, double cz, double rIn, double rOut, int segs, float[] inner, float[] outer) {

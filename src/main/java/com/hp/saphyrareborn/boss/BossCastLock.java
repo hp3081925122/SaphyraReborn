@@ -1,6 +1,6 @@
 package com.hp.saphyrareborn.boss;
 
-import net.minecraft.resources.ResourceLocation;
+import java.util.UUID;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -9,7 +9,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public final class BossCastLock {
-    private static final ResourceLocation LOCK_ID = ResourceLocation.fromNamespaceAndPath("saphyra_reborn", "cast_lock");
+    private static final UUID LOCK_UUID = UUID.fromString("8d6e1c4a-9f32-4b78-a51c-7e2049c8b101");
     private static final String LOCK_KEY = "SaphyraCastLockUntil";
     private static final String SHIELD_KEY = "SaphyraShieldUntil";
 
@@ -62,13 +62,13 @@ public final class BossCastLock {
 
     private static void apply(LivingEntity entity, boolean locked) {
         AttributeInstance speed = entity.getAttribute(Attributes.MOVEMENT_SPEED);
-        if (speed == null || speed.hasModifier(LOCK_ID) == locked) {
+        if (speed == null || (speed.getModifier(LOCK_UUID) != null) == locked) {
             return;
         }
         if (locked) {
-            speed.addTransientModifier(new AttributeModifier(LOCK_ID, -1.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            speed.addTransientModifier(new AttributeModifier(LOCK_UUID, "saphyra_reborn:cast_lock", -1.0, AttributeModifier.Operation.MULTIPLY_TOTAL));
         } else {
-            speed.removeModifier(LOCK_ID);
+            speed.removeModifier(LOCK_UUID);
         }
     }
 }

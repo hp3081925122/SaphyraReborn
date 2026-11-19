@@ -1,0 +1,101 @@
+package com.hp.saphyrareborn.procedures;
+
+import com.hp.saphyrareborn.MokelsBossfightSaphyraMod;
+import com.hp.saphyrareborn.entity.SaphyraDialog2Entity;
+import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModItems;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+
+public class WellItSeemeth2Procedure {
+    public static void execute(LevelAccessor world, Entity entity) {
+        if (entity == null) {
+            return;
+        }
+        MokelsBossfightSaphyraMod.queueServerWork(40, () -> {
+            if (entity.isAlive()) {
+                if (!world.isClientSide() && world.getServer() != null) {
+                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.ca8154d1a039"), false);
+                }
+                MokelsBossfightSaphyraMod.queueServerWork(80, () -> {
+                    if (entity.isAlive()) {
+                        if (entity instanceof SaphyraDialog2Entity) {
+                            ((SaphyraDialog2Entity)entity).setAnimation("posing");
+                        }
+                        if (!world.isClientSide() && world.getServer() != null) {
+                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.f3b88d7bf2e3"), false);
+                        }
+                        MokelsBossfightSaphyraMod.queueServerWork(200, () -> {
+                            if (entity.isAlive()) {
+                                if (!world.isClientSide() && world.getServer() != null) {
+                                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.1add17851b8a"), false);
+                                }
+                                MokelsBossfightSaphyraMod.queueServerWork(80, () -> {
+                                    if (entity.isAlive()) {
+                                        if (!world.isClientSide() && world.getServer() != null) {
+                                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.540120059876"), false);
+                                        }
+                                        MokelsBossfightSaphyraMod.queueServerWork(80, () -> {
+                                            if (entity.isAlive()) {
+                                                if (!world.isClientSide() && world.getServer() != null) {
+                                                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.7028a76586ef"), false);
+                                                }
+                                                MokelsBossfightSaphyraMod.queueServerWork(120, () -> {
+                                                    if (entity.isAlive()) {
+                                                        if (!world.isClientSide() && world.getServer() != null) {
+                                                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.503d04e75432"), false);
+                                                        }
+                                                        MokelsBossfightSaphyraMod.queueServerWork(200, () -> {
+                                                            if (entity.isAlive()) {
+                                                                if (!world.isClientSide() && world.getServer() != null) {
+                                                                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.0d31cc530fd1"), false);
+                                                                }
+                                                                MokelsBossfightSaphyraMod.queueServerWork(20, () -> {
+                                                                    if (world instanceof ServerLevel) {
+                                                                        ServerLevel _level1 = (ServerLevel)world;
+                                                                        ItemEntity entityToSpawn = new ItemEntity((Level)_level1, entity.getX(), entity.getY(), entity.getZ(), new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.KEY_4.get()));
+                                                                        entityToSpawn.setPickUpDelay(0);
+                                                                        entityToSpawn.setUnlimitedLifetime();
+                                                                        _level1.addFreshEntity((Entity)entityToSpawn);
+                                                                    }
+                                                                });
+                                                                MokelsBossfightSaphyraMod.queueServerWork(80, () -> {
+                                                                    if (entity.isAlive()) {
+                                                                        if (!world.isClientSide() && world.getServer() != null) {
+                                                                            world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.8acbeff166c3"), false);
+                                                                        }
+                                                                        MokelsBossfightSaphyraMod.queueServerWork(180, () -> {
+                                                                            if (entity.isAlive()) {
+                                                                                if (!world.isClientSide() && world.getServer() != null) {
+                                                                                    world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.2c87d4eec678"), false);
+                                                                                }
+                                                                                MokelsBossfightSaphyraMod.queueServerWork(80, () -> {
+                                                                                    if (entity.isAlive() && !world.isClientSide() && world.getServer() != null) {
+                                                                                        world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.10652f2249cd"), false);
+                                                                                    }
+                                                                                });
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                });
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+}

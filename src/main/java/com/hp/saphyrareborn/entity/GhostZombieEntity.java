@@ -1,0 +1,245 @@
+package com.hp.saphyrareborn.entity;
+
+import net.minecraft.world.entity.MobType;
+import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModEntities;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
+
+public class GhostZombieEntity
+extends PathfinderMob
+implements GeoEntity {
+    private static final String[] TRIGGERABLE_ANIMATIONS = {"idle", "burst", "bursttwo", "walk", "sprint", "attack"};
+    private AnimationController<?> procedureController;
+    public static final EntityDataAccessor<Boolean> SHOOT = SynchedEntityData.defineId(GhostZombieEntity.class, (EntityDataSerializer)EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<String> TEXTURE = SynchedEntityData.defineId(GhostZombieEntity.class, (EntityDataSerializer)EntityDataSerializers.STRING);
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache((GeoAnimatable)this);
+    private boolean swinging;
+    private boolean lastloop;
+    private long lastSwing;
+
+    public GhostZombieEntity(EntityType<GhostZombieEntity> type, Level world) {
+        super(type, world);
+        this.xpReward = 0;
+        this.setNoAi(false);
+        
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(SHOOT, false);
+        this.entityData.define(TEXTURE, "ghostzombietexture");
+    }
+
+    public void setTexture(String texture) {
+        this.entityData.set(TEXTURE,texture);
+    }
+
+    public String getTexture() {
+        return (String)this.entityData.get(TEXTURE);
+    }
+
+    protected void registerGoals() {
+        super.registerGoals();
+        this.targetSelector.addGoal(1, (Goal)new NearestAttackableTargetGoal((Mob)this, ServerPlayer.class, true, true));
+        this.targetSelector.addGoal(2, (Goal)new NearestAttackableTargetGoal((Mob)this, Player.class, true, true));
+        this.goalSelector.addGoal(3, (Goal)new MeleeAttackGoal(this, 1.2, true){
+
+            protected double getAttackReachSqr(LivingEntity entity) {
+                return this.mob.getBbWidth() * this.mob.getBbWidth() + entity.getBbWidth();
+            }
+        });
+        this.goalSelector.addGoal(4, (Goal)new RandomStrollGoal((PathfinderMob)this, 1.0));
+        this.targetSelector.addGoal(5, (Goal)new HurtByTargetGoal((PathfinderMob)this, new Class[0]).setAlertOthers(new Class[0]));
+        this.goalSelector.addGoal(6, (Goal)new RandomLookAroundGoal((Mob)this));
+        this.goalSelector.addGoal(7, (Goal)new FloatGoal((Mob)this));
+    }
+
+    public SoundEvent getHurtSound(DamageSource ds) {
+        return (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("entity.generic.hurt"));
+    }
+
+    public SoundEvent getDeathSound() {
+        return (SoundEvent)BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("entity.generic.death"));
+    }
+
+    public boolean hurt(DamageSource source, float amount) {
+        if (source.is(DamageTypes.IN_FIRE)) {
+            return false;
+        }
+        if (source.is(DamageTypes.FALL)) {
+            return false;
+        }
+        if (source.is(DamageTypes.CACTUS)) {
+            return false;
+        }
+        if (source.is(DamageTypes.DROWN)) {
+            return false;
+        }
+        if (source.is(DamageTypes.LIGHTNING_BOLT)) {
+            return false;
+        }
+        if (source.is(DamageTypes.EXPLOSION)) {
+            return false;
+        }
+        return super.hurt(source, amount);
+    }
+
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putString("Texture", this.getTexture());
+    }
+
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        if (compound.contains("Texture")) {
+            this.setTexture(compound.getString("Texture"));
+        }
+    }
+
+    public void tick() {
+        super.tick();
+        this.refreshDimensions();
+    }
+
+    @Override
+    public boolean isPushable() {
+        return false;
+    }
+
+    protected void doPush(Entity entityIn) {
+    }
+
+    public void aiStep() {
+        super.aiStep();
+        this.updateSwingTime();
+    }
+
+    public static void init() {
+    }
+
+    public static AttributeSupplier.Builder createAttributes() {
+        AttributeSupplier.Builder builder = Mob.createMobAttributes();
+        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.18);
+        builder = builder.add(Attributes.MAX_HEALTH, 40.0);
+        builder = builder.add(Attributes.ARMOR, 0.0);
+        builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0);
+        builder = builder.add(Attributes.FOLLOW_RANGE, 28.0);
+        builder = builder.add(net.minecraftforge.common.ForgeMod.STEP_HEIGHT_ADDITION.get(), (2.0) - 0.6);
+        return builder;
+    }
+
+    private PlayState movementPredicate(AnimationState event) {
+        if (!this.isProcedureAnimating()) {
+            if (!(!event.isMoving() && event.getLimbSwingAmount() > -0.15f && event.getLimbSwingAmount() < 0.15f || this.isAggressive())) {
+                return event.setAndContinue(RawAnimation.begin().thenLoop("walk"));
+            }
+            if (this.isAggressive() && event.isMoving()) {
+                return event.setAndContinue(RawAnimation.begin().thenLoop("sprint"));
+            }
+            return event.setAndContinue(RawAnimation.begin().thenLoop("idle"));
+        }
+        return PlayState.STOP;
+    }
+
+    private PlayState attackingPredicate(AnimationState event) {
+        double d1 = this.getX() - this.xo;
+        double d0 = this.getZ() - this.zo;
+        float velocity = (float)Math.sqrt(d1 * d1 + d0 * d0);
+        if (this.getAttackAnim(event.getPartialTick()) > 0.0f && !this.swinging) {
+            this.swinging = true;
+            this.lastSwing = this.level().getGameTime();
+        }
+        if (this.swinging && this.lastSwing + 7L <= this.level().getGameTime()) {
+            this.swinging = false;
+        }
+        if (this.swinging && event.getController().getAnimationState() == AnimationController.State.STOPPED) {
+            event.getController().forceAnimationReset();
+            return event.setAndContinue(RawAnimation.begin().thenPlay("attack"));
+        }
+        return PlayState.CONTINUE;
+    }
+
+    private PlayState procedurePredicate(AnimationState event) {
+        return event.getController().isPlayingTriggeredAnimation() && !this.isDeadOrDying() ? PlayState.CONTINUE : PlayState.STOP;
+    }
+
+    private boolean isProcedureAnimating() {
+        return this.procedureController != null && this.procedureController.isPlayingTriggeredAnimation();
+    }
+
+    protected void tickDeath() {
+        ++this.deathTime;
+        if (this.deathTime == 20) {
+            this.dropExperience();
+            this.remove(Entity.RemovalReason.KILLED);
+        }
+    }
+
+    public void setAnimation(String animation) {
+        if ("empty".equals(animation)) {
+            this.stopTriggeredAnimation("procedure", null);
+        } else {
+            this.triggerAnim("procedure", animation);
+        }
+    }
+
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController[]{new AnimationController((GeoAnimatable)this, "movement", 2, this::movementPredicate)});
+        data.add(new AnimationController[]{new AnimationController((GeoAnimatable)this, "attacking", 2, this::attackingPredicate)});
+        AnimationController<?> procedure = new AnimationController<>(this, "procedure", 2, this::procedurePredicate).receiveTriggeredAnimations();
+        for (String name : TRIGGERABLE_ANIMATIONS) {
+            procedure.triggerableAnim(name, RawAnimation.begin().thenPlay(name));
+        }
+        this.procedureController = procedure;
+        data.add(procedure);
+    }
+
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.cache;
+    }
+
+    @Override
+    public MobType getMobType() {
+        return MobType.UNDEAD;
+    }
+}

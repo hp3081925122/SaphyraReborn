@@ -1,0 +1,23 @@
+package com.hp.saphyrareborn.procedures;
+
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.phys.Vec3;
+
+public class AttackDashBackProcedure {
+    public static void execute(LevelAccessor world, Entity entity) {
+        if (entity == null) {
+            return;
+        }
+        if (entity.isAlive()) {
+            entity.setDeltaMovement(new Vec3(-3.0 * entity.getLookAngle().x, 0.15, -3.0 * entity.getLookAngle().z));
+            if (world instanceof ServerLevel) {
+                ServerLevel _level1 = (ServerLevel)world;
+                ((ServerLevel)_level1).sendParticles((ParticleOptions)ParticleTypes.POOF, entity.getX(), entity.getY(), entity.getZ(), 20, 0.2, 0.2, 0.2, 0.05);
+            }
+        }
+    }
+}

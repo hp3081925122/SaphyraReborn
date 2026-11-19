@@ -1,20 +1,15 @@
 package com.hp.saphyrareborn.weapon;
 
 import com.hp.saphyrareborn.MokelsBossfightSaphyraMod;
+import com.hp.saphyrareborn.network.SaphyraNetwork;
 import java.util.ArrayDeque;
+import java.util.function.Supplier;
+import net.minecraftforge.network.NetworkEvent;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
-@EventBusSubscriber(modid = MokelsBossfightSaphyraMod.MODID)
-public record WeaponFx(byte kind, byte weapon, double x, double y, double z, float yaw, float size, int extra) implements CustomPacketPayload {
+public record WeaponFx(byte kind, byte weapon, double x, double y, double z, float yaw, float size, int extra) {
     public static final byte SPARK = 0;
     public static final byte CROSS_SLASH = 1;
     public static final byte DASH_SLASH = 2;
@@ -34,14 +29,15 @@ public record WeaponFx(byte kind, byte weapon, double x, double y, double z, flo
     private static final double SEND_RADIUS = 64.0;
     public static final ArrayDeque<WeaponFx> INBOX = new ArrayDeque<>();
 
-    public static final Type<WeaponFx> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(MokelsBossfightSaphyraMod.MODID, "weapon_fx"));
-    public static final StreamCodec<FriendlyByteBuf, WeaponFx> CODEC = StreamCodec.ofMember(WeaponFx::write, WeaponFx::read);
-
-    private static WeaponFx read(FriendlyByteBuf buf) {
+    public static WeaponFx decode(FriendlyByteBuf buf) {
         return new WeaponFx(buf.readByte(), buf.readByte(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readFloat(), buf.readFloat(), buf.readVarInt());
     }
 
-    private void write(FriendlyByteBuf buf) {
+    public static void encode(WeaponFx self, FriendlyByteBuf buf) {
+        self.writeTo(buf);
+    }
+
+    private void writeTo(FriendlyByteBuf buf) {
         buf.writeByte(this.kind);
         buf.writeByte(this.weapon);
         buf.writeDouble(this.x);
@@ -53,20 +49,16 @@ public record WeaponFx(byte kind, byte weapon, double x, double y, double z, flo
     }
 
     public static void send(ServerLevel level, byte kind, WeaponStyle weapon, Vec3 pos, float yaw, float size, int extra) {
-        PacketDistributor.sendToPlayersNear(level, null, pos.x, pos.y, pos.z, SEND_RADIUS, new WeaponFx(kind, (byte) weapon.ordinal(), pos.x, pos.y, pos.z, yaw, size, extra));
+        SaphyraNetwork.sendToNear(level, pos.x, pos.y, pos.z, SEND_RADIUS, new WeaponFx(kind, (byte) weapon.ordinal(), pos.x, pos.y, pos.z, yaw, size, extra));
     }
 
-    @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
-    }
-
-    @SubscribeEvent
-    public static void register(RegisterPayloadHandlersEvent event) {
-        event.registrar("1").optional().playToClient(TYPE, CODEC, (payload, context) -> context.enqueueWork(() -> {
+    public static void handle(WeaponFx payload, Supplier<NetworkEvent.Context> ctxSupplier) {
+        NetworkEvent.Context ctx = ctxSupplier.get();
+        ctx.enqueueWork(() -> {
             if (INBOX.size() < 256) {
                 INBOX.add(payload);
             }
-        }));
+        });
+        ctx.setPacketHandled(true);
     }
 }

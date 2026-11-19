@@ -30,7 +30,7 @@ public enum WeaponStyle {
 
     WeaponStyle(Supplier<Item> item, String name, int light, int main, float radius, boolean heavy) {
         this.item = item;
-        this.trail = ResourceLocation.fromNamespaceAndPath(MokelsBossfightSaphyraMod.MODID, "textures/vfx/trail_" + name + ".png");
+        this.trail = new ResourceLocation(MokelsBossfightSaphyraMod.MODID, "textures/vfx/trail_" + name + ".png");
         this.light = light;
         this.main = main;
         this.radius = radius;

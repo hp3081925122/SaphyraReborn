@@ -31,14 +31,14 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.joml.Vector3f;
 
-@EventBusSubscriber(modid = MokelsBossfightSaphyraMod.MODID, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = MokelsBossfightSaphyraMod.MODID, value = Dist.CLIENT)
 public final class WeaponFxClient {
     private static final int MAX_EFFECTS = 128;
     private static final double SWING_RANGE_SQR = 64.0 * 64.0;
@@ -66,11 +66,14 @@ public final class WeaponFxClient {
     }
 
     private static ResourceLocation tex(String name) {
-        return ResourceLocation.fromNamespaceAndPath(MokelsBossfightSaphyraMod.MODID, "textures/vfx/" + name + ".png");
+        return new ResourceLocation(MokelsBossfightSaphyraMod.MODID, "textures/vfx/" + name + ".png");
     }
 
     @SubscribeEvent
-    public static void onClientTick(ClientTickEvent.Post event) {
+    public static void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) {
+            return;
+        }
         Minecraft mc = Minecraft.getInstance();
         ClientLevel level = mc.level;
         if (level != lastLevel) {
@@ -134,7 +137,7 @@ public final class WeaponFxClient {
         }
         Camera camera = event.getCamera();
         Vec3 cam = camera.getPosition();
-        float partial = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        float partial = event.getPartialTick();
         PoseStack pose = event.getPoseStack();
         pose.pushPose();
         pose.translate(-cam.x, -cam.y, -cam.z);
@@ -170,8 +173,8 @@ public final class WeaponFxClient {
 
     private record Sprite(VertexConsumer vc, PoseStack.Pose pose) {
         void v(double[] p, float u, float v, float[] c) {
-            this.vc.addVertex(this.pose, (float) p[0], (float) p[1], (float) p[2]).setColor(c[0], c[1], c[2], c[3]).setUv(u, v)
-                    .setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(this.pose, 0.0f, 1.0f, 0.0f);
+            this.vc.vertex(this.pose.pose(), (float) p[0], (float) p[1], (float) p[2]).color(c[0], c[1], c[2], c[3]).uv(u, v)
+                    .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(this.pose.normal(), 0.0f, 1.0f, 0.0f).endVertex();
         }
 
         void quad(double[] p0, float u0, float v0, double[] p1, float u1, float v1, double[] p2, float u2, float v2, double[] p3, float u3, float v3, float[] c0, float[] c1) {

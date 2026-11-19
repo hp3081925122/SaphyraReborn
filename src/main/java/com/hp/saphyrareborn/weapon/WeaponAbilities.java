@@ -38,13 +38,13 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.event.tick.ServerTickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.TickEvent;
 
-@EventBusSubscriber(modid = MokelsBossfightSaphyraMod.MODID)
+@Mod.EventBusSubscriber(modid = MokelsBossfightSaphyraMod.MODID)
 public final class WeaponAbilities {
     private static final int IAI_COOLDOWN = 160;
     private static final double IAI_LENGTH = 6.0;
@@ -77,7 +77,7 @@ public final class WeaponAbilities {
     }
 
     private static void sound(ServerLevel level, Vec3 pos, String id, float volume, float pitch) {
-        SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse(id));
+        SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation(id));
         if (event != null) {
             level.playSound(null, pos.x, pos.y, pos.z, event, SoundSource.PLAYERS, volume, pitch);
         }
@@ -244,7 +244,7 @@ public final class WeaponAbilities {
             return;
         }
         Vec3 at = target.position().add(0.0, target.getBbHeight() * 0.6, 0.0);
-        if (!player.hasEffect(MokelsBossfightSaphyraModMobEffects.GRIEF_EFFECT)) {
+        if (!player.hasEffect(MokelsBossfightSaphyraModMobEffects.GRIEF_EFFECT.get())) {
             MokelsBossfightSaphyraModVariables.PlayerVariables vars = MokelsBossfightSaphyraModVariables.getPlayerVariables(player);
             vars.Grief += 10.0;
             vars.syncPlayerVariables(player);
@@ -266,7 +266,7 @@ public final class WeaponAbilities {
     }
 
     @SubscribeEvent
-    public static void onIncomingDamage(LivingIncomingDamageEvent event) {
+    public static void onIncomingDamage(LivingHurtEvent event) {
         DamageSource source = event.getSource();
         if (!(source.getEntity() instanceof Player player) || source.getDirectEntity() != player || !source.is(DamageTypes.PLAYER_ATTACK)) {
             return;
@@ -299,7 +299,7 @@ public final class WeaponAbilities {
                 }
             }
             case KATANA_POOL_OF_ROT -> {
-                boolean rotten = player.hasEffect(MokelsBossfightSaphyraModMobEffects.ROT_EFFECT);
+                boolean rotten = player.hasEffect(MokelsBossfightSaphyraModMobEffects.ROT_EFFECT.get());
                 if (rotten) {
                     event.setAmount(event.getAmount() * 1.4f);
                     target.addEffect(new MobEffectInstance(MobEffects.WITHER, 60, 1), player);
@@ -310,7 +310,7 @@ public final class WeaponAbilities {
                 WeaponFx.send(level, WeaponFx.ROT_SPLASH, style, target.position(), 0.0f, rotten ? 1.8f : 1.0f, rotten ? 1 : 0);
             }
             case SUNVEIL -> {
-                target.igniteForSeconds(4.0f);
+                target.setSecondsOnFire(4);
                 boolean sunlit = level.isDay() && level.canSeeSky(player.blockPosition());
                 if (sunlit) {
                     event.setAmount(event.getAmount() * 1.25f);
@@ -337,7 +337,10 @@ public final class WeaponAbilities {
     }
 
     @SubscribeEvent
-    public static void onServerTick(ServerTickEvent.Post event) {
+    public static void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) {
+            return;
+        }
         if (TASKS.isEmpty()) {
             return;
         }

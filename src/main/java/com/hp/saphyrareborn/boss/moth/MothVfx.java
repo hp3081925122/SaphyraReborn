@@ -1,20 +1,15 @@
 package com.hp.saphyrareborn.boss.moth;
 
 import com.hp.saphyrareborn.MokelsBossfightSaphyraMod;
+import com.hp.saphyrareborn.network.SaphyraNetwork;
 import java.util.ArrayDeque;
+import java.util.function.Supplier;
+import net.minecraftforge.network.NetworkEvent;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
-@EventBusSubscriber(modid = MokelsBossfightSaphyraMod.MODID)
-public record MothVfx(byte kind, double x, double y, double z, float yaw, float size, int extra) implements CustomPacketPayload {
+public record MothVfx(byte kind, double x, double y, double z, float yaw, float size, int extra) {
     public static final byte SLASH = 0;
     public static final byte SHOCKWAVE = 1;
     public static final byte TELEGRAPH_RING = 2;
@@ -40,9 +35,6 @@ public record MothVfx(byte kind, double x, double y, double z, float yaw, float 
     private static final double SEND_RADIUS = 96.0;
     public static final ArrayDeque<MothVfx> INBOX = new ArrayDeque<>();
 
-    public static final Type<MothVfx> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(MokelsBossfightSaphyraMod.MODID, "moth_vfx"));
-    public static final StreamCodec<FriendlyByteBuf, MothVfx> CODEC = StreamCodec.ofMember(MothVfx::write, MothVfx::read);
-
     public static int ring(int ticks, double innerRadius) {
         return Math.max(0, Math.min(255, ticks)) | (Math.max(0, (int) Math.round(innerRadius * 10.0)) << 8);
     }
@@ -55,11 +47,15 @@ public record MothVfx(byte kind, double x, double y, double z, float yaw, float 
         return (Math.max(0, packed) >> 8) / 10.0;
     }
 
-    private static MothVfx read(FriendlyByteBuf buf) {
+    public static MothVfx decode(FriendlyByteBuf buf) {
         return new MothVfx(buf.readByte(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readFloat(), buf.readFloat(), buf.readVarInt());
     }
 
-    private void write(FriendlyByteBuf buf) {
+    public static void encode(MothVfx self, FriendlyByteBuf buf) {
+        self.writeTo(buf);
+    }
+
+    private void writeTo(FriendlyByteBuf buf) {
         buf.writeByte(this.kind);
         buf.writeDouble(this.x);
         buf.writeDouble(this.y);
@@ -70,20 +66,16 @@ public record MothVfx(byte kind, double x, double y, double z, float yaw, float 
     }
 
     public static void send(ServerLevel level, byte kind, Vec3 pos, float yaw, float size, int extra) {
-        PacketDistributor.sendToPlayersNear(level, null, pos.x, pos.y, pos.z, SEND_RADIUS, new MothVfx(kind, pos.x, pos.y, pos.z, yaw, size, extra));
+        SaphyraNetwork.sendToNear(level, pos.x, pos.y, pos.z, SEND_RADIUS, new MothVfx(kind, pos.x, pos.y, pos.z, yaw, size, extra));
     }
 
-    @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
-    }
-
-    @SubscribeEvent
-    public static void register(RegisterPayloadHandlersEvent event) {
-        event.registrar("1").optional().playToClient(TYPE, CODEC, (payload, context) -> context.enqueueWork(() -> {
+    public static void handle(MothVfx payload, Supplier<NetworkEvent.Context> ctxSupplier) {
+        NetworkEvent.Context ctx = ctxSupplier.get();
+        ctx.enqueueWork(() -> {
             if (INBOX.size() < 256) {
                 INBOX.add(payload);
             }
-        }));
+        });
+        ctx.setPacketHandled(true);
     }
 }

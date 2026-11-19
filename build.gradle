@@ -1,19 +1,15 @@
-// 当前文件只保留最小的 NeoForge 开发、构建和运行配置。
 plugins {
-    id 'java-library'
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.gradle.userdev' version '7.1.37'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'org.spongepowered.mixin' version '0.7.+'
 }
-
-version = project.mod_version
-group = project.mod_group_id
 
 repositories {
     mavenLocal()
     maven { url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
-    maven { url = 'https://maven.neoforged.net/releases' }
+    maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
     maven {
         url = 'https://www.cursemaven.com'
         content {
@@ -22,53 +18,80 @@ repositories {
     }
 }
 
+version = project.mod_version
+group = project.mod_group_id
+
 base {
-    archivesName = "${project.mod_id}-${project.minecraft_version}-neoforge"
+    archivesName = "${project.mod_id}-${project.minecraft_version}-forge"
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-runs {
-    configureEach {
-        systemProperty 'forge.logging.markers', 'REGISTRIES'
-        systemProperty 'forge.logging.console.level', 'debug'
-        modSource project.sourceSets.main
-    }
+mixin {
+    add sourceSets.main, 'saphyra_reborn.refmap.json'
+    config 'saphyra_reborn.mixins.json'
+}
 
-    client {
-        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-    }
+minecraft {
+    mappings channel: project.mapping_channel, version: project.mapping_version
+    copyIdeResources = true
 
-    server {
-        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-        programArgument '--nogui'
-    }
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            arg '-mixin.config=saphyra_reborn.mixins.json'
 
-    gameTestServer {
-        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-    }
+            mods {
+                "${project.mod_id}" {
+                    source sourceSets.main
+                }
+            }
+        }
 
-    data {
-        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        client {
+            property 'forge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        server {
+            workingDirectory project.file('run-server')
+            property 'forge.enabledGameTestNamespaces', project.mod_id
+            args '--nogui'
+        }
+
+        gameTestServer {
+            property 'forge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        data {
+            workingDirectory project.file('run-data')
+            args '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+        }
     }
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    implementation "net.neoforged:neoforge:${project.neo_version}"
-    implementation "software.bernie.geckolib:geckolib-neoforge-${project.minecraft_version}:4.8.4"
-    implementation "curse.maven:jei-238222:8792638"
-    implementation "curse.maven:just-enough-characters-250702:8117474"
-    implementation "curse.maven:jade-324717:8591319"
+    minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${project.minecraft_version}:4.8.4")
+    implementation fg.deobf("curse.maven:jei-238222:8778011")
+    if (!gradle.startParameter.taskNames.any { it.toLowerCase().contains('server') }) {
+        runtimeOnly fg.deobf("curse.maven:just-enough-characters-250702:8771525")
+    }
+    implementation fg.deobf("curse.maven:jade-324717:8479276")
 }
 
-tasks.withType(ProcessResources).configureEach {
+tasks.named('processResources', ProcessResources).configure {
     def replaceProperties = [
             minecraft_version: project.minecraft_version,
             minecraft_version_range: project.minecraft_version_range,
-            neo_version: project.neo_version,
-            neo_version_range: project.neo_version_range,
+            forge_version: project.forge_version,
+            forge_version_range: project.forge_version_range,
             loader_version_range: project.loader_version_range,
             mod_id: project.mod_id,
             mod_name: project.mod_name,
@@ -79,30 +102,43 @@ tasks.withType(ProcessResources).configureEach {
     ]
     inputs.properties replaceProperties
 
-    filesMatching(['META-INF/neoforge.mods.toml', 'pack.mcmeta']) {
-        expand replaceProperties
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
     }
+
+    from(layout.projectDirectory.file('LICENSE')) { into 'META-INF' }
+    from(layout.projectDirectory.file('NOTICE.md')) { into 'META-INF' }
+}
+
+tasks.named('jar', Jar).configure {
+    manifest {
+        attributes([
+                'Specification-Title': project.mod_id,
+                'Specification-Vendor': project.mod_authors,
+                'Specification-Version': '1',
+                'Implementation-Title': project.name,
+                'Implementation-Version': project.jar.archiveVersion,
+                'Implementation-Vendor': project.mod_authors,
+                'MixinConfigs': 'saphyra_reborn.mixins.json'
+        ])
+    }
+    finalizedBy 'reobfJar'
 }
 
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
-            from components.java
+            artifact jar
         }
     }
     repositories {
         maven {
-            url "file://${project.projectDir}/repo"
+            url "file://${project.projectDir}/mcmodsrepo"
         }
     }
 }
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
-}
-
-// AFL 3.0：随 JAR 分发许可证和署名声明
-tasks.named('processResources', ProcessResources).configure {
-    from(layout.projectDirectory.file('LICENSE')) { into 'META-INF' }
-    from(layout.projectDirectory.file('NOTICE.md')) { into 'META-INF' }
+    options.compilerArgs.addAll(['-Xmaxerrs', '2000'])
 }

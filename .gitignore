@@ -1,9 +1,20 @@
 build/
 .gradle/
 run/
+run-server/
+run-data/
+mctest/
+mcmodsrepo/
+repo/
 *.log
 runs/
 
 .idea/
-
 .vscode/
+
+迁移文档.md
+*迁移文档*.md
+docs/迁移/
+/1201-forge-*/
+/1211-neoforge-*/
+/2612-neoforge-*/

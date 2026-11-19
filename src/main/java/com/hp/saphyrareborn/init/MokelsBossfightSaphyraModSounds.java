@@ -1,0 +1,51 @@
+package com.hp.saphyrareborn.init;
+
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraftforge.registries.RegistryObject;
+
+public class MokelsBossfightSaphyraModSounds {
+    public static final DeferredRegister<SoundEvent> REGISTRY = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, "saphyra_reborn");
+    public static final RegistryObject<SoundEvent> WITCHBOSSMUSIC = REGISTRY.register("witchbossmusic", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "witchbossmusic")));
+    public static final RegistryObject<SoundEvent> WITCHBOSSTHEME = REGISTRY.register("witchbosstheme", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "witchbosstheme")));
+    public static final RegistryObject<SoundEvent> USINGFLASKOFHEALING = REGISTRY.register("usingflaskofhealing", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "usingflaskofhealing")));
+    public static final RegistryObject<SoundEvent> CRIMSONFLASKSOUND = REGISTRY.register("crimsonflasksound", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "crimsonflasksound")));
+    public static final RegistryObject<SoundEvent> SPELLCAST = REGISTRY.register("spellcast", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "spellcast")));
+    public static final RegistryObject<SoundEvent> PHASE2_O_MOTHER = REGISTRY.register("phase2_o_mother", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "phase2_o_mother")));
+    public static final RegistryObject<SoundEvent> ENEMY_FELLED = REGISTRY.register("enemy_felled", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "enemy_felled")));
+    public static final RegistryObject<SoundEvent> HEAVYDOOROPENING = REGISTRY.register("heavydooropening", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "heavydooropening")));
+    public static final RegistryObject<SoundEvent> STATUESOUND = REGISTRY.register("statuesound", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "statuesound")));
+    public static final RegistryObject<SoundEvent> LYIORSOUNDSTATUE = REGISTRY.register("lyiorsoundstatue", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "lyiorsoundstatue")));
+    public static final RegistryObject<SoundEvent> RULE_SPELL = REGISTRY.register("rule_spell", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "rule_spell")));
+    public static final RegistryObject<SoundEvent> NAMELESSSCREAM = REGISTRY.register("namelessscream", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "namelessscream")));
+    public static final RegistryObject<SoundEvent> NAMELESSTHEME1 = REGISTRY.register("namelesstheme1", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "namelesstheme1")));
+    public static final RegistryObject<SoundEvent> NAMELESSTHEME2 = REGISTRY.register("namelesstheme2", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "namelesstheme2")));
+    public static final RegistryObject<SoundEvent> NAMELESSTHEME3 = REGISTRY.register("namelesstheme3", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "namelesstheme3")));
+    public static final RegistryObject<SoundEvent> NAMELESSTHEME4 = REGISTRY.register("namelesstheme4", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "namelesstheme4")));
+    public static final RegistryObject<SoundEvent> NAMELESSTHEME5 = REGISTRY.register("namelesstheme5", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "namelesstheme5")));
+    public static final RegistryObject<SoundEvent> NAMELESSTHEME6 = REGISTRY.register("namelesstheme6", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "namelesstheme6")));
+    public static final RegistryObject<SoundEvent> NAMELESSTHEME7 = REGISTRY.register("namelesstheme7", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "namelesstheme7")));
+    public static final RegistryObject<SoundEvent> SAPHYRASTHEME1 = REGISTRY.register("saphyrastheme1", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "saphyrastheme1")));
+    public static final RegistryObject<SoundEvent> SAPHYRASTHEME2 = REGISTRY.register("saphyrastheme2", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "saphyrastheme2")));
+    public static final RegistryObject<SoundEvent> SAPHYRASTHEME3 = REGISTRY.register("saphyrastheme3", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "saphyrastheme3")));
+    public static final RegistryObject<SoundEvent> SAPHYRASTHEME4 = REGISTRY.register("saphyrastheme4", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "saphyrastheme4")));
+    public static final RegistryObject<SoundEvent> SAPHYRASTHEME5 = REGISTRY.register("saphyrastheme5", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "saphyrastheme5")));
+    public static final RegistryObject<SoundEvent> SAPHYRASTHEME6 = REGISTRY.register("saphyrastheme6", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "saphyrastheme6")));
+    public static final RegistryObject<SoundEvent> IVORYDEVIL_THEME1 = REGISTRY.register("ivorydevil_theme1", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "ivorydevil_theme1")));
+    public static final RegistryObject<SoundEvent> IVORYDEVIL_THEME2 = REGISTRY.register("ivorydevil_theme2", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "ivorydevil_theme2")));
+    public static final RegistryObject<SoundEvent> IVORYDEVIL_THEME3 = REGISTRY.register("ivorydevil_theme3", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "ivorydevil_theme3")));
+    public static final RegistryObject<SoundEvent> IVORYDEVIL_THEME4 = REGISTRY.register("ivorydevil_theme4", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "ivorydevil_theme4")));
+    public static final RegistryObject<SoundEvent> IVORYDEVIL_THEME5 = REGISTRY.register("ivorydevil_theme5", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "ivorydevil_theme5")));
+    public static final RegistryObject<SoundEvent> IVORYDEVIL_THEME6 = REGISTRY.register("ivorydevil_theme6", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "ivorydevil_theme6")));
+    public static final RegistryObject<SoundEvent> BOSSKILLED = REGISTRY.register("bosskilled", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "bosskilled")));
+    public static final RegistryObject<SoundEvent> INFESTED1 = REGISTRY.register("infested1", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "infested1")));
+    public static final RegistryObject<SoundEvent> INFESTED2 = REGISTRY.register("infested2", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "infested2")));
+    public static final RegistryObject<SoundEvent> INFESTED3 = REGISTRY.register("infested3", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "infested3")));
+    public static final RegistryObject<SoundEvent> INFESTED4 = REGISTRY.register("infested4", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "infested4")));
+    public static final RegistryObject<SoundEvent> INFESTED5 = REGISTRY.register("infested5", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "infested5")));
+    public static final RegistryObject<SoundEvent> INFESTED6 = REGISTRY.register("infested6", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "infested6")));
+    public static final RegistryObject<SoundEvent> IDLEINFESTED = REGISTRY.register("idleinfested", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("saphyra_reborn", "idleinfested")));
+}

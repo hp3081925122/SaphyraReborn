@@ -139,7 +139,7 @@ public final class MothCombat {
             this.tickPhaseShift(level);
             return;
         }
-        boolean stunned = this.boss.hasEffect(MokelsBossfightSaphyraModMobEffects.STUN);
+        boolean stunned = this.boss.hasEffect(MokelsBossfightSaphyraModMobEffects.STUN.get());
         if (stunned && this.skill != null) {
             this.cancelSkill();
             this.boss.stopProcedureAnimation();
@@ -833,7 +833,7 @@ public final class MothCombat {
                 }
             }
             level.sendParticles(MokelsBossfightSaphyraModParticleTypes.GHOSTLY_FLAME_PARTICLE.get(), s.x, s.y + 0.3, s.z, 5, 0.4, 0.2, 0.4, 0.02);
-            SoundEvent impact = BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.withDefaultNamespace("entity.lightning_bolt.impact"));
+            SoundEvent impact = BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("entity.lightning_bolt.impact"));
             if (impact != null) {
                 level.playSound(null, s.x, s.y, s.z, impact, SoundSource.HOSTILE, 0.7f, 1.55f);
             }
@@ -909,7 +909,7 @@ public final class MothCombat {
     }
 
     public static boolean canBeHit(LivingEntity e) {
-        return !(e instanceof MothbossEntity) && e.isAlive() && !e.isSpectator() && !e.hasEffect(MokelsBossfightSaphyraModMobEffects.IMMUNE);
+        return !(e instanceof MothbossEntity) && e.isAlive() && !e.isSpectator() && !e.hasEffect(MokelsBossfightSaphyraModMobEffects.IMMUNE.get());
     }
 
     public static void addGrief(Player player, double amount) {
@@ -937,7 +937,7 @@ public final class MothCombat {
     }
 
     private void sound(ServerLevel level, String id, SoundSource source, float volume, float pitch) {
-        SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse(id));
+        SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation(id));
         if (event != null) {
             level.playSound(null, this.boss.getX(), this.boss.getY(), this.boss.getZ(), event, source, volume, pitch);
         }

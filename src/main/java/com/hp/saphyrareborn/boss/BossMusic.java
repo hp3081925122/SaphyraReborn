@@ -18,7 +18,7 @@ public final class BossMusic {
         if (!(world instanceof ServerLevel level)) {
             return;
         }
-        ClientboundStopSoundPacket packet = new ClientboundStopSoundPacket(sound == null ? null : ResourceLocation.parse(sound), SoundSource.MUSIC);
+        ClientboundStopSoundPacket packet = new ClientboundStopSoundPacket(sound == null ? null : new ResourceLocation(sound), SoundSource.MUSIC);
         double radiusSqr = RADIUS * RADIUS;
         for (ServerPlayer player : level.players()) {
             if (player.distanceToSqr(x, y, z) <= radiusSqr) {

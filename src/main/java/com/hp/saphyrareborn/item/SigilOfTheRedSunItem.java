@@ -1,0 +1,39 @@
+package com.hp.saphyrareborn.item;
+
+import java.util.List;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+
+public class SigilOfTheRedSunItem
+extends Item {
+    public SigilOfTheRedSunItem() {
+        super(new Item.Properties().stacksTo(1).rarity(Rarity.COMMON));
+    }
+
+    public void appendHoverText(ItemStack itemstack, @javax.annotation.Nullable net.minecraft.world.level.Level context, List<Component> list, TooltipFlag flag) {
+        super.appendHoverText(itemstack, context, list, flag);
+        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.8c7a1e042576"));
+        SigilLocate.hint(list, SigilLocate.CLOCK_TOWER);
+        list.add((Component)Component.literal((String)""));
+        list.add((Component)Component.translatable("text.saphyra_reborn.hardcoded.d38b85ee6dba"));
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        return SigilLocate.use(level, player, hand, SigilLocate.CLOCK_TOWER);
+    }
+
+    @Override
+    public InteractionResult useOn(UseOnContext context) {
+        return SigilLocate.useOn(context, SigilLocate.CLOCK_TOWER);
+    }
+}

@@ -1,0 +1,53 @@
+package com.hp.saphyrareborn.procedures;
+
+import java.util.Map;
+import com.hp.saphyrareborn.MokelsBossfightSaphyraMod;
+import com.hp.saphyrareborn.init.MokelsBossfightSaphyraModBlocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraftforge.registries.ForgeRegistries;
+
+public class BossDoorSaphyraOnBlockRightClickedProcedure {
+    public static void execute(LevelAccessor world, double x, double y, double z) {
+        IntegerProperty _integerProp;
+        int _value = 2;
+        BlockPos _pos = BlockPos.containing((double)x, (double)y, (double)z);
+        BlockState _bs = world.getBlockState(_pos);
+        Property property = _bs.getBlock().getStateDefinition().getProperty("animation");
+        if (property instanceof IntegerProperty && (_integerProp = (IntegerProperty)property).getPossibleValues().contains(_value)) {
+            world.setBlock(_pos, (BlockState)_bs.setValue((Property)_integerProp, (Comparable)Integer.valueOf(_value)), 3);
+        }
+        MokelsBossfightSaphyraMod.queueServerWork(32, () -> {
+            if (world instanceof Level) {
+                Level _level1 = (Level)world;
+                if (!_level1.isClientSide()) {
+                    _level1.playSound(null, BlockPos.containing((double)x, (double)y, (double)z), (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("saphyra_reborn:heavydooropening")), SoundSource.BLOCKS, 1.0f, 1.0f);
+                } else {
+                    _level1.playLocalSound(x, y, z, (SoundEvent)net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("saphyra_reborn:heavydooropening")), SoundSource.BLOCKS, 1.0f, 1.0f, false);
+                }
+            }
+        });
+        MokelsBossfightSaphyraMod.queueServerWork(260, () -> {
+            BlockPos _bp = BlockPos.containing((double)x, (double)y, (double)z);
+            BlockState _bs2 = ((Block)MokelsBossfightSaphyraModBlocks.SAPHYRA_DOOR_3.get()).defaultBlockState();
+            BlockState _bs2o = world.getBlockState(_bp);
+            for (Map.Entry entry : _bs2o.getValues().entrySet()) {
+                Property _property = _bs2.getBlock().getStateDefinition().getProperty(((Property)entry.getKey()).getName());
+                if (_property == null || _bs2.getValue(_property) == null) continue;
+                try {
+                    _bs2 = (BlockState)_bs2.setValue(_property, (Comparable)entry.getValue());
+                }
+                catch (Exception exception) {}
+            }
+            world.setBlock(_bp, _bs2, 3);
+        });
+    }
+}

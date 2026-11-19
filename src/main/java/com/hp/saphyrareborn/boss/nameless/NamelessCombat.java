@@ -111,7 +111,7 @@ public final class NamelessCombat {
             this.staggerTicks--;
             return;
         }
-        boolean stunned = this.boss.hasEffect(MokelsBossfightSaphyraModMobEffects.STUN);
+        boolean stunned = this.boss.hasEffect(MokelsBossfightSaphyraModMobEffects.STUN.get());
         if (stunned && this.skill != null) {
             this.cancelSkill();
             this.boss.stopProcedureAnimation();
@@ -850,7 +850,7 @@ public final class NamelessCombat {
     }
 
     public static boolean canBeHit(LivingEntity e) {
-        return !(e instanceof NamelessEntity) && !e.hasEffect(MokelsBossfightSaphyraModMobEffects.IMMUNE);
+        return !(e instanceof NamelessEntity) && !e.hasEffect(MokelsBossfightSaphyraModMobEffects.IMMUNE.get());
     }
 
     public static void addRotting(Player player, double amount) {
@@ -878,7 +878,7 @@ public final class NamelessCombat {
     }
 
     private void sound(ServerLevel level, String id, SoundSource source, float volume, float pitch) {
-        SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse(id));
+        SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation(id));
         if (event != null) {
             level.playSound(null, this.boss.getX(), this.boss.getY(), this.boss.getZ(), event, source, volume, pitch);
         }

@@ -1,42 +1,3 @@
-/*
- * Decompiled with CFR 0.152.
- * 
- * Could not load the following classes:
- *  javax.annotation.Nullable
- *  net.minecraft.core.BlockPos
- *  net.minecraft.core.Direction
- *  net.minecraft.core.NonNullList
- *  net.minecraft.nbt.CompoundTag
- *  net.minecraft.network.chat.Component
- *  net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket
- *  net.minecraft.world.ContainerHelper
- *  net.minecraft.world.WorldlyContainer
- *  net.minecraft.world.entity.player.Inventory
- *  net.minecraft.world.inventory.AbstractContainerMenu
- *  net.minecraft.world.inventory.ChestMenu
- *  net.minecraft.world.item.ItemStack
- *  net.minecraft.world.level.block.entity.BlockEntity
- *  net.minecraft.world.level.block.entity.BlockEntityType
- *  net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity
- *  net.minecraft.world.level.block.state.BlockState
- *  net.minecraft.world.level.block.state.properties.IntegerProperty
- *  net.minecraft.world.level.block.state.properties.Property
- *  net.neoforged.common.capabilities.Capability
- *  net.neoforged.common.capabilities.ForgeCapabilities
- *  net.neoforged.common.util.LazyOptional
- *  net.neoforged.neoforge.items.IItemHandler
- *  net.neoforged.neoforge.items.wrapper.SidedInvWrapper
- *  com.geckolib.animatable.GeoBlockEntity
- *  com.geckolib.animatable.GeoAnimatable
- *  com.geckolib.animatable.instance.AnimatableInstanceCache
- *  com.geckolib.animatable.manager.AnimatableManager$ControllerRegistrar
- *  com.geckolib.animation.AnimationController
- *  com.geckolib.animation.AnimationController$State
- *  com.geckolib.animation.state.AnimationTest
- *  com.geckolib.animation.RawAnimation
- *  com.geckolib.animation.object.PlayState
- *  com.geckolib.util.GeckoLibUtil
- */
 package com.hp.saphyrareborn.block.entity;
 
 import java.util.stream.IntStream;
@@ -88,10 +49,6 @@ WorldlyContainer {
     }
 
     private PlayState predicate(AnimationTest event) {
-        String animationprocedure = "" + this.getBlockState().getValue((Property)LyiorStatueAktivatedBlock.ANIMATION);
-        if (animationprocedure.equals("0")) {
-            return event.setAndContinue(RawAnimation.begin().thenLoop(animationprocedure));
-        }
         return PlayState.STOP;
     }
 
@@ -205,21 +162,3 @@ WorldlyContainer {
         return facing == null ? null : this.handlers[facing.ordinal()];
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

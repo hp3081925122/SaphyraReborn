@@ -1,35 +1,67 @@
 package com.hp.saphyrareborn.highlight;
 
-import net.neoforged.api.distmarker.Dist;
 import com.hp.saphyrareborn.MokelsBossfightSaphyraMod;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import java.util.List;
+import java.util.Optional;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.rendertype.RenderSetup;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
+import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 
-import java.util.List;
-
-/**
- * Draws a see-through highlight on story blocks: a translucent filled box plus a thick solid outline,
- * both with the depth test switched off. Gold = container with a story item, aqua = block to use next.
- */
 @EventBusSubscriber(modid = MokelsBossfightSaphyraMod.MODID, value = Dist.CLIENT)
 public final class StoryHighlightRenderer {
     private static final double MAX_DIST_SQR = 64.0 * 64.0;
     private static final float FILL_ALPHA = 0.28f;
+    private static final float LINE_WIDTH = 4.0f;
     private static final float[] GOLD = {1.0f, 0.75f, 0.0f};
     private static final float[] AQUA = {0.1f, 0.9f, 1.0f};
     private static final float[] VIOLET = {0.85f, 0.3f, 1.0f};
 
+    public static final RenderPipeline HIGHLIGHT_FILL_PIPELINE = RenderPipelines.DEBUG_FILLED_BOX.toBuilder()
+            .withLocation(Identifier.fromNamespaceAndPath(MokelsBossfightSaphyraMod.MODID, "pipeline/story_highlight_fill"))
+            .withCull(false)
+            .withDepthStencilState(Optional.empty())
+            .build();
+
+    public static final RenderPipeline HIGHLIGHT_LINE_PIPELINE = RenderPipelines.LINES.toBuilder()
+            .withLocation(Identifier.fromNamespaceAndPath(MokelsBossfightSaphyraMod.MODID, "pipeline/story_highlight_lines"))
+            .withCull(false)
+            .withDepthStencilState(Optional.empty())
+            .build();
+
+    public static final RenderType HIGHLIGHT_FILL = RenderType.create("saphyra_story_highlight_fill",
+            RenderSetup.builder(HIGHLIGHT_FILL_PIPELINE)
+                    .sortOnUpload()
+                    .createRenderSetup());
+
+    public static final RenderType HIGHLIGHT_LINES = RenderType.create("saphyra_story_highlight_lines",
+            RenderSetup.builder(HIGHLIGHT_LINE_PIPELINE)
+                    .createRenderSetup());
+
+    private static int lastLoggedHash;
+
     private StoryHighlightRenderer() {
+    }
+
+    @SubscribeEvent
+    public static void registerPipelines(RegisterRenderPipelinesEvent event) {
+        event.registerPipeline(HIGHLIGHT_FILL_PIPELINE);
+        event.registerPipeline(HIGHLIGHT_LINE_PIPELINE);
+        MokelsBossfightSaphyraMod.LOGGER.info("[StoryHighlight] Registered see-through highlight pipelines (lineWidth={})", LINE_WIDTH);
     }
 
     @SubscribeEvent
@@ -38,7 +70,14 @@ public final class StoryHighlightRenderer {
         List<BlockPos> targets = StoryHighlightState.targets();
         List<BlockPos> locks = KeyLockHighlight.locks();
         if ((containers.isEmpty() && targets.isEmpty() && locks.isEmpty()) || Minecraft.getInstance().level == null) {
+            lastLoggedHash = 0;
             return;
+        }
+        int stateHash = (containers.size() * 31 + targets.size()) * 31 + locks.size() + 1;
+        if (stateHash != lastLoggedHash) {
+            lastLoggedHash = stateHash;
+            MokelsBossfightSaphyraMod.LOGGER.info("[StoryHighlight] Rendering highlight batch: containers={}, targets={}, locks={}, lineWidth={}",
+                    containers.size(), targets.size(), locks.size(), LINE_WIDTH);
         }
         Vec3 cam = Minecraft.getInstance().gameRenderer.getMainCamera().position();
         PoseStack pose = event.getPoseStack();
@@ -46,16 +85,16 @@ public final class StoryHighlightRenderer {
         pose.translate(-cam.x, -cam.y, -cam.z);
         MultiBufferSource.BufferSource buffers = Minecraft.getInstance().renderBuffers().bufferSource();
         PoseStack.Pose last = pose.last();
-        VertexConsumer fill = buffers.getBuffer(RenderTypes.debugFilledBox());
+        VertexConsumer fill = buffers.getBuffer(HIGHLIGHT_FILL);
         for (BlockPos p : containers) if (near(p, cam)) fillBox(fill, last, p, GOLD);
         for (BlockPos p : targets) if (near(p, cam)) fillBox(fill, last, p, AQUA);
         for (BlockPos p : locks) if (near(p, cam)) fillBox(fill, last, p, VIOLET);
-        VertexConsumer lines = buffers.getBuffer(RenderTypes.lines());
+        buffers.endBatch(HIGHLIGHT_FILL);
+        VertexConsumer lines = buffers.getBuffer(HIGHLIGHT_LINES);
         for (BlockPos p : containers) if (near(p, cam)) lineBox(lines, last, box(p), GOLD);
         for (BlockPos p : targets) if (near(p, cam)) lineBox(lines, last, box(p), AQUA);
         for (BlockPos p : locks) if (near(p, cam)) lineBox(lines, last, box(p), VIOLET);
-        buffers.endBatch(RenderTypes.debugFilledBox());
-        buffers.endBatch(RenderTypes.lines());
+        buffers.endBatch(HIGHLIGHT_LINES);
         pose.popPose();
     }
 
@@ -108,13 +147,18 @@ public final class StoryHighlightRenderer {
     }
 
     private static void edge(VertexConsumer b, PoseStack.Pose pose, float x0, float y0, float z0, float x1, float y1, float z1, float[] c) {
-        float nx = x1 - x0, ny = y1 - y0, nz = z1 - z0;
-        b.addVertex(pose, x0, y0, z0).setColor(c[0], c[1], c[2], 1.0f).setNormal(pose, nx, ny, nz);
-        b.addVertex(pose, x1, y1, z1).setColor(c[0], c[1], c[2], 1.0f).setNormal(pose, nx, ny, nz);
+        float dx = x1 - x0, dy = y1 - y0, dz = z1 - z0;
+        float len = (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
+        float nx = len > 1.0E-5f ? dx / len : 0.0f;
+        float ny = len > 1.0E-5f ? dy / len : 1.0f;
+        float nz = len > 1.0E-5f ? dz / len : 0.0f;
+        b.addVertex(pose, x0, y0, z0).setColor(c[0], c[1], c[2], 1.0f).setNormal(pose, nx, ny, nz).setLineWidth(LINE_WIDTH);
+        b.addVertex(pose, x1, y1, z1).setColor(c[0], c[1], c[2], 1.0f).setNormal(pose, nx, ny, nz).setLineWidth(LINE_WIDTH);
     }
 
     @SubscribeEvent
     public static void onLogout(ClientPlayerNetworkEvent.LoggingOut event) {
+        lastLoggedHash = 0;
         StoryHighlightState.clear();
     }
 }

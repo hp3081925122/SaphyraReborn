@@ -1,0 +1,29 @@
+{
+  "startedUtc": "2026-11-22T10:21:49.803430+00:00",
+  "sha256": "5bd7ff40c7e1c07bd00c68bd8694163389ab117ae2fabf099c944a8d07822d10",
+  "metadata": {
+    "changelog": "# 1.3fix\n\n- Initial Minecraft `26.3` NeoForge release of **Saphyra Reborn** (ported with full feature parity from `26.2` `1.3fix`):\n  - Adapted custom rendering pipelines (`com.mojang.renderpearl.api.pipeline.RenderPipeline`), `PoseStack.rotate(Axis, float)`, entity sync/invulnerability/swing APIs, `PushReaction.IGNORE_ENTITY`, inventory/drop `Prediction`, `CommandSourceStack`, and `ModConfig.Type.LOCAL` for `26.3`.\n  - Updated all worldgen `template_pool` block ignore processors and loot table number providers (`minecraft:uniform`) plus `pack.mcmeta` for Minecraft `26.3`.\n  - Includes all `1.3` Boss animation fixes and `1.3fix` highlight / GeckoLib 5 idle log fixes.\n\n## License & source\n\nLicensed under the Academic Free License v3.0, the same license as the original work.\nSource: https://github.com/hp3081925122/SaphyraReborn\n\n---\n\n# 1.3fix\n\n- 首次发布 **Saphyra Reborn** 的 Minecraft `26.3` NeoForge 版本（基于 `26.2` `1.3fix` 完整等价迁移）：\n  - 完整适配 `26.3` 的 RenderPearl 渲染管线（`com.mojang.renderpearl.api.pipeline.RenderPipeline`）、`PoseStack.rotate(Axis, float)`、实体同步/无敌帧/挥手动画、`PushReaction.IGNORE_ENTITY`、物品栏/掉落 `Prediction`、`CommandSourceStack` 及 `ModConfig.Type.LOCAL`。\n  - 同步更新全部结构模板池（`worldgen/template_pool`）忽略方块格式、战利品表数值提供器（显式声明 `minecraft:uniform`）及 `pack.mcmeta`。\n  - 完整包含 `1.3` 全部 Boss 动画修复与 `1.3fix` 高亮崩溃及 GeckoLib 5 待机日志刷屏修复。\n\n## 许可与源码\n\n许可与原作相同，为 Academic Free License v3.0。\n源码：https://github.com/hp3081925122/SaphyraReborn\n",
+    "changelogType": "markdown",
+    "displayName": "26.3-NeoForge-Saphyra Reborn-1.3fix",
+    "releaseType": "release",
+    "gameVersions": [
+      17045,
+      10150,
+      9638,
+      9639,
+      14454
+    ],
+    "relations": {
+      "projects": [
+        {
+          "slug": "geckolib",
+          "type": "requiredDependency"
+        },
+        {
+          "slug": "jade",
+          "type": "optionalDependency"
+        }
+      ]
+    }
+  }
+}

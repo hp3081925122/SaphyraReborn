@@ -1,16 +1,16 @@
 {
   "files": [
     {
-      "minecraft": "26.1.2",
-      "artifact": "E:\\模组\\发cf的模组\\AAA-生物\\Saphyra重生\\2612-neoforge-SaphyraReborn\\build\\libs\\saphyra_reborn-26.1.2-neoforge-1.3fix.jar",
-      "sha256": "39c5733ab121ddc27cb275d62e1d7299fe8fe6d5e434fc425c165ce02f1c1faa",
+      "minecraft": "26.2",
+      "artifact": "E:\\模组\\发cf的模组\\AAA-生物\\Saphyra重生\\262-neoforge-SaphyraReborn\\build\\libs\\saphyra_reborn-26.2-neoforge-1.3fix.jar",
+      "sha256": "6f8c869ae55cacf2e2d8de3f7742572f210887feb7a921315113302554f1a520",
       "metadata": {
-        "changelog": "# 1.3fix\n\n- Fixed a `26.1.2` client crash (`java.lang.IllegalStateException: Missing elements in vertex: LineWidth` in `StoryHighlightRenderer.lineBox(...)`) when approaching mod structures or triggering story block/container/key highlights, and restored see-through wall rendering for highlight outlines and fills.\n- Fixed GeckoLib 5 `Unable to find animation: '0'` error log spam every frame when doors and statues (`bossgate` / `lyiorstatue`) are in their idle state, while keeping door-opening animations intact.\n\n## License & source\n\nLicensed under the Academic Free License v3.0, the same license as the original work.\nSource: https://github.com/hp3081925122/SaphyraReborn\n\n---\n\n# 1.3fix\n\n- 修复 `26.1.2` 客户端在靠近模组结构或触发剧情方块/容器/钥匙提示框高亮时崩溃的问题（`StoryHighlightRenderer.lineBox(...)` 缺少 `LineWidth` 顶点属性），并恢复隔墙透视高亮填充与描边渲染管线。\n- 修复门与雕像方块实体（`bossgate` / `lyiorstatue`）在默认待机状态下每帧向日志刷屏 `Unable to find animation: '0'` 报错的问题，同时完整保留开门动画表现。\n\n## 许可与源码\n\n许可与原作相同，为 Academic Free License v3.0。\n源码：https://github.com/hp3081925122/SaphyraReborn\n",
+        "changelog": "# 1.3fix\n\n- Initial Minecraft `26.2` NeoForge release of **Saphyra Reborn** (ported with full feature parity from `26.1.2` `1.3fix`):\n  - Migrated custom world geometry rendering for all four Boss VFX systems, weapon skill VFX, and see-through story/key highlights to NeoForge `26.2` `SubmitCustomGeometryEvent` / `SubmitNodeCollector`.\n  - Adapted combat knockback (`LivingEntity.knockback`), emissive block predicates, client mob-effect extensions, and resource/data pack metadata for `26.2`.\n  - Includes all `1.3` Boss animation fixes and `1.3fix` highlight / GeckoLib 5 idle log fixes.\n\n## License & source\n\nLicensed under the Academic Free License v3.0, the same license as the original work.\nSource: https://github.com/hp3081925122/SaphyraReborn\n\n---\n\n# 1.3fix\n\n- 首次发布 **Saphyra Reborn** 的 Minecraft `26.2` NeoForge 版本（基于 `26.1.2` `1.3fix` 完整等价迁移）：\n  - 将四大 Boss 像素发光特效、武器技能特效与隔墙透视高亮全面迁移至 `26.2` 的 `SubmitCustomGeometryEvent` / `SubmitNodeCollector` 渲染管线。\n  - 完整适配 `26.2` 战斗击退 5 参数签名、发光方块属性、客户端效果扩展及资源/数据包格式。\n  - 完整包含 `1.3` 全部 Boss 动画修复与 `1.3fix` 高亮崩溃及 GeckoLib 5 待机日志刷屏修复。\n\n## 许可与源码\n\n许可与原作相同，为 Academic Free License v3.0。\n源码：https://github.com/hp3081925122/SaphyraReborn\n",
         "changelogType": "markdown",
-        "displayName": "26.1.2-NeoForge-Saphyra Reborn-1.3fix",
+        "displayName": "26.2-NeoForge-Saphyra Reborn-1.3fix",
         "releaseType": "release",
         "gameVersions": [
-          16082,
+          16498,
           10150,
           9638,
           9639,

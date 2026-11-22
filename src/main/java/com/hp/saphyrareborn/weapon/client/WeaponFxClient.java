@@ -10,10 +10,10 @@ import static com.hp.saphyrareborn.boss.client.BossVfxRender.rgba;
 import com.hp.saphyrareborn.MokelsBossfightSaphyraMod;
 import com.hp.saphyrareborn.boss.client.BossVfxRender;
 import com.hp.saphyrareborn.boss.client.BossVfxRender.Painter;
+import com.hp.saphyrareborn.boss.client.BossVfxRender.TexBatch;
 import com.hp.saphyrareborn.weapon.WeaponFx;
 import com.hp.saphyrareborn.weapon.WeaponStyle;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,8 +22,7 @@ import java.util.Map;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.Identifier;
@@ -35,7 +34,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
 import org.joml.Vector3f;
 
 @EventBusSubscriber(modid = MokelsBossfightSaphyraMod.MODID, value = Dist.CLIENT)
@@ -128,25 +127,26 @@ public final class WeaponFxClient {
     }
 
     @SubscribeEvent
-    public static void onRender(RenderLevelStageEvent.AfterTranslucentParticles event) {
+    public static void onRender(SubmitCustomGeometryEvent event) {
         if (ACTIVE.isEmpty()) {
             return;
         }
-        Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+        Camera camera = Minecraft.getInstance().gameRenderer.mainCamera();
         Vec3 cam = camera.position();
         float partial = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
         PoseStack pose = event.getPoseStack();
         pose.pushPose();
         pose.translate(-cam.x, -cam.y, -cam.z);
-        MultiBufferSource.BufferSource buffers = Minecraft.getInstance().renderBuffers().bufferSource();
-        Canvas canvas = new Canvas(buffers, pose.last(), new Vector3f(camera.leftVector()), new Vector3f(camera.upVector()));
+        Vector3f left = new Vector3f(camera.leftVector());
+        Vector3f up = new Vector3f(camera.upVector());
+        Canvas canvas = new Canvas(new Painter(), new TexBatch(left, up), left, up);
         for (Fx fx : ACTIVE) {
             if (cam.distanceToSqr(fx.pos) < BossVfxRender.RENDER_RANGE_SQR) {
                 fx.render(canvas, fx.age + partial, partial);
             }
         }
-        buffers.endLastBatch();
-        buffers.endBatch(BossVfxRender.GLOW);
+        SubmitNodeCollector collector = event.getSubmitNodeCollector();
+        canvas.flush(collector, pose);
         pose.popPose();
     }
 
@@ -158,31 +158,28 @@ public final class WeaponFxClient {
         return rgba(1.0f, 1.0f, 1.0f, a);
     }
 
-    private record Canvas(MultiBufferSource.BufferSource buffers, PoseStack.Pose pose, Vector3f left, Vector3f up) {
+    private record Canvas(Painter glowPainter, TexBatch texBatch, Vector3f left, Vector3f up) {
         Painter glow() {
-            return new Painter(this.buffers.getBuffer(BossVfxRender.GLOW), this.pose);
+            return this.glowPainter;
         }
 
         Sprite sprite(Identifier texture) {
-            return new Sprite(this.buffers.getBuffer(RenderTypes.entityTranslucentEmissive(texture)), this.pose);
+            return new Sprite(this.texBatch, texture);
+        }
+
+        void flush(SubmitNodeCollector collector, PoseStack poseStack) {
+            this.texBatch.flush(collector, poseStack);
+            this.glowPainter.flush(collector, poseStack, BossVfxRender.GLOW);
         }
     }
 
-    private record Sprite(VertexConsumer vc, PoseStack.Pose pose) {
-        void v(double[] p, float u, float v, float[] c) {
-            this.vc.addVertex(this.pose, (float) p[0], (float) p[1], (float) p[2]).setColor(c[0], c[1], c[2], c[3]).setUv(u, v)
-                    .setOverlay(OverlayTexture.NO_OVERLAY).setLight(15728880).setNormal(this.pose, 0.0f, 1.0f, 0.0f);
-        }
-
+    private record Sprite(TexBatch batch, Identifier texture) {
         void quad(double[] p0, float u0, float v0, double[] p1, float u1, float v1, double[] p2, float u2, float v2, double[] p3, float u3, float v3, float[] c0, float[] c1) {
-            this.v(p0, u0, v0, c0);
-            this.v(p1, u1, v1, c0);
-            this.v(p2, u2, v2, c1);
-            this.v(p3, u3, v3, c1);
-            this.v(p3, u3, v3, c1);
-            this.v(p2, u2, v2, c1);
-            this.v(p1, u1, v1, c0);
-            this.v(p0, u0, v0, c0);
+            this.batch.quad(this.texture,
+                    p0[0], p0[1], p0[2], u0, v0, c0,
+                    p1[0], p1[1], p1[2], u1, v1, c0,
+                    p2[0], p2[1], p2[2], u2, v2, c1,
+                    p3[0], p3[1], p3[2], u3, v3, c1);
         }
 
         void flat(double cx, double y, double cz, double half, double angle, float vMin, float vMax, float[] c) {

@@ -296,7 +296,7 @@ public final class WitchCombat {
             level.sendParticles(MokelsBossfightSaphyraModParticleTypes.LONG_GHOSTLY_FLAME_PARTICLE.get(), c.x, c.y + 1.5, c.z, 40, 2.0, 1.5, 2.0, 0.05);
             WitchVfx.send(level, WitchVfx.FLAME_BURST, c, 0.0f, 6.0f, 0);
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, this.boss.getBoundingBox().inflate(6.0), e -> e != this.boss && !(e instanceof WitchbossEntity) && !(e instanceof MoonbeamEntity))) {
-                e.knockback(0.8, this.boss.getX() - e.getX(), this.boss.getZ() - e.getZ());
+                e.knockback(0.8, this.boss.getX() - e.getX(), this.boss.getZ() - e.getZ(), level.damageSources().mobAttack(this.boss), 0.0f);
                 e.hurtMarked = true;
             }
         }

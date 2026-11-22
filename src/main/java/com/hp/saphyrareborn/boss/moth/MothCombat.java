@@ -267,7 +267,7 @@ public final class MothCombat {
                 this.spawnStormWave(level, this.boss.getYRot() + i * 45.0f, 0.7, 10.0);
             }
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, this.boss.getBoundingBox().inflate(6.0), e -> e != this.boss && !(e instanceof MothbossEntity))) {
-                e.knockback(0.8, this.boss.getX() - e.getX(), this.boss.getZ() - e.getZ());
+                e.knockback(0.8, this.boss.getX() - e.getX(), this.boss.getZ() - e.getZ(), level.damageSources().mobAttack(this.boss), 0.0f);
                 e.hurtMarked = true;
             }
         }
@@ -793,7 +793,7 @@ public final class MothCombat {
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, box, MothCombat::canBeHit)) {
                 if (horizontalEdgeDistance(e, w.x, w.z) <= w.radius && w.hit.add(e.getId())) {
                     this.damage(e, source, damage, w.grief, "STORM_WAVE", w.radius);
-                    e.knockback(0.35, -w.dx, -w.dz);
+                    e.knockback(0.35, -w.dx, -w.dz, source, damage);
                     e.hurtMarked = true;
                 }
             }

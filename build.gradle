@@ -1,11 +1,18 @@
-// 26.1.2 NeoForge。构建配置来自本机 2612-neoforge 模板，并保留 GeckoLib 与模板里的辅助依赖。
+// 26.2 NeoForge。构建配置基于本机 26.2 NeoForge 环境，保留 GeckoLib 与辅助依赖。
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.140'
+    id 'net.neoforged.moddev' version '2.0.148'
 }
 
 repositories {
+    maven {
+        name = 'Modrinth Maven'
+        url = 'https://api.modrinth.com/maven'
+        content {
+            includeGroup 'maven.modrinth'
+        }
+    }
     maven { url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
     maven {
         url = 'https://www.cursemaven.com'
@@ -37,6 +44,15 @@ neoForge {
         client {
             client()
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+            if (project.hasProperty('selfmcpWindow')) {
+                systemProperty 'selfmcp.window', project.property('selfmcpWindow').toString()
+            }
+            if (project.hasProperty('renderPreviewOut')) {
+                systemProperty 'render_preview.outputDir', project.property('renderPreviewOut').toString()
+            }
+            if (project.hasProperty('quickPlaySingleplayer')) {
+                programArguments.addAll('--quickPlaySingleplayer', project.property('quickPlaySingleplayer').toString())
+            }
         }
 
         server {
@@ -67,10 +83,9 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
     implementation "net.neoforged:neoforge:${project.neo_version}"
-    implementation "curse.maven:geckolib-388172:8327201"
-    implementation "curse.maven:jei-238222:8771077"
-    implementation "curse.maven:just-enough-characters-250702:8413185"
-    implementation "curse.maven:jade-324717:8651070"
+    implementation "maven.modrinth:8BmcQJ2H:IEGPh4CJ"
+    implementation "maven.modrinth:u6dRKJwZ:lU7Sz0zI"
+    implementation "maven.modrinth:nvQzSEkH:GBES6etT"
 }
 
 tasks.withType(ProcessResources).configureEach {
@@ -80,6 +95,7 @@ tasks.withType(ProcessResources).configureEach {
             neo_version: project.neo_version,
             neo_version_range: project.neo_version_range,
             loader_version_range: project.loader_version_range,
+            geckolib_version_range: project.geckolib_version_range,
             mod_id: project.mod_id,
             mod_name: project.mod_name,
             mod_license: project.mod_license,

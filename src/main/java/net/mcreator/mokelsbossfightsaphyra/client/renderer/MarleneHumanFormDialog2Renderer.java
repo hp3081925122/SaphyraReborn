@@ -1,19 +1,3 @@
-/*
- * Decompiled with CFR 0.152.
- * 
- * Could not load the following classes:
- *  com.mojang.blaze3d.vertex.PoseStack
- *  com.mojang.blaze3d.vertex.VertexConsumer
- *  net.minecraft.client.renderer.MultiBufferSource
- *  net.minecraft.client.renderer.rendertype.RenderType
- *  net.minecraft.client.renderer.entity.EntityRendererProvider$Context
- *  net.minecraft.resources.Identifier
- *  net.minecraft.world.entity.Entity
- *  com.geckolib.cache.model.BakedGeoModel
- *  com.geckolib.model.GeoModel
- *  com.geckolib.renderer.GeoEntityRenderer
- *  com.geckolib.renderer.base.GeoRenderer
- */
 package com.hp.saphyrareborn.client.renderer;
 
 import com.hp.saphyrareborn.client.GeckoHead;
@@ -33,7 +17,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.hp.saphyrareborn.entity.MarleneHumanFormDialog2Entity;
 import com.hp.saphyrareborn.entity.layer.MarleneHumanFormDialog2Layer;
 import com.hp.saphyrareborn.entity.model.MarleneHumanFormDialog2Model;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.Identifier;

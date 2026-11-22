@@ -322,7 +322,7 @@ public final class NamelessCombat {
             level.sendParticles(this.redFlame(), c.x, c.y + 1.0, c.z, 50, 3.0, 1.5, 3.0, 0.05);
             level.sendParticles(this.redFire(), c.x, c.y, c.z, 25, 6.0, 0.5, 6.0, 0.01);
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, this.boss.getBoundingBox().inflate(6.0), e -> e != this.boss && !(e instanceof NamelessEntity))) {
-                e.knockback(0.8, this.boss.getX() - e.getX(), this.boss.getZ() - e.getZ());
+                e.knockback(0.8, this.boss.getX() - e.getX(), this.boss.getZ() - e.getZ(), level.damageSources().mobAttack(this.boss), 0.0f);
                 e.hurtMarked = true;
             }
         }
@@ -568,7 +568,7 @@ public final class NamelessCombat {
             this.sound(level, "entity.generic.explode", SoundSource.HOSTILE, 1.8f, 1.15f);
             this.hitAround(level, c, 7.0, 0.9, 15.0);
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, this.boss.getBoundingBox().inflate(7.0), NamelessCombat::canBeHit)) {
-                e.knockback(0.6, this.boss.getX() - e.getX(), this.boss.getZ() - e.getZ());
+                e.knockback(0.6, this.boss.getX() - e.getX(), this.boss.getZ() - e.getZ(), level.damageSources().mobAttack(this.boss), 0.0f);
                 e.hurtMarked = true;
             }
             NamelessVfx.send(level, NamelessVfx.SHIELD_COUNTER, c, yaw, 7.0f, 10);

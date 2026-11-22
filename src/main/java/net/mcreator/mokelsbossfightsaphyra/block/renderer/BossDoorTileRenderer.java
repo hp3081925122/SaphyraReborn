@@ -1,14 +1,3 @@
-/*
- * Decompiled with CFR 0.152.
- * 
- * Could not load the following classes:
- *  net.minecraft.client.renderer.MultiBufferSource
- *  net.minecraft.client.renderer.rendertype.RenderType
- *  net.minecraft.resources.Identifier
- *  com.geckolib.animatable.GeoAnimatable
- *  com.geckolib.model.GeoModel
- *  com.geckolib.renderer.GeoBlockRenderer
- */
 package com.hp.saphyrareborn.block.renderer;
 
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
@@ -19,7 +8,6 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 
 import com.hp.saphyrareborn.block.entity.BossDoorTileEntity;
 import com.hp.saphyrareborn.block.model.BossDoorBlockModel;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
 import com.geckolib.animatable.GeoAnimatable;

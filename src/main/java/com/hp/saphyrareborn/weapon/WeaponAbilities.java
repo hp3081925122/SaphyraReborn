@@ -102,7 +102,7 @@ public final class WeaponAbilities {
             if (e.hurtOrSimulate(source, damage)) {
                 count++;
                 if (knockback > 0.0) {
-                    e.knockback(knockback, center.x - e.getX(), center.z - e.getZ());
+                    e.knockback(knockback, center.x - e.getX(), center.z - e.getZ(), source, damage);
                 }
                 WeaponFx.send(level, WeaponFx.HIT, styleOf(player), e.position().add(0.0, e.getBbHeight() * 0.6, 0.0), player.getYRot(), 1.0f, 0);
             }

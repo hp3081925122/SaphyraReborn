@@ -7,8 +7,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import java.util.List;
 import java.util.Optional;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.core.BlockPos;
@@ -20,7 +20,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
 
 @EventBusSubscriber(modid = MokelsBossfightSaphyraMod.MODID, value = Dist.CLIENT)
 public final class StoryHighlightRenderer {
@@ -65,10 +65,10 @@ public final class StoryHighlightRenderer {
     }
 
     @SubscribeEvent
-    public static void onRender(RenderLevelStageEvent.AfterTranslucentBlocks event) {
-        List<BlockPos> containers = StoryHighlightState.containers();
-        List<BlockPos> targets = StoryHighlightState.targets();
-        List<BlockPos> locks = KeyLockHighlight.locks();
+    public static void onRender(SubmitCustomGeometryEvent event) {
+        List<BlockPos> containers = List.copyOf(StoryHighlightState.containers());
+        List<BlockPos> targets = List.copyOf(StoryHighlightState.targets());
+        List<BlockPos> locks = List.copyOf(KeyLockHighlight.locks());
         if ((containers.isEmpty() && targets.isEmpty() && locks.isEmpty()) || Minecraft.getInstance().level == null) {
             lastLoggedHash = 0;
             return;
@@ -79,22 +79,21 @@ public final class StoryHighlightRenderer {
             MokelsBossfightSaphyraMod.LOGGER.info("[StoryHighlight] Rendering highlight batch: containers={}, targets={}, locks={}, lineWidth={}",
                     containers.size(), targets.size(), locks.size(), LINE_WIDTH);
         }
-        Vec3 cam = Minecraft.getInstance().gameRenderer.getMainCamera().position();
+        Vec3 cam = Minecraft.getInstance().gameRenderer.mainCamera().position();
         PoseStack pose = event.getPoseStack();
         pose.pushPose();
         pose.translate(-cam.x, -cam.y, -cam.z);
-        MultiBufferSource.BufferSource buffers = Minecraft.getInstance().renderBuffers().bufferSource();
-        PoseStack.Pose last = pose.last();
-        VertexConsumer fill = buffers.getBuffer(HIGHLIGHT_FILL);
-        for (BlockPos p : containers) if (near(p, cam)) fillBox(fill, last, p, GOLD);
-        for (BlockPos p : targets) if (near(p, cam)) fillBox(fill, last, p, AQUA);
-        for (BlockPos p : locks) if (near(p, cam)) fillBox(fill, last, p, VIOLET);
-        buffers.endBatch(HIGHLIGHT_FILL);
-        VertexConsumer lines = buffers.getBuffer(HIGHLIGHT_LINES);
-        for (BlockPos p : containers) if (near(p, cam)) lineBox(lines, last, box(p), GOLD);
-        for (BlockPos p : targets) if (near(p, cam)) lineBox(lines, last, box(p), AQUA);
-        for (BlockPos p : locks) if (near(p, cam)) lineBox(lines, last, box(p), VIOLET);
-        buffers.endBatch(HIGHLIGHT_LINES);
+        SubmitNodeCollector collector = event.getSubmitNodeCollector();
+        collector.submitCustomGeometry(pose, HIGHLIGHT_FILL, (last, fill) -> {
+            for (BlockPos p : containers) if (near(p, cam)) fillBox(fill, last, p, GOLD);
+            for (BlockPos p : targets) if (near(p, cam)) fillBox(fill, last, p, AQUA);
+            for (BlockPos p : locks) if (near(p, cam)) fillBox(fill, last, p, VIOLET);
+        });
+        collector.submitCustomGeometry(pose, HIGHLIGHT_LINES, (last, lines) -> {
+            for (BlockPos p : containers) if (near(p, cam)) lineBox(lines, last, box(p), GOLD);
+            for (BlockPos p : targets) if (near(p, cam)) lineBox(lines, last, box(p), AQUA);
+            for (BlockPos p : locks) if (near(p, cam)) lineBox(lines, last, box(p), VIOLET);
+        });
         pose.popPose();
     }
 

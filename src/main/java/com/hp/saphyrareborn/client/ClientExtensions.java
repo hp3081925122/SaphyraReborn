@@ -47,7 +47,7 @@ public final class ClientExtensions {
             }
 
             @Override
-            public boolean renderInventoryText(MobEffectInstance instance, net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<?> screen, net.minecraft.client.gui.GuiGraphicsExtractor graphics, int x, int y, int blitOffset) {
+            public boolean extractInventoryText(MobEffectInstance instance, net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<?> screen, net.minecraft.client.gui.GuiGraphicsExtractor graphics, int x, int y, int canvasWidth, int color) {
                 return false;
             }
         };

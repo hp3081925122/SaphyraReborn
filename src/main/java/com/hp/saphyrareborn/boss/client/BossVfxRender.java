@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.OutputTarget;
 import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
@@ -188,25 +188,25 @@ public final class BossVfxRender {
                     (float) x3, (float) y3, (float) z3, u3, v3, c3[0], c3[1], c3[2], c3[3]));
         }
 
-        public void flush(MultiBufferSource.BufferSource buffers, PoseStack.Pose pose) {
+        public void flush(SubmitNodeCollector collector, PoseStack poseStack) {
             for (Map.Entry<Identifier, List<TexQuad>> entry : this.quads.entrySet()) {
-                List<TexQuad> list = entry.getValue();
+                List<TexQuad> list = List.copyOf(entry.getValue());
                 if (list.isEmpty()) {
                     continue;
                 }
                 RenderType type = RenderTypes.entityTranslucentEmissive(entry.getKey());
-                VertexConsumer vc = buffers.getBuffer(type);
-                for (TexQuad q : list) {
-                    emit(vc, pose, q.x0, q.y0, q.z0, q.u0, q.v0, q.r0, q.g0, q.b0, q.a0);
-                    emit(vc, pose, q.x1, q.y1, q.z1, q.u1, q.v1, q.r1, q.g1, q.b1, q.a1);
-                    emit(vc, pose, q.x2, q.y2, q.z2, q.u2, q.v2, q.r2, q.g2, q.b2, q.a2);
-                    emit(vc, pose, q.x3, q.y3, q.z3, q.u3, q.v3, q.r3, q.g3, q.b3, q.a3);
-                    emit(vc, pose, q.x3, q.y3, q.z3, q.u3, q.v3, q.r3, q.g3, q.b3, q.a3);
-                    emit(vc, pose, q.x2, q.y2, q.z2, q.u2, q.v2, q.r2, q.g2, q.b2, q.a2);
-                    emit(vc, pose, q.x1, q.y1, q.z1, q.u1, q.v1, q.r1, q.g1, q.b1, q.a1);
-                    emit(vc, pose, q.x0, q.y0, q.z0, q.u0, q.v0, q.r0, q.g0, q.b0, q.a0);
-                }
-                buffers.endBatch(type);
+                collector.submitCustomGeometry(poseStack, type, (pose, vc) -> {
+                    for (TexQuad q : list) {
+                        emit(vc, pose, q.x0, q.y0, q.z0, q.u0, q.v0, q.r0, q.g0, q.b0, q.a0);
+                        emit(vc, pose, q.x1, q.y1, q.z1, q.u1, q.v1, q.r1, q.g1, q.b1, q.a1);
+                        emit(vc, pose, q.x2, q.y2, q.z2, q.u2, q.v2, q.r2, q.g2, q.b2, q.a2);
+                        emit(vc, pose, q.x3, q.y3, q.z3, q.u3, q.v3, q.r3, q.g3, q.b3, q.a3);
+                        emit(vc, pose, q.x3, q.y3, q.z3, q.u3, q.v3, q.r3, q.g3, q.b3, q.a3);
+                        emit(vc, pose, q.x2, q.y2, q.z2, q.u2, q.v2, q.r2, q.g2, q.b2, q.a2);
+                        emit(vc, pose, q.x1, q.y1, q.z1, q.u1, q.v1, q.r1, q.g1, q.b1, q.a1);
+                        emit(vc, pose, q.x0, q.y0, q.z0, q.u0, q.v0, q.r0, q.g0, q.b0, q.a0);
+                    }
+                });
             }
             this.quads.clear();
         }
@@ -534,7 +534,12 @@ public final class BossVfxRender {
             float x3, float y3, float z3, float u3, float v3, float r3, float g3, float b3, float a3) {
     }
 
-    public record Painter(VertexConsumer vc, PoseStack.Pose pose) {
+    private record GlowVertex(float x, float y, float z, float r, float g, float b, float a) {
+    }
+
+    public static final class Painter {
+        private final List<GlowVertex> vertices = new ArrayList<>();
+
         public void quad(double x0, double y0, double z0, float[] c0, double x1, double y1, double z1, float[] c1,
                          double x2, double y2, double z2, float[] c2, double x3, double y3, double z3, float[] c3) {
             this.v(x0, y0, z0, c0);
@@ -544,7 +549,20 @@ public final class BossVfxRender {
         }
 
         public void v(double x, double y, double z, float[] c) {
-            this.vc.addVertex(this.pose, (float) x, (float) y, (float) z).setColor(c[0], c[1], c[2], c[3]);
+            this.vertices.add(new GlowVertex((float) x, (float) y, (float) z, c[0], c[1], c[2], c[3]));
+        }
+
+        public void flush(SubmitNodeCollector collector, PoseStack poseStack, RenderType renderType) {
+            if (this.vertices.isEmpty()) {
+                return;
+            }
+            List<GlowVertex> snapshot = List.copyOf(this.vertices);
+            collector.submitCustomGeometry(poseStack, renderType, (pose, vc) -> {
+                for (GlowVertex v : snapshot) {
+                    vc.addVertex(pose, v.x, v.y, v.z).setColor(v.r, v.g, v.b, v.a);
+                }
+            });
+            this.vertices.clear();
         }
 
         public void annulus(double cx, double y, double cz, double rIn, double rOut, int segs, float[] inner, float[] outer) {

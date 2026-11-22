@@ -202,13 +202,6 @@ EntityBlock {
         LyiorStatueAktivatedOnBlockRightClickedProcedure.execute((Entity)entity);
         return InteractionResult.SUCCESS;
     }
-    @Override
-
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-
-        return MapCodec.unit(() -> this);
-
-    }
 
 
 

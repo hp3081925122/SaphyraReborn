@@ -102,7 +102,7 @@ EntityBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public BossDoorBlock() {
-        super(BlockBehaviour.Properties.of().setId(com.hp.saphyrareborn.init.RegistryIds.block).sound(SoundType.METAL).strength(-1.0f, 3600000.0f).noOcclusion().pushReaction(PushReaction.IGNORE).isRedstoneConductor((bs, br, bp) -> false));
+        super(BlockBehaviour.Properties.of().setId(com.hp.saphyrareborn.init.RegistryIds.block).sound(SoundType.METAL).strength(-1.0f, 3600000.0f).noOcclusion().pushReaction(PushReaction.IGNORE_ENTITY).isRedstoneConductor((bs, br, bp) -> false));
         this.registerDefaultState((BlockState)((BlockState)((BlockState)this.stateDefinition.any()).setValue((Property)FACING, (Comparable)Direction.NORTH)).setValue((Property)WATERLOGGED, (Comparable)Boolean.valueOf(false)));
     }
 
@@ -178,13 +178,6 @@ EntityBlock {
     public void onPlace(BlockState blockstate, Level world, BlockPos pos, BlockState oldState, boolean moving) {
         super.onPlace(blockstate, world, pos, oldState, moving);
         BossDoorOnBlockRightClickedProcedure.execute((LevelAccessor)world, pos.getX(), pos.getY(), pos.getZ());
-    }
-    @Override
-
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-
-        return MapCodec.unit(() -> this);
-
     }
 
 

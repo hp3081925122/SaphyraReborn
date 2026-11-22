@@ -46,7 +46,7 @@ public class MarleneGiveBookProcedure {
             if (sourceentity instanceof Player) {
                 Player _player = (Player)sourceentity;
                 ItemStack _stktoremove = new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.THE_FIRST_GOD.get());
-                _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), 1, (Container)_player.getInventory());
+                _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), false, 1, (Container)_player.getInventory());
             }
             if (world instanceof ServerLevel) {
                 ServerLevel _level1 = (ServerLevel)world;

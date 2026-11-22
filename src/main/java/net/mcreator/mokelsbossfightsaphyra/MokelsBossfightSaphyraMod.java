@@ -47,7 +47,7 @@ public final class MokelsBossfightSaphyraMod {
         MokelsBossfightSaphyraModTabs.REGISTRY.register(modBus);
         MokelsBossfightSaphyraModMobEffects.REGISTRY.register(modBus);
         MokelsBossfightSaphyraModParticleTypes.REGISTRY.register(modBus);
-        container.registerConfig(ModConfig.Type.COMMON, com.hp.saphyrareborn.boss.BossConfig.SPEC);
+        container.registerConfig(ModConfig.Type.LOCAL, com.hp.saphyrareborn.boss.BossConfig.SPEC);
     }
 
     public static void queueServerWork(int ticks, Runnable action) {

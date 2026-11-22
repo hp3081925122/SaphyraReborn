@@ -1,4 +1,4 @@
-// 26.2 NeoForge。构建配置基于本机 26.2 NeoForge 环境，保留 GeckoLib 与辅助依赖。
+// 26.3 NeoForge。构建配置基于本机 26.3 NeoForge 环境，保留 GeckoLib 与辅助依赖。
 plugins {
     id 'java-library'
     id 'maven-publish'
@@ -83,9 +83,9 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
     implementation "net.neoforged:neoforge:${project.neo_version}"
-    implementation "maven.modrinth:8BmcQJ2H:IEGPh4CJ"
-    implementation "maven.modrinth:u6dRKJwZ:lU7Sz0zI"
-    implementation "maven.modrinth:nvQzSEkH:GBES6etT"
+    implementation "maven.modrinth:8BmcQJ2H:2s1O42FX"
+    implementation "maven.modrinth:u6dRKJwZ:hvy9mHtw"
+    implementation "maven.modrinth:nvQzSEkH:dVB8U7Td"
 }
 
 tasks.withType(ProcessResources).configureEach {

@@ -135,7 +135,7 @@ public class RightClickKeyLoversProcedure {
                                                                     if (entity instanceof Player) {
                                                                         Player _player = (Player)entity;
                                                                         ItemStack _stktoremove = new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.KEY_3.get());
-                                                                        _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), 1, (Container)_player.getInventory());
+                                                                        _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), false, 1, (Container)_player.getInventory());
                                                                     }
                                                                     if (!world.isClientSide() && world.getServer() != null) {
                                                                         world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.7c359237fd1e"), false);

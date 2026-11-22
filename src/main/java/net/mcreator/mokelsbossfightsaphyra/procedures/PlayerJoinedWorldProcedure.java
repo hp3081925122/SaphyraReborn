@@ -10,7 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 @EventBusSubscriber
 public class PlayerJoinedWorldProcedure {
@@ -29,7 +28,7 @@ public class PlayerJoinedWorldProcedure {
             com.hp.saphyrareborn.MokelsBossfightSaphyraMod.LOGGER.info("[SigilDebug] {} already owns a sigil, marked as given", player.getName().getString());
             return;
         }
-        ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(MokelsBossfightSaphyraModItems.SIGIL_OF_THE_RED_SUN.get()));
+        ItemStack _sigil = new ItemStack(MokelsBossfightSaphyraModItems.SIGIL_OF_THE_RED_SUN.get()); if (!player.getInventory().add(_sigil)) player.drop(_sigil, false, net.minecraft.util.Prediction.SERVER_ONLY);
         player.sendSystemMessage(Component.translatable("text.saphyra_reborn.story.join_clocktower"));
         com.hp.saphyrareborn.MokelsBossfightSaphyraMod.LOGGER.info("[SigilDebug] gave starting sigil to {}", player.getName().getString());
     }

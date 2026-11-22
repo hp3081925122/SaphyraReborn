@@ -213,7 +213,7 @@ public final class MothCombat {
         Vec3 look = this.flatLook();
         double vy = Math.max(-0.08, this.boss.getDeltaMovement().y);
         this.boss.setDeltaMovement(new Vec3(look.x * speed, vy, look.z * speed));
-        this.boss.hurtMarked = true;
+        this.boss.needsSync = true;
     }
 
     private void debugLog(LivingEntity target) {
@@ -268,7 +268,7 @@ public final class MothCombat {
             }
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, this.boss.getBoundingBox().inflate(6.0), e -> e != this.boss && !(e instanceof MothbossEntity))) {
                 e.knockback(0.8, this.boss.getX() - e.getX(), this.boss.getZ() - e.getZ(), level.damageSources().mobAttack(this.boss), 0.0f);
-                e.hurtMarked = true;
+                e.needsSync = true;
             }
         }
         this.phaseShiftTicks--;
@@ -389,7 +389,7 @@ public final class MothCombat {
     private void dashForth(ServerLevel level) {
         level.sendParticles(ParticleTypes.POOF, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 8, 0.2, 0.2, 0.2, 0.05);
         this.boss.setDeltaMovement(new Vec3(0.0, 1.0, 0.0));
-        this.boss.hurtMarked = true;
+        this.boss.needsSync = true;
         this.dashDelay = 2;
         MothVfx.send(level, MothVfx.SHOCKWAVE, this.boss.position(), 0.0f, 2.2f, 4);
     }
@@ -398,7 +398,7 @@ public final class MothCombat {
         Vec3 look = this.boss.getLookAngle();
         level.sendParticles(ParticleTypes.POOF, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 8, 0.2, 0.2, 0.2, 0.05);
         this.boss.setDeltaMovement(new Vec3(-3.0 * look.x, 0.15, -3.0 * look.z));
-        this.boss.hurtMarked = true;
+        this.boss.needsSync = true;
         MothVfx.send(level, MothVfx.DASH_TRAIL, this.boss.position(), this.boss.getYRot() + 180.0f, 6.0f, 0);
     }
 
@@ -417,7 +417,7 @@ public final class MothCombat {
         double dy = target.getY() - this.boss.getY();
         double dz = target.getZ() - this.boss.getZ();
         this.boss.setDeltaMovement(new Vec3(dx * 0.1, dy * 0.1 + 0.15, dz * 0.1));
-        this.boss.hurtMarked = true;
+        this.boss.needsSync = true;
         float yaw = (float) (Mth.atan2(dz, dx) * (180.0 / Math.PI)) - 90.0f;
         MothVfx.send(level, MothVfx.DASH_TRAIL, this.boss.position(), yaw, (float) Math.min(16.0, Math.sqrt(dx * dx + dz * dz)), 0);
     }
@@ -662,7 +662,7 @@ public final class MothCombat {
         }
         if (t >= STAB_START && t <= STAB_END) {
             this.boss.setDeltaMovement(new Vec3(this.dirX * 1.25, this.boss.getDeltaMovement().y, this.dirZ * 1.25));
-            this.boss.hurtMarked = true;
+            this.boss.needsSync = true;
         }
         if (t >= STAB_START && t <= STAB_END + 2) {
             DamageSource source = this.boss.damageSources().mobAttack(this.boss);
@@ -794,7 +794,7 @@ public final class MothCombat {
                 if (horizontalEdgeDistance(e, w.x, w.z) <= w.radius && w.hit.add(e.getId())) {
                     this.damage(e, source, damage, w.grief, "STORM_WAVE", w.radius);
                     e.knockback(0.35, -w.dx, -w.dz, source, damage);
-                    e.hurtMarked = true;
+                    e.needsSync = true;
                 }
             }
             if (w.ticksLeft <= 0) {

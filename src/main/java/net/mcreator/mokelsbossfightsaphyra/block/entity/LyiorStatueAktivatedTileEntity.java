@@ -23,8 +23,6 @@ import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 import com.geckolib.animatable.GeoBlockEntity;
 import com.geckolib.animatable.GeoAnimatable;
 import com.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -41,7 +39,6 @@ implements GeoBlockEntity,
 WorldlyContainer {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache((GeoAnimatable)this);
     private NonNullList<ItemStack> stacks = NonNullList.withSize(9, ItemStack.EMPTY);
-    private final IItemHandler[] handlers = new IItemHandler[]{new SidedInvWrapper((WorldlyContainer)this, Direction.DOWN), new SidedInvWrapper((WorldlyContainer)this, Direction.UP), new SidedInvWrapper((WorldlyContainer)this, Direction.NORTH), new SidedInvWrapper((WorldlyContainer)this, Direction.SOUTH), new SidedInvWrapper((WorldlyContainer)this, Direction.WEST), new SidedInvWrapper((WorldlyContainer)this, Direction.EAST)};
     String prevAnim = "0";
 
     public LyiorStatueAktivatedTileEntity(BlockPos pos, BlockState state) {
@@ -157,8 +154,5 @@ WorldlyContainer {
 
     public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
         return true;
-    }
-    public IItemHandler itemHandler(@Nullable Direction facing) {
-        return facing == null ? null : this.handlers[facing.ordinal()];
     }
 }

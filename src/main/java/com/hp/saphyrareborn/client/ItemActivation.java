@@ -9,6 +9,6 @@ public final class ItemActivation {
     }
 
     public static void show(ItemStack stack) {
-        Minecraft.getInstance().gameRenderer.displayItemActivation(stack);
+        if (Minecraft.getInstance().player != null) Minecraft.getInstance().player.displayItemActivation(stack);
     }
 }

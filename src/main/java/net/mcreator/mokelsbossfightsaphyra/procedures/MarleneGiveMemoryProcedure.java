@@ -83,7 +83,7 @@ public class MarleneGiveMemoryProcedure {
             if (sourceentity instanceof Player) {
                 Player _player = (Player)sourceentity;
              ItemStack _stktoremove1 = new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.NAMELESS_GATEKEEPER_REMEMBRANCE.get());
-                _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove1.getItem() == p.getItem(), 1, (Container)_player.getInventory());
+                _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove1.getItem() == p.getItem(), false, 1, (Container)_player.getInventory());
             }
             if (entity instanceof MarleneHumanFormDialog2Entity) {
                 ((MarleneHumanFormDialog2Entity)entity).setAnimation("convert");
@@ -150,7 +150,7 @@ public class MarleneGiveMemoryProcedure {
                 if (sourceentity instanceof Player) {
                     Player _player = (Player)sourceentity;
                 ItemStack _stktoremove2 = new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.SAPHYRA_REMEMBRANCE.get());
-                    _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove2.getItem() == p.getItem(), 1, (Container)_player.getInventory());
+                    _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove2.getItem() == p.getItem(), false, 1, (Container)_player.getInventory());
                 }
                 if (entity instanceof MarleneHumanFormDialog2Entity) {
                     ((MarleneHumanFormDialog2Entity)entity).setAnimation("convert");

@@ -19,7 +19,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 public class LyiorStatueAktivatedOnBlockRightClickedProcedure {
     public static void execute(Entity entity) {
@@ -38,13 +37,13 @@ public class LyiorStatueAktivatedOnBlockRightClickedProcedure {
             if (entity instanceof Player) {
                 _player = (Player)entity;
                 ItemStack _stktoremove = new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.BROKEN_SIGIL_OF_THE_RED_SUN.get());
-                _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), 1, (Container)_player.getInventory());
+                _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), false, 1, (Container)_player.getInventory());
             }
             if (entity instanceof Player) {
                 _player = (Player)entity;
                 ItemStack _setstack = new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.SIGIL_OF_THE_RED_SUN_STAGE_2.get()).copy();
                 _setstack.setCount(1);
-                ItemHandlerHelper.giveItemToPlayer((Player)_player, (ItemStack)_setstack);
+                if (!_player.getInventory().add(_setstack)) _player.drop(_setstack, false, net.minecraft.util.Prediction.SERVER_ONLY);
             }
         }
     }

@@ -46,7 +46,7 @@ public class LinaraGiveManicEyeProcedure {
             if (sourceentity instanceof Player) {
                 Player _player = (Player)sourceentity;
                 ItemStack _stktoremove = new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.MANIC_EYE.get());
-                _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), 1, (Container)_player.getInventory());
+                _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), false, 1, (Container)_player.getInventory());
                 com.hp.saphyrareborn.network.MokelsBossfightSaphyraModVariables.PlayerVariables vars = com.hp.saphyrareborn.network.MokelsBossfightSaphyraModVariables.getPlayerVariables(_player);
                 if (vars.LinaraQuest < 1) {
                     vars.LinaraQuest = 1;

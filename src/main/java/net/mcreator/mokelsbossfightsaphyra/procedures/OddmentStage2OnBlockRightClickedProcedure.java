@@ -40,7 +40,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 public class OddmentStage2OnBlockRightClickedProcedure {
     public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
@@ -72,13 +71,13 @@ public class OddmentStage2OnBlockRightClickedProcedure {
             if (entity instanceof Player) {
                 _player = (Player)entity;
                 ItemStack _stktoremove = new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.SIGIL_OF_THE_RED_SUN.get());
-                _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), 1, (Container)_player.getInventory());
+                _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), false, 1, (Container)_player.getInventory());
             }
             if (entity instanceof Player) {
                 _player = (Player)entity;
                 ItemStack _setstack = new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.BROKEN_SIGIL_OF_THE_RED_SUN.get()).copy();
                 _setstack.setCount(1);
-                ItemHandlerHelper.giveItemToPlayer((Player)_player, (ItemStack)_setstack);
+                if (!_player.getInventory().add(_setstack)) _player.drop(_setstack, false, net.minecraft.util.Prediction.SERVER_ONLY);
             }
             if (world instanceof ServerLevel) {
                 ServerLevel _level1 = (ServerLevel)world;

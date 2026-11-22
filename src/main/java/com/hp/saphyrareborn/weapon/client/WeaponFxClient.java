@@ -57,7 +57,7 @@ public final class WeaponFxClient {
     private static final DustParticleOptions ROT_DUST = new DustParticleOptions(8403753, 1.0f);
     private static final DustParticleOptions NAMELESS_DUST = new DustParticleOptions(10032143, 1.1f);
     private static final List<Fx> ACTIVE = new ArrayList<>();
-    private static final Map<Integer, Integer> LAST_SWING = new HashMap<>();
+    private static final Map<Integer, Float> LAST_SWING = new HashMap<>();
     private static final Map<Integer, Integer> SWING_COUNT = new HashMap<>();
     private static ClientLevel lastLevel;
 
@@ -108,13 +108,15 @@ public final class WeaponFxClient {
     private static void detectSwings(ClientLevel level, Player self) {
         for (Player player : level.players()) {
             int id = player.getId();
-            if (!player.swinging) {
+            if (!player.isSwinging()) {
                 LAST_SWING.remove(id);
                 continue;
             }
-            int last = LAST_SWING.getOrDefault(id, Integer.MAX_VALUE);
-            LAST_SWING.put(id, player.swingTime);
-            if (player.swingTime >= last || player.swingingArm != InteractionHand.MAIN_HAND || player.distanceToSqr(self) > SWING_RANGE_SQR) {
+            float last = LAST_SWING.getOrDefault(id, Float.MAX_VALUE);
+            float cur = player.getSwingAnimation(0.0f);
+            LAST_SWING.put(id, cur);
+            var curSwing = player.getCurrentSwing();
+            if (cur >= last || curSwing == null || curSwing.hand() != InteractionHand.MAIN_HAND || player.distanceToSqr(self) > SWING_RANGE_SQR) {
                 continue;
             }
             WeaponStyle style = WeaponStyle.of(player.getMainHandItem());

@@ -189,7 +189,7 @@ public final class WitchCombat {
         Vec3 look = this.flatLook();
         Vec3 cur = this.boss.getDeltaMovement();
         this.boss.setDeltaMovement(cur.x * 0.25 + look.x * speed * scale, cur.y, cur.z * 0.25 + look.z * speed * scale);
-        this.boss.hurtMarked = true;
+        this.boss.needsSync = true;
     }
 
     private void lockAnchor(Vec3 pos, float yaw) {
@@ -297,7 +297,7 @@ public final class WitchCombat {
             WitchVfx.send(level, WitchVfx.FLAME_BURST, c, 0.0f, 6.0f, 0);
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, this.boss.getBoundingBox().inflate(6.0), e -> e != this.boss && !(e instanceof WitchbossEntity) && !(e instanceof MoonbeamEntity))) {
                 e.knockback(0.8, this.boss.getX() - e.getX(), this.boss.getZ() - e.getZ(), level.damageSources().mobAttack(this.boss), 0.0f);
-                e.hurtMarked = true;
+                e.needsSync = true;
             }
         }
         this.phaseShiftTicks--;
@@ -397,7 +397,7 @@ public final class WitchCombat {
     private void dashForth(ServerLevel level) {
         level.sendParticles(ParticleTypes.POOF, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 8, 0.2, 0.2, 0.2, 0.05);
         this.boss.setDeltaMovement(new Vec3(0.0, 1.0, 0.0));
-        this.boss.hurtMarked = true;
+        this.boss.needsSync = true;
         this.dashDelay = 2;
         WitchVfx.send(level, WitchVfx.SHOCKWAVE, this.boss.position(), 0.0f, 2.0f, WitchVfx.ring(4, 0.0));
     }
@@ -406,7 +406,7 @@ public final class WitchCombat {
         Vec3 look = this.boss.getLookAngle();
         level.sendParticles(ParticleTypes.POOF, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 8, 0.2, 0.2, 0.2, 0.05);
         this.boss.setDeltaMovement(new Vec3(-3.0 * look.x, 0.15, -3.0 * look.z));
-        this.boss.hurtMarked = true;
+        this.boss.needsSync = true;
         WitchVfx.send(level, WitchVfx.DASH_TRAIL, this.boss.position(), this.boss.getYRot() + 180.0f, 6.0f, 0);
     }
 
@@ -425,7 +425,7 @@ public final class WitchCombat {
         double dy = target.getY() - this.boss.getY();
         double dz = target.getZ() - this.boss.getZ();
         this.boss.setDeltaMovement(new Vec3(dx * 0.1, dy * 0.1 + 0.15, dz * 0.1));
-        this.boss.hurtMarked = true;
+        this.boss.needsSync = true;
         WitchVfx.send(level, WitchVfx.DASH_TRAIL, this.boss.position(), yawOf(dx, dz), (float) Math.min(16.0, Math.sqrt(dx * dx + dz * dz)), 0);
     }
 
@@ -709,14 +709,14 @@ public final class WitchCombat {
             if (dist > 1.0) {
                 double speed = Math.min(1.25, dist * 0.14);
                 this.boss.setDeltaMovement(dx / dist * speed, 0.45, dz / dist * speed);
-                this.boss.hurtMarked = true;
+                this.boss.needsSync = true;
                 WitchVfx.send(level, WitchVfx.DASH_TRAIL, this.boss.position(), yawOf(dx, dz), (float) Math.min(10.0, dist), 0);
             }
         }
         if (t == JUMP_PLANT) {
             BossCastLock.lock(this.boss, WitchSkill.JUMP.duration - JUMP_PLANT);
             this.boss.setDeltaMovement(new Vec3(0.0, this.boss.getDeltaMovement().y, 0.0));
-            this.boss.hurtMarked = true;
+            this.boss.needsSync = true;
             Vec3 landing = this.boss.position().add(this.flatLook().scale(3.6));
             this.lockAnchor(landing, this.boss.getYRot());
             WitchVfx.send(level, WitchVfx.TELEGRAPH_RING, landing, this.anchorYaw, 6.0f, WitchVfx.ring(JUMP_SLAM - JUMP_PLANT, 0.0));
@@ -746,7 +746,7 @@ public final class WitchCombat {
             if (d.lengthSqr() > 1.0) {
                 d = d.normalize().scale(0.2);
                 this.boss.setDeltaMovement(new Vec3(d.x, this.boss.getDeltaMovement().y, d.z));
-                this.boss.hurtMarked = true;
+                this.boss.needsSync = true;
             }
         }
         if (t >= SPIN_START + 5 && t <= SPIN_END - 10 && (t - SPIN_START) % 10 == 5) {

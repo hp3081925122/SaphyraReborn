@@ -112,9 +112,9 @@ public final class PlayerAnimations {
         float t = age - p.start;
         float end = p.anim.length;
         poseStack.translate(sample(tr[0], t, end, 0), sample(tr[1], t, end, 0) + 0.7f, sample(tr[2], t, end, 0));
-        poseStack.mulPose(Axis.ZP.rotation(sample(tr[5], t, end, 0)));
-        poseStack.mulPose(Axis.YP.rotation(sample(tr[4], t, end, 0)));
-        poseStack.mulPose(Axis.XP.rotation(sample(tr[3], t, end, 0)));
+        poseStack.rotate(Axis.ZP, sample(tr[5], t, end, 0));
+        poseStack.rotate(Axis.YP, sample(tr[4], t, end, 0));
+        poseStack.rotate(Axis.XP, sample(tr[3], t, end, 0));
         poseStack.translate(0, -0.7f, 0);
     }
 

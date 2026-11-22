@@ -179,7 +179,7 @@ public final class NamelessCombat {
         double fz = Math.cos(rad) * speed * scale;
         Vec3 cur = this.boss.getDeltaMovement();
         this.boss.setDeltaMovement(cur.x * 0.25 + fx, cur.y, cur.z * 0.25 + fz);
-        this.boss.hurtMarked = true;
+        this.boss.needsSync = true;
     }
 
     private void lockAnchor() {
@@ -323,7 +323,7 @@ public final class NamelessCombat {
             level.sendParticles(this.redFire(), c.x, c.y, c.z, 25, 6.0, 0.5, 6.0, 0.01);
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, this.boss.getBoundingBox().inflate(6.0), e -> e != this.boss && !(e instanceof NamelessEntity))) {
                 e.knockback(0.8, this.boss.getX() - e.getX(), this.boss.getZ() - e.getZ(), level.damageSources().mobAttack(this.boss), 0.0f);
-                e.hurtMarked = true;
+                e.needsSync = true;
             }
         }
         this.phaseShiftTicks--;
@@ -569,7 +569,7 @@ public final class NamelessCombat {
             this.hitAround(level, c, 7.0, 0.9, 15.0);
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, this.boss.getBoundingBox().inflate(7.0), NamelessCombat::canBeHit)) {
                 e.knockback(0.6, this.boss.getX() - e.getX(), this.boss.getZ() - e.getZ(), level.damageSources().mobAttack(this.boss), 0.0f);
-                e.hurtMarked = true;
+                e.needsSync = true;
             }
             NamelessVfx.send(level, NamelessVfx.SHIELD_COUNTER, c, yaw, 7.0f, 10);
             this.fireWaveFan(level, this.phase2 ? 5 : 3, 20.0);
@@ -681,7 +681,7 @@ public final class NamelessCombat {
         if (t == 1) {
             Vec3 look = this.boss.getLookAngle();
             this.boss.setDeltaMovement(new Vec3(-look.x, 1.5, -look.z));
-            this.boss.hurtMarked = true;
+            this.boss.needsSync = true;
             level.sendParticles(ParticleTypes.POOF, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 10, 0.5, 0.5, 0.5, 0.1);
             NamelessVfx.send(level, NamelessVfx.SLAM, this.boss.position(), this.boss.getYRot(), 2.5f, NamelessVfx.ring(4, 0.0));
         }
@@ -694,12 +694,12 @@ public final class NamelessCombat {
             double dy = target.getY() - this.boss.getY();
             double dz = target.getZ() - this.boss.getZ();
             this.boss.setDeltaMovement(new Vec3(dx * 0.35, dy * 0.35 + 0.15, dz * 0.35));
-            this.boss.hurtMarked = true;
+            this.boss.needsSync = true;
             NamelessVfx.send(level, NamelessVfx.TELEGRAPH_RING, target.position(), this.boss.getYRot(), 6.0f, NamelessVfx.ring(3, 0.0));
         }
         if (t == 24) {
             this.boss.setDeltaMovement(new Vec3(0.0, -0.5, 0.0));
-            this.boss.hurtMarked = true;
+            this.boss.needsSync = true;
             this.sound(level, "entity.player.attack.sweep", SoundSource.NEUTRAL, 2.0f, 1.0f);
             this.hitAround(level, this.boss.position(), 6.0, 1.05, 10.0);
             NamelessVfx.send(level, NamelessVfx.SLASH, this.boss.position(), this.boss.getYRot(), 5.5f, NamelessVfx.SLASH_OVERHEAD);

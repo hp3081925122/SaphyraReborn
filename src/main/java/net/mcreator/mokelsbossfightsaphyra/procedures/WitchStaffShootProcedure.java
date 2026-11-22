@@ -86,7 +86,7 @@ public class WitchStaffShootProcedure {
                 }
                 if (entity instanceof LivingEntity) {
                     _entity = (LivingEntity)entity;
-                    _entity.swing(InteractionHand.MAIN_HAND, true);
+                    _entity.swing(InteractionHand.MAIN_HAND, net.minecraft.world.item.component.SwingAnimation.DEFAULT, true);
                 }
                 if (entity instanceof Player) {
                     Player _player = (Player)entity;
@@ -132,7 +132,7 @@ public class WitchStaffShootProcedure {
                     }
                     if (entity instanceof LivingEntity) {
                         _entity = (LivingEntity)entity;
-                        _entity.swing(InteractionHand.MAIN_HAND, true);
+                        _entity.swing(InteractionHand.MAIN_HAND, net.minecraft.world.item.component.SwingAnimation.DEFAULT, true);
                     }
                     if (entity instanceof Player) {
                         Player _player = (Player)entity;

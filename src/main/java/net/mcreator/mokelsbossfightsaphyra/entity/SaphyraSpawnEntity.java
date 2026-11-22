@@ -228,7 +228,6 @@ implements GeoEntity {
 
     public void aiStep() {
         super.aiStep();
-        this.updateSwingTime();
         this.setNoGravity(true);
     }
 

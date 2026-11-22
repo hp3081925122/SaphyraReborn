@@ -166,13 +166,6 @@ EntityBlock {
         OddmentStage2OnBlockRightClickedProcedure.execute((LevelAccessor)world, x, y, z, (Entity)entity);
         return InteractionResult.SUCCESS;
     }
-    @Override
-
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-
-        return MapCodec.unit(() -> this);
-
-    }
 
 
 

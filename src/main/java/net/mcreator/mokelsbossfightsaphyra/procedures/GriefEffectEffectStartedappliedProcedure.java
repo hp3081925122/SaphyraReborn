@@ -47,11 +47,11 @@ public class GriefEffectEffectStartedappliedProcedure {
             ServerLevel _level1;
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
-                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level1, net.minecraft.server.permissions.LevelBasedPermissionSet.OWNER, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @p times 20 20 20");
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level1, net.minecraft.server.permissions.LevelBasedPermissionSet.OWNER, _level1.getServer(), null).withSuppressedOutput(), "/title @p times 20 20 20");
             }
             if (world instanceof ServerLevel) {
                 _level1 = (ServerLevel)world;
-                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level1, net.minecraft.server.permissions.LevelBasedPermissionSet.OWNER, "", (Component)Component.literal((String)""), _level1.getServer(), null).withSuppressedOutput(), "/title @p title {\"translate\":\"text.saphyra_reborn.title.grief\",\"fallback\":\"Grief\",\"color\":\"blue\"}");
+                _level1.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(entity.getX(), entity.getY(), entity.getZ()), Vec2.ZERO, _level1, net.minecraft.server.permissions.LevelBasedPermissionSet.OWNER, _level1.getServer(), null).withSuppressedOutput(), "/title @p title {\"translate\":\"text.saphyra_reborn.title.grief\",\"fallback\":\"Grief\",\"color\":\"blue\"}");
             }
         }
     }

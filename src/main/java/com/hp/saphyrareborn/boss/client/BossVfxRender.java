@@ -1,7 +1,7 @@
 package com.hp.saphyrareborn.boss.client;
 
 import com.hp.saphyrareborn.MokelsBossfightSaphyraMod;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import java.util.ArrayList;
@@ -12,7 +12,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.rendertype.OutputTarget;
 import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
@@ -41,7 +40,6 @@ public final class BossVfxRender {
             .withCull(false)
             .build();
     public static final RenderType GLOW = RenderType.create("saphyra_boss_glow", RenderSetup.builder(GLOW_PIPELINE)
-            .setOutputTarget(OutputTarget.WEATHER_TARGET)
             .sortOnUpload()
             .createRenderSetup());
     public static final double RENDER_RANGE_SQR = 128.0 * 128.0;

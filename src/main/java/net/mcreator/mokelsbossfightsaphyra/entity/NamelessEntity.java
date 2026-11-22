@@ -208,7 +208,7 @@ implements GeoEntity {
             this.logHurt(source, amount, false, "shield");
             return false;
         }
-        int cooldown = this.invulnerableTime;
+        int cooldown = this.getInvulnerableTime();
         float before = this.getHealth();
         boolean result = super.hurtServer(serverLevel, source, amount);
         this.logHurt(source, amount, result, cooldown > 10 ? "vanilla_cooldown(" + cooldown + ",lastHurt=" + this.lastHurt + ",dealt=" + (before - this.getHealth()) + ")" : "normal(dealt=" + (before - this.getHealth()) + ")");

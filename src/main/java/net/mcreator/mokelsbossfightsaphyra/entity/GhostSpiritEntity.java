@@ -221,7 +221,6 @@ implements GeoEntity {
 
     public void aiStep() {
         super.aiStep();
-        this.updateSwingTime();
         this.setNoGravity(true);
     }
 
@@ -253,7 +252,7 @@ implements GeoEntity {
         double d1 = this.getX() - this.xo;
         double d0 = this.getZ() - this.zo;
         float velocity = (float)Math.sqrt(d1 * d1 + d0 * d0);
-        if (this.getAttackAnim(0.0f) > 0.0f && !this.swinging) {
+        if (this.getSwingAnimation(0.0f) > 0.0f && !this.swinging) {
             this.swinging = true;
             this.lastSwing = this.level().getGameTime();
         }

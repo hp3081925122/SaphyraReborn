@@ -184,7 +184,7 @@ public class RightClickSaphyraDoorKeyProcedure {
                                                                             if (entity instanceof Player) {
                                                                                 Player _player = (Player)entity;
                                                                                 ItemStack _stktoremove = new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.SAPHYRA_KEY.get());
-                                                                                _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), 1, (Container)_player.getInventory());
+                                                                                _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), false, 1, (Container)_player.getInventory());
                                                                             }
                                                                             if (!world.isClientSide() && world.getServer() != null) {
                                                                                 world.getServer().getPlayerList().broadcastSystemMessage((Component)Component.translatable("text.saphyra_reborn.hardcoded.fdc72eca01ae"), false);

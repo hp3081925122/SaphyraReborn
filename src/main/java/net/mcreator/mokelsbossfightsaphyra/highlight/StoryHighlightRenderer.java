@@ -1,7 +1,7 @@
 package com.hp.saphyrareborn.highlight;
 
 import com.hp.saphyrareborn.MokelsBossfightSaphyraMod;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import java.util.List;

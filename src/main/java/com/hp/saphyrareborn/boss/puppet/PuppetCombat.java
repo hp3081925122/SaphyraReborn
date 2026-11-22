@@ -226,7 +226,7 @@ public final class PuppetCombat {
         Vec3 look = this.flatLook();
         double vy = Math.max(-0.08, this.boss.getDeltaMovement().y);
         this.boss.setDeltaMovement(new Vec3(look.x * speed, vy, look.z * speed));
-        this.boss.hurtMarked = true;
+        this.boss.needsSync = true;
     }
 
     private void debugLog(LivingEntity target) {
@@ -266,7 +266,7 @@ public final class PuppetCombat {
             }
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, this.boss.getBoundingBox().inflate(6.0), e -> e != this.boss && !(e instanceof PuppetOfYivaNemorEntity))) {
                 e.knockback(0.8, this.boss.getX() - e.getX(), this.boss.getZ() - e.getZ(), level.damageSources().mobAttack(this.boss), 0.0f);
-                e.hurtMarked = true;
+                e.needsSync = true;
             }
         }
         this.phaseShiftTicks--;
@@ -376,7 +376,7 @@ public final class PuppetCombat {
     private void hopBack(ServerLevel level) {
         Vec3 look = this.boss.getLookAngle();
         this.boss.setDeltaMovement(new Vec3(-1.0 * look.x, 0.01, -1.0 * look.z));
-        this.boss.hurtMarked = true;
+        this.boss.needsSync = true;
         level.sendParticles(ParticleTypes.POOF, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 8, 0.1, 0.1, 0.1, 0.1);
         PuppetVfx.send(level, PuppetVfx.DASH_TRAIL, this.boss.position(), this.boss.getYRot() + 180.0f, 4.0f, 0);
     }
@@ -384,7 +384,7 @@ public final class PuppetCombat {
     private void dashForth(ServerLevel level) {
         level.sendParticles(ParticleTypes.POOF, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 8, 0.2, 0.2, 0.2, 0.05);
         this.boss.setDeltaMovement(new Vec3(0.0, 1.0, 0.0));
-        this.boss.hurtMarked = true;
+        this.boss.needsSync = true;
         this.dashDelay = 2;
         PuppetVfx.send(level, PuppetVfx.SHOCKWAVE, this.boss.position(), 0.0f, 2.2f, 4);
     }
@@ -404,7 +404,7 @@ public final class PuppetCombat {
         double dy = target.getY() - this.boss.getY();
         double dz = target.getZ() - this.boss.getZ();
         this.boss.setDeltaMovement(new Vec3(dx * 0.1, dy * 0.1 + 0.15, dz * 0.1));
-        this.boss.hurtMarked = true;
+        this.boss.needsSync = true;
         PuppetVfx.send(level, PuppetVfx.DASH_TRAIL, this.boss.position(), yawOf(dx, dz), (float) Math.min(16.0, Math.sqrt(dx * dx + dz * dz)), 0);
     }
 
@@ -461,7 +461,7 @@ public final class PuppetCombat {
     private void tickFourth(ServerLevel level, int t, LivingEntity target) {
         if (t == 19) {
             this.boss.setDeltaMovement(new Vec3(0.0, 1.0, 0.0));
-            this.boss.hurtMarked = true;
+            this.boss.needsSync = true;
             level.sendParticles(ParticleTypes.POOF, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 8, 0.1, 0.1, 0.1, 0.1);
             PuppetVfx.send(level, PuppetVfx.SHOCKWAVE, this.boss.position(), 0.0f, 2.5f, 4);
         }
@@ -470,7 +470,7 @@ public final class PuppetCombat {
             double dy = target.getY() - this.boss.getY();
             double dz = target.getZ() - this.boss.getZ();
             this.boss.setDeltaMovement(new Vec3(dx * 0.35, dy * 0.35 + 0.15, dz * 0.35));
-            this.boss.hurtMarked = true;
+            this.boss.needsSync = true;
             PuppetVfx.send(level, PuppetVfx.DASH_TRAIL, this.boss.position(), yawOf(dx, dz), (float) Math.min(16.0, Math.sqrt(dx * dx + dz * dz)), 0);
         }
         if (t >= 30 && !this.fourthLanded && (this.boss.onGround() || t >= FOURTH_HIT_LATEST)) {
@@ -718,7 +718,7 @@ public final class PuppetCombat {
                 if (horizontalEdgeDistance(e, w.x, w.z) <= w.radius && w.hit.add(e.getId())) {
                     e.hurtOrSimulate(source, damage);
                     e.knockback(0.35, -w.dx, -w.dz, source, damage);
-                    e.hurtMarked = true;
+                    e.needsSync = true;
                     if (w.rotting > 0.0 && e instanceof Player player) {
                         MokelsBossfightSaphyraModVariables.PlayerVariables vars = MokelsBossfightSaphyraModVariables.getPlayerVariables(player);
                         vars.Rotting += w.rotting;

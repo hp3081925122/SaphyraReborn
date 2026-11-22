@@ -46,7 +46,7 @@ public class SaphyraDialog1RightClickedOnEntityProcedure {
             if (sourceentity instanceof Player) {
                 Player _player = (Player)sourceentity;
                 ItemStack _stktoremove = new ItemStack((ItemLike)MokelsBossfightSaphyraModItems.INVITATION_TO_THE_HALLOWED_TOWER.get());
-                _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), 1, (Container)_player.getInventory());
+                _player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), false, 1, (Container)_player.getInventory());
             }
             if (!entity.level().isClientSide()) {
                 entity.discard();

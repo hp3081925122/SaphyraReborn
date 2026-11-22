@@ -160,7 +160,7 @@ public final class WeaponAbilities {
             }
         }
         player.setDeltaMovement(dir.x * length * 0.32, 0.1, dir.z * length * 0.32);
-        player.hurtMarked = true;
+        player.needsSync = true;
         player.getCooldowns().addCooldown(stack, IAI_COOLDOWN);
         sound(level, start, "entity.player.attack.sweep", 1.2f, 0.7f);
         sound(level, start, "item.trident.riptide_1", 0.8f, 1.6f);
@@ -251,7 +251,7 @@ public final class WeaponAbilities {
             WeaponFx.send(level, WeaponFx.HIT, WeaponStyle.LOURING_CLAYMORE, at, player.getYRot(), 1.2f, 0);
             return;
         }
-        target.invulnerableTime = 0;
+        target.setInvulnerableTime(0);
         target.hurt(player.damageSources().indirectMagic(player, player), 10.0f);
         sound(level, at, "entity.vex.charge", 1.0f, 0.6f);
         WeaponFx.send(level, WeaponFx.GRIEF_BURST, WeaponStyle.LOURING_CLAYMORE, target.position(), player.getYRot(), Math.max(1.2f, target.getBbWidth() + 0.6f), 0);

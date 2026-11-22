@@ -99,7 +99,7 @@ EntityBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public SaphyraDoor3Block() {
-        super(BlockBehaviour.Properties.of().setId(com.hp.saphyrareborn.init.RegistryIds.block).sound(SoundType.METAL).strength(-1.0f, 3600000.0f).noOcclusion().pushReaction(PushReaction.IGNORE).isRedstoneConductor((bs, br, bp) -> false));
+        super(BlockBehaviour.Properties.of().setId(com.hp.saphyrareborn.init.RegistryIds.block).sound(SoundType.METAL).strength(-1.0f, 3600000.0f).noOcclusion().pushReaction(PushReaction.IGNORE_ENTITY).isRedstoneConductor((bs, br, bp) -> false));
         this.registerDefaultState((BlockState)((BlockState)((BlockState)this.stateDefinition.any()).setValue((Property)FACING, (Comparable)Direction.NORTH)).setValue((Property)WATERLOGGED, (Comparable)Boolean.valueOf(false)));
     }
 
@@ -169,13 +169,6 @@ EntityBlock {
             return dropsOriginal;
         }
         return Collections.singletonList(new ItemStack((ItemLike)this, 1));
-    }
-    @Override
-
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-
-        return MapCodec.unit(() -> this);
-
     }
 
 
